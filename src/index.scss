@@ -1,11 +1,61 @@
 :root {
-  --main-color: rgb(69, 68, 68);
-  --width-md: 768px;
-  --width-lg: 1024px;
+  /* COLORS */
+  /* ===== Core Palette ===== */
+  --color-primary: #8200db;
+  --color-primary-hover: #7619ce;
+  --color-secondary: #f766af; 
+  --color-secondary-hover: #da4f8e; 
+  --color-text: #1e1e1e;
+  --color-text-secondary: #6b7280;
+  --color-bg: #f9fafb;
+  --color-border: #e5e7eb;
+
+  --color-gradient-start: #ec4899; /* Pink */
+  --color-gradient-end: #8b5cf6; /* Purple */
+
+  /* TYPOGRAPHY */
+  --font-base: 'Inter', system-ui, sans-serif;
+  --font-heading: 'Poppins', sans-serif;
+
+  /* SPACING */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+
+  /* BREAKPOINTS (mobile-first) */
+  --breakpoint-sm: 480px; /* small phones */
+  --breakpoint-md: 768px; /* tablets */
+  --breakpoint-lg: 1024px; /* laptops */
+  --breakpoint-xl: 1280px; /* large desktops */
+  --breakpoint-2xl: 1536px; /* extra large screens */
+
+  /* CONTAINERS (max-widths) */
+  --container-xs: 540px; /* small mobile layouts */
+  --container-sm: 720px; /* tablets */
+  --container-md: 960px; /* desktops */
+  --container-lg: 1360px; /* large desktops */
+
+  /* RADII + SHADOWS */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 2px 6px rgba(0, 0, 0, 0.1);
+
+  /* TRANSITIONS */
+  --transition: 0.2s ease-in-out;
+
+  /* ===== Feedback ===== */
+  --color-success: #7df3a8;
+  --color-warning: #fbd74a;
+  --color-error: #fb7e7e;
+  --color-info: #72a6fb;
 }
 
-* {
-  padding: 0px;
-  margin: 0px;
-  box-sizing: border-box;
+[data-theme='dark'] {
+  --color-secondary: #1e1e1e;
+  --color-text: #f2f2f2;
+  --color-bg: #121212;
+  --color-border: #444;
 }
