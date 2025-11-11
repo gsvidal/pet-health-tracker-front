@@ -6,10 +6,16 @@ import { Dashboard } from './features/dashboard/pages/Dashboard/Dashboard';
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/dashboard" element={<Dashboard />} />
-    </Routes>
+    <>
+      {/* // <Header /> Todo: Crear Header */}
+      <main>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Routes>
+      </main>
+      {/* // <Footer /> Todo: Crear Footer */}
+    </>
   );
 }
 
