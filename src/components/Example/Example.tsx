@@ -1,13 +1,5 @@
 import './Example.scss';
 
 export const Example = ({}) => {
-  return <h1 className="example__title">This is Example component</h1>;
+  return <p className="example__title">This is Example component</p>;
 };
-
-<section>
-  <h2>caricteristicas</h2>
-  <p></p>
-  <div className='articles'>
-    article
-  </div>
-</section>

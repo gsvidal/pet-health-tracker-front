@@ -2,7 +2,7 @@
 import { Route, Routes } from 'react-router-dom';
 import './App.scss';
 import { Home } from './pages/Home/Home';
-import { Dashboard } from './pages/Dashboard/Dashboard';
+import { Dashboard } from './features/dashboard/pages/Dashboard/Dashboard';
 
 function App() {
   return (

@@ -4,10 +4,8 @@ import './Home.scss';
 export const Home = () => {
   return (
     <>
-      <h1 className="home__title">I'm in home!</h1>
-      component example:
+      <h1 className="home__title">Pet Health Tracker</h1>
       <Example />
     </>
   );
 };
-
