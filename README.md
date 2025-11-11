@@ -1,41 +1,127 @@
-# PET Health Tracker Frontend
+# 🐾 Pet Health Tracker - Frontend
 
-Frontend de la plataforma **Pet Health Tracker**, una aplicación para que los dueños de mascotas registren y controlen información sobre la salud y nutrición de sus animales.
+Frontend de la plataforma **Pet Health Tracker**, una aplicación diseñada para que los dueños de mascotas registren, controlen y gestionen la salud y nutrición de sus animales.
 
 ---
 
-## 🚀 Instalación y Setup
+## 🚀 Instalación y Configuración
 
-Clona el repositorio usando SSH o HTTPS:
+Sigue estos pasos para clonar, instalar dependencias y ejecutar el proyecto localmente.
 
-### Usando SSH
+### 1️⃣ Clonar el repositorio
+
+Puedes usar **SSH** o **HTTPS** según tu configuración:
+
+#### Usando SSH
+
+```bash
 git clone git@github.com:Juliandos/Pet-HealthCare-Front.git
+```
 
-### Usando HTTPS
+#### Usando HTTPS
+
+```bash
 git clone https://github.com/Juliandos/Pet-HealthCare-Front.git
+```
 
+Accede al directorio del proyecto:
 
-Accede al proyecto:
-
+```bash
 cd Pet-HealthCare-Front
+```
 
+---
 
-## Instala las dependencias:
+### 2️⃣ Instalar dependencias
 
-### Usando npm
+Instala las dependencias necesarias con tu gestor preferido:
+
+#### Con npm
+
+```bash
 npm install
+```
 
-### O usando yarn
+#### O con yarn
+
+```bash
 yarn install
-Inicia la aplicación en modo desarrollo:
+```
 
+---
 
-## Levanta el proyecto en local:
-### Usando npm
+### 3️⃣ Ejecutar en modo desarrollo
+
+Inicia el entorno de desarrollo con:
+
+#### Con npm
+
+```bash
 npm run dev
+```
 
-### o usando yarn
+#### O con yarn
+
+```bash
 yarn dev
+```
 
+La aplicación se ejecutará por defecto en:  
+👉 **http://localhost:5173**
 
-La aplicación estará disponible en http://localhost:5173 por defecto.
+---
+
+## 🧩 Tecnologías principales
+
+- **React + TypeScript + Vite** → base del proyecto para un desarrollo rápido y tipado seguro.  
+- **Sass** → preprocesador CSS con soporte de variables, nesting y modularidad.  
+- **ESLint + Prettier** → herramientas para linting y formateo consistente.  
+- **Axios** → gestión de peticiones HTTP.  
+- **React Router v6** → enrutamiento moderno y declarativo.
+
+---
+
+## 💡 Recomendaciones
+
+- Usa **VS Code** con las extensiones **Prettier** y **ESLint** activadas.  
+- Configura la opción *Format on Save* para mantener el estilo uniforme.  
+- Antes de subir cambios, ejecuta el linting local para detectar errores.
+
+---
+
+## 🧭 Estructura básica del proyecto
+
+```
+Pet-HealthCare-Front/
+│
+├── src/
+│   ├── features/           # Módulos principales (auth, pets, dashboard, etc.)
+│   ├── components/         # Componentes reutilizables
+│   ├── hooks/              # Hooks personalizados
+│   ├── services/           # Lógica de comunicación con API
+│   ├── utils/              # Funciones utilitarias
+│   ├── styles/             # Estilos globales y variables Sass
+│   └── main.tsx            # Punto de entrada principal
+│
+├── .eslintrc.js            # Configuración de ESLint
+├── .prettierrc             # Configuración de Prettier
+├── vite.config.ts          # Configuración del bundler
+└── package.json
+```
+
+---
+
+## 🧑‍💻 Scripts disponibles
+
+- `npm run dev` → ejecuta el servidor de desarrollo.  
+- `npm run build` → compila la aplicación para producción.  
+- `npm run lint` → analiza el código con ESLint.  
+- `npm run preview` → vista previa local del build de producción.
+
+---
+
+## 🐶 Créditos
+
+Proyecto desarrollado por el equipo de **No Country** como parte del MVP de *Pet Health Tracker*.
+
+---
