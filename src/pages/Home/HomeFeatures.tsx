@@ -3,14 +3,14 @@ import { Card, CardHeader, CardTitle, CardDescription } from "../../components/C
 import "./HomeFeatures.scss";
 
 const features = [
-  { icon: Heart, title: "Perfiles Completos de Mascotas", description: "Crea y gestiona perfiles con nombre, especie, raza, edad, peso y foto." },
-  { icon: Syringe, title: "Registro de Salud Integral", description: "Documenta vacunaciones, desparasitaciones y visitas veterinarias." },
-  { icon: UtensilsCrossed, title: "Seguimiento Nutricional", description: "Registra dietas, horarios de comidas y porciones." },
-  { icon: Bell, title: "Recordatorios Automáticos", description: "Alertas por correo y notificaciones in-app para vacunas." },
-  { icon: Calendar, title: "Calendario de Eventos", description: "Visualiza citas, vacunas y eventos próximos." },
-  { icon: LayoutDashboard, title: "Dashboard Intuitivo", description: "Resumen del estado de salud y alertas activas." },
-  { icon: Shield, title: "Seguridad y Privacidad", description: "Protección total de la información de tus mascotas." },
-  { icon: FileText, title: "Historial Médico Completo", description: "Acceso al historial médico organizado." },
+  { icon: Heart, title: "Perfiles Completos de Mascotas", description: "Crea y gestiona perfiles con nombre, especie, raza, edad, peso y foto. Edita o elimina información cuando lo necesites." },
+  { icon: Syringe, title: "Registro de Salud Integral", description: "Documenta vacunaciones, desparasitaciones y visitas veterinarias. Adjunta imágenes y documentos médicos." },
+  { icon: UtensilsCrossed, title: "Seguimiento Nutricional", description: "Registra dietas, horarios de comidas y porciones. Configura recordatorios para mantener una alimentación saludable." },
+  { icon: Bell, title: "Recordatorios Automáticos", description: "Alertas por correo y notificaciones in-app para vacunas, medicamentos, citas y horarios de alimentación." },
+  { icon: Calendar, title: "Calendario de Eventos", description: "Visualiza todas las citas, vacunas y eventos próximos en un calendario organizado y fácil de consultar." },
+  { icon: LayoutDashboard, title: "Dashboard Intuitivo", description: "Vista general con resumen del estado de salud, próximas vacunas y alertas activas de todas tus mascotas." },
+  { icon: Shield, title: "Seguridad y Privacidad", description: "Cifrado de contraseñas, validación de datos y protección total de la información de tus mascotas." },
+  { icon: FileText, title: "Historial Médico Completo", description: "Acceso instantáneo al historial médico completo con todos los registros de salud organizados." },
 ];
 
 export function HomeFeatures() {
