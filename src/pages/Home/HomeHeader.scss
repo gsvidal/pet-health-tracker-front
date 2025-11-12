@@ -1,0 +1,67 @@
+.sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  width: 100%;
+  border-bottom: 1px solid #e5e7eb;
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+
+  @supports (backdrop-filter: blur(0)) {
+    background-color: rgba(255, 255, 255, 0.6);
+  }
+
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    height: 64px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    .logo-icon {
+      display: flex;
+      height: 40px;
+      width: 40px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: linear-gradient(to bottom right, #ec4899, #9333ea);
+    }
+
+    .logo-text {
+      font-size: 20px;
+      color: #111827;
+    }
+  }
+
+  nav {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+
+    a {
+      font-size: 14px;
+      color: #4b5563;
+      transition: color 0.2s;
+
+      &:hover {
+        color: #111827;
+      }
+    }
+
+    .btn-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-left: 0.5rem;
+    }
+  }
+}

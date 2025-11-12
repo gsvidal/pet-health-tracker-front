@@ -1,9 +1,14 @@
 import './Home.scss';
+import { HomeFeatures } from './HomeFeatures';
+import { HomeHeader } from './HomeHeader';
+import { HomeHero } from './HomeHero';
 
 export const Home = () => {
   return (
     <div className="home">
-      <h1 className="home__title">Pet Health Tracker</h1>
+      <HomeHeader />
+      <HomeHero />
+      <HomeFeatures />
     </div>
   );
 };
