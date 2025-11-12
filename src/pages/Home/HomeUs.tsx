@@ -1,4 +1,4 @@
-import { ArrowRight, Check, CircleCheck } from 'lucide-react';
+import { ArrowRight, CircleCheck } from 'lucide-react';
 import './HomeUs.scss';
 import { Button } from '../../components/Button/Button';
 
