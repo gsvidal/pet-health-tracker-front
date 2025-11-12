@@ -6,7 +6,9 @@ import { BrowserRouter } from 'react-router-dom';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter>
+    <BrowserRouter
+      basename={import.meta.env.PROD ? '/pet-health-tracker-front' : '/'}
+    >
       <App />
     </BrowserRouter>
   </StrictMode>,
