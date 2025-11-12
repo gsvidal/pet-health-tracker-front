@@ -8,7 +8,7 @@ function App() {
   return (
     <>
       {/* // <Header /> Todo: Crear Header */}
-      <main>
+      <main className='container'>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/dashboard" element={<Dashboard />} />

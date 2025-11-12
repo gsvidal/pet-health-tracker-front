@@ -47,6 +47,14 @@
       border-color: var(--color-border);
     }
   }
+  &--outline {
+    background-color: var(--color-primary-bg);
+    color: var(--color-text);
+    border: 1.5px solid var(--color-border);
+    &:hover:not(:disabled) {
+      background-color: var(--color-primary-bg-hover);
+    }
+  }
 
   &:disabled {
     opacity: 0.6;
