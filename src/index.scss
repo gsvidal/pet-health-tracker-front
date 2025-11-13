@@ -3,8 +3,12 @@
   /* ===== Core Palette ===== */
   --color-primary: #8200db;
   --color-primary-hover: #7619ce;
-  --color-secondary: #f766af; 
-  --color-secondary-hover: #da4f8e; 
+  --color-primary-bg: #ede9fe;
+  --color-primary-bg-hover: #c9c1eb;
+  --color-secondary: #be185d;
+  --color-secondary-bg: #fce7f3;
+  --color-secondary-bg2: #f6cde4;
+  --color-secondary-hover: #9d074a;
   --color-text: #1e1e1e;
   --color-text-secondary: #6b7280;
   --color-bg: #f9fafb;
@@ -25,11 +29,11 @@
   --space-xl: 32px;
 
   /* BREAKPOINTS (mobile-first) */
-  --breakpoint-sm: 480px; /* small phones */
-  --breakpoint-md: 768px; /* tablets */
-  --breakpoint-lg: 1024px; /* laptops */
-  --breakpoint-xl: 1280px; /* large desktops */
-  --breakpoint-2xl: 1536px; /* extra large screens */
+//  480px; /* small phones */
+//  768px; /* tablets */
+//  1024px; /* laptops */
+//  1280px; /* large desktops */
+//  1536px; /* extrua large screens */
 
   /* CONTAINERS (max-widths) */
   --container-xs: 540px; /* small mobile layouts */
