@@ -78,7 +78,7 @@ export const Register = () => {
             {loading ? 'Registrando...' : 'Registrarse'}
           </button>
           <p className="login-link">
-            ¿Ya tienes cuenta? <a href="/login">Inicia sesión</a>
+            ¿Ya tienes cuenta? <a href="/login">Iniciar sesión</a>
           </p>
         </form>
       </div>
