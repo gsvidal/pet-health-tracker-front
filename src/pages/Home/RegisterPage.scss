@@ -1,45 +1,68 @@
 .register-page {
   display: flex;
   height: 100vh;
-  background: linear-gradient(120deg, #fff3ff, #f8ecff);
-
-  @media (max-width: 900px) {
-    flex-direction: column;
-  }
+  background: linear-gradient(
+    120deg,
+    var(--color-gradient-start),
+    var(--color-gradient-end)
+  );
+  transition: all 0.3s ease;
 }
 
 .register-left {
   flex: 1;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #a855f7, #ff55c0);
+  background: linear-gradient(
+    135deg,
+    var(--color-primary),
+    var(--color-secondary)
+  );
   color: white;
   text-align: center;
-  padding: 3rem;
+  padding: var(--space-xl);
+  position: relative;
+  overflow: hidden;
 
   .branding {
-    max-width: 400px;
+    max-width: 420px;
+    z-index: 2;
+    font-family: var(--font-base);
   }
 
-  h1 {
+  #pet-title {
+    font-family: var(--font-heading);
+    display: flex;
     color: white;
-    font-size: 2.2rem;
-    margin-bottom: 1rem;
+    font-size: 2.6rem;
+    margin-bottom: var(--space-sm);
     font-weight: 700;
   }
-
+  .MdPets-icon {
+    color: var(--color-text);
+    margin-right: 0.5rem;
+  }
   p {
     color: white;
     font-size: 1.05rem;
     line-height: 1.5;
   }
-
-  @media (max-width: 900px) {
-    padding: 2rem;
-    h1 {
-      font-size: 1.8rem;
-    }
+  &::before {
+    content: '';
+    position: absolute;
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(
+      circle at 50% 50%,
+      rgba(255, 255, 255, 0.1),
+      transparent 70%
+    );
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
   }
 }
 
@@ -48,9 +71,48 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: white;
+  background: var(--color-bg);
+  transition: all var(--transition);
+}
+/* ======== RESPONSIVE: A PARTIR DE 991PX ======== */
+@media (max-width: 991px) {
+  .register-page {
+    position: relative;
+  }
 
-  @media (max-width: 900px) {
-    padding: 2rem 0;
+  .register-left {
+    padding: var(--space-lg);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+
+  .register-right {
+    margin-top: 9rem;
+    flex: none;
+    background: transparent;
+    padding: 0;
+    width: 100%;
+    .register-container {
+      background: transparent;
+      padding: var(--space-lg);
+      width: 90%;
+      max-width: 420px;
+      margin: 0 auto;
+      backdrop-filter: blur(6px);
+    }
+  }
+
+  .register-left .branding {
+    margin-bottom: var(--space-lg);
+  }
+
+  #pet-title {
+    margin-top: -25rem;
+    font-size: 2.3rem;
+  }
+
+  #pet-subtitle {
+    font-size: 1.1rem;
   }
 }
