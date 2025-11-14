@@ -12,10 +12,10 @@ export interface RegisterResponse {
     email: string;
   };
 }
-export interface LoginRequest {
+export type LoginRequest = {
   email: string;
   password: string;
-}
+};
 export interface LoginResponse {
   token: string;
   user: {
