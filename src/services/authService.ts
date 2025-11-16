@@ -4,10 +4,12 @@ import type {
   RegisterResponse,
   LoginRequest,
   LoginResponse,
+  RecoverPasswordResponse,
 } from '../Types/authTypes';
 
 // URL base del backend (ajustar)
 const API_URL = 'http://localhost:5000/api/auth';
+
 // Registro de usuario
 export const registerUser = async (
   data: RegisterRequest,
@@ -18,13 +20,27 @@ export const registerUser = async (
   );
   return response.data;
 };
+
 // Inicio de sesión
 export const loginUser = async (data: LoginRequest): Promise<LoginResponse> => {
   const response = await axios.post<LoginResponse>(`${API_URL}/login`, data);
   return response.data;
 };
+
+// Recuperación de contraseña
+export const recoverPassword = async (
+  email: string,
+): Promise<RecoverPasswordResponse> => {
+  const response = await axios.post<RecoverPasswordResponse>(
+    `${API_URL}/recover-password`,
+    { email },
+  );
+  return response.data;
+};
+
 // Objeto agrupado
 export const authService = {
   register: registerUser,
   login: loginUser,
+  recoverPassword,
 };

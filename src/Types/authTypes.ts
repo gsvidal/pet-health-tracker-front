@@ -24,3 +24,6 @@ export interface LoginResponse {
     email: string;
   };
 }
+export interface RecoverPasswordResponse {
+  message: string;
+}

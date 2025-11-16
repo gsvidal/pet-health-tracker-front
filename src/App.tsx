@@ -6,6 +6,7 @@ import { Dashboard } from './features/dashboard/pages/Dashboard/Dashboard';
 import { RegisterPage } from './features/dashboard/pages/Register/RegisterPage';
 import { MainLayout } from './layouts/MainLayout';
 import { FullLayout } from './layouts/FullLayout';
+import { RecoverPasswordPage } from './features/dashboard/pages/RecoverPassword/RecoverPasswordPage';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
       {/* Layout fullscreen (sin clase container) */}
       <Route element={<FullLayout />}>
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/recover-password" element={<RecoverPasswordPage />} />
       </Route>
 
       {/* // <Footer /> Todo: Crear Footer */}

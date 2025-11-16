@@ -57,13 +57,9 @@ export const LoginForm = () => {
           </div>
 
           <p className="forgot-password">
-            <a
-              href=""
-              onClick={() => alert('Recuperar contraseña próximamente')}
-            >
-              ¿Olvidaste la contraseña?
-            </a>
+            <a href="/recover-password">¿Olvidaste la contraseña?</a>
           </p>
+
           {serverError && <p className="error server">{serverError}</p>}
           {success && <p className="success">Ingreso exitoso</p>}
 
