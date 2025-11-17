@@ -1,6 +1,7 @@
 import { create } from 'zustand';
+import { toast } from 'react-hot-toast';
 import type { User } from '../models/user.model';
-import { registerUser, loginUser } from '../services/authService';
+import { registerUser, loginUser } from '../services/auth.service';
 import type { RegisterRequest, LoginRequest } from '../Types/authTypes';
 import { adaptUserProfileToUser } from '../adapters/user/user.adapter';
 import { callApi } from '../utils/apiHelper';
@@ -37,12 +38,14 @@ export const useAuthStore = create<AuthState>((set) => ({
     );
 
     if (error || !userProfile) {
+      const message = error || 'Error al registrar usuario';
+      toast.error(message);
       set({
-        error: error || 'Error al registrar usuario',
+        error: message,
         loading: false,
         isAuthenticated: false,
       });
-      throw new Error(error || 'Error al registrar usuario');
+      throw new Error(message);
     }
 
     // Usar adapter para transformar la data
@@ -54,6 +57,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       loading: false,
       error: null,
     });
+    toast.success('Usuario registrado correctamente ✨');
   },
 
   login: async (data: LoginRequest) => {
@@ -62,14 +66,16 @@ export const useAuthStore = create<AuthState>((set) => ({
     const { data: tokenResponse, error } = await callApi(() => loginUser(data));
 
     if (error || !tokenResponse) {
+      const message = error || 'Error al iniciar sesión';
+      toast.error(message);
       set({
-        error: error || 'Error al iniciar sesión',
+        error: message,
         loading: false,
         isAuthenticated: false,
         accessToken: null,
         refreshToken: null,
       });
-      throw new Error(error || 'Error al iniciar sesión');
+      throw new Error(message);
     }
 
     set({
@@ -80,6 +86,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       error: null,
     });
 
+    toast.success('Sesión iniciada correctamente ✔️');
     // TODO: Obtener perfil del usuario con /auth/me usando el accessToken
   },
 
@@ -92,6 +99,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       loading: false,
       error: null,
     });
+    toast('Sesión finalizada', { icon: '👋' });
   },
 
   clearError: () => {
@@ -114,5 +122,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       loading: false,
       error: null,
     });
+
+    toast.success('Sesión mock iniciada correctamente ✔️');
   },
 }));
