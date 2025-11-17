@@ -6,8 +6,8 @@ export const LoginPage = () => {
   const [openLogin, setOpenLogin] = useState(false);
   return (
     <>
-      <button onClick={() => setOpenLogin(true)}>Ingresar</button>
-      <Modal isOpen={openLogin} onClose={() => setOpenLogin(false)}>
+      {/* <button onClick={() => setOpenLogin(true)}>Ingresar</button> */}
+      <Modal isOpen={true} onClose={() => setOpenLogin(false)}>
         <LoginForm />
       </Modal>
     </>

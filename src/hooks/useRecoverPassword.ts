@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import { authService } from '../services/authService';
 import type { AxiosError } from 'axios';
-import type { RecoverPasswordResponse } from '../Types/authTypes';
+import type { RecoverPasswordResponse } from '../types/auth.type';
 
 type RecoverRequest = {
   email: string;

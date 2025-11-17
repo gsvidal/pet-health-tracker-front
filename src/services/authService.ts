@@ -5,10 +5,11 @@ import type {
   LoginRequest,
   LoginResponse,
   RecoverPasswordResponse,
-} from '../Types/authTypes';
+} from '../types/auth.type';
 
 // URL base del backend (ajustar)
-const API_URL = 'http://localhost:5000/api/auth';
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+const API_URL = `${API_BASE_URL}/auth`;
 
 // Registro de usuario
 export const registerUser = async (
