@@ -1,4 +1,4 @@
-import { Register } from '../../features/auth/RegisterForm';
+import { Register } from '../../../auth/RegisterForm';
 import './RegisterPage.scss';
 import { MdPets } from 'react-icons/md';
 
