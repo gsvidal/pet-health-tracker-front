@@ -7,6 +7,7 @@ import { Modal } from './components/Modal/Modal';
 import { ExamplePage } from './features/example/pages/ExamplePage/ExamplePage';
 import { PRIVATE_ROUTES, PUBLIC_ROUTES } from './config/routes';
 import { PrivateGuard } from './components/guards/PrivateGuard';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
       </main>
       {/* // <Footer /> Todo: Crear Footer */}
       <Modal />
+      <Toaster position="top-center" toastOptions={{ duration: 5000 }} />
     </>
   );
 }
