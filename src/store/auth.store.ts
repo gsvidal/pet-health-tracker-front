@@ -18,6 +18,7 @@ interface AuthState {
   login: (data: LoginRequest) => Promise<void>;
   logout: () => void;
   clearError: () => void;
+  mockLogin: () => void;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
@@ -95,5 +96,23 @@ export const useAuthStore = create<AuthState>((set) => ({
 
   clearError: () => {
     set({ error: null });
+  },
+
+  mockLogin: () => {
+    set({
+      user: {
+        id: 'dev-user',
+        email: 'dev@example.com',
+        username: 'devUser',
+        fullName: 'Developer User',
+        role: 'admin',
+        createdAt: new Date().toISOString(),
+      },
+      accessToken: 'dev-access-token',
+      refreshToken: 'dev-refresh-token',
+      isAuthenticated: true,
+      loading: false,
+      error: null,
+    });
   },
 }));
