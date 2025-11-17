@@ -1,8 +1,9 @@
 import { Heart } from 'lucide-react';
 import { LuFacebook, LuInstagram, LuLinkedin, LuTwitter } from 'react-icons/lu';
-import './HomeFooter.scss';
+import "./Home.scss";
+//import './Footer.scss';
 
-export const HomeFooter = () => {
+export const Footer = () => {
   return (
     <>
       <div id="contacto" className="footer">

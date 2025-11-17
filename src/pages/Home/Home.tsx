@@ -1,18 +1,19 @@
+import { Features } from './Features';
+import { Footer } from './Footer';
+import { Header } from './Header';
+import { Hero } from './Hero';
 import './Home.scss';
-import { HomeFeatures } from './HomeFeatures';
-import { HomeFooter } from './HomeFooter';
-import { HomeHeader } from './HomeHeader';
-import { HomeHero } from './HomeHero';
 import { HomeUs } from './HomeUs';
+
 
 export const Home = () => {
   return (
     <div className="home">
-      <HomeHeader />
-      <HomeHero />
-      <HomeFeatures />
+      <Header />
+      <Hero />
+      <Features />
       <HomeUs />
-      <HomeFooter />
+      <Footer />
     </div>
   );
 };
