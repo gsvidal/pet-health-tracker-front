@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { toast } from 'react-hot-toast';
 import type { User } from '../models/user.model';
-import { registerUser, loginUser } from '../services/auth.service';
+import { registerUser, loginUser } from '../services/auth.service'
 import type { RegisterRequest, LoginRequest } from '../types/auth.type';
 import { adaptUserProfileToUser } from '../adapters/user/user.adapter';
 import { callApi } from '../utils/apiHelper';
