@@ -3,25 +3,26 @@ import type {
   RegisterRequest,
   RegisterResponse,
   LoginRequest,
-  LoginResponse,
+  TokenResponse,
 } from '../Types/authTypes';
 
-// URL base del backend (ajustar)
-const API_URL = 'http://localhost:5000/api/auth';
+// URL base del backend
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+const API_URL = `${API_BASE_URL}/auth`;
 
 // Registro de usuario
 export const registerUser = async (
   data: RegisterRequest,
 ): Promise<RegisterResponse> => {
-  const response = await axios.post<RegisterResponse>(
-    `${API_URL}/register`,
-    data,
-  );
+  const response = await axios.post<RegisterResponse>(`${API_URL}/register`, {
+    email: data.email,
+    password: data.password,
+  });
   return response.data;
 };
 
 // Inicio de sesión
-export const loginUser = async (data: LoginRequest): Promise<LoginResponse> => {
-  const response = await axios.post<LoginResponse>(`${API_URL}/login`, data);
+export const loginUser = async (data: LoginRequest): Promise<TokenResponse> => {
+  const response = await axios.post<TokenResponse>(`${API_URL}/login`, data);
   return response.data;
 };

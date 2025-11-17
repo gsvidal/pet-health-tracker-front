@@ -10,7 +10,7 @@ function App() {
   return (
     <>
       {/* // <Header /> Todo: Crear Header */}
-      <main className='container'>
+        <main>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/dashboard" element={<Dashboard />} />
