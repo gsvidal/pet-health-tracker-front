@@ -12,6 +12,7 @@ import { PRIVATE_ROUTES, PUBLIC_ROUTES } from './config/routes';
 import { PrivateGuard } from './components/guards/PrivateGuard';
 import { Toaster } from 'react-hot-toast';
 import { LoginPage } from './features/dashboard/pages/Login/LoginPage';
+import { NotFound } from './components/NotFound/NotFound';
 
 function App() {
   return (
@@ -36,8 +37,7 @@ function App() {
               <Route path={PRIVATE_ROUTES.DASHBOARD} element={<Dashboard />} />
             </Route>
           </Route>
-          {/* TODO: Crear NotFound page */}
-          <Route path="*" element={<>Not found</>} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
       {/* // <Footer /> Todo: Crear Footer */}
