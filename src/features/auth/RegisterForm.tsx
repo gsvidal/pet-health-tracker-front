@@ -1,4 +1,4 @@
-import { FaEnvelope, FaLock, FaHeart } from 'react-icons/fa';
+import { FaEnvelope, FaLock, FaHeart, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useRegister } from '../../hooks/useRegister';
 import { useState } from 'react';
 import { Modal } from '../../components/Modal/Modal';
@@ -17,6 +17,9 @@ export const Register = () => {
     onSubmit,
   } = useRegister();
   const [openLogin, setOpenLogin] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   return (
     <>
       {/* Modal de Login */}
@@ -58,8 +61,9 @@ export const Register = () => {
 
             <div className="input-group">
               <FaLock className="input-icon" />
+
               <input
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 placeholder="Contraseña"
                 {...register('password', {
                   required: 'La contraseña es obligatoria',
@@ -69,6 +73,13 @@ export const Register = () => {
                   },
                 })}
               />
+              <span
+                className="toggle-password"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </span>
+
               <p className={`error ${errors.password ? 'visible' : ''}`}>
                 {errors.password?.message || ''}
               </p>
@@ -76,8 +87,9 @@ export const Register = () => {
 
             <div className="input-group">
               <FaLock className="input-icon" />
+
               <input
-                type="password"
+                type={showConfirmPassword ? 'text' : 'password'}
                 placeholder="Confirmar contraseña"
                 {...register('confirmPassword', {
                   required: 'Debe confirmar la contraseña',
@@ -86,6 +98,13 @@ export const Register = () => {
                     'Las contraseñas no coinciden',
                 })}
               />
+              <span
+                className="toggle-password"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              >
+                {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+              </span>
+
               <p className={`error ${errors.confirmPassword ? 'visible' : ''}`}>
                 {errors.confirmPassword?.message || ''}
               </p>

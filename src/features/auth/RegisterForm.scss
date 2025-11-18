@@ -176,3 +176,22 @@
   font-size: 1rem;
   opacity: 0.9;
 }
+.toggle-password {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 1.4rem;
+  color: var(--color-text-secondary);
+  transition: color 0.2s ease;
+  opacity: 0.6;
+
+  &:hover {
+    opacity: 0.9;
+    color: var(-color-text);
+  }
+}
+.input-group input {
+  padding-right: 2.7rem;
+}

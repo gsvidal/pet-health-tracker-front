@@ -1,6 +1,13 @@
-import { FaEnvelope, FaLock, FaGoogle } from 'react-icons/fa';
+import {
+  FaEnvelope,
+  FaLock,
+  FaGoogle,
+  FaEye,
+  FaEyeSlash,
+} from 'react-icons/fa';
 import { useLogin } from '../../hooks/useLogin';
 import './LoginForm.scss';
+import { useState } from 'react';
 
 export const LoginForm = () => {
   const {
@@ -12,6 +19,7 @@ export const LoginForm = () => {
     success,
     onSubmit,
   } = useLogin();
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <div className="login-container">
@@ -44,7 +52,7 @@ export const LoginForm = () => {
           <div className="input-group">
             <FaLock className="input-icon" />
             <input
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               placeholder="Contraseña"
               aria-label="Contraseña"
               {...register('password', {
@@ -55,6 +63,12 @@ export const LoginForm = () => {
                 },
               })}
             />
+            <span
+              className="toggle-password"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </span>
             <p className={`error ${errors.password ? 'visible' : ''}`}>
               {errors.password?.message}
             </p>

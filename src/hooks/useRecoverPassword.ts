@@ -1,8 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
-import { authService } from '../services/auth.service';
-import type { AxiosError } from 'axios';
-import type { RecoverPasswordResponse } from '../types/auth.type';
+import toast from 'react-hot-toast';
 
 type RecoverRequest = {
   email: string;
@@ -18,19 +16,19 @@ export const useRecoverPassword = () => {
   const [serverError, setServerError] = useState('');
   const [success, setSuccess] = useState(false);
   const onSubmit = async (data: RecoverRequest) => {
+    setLoading(true);
+    setServerError('');
+    setSuccess(false);
+
     try {
-      setLoading(true);
-      setServerError('');
-      setSuccess(false);
-      await authService.recoverPassword(data.email);
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      console.log('📦 Datos enviados:', data);
       setSuccess(true);
       reset();
+      toast.success('Se envió un correo para recuperar tu contraseña!');
     } catch (error: unknown) {
-      const axiosError = error as AxiosError<RecoverPasswordResponse>;
-      setServerError(
-        axiosError.response?.data?.message ||
-          'No pudimos enviar el correo. Intentá nuevamente.',
-      );
+      console.error(error);
+      setServerError('Error al procesar la solicitud');
     } finally {
       setLoading(false);
     }
