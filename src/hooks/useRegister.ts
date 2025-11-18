@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 
 type RegisterFormData = {
   email: string;
@@ -35,6 +36,7 @@ export const useRegister = () => {
       console.log('📦 Datos enviados:', data);
       setSuccess(true);
       reset();
+      toast.success('Registro exitoso, verifica tu correo')
     } catch (error) {
       console.error('❌ Error en el registro:', error);
       setServerError('Ocurrió un error al registrar el usuario');
