@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import axios from 'axios';
-import { loginUser } from '../services/authService';
+import { loginUser } from '../services/auth.service';
 import type { LoginRequest } from '../types/auth.type';
 
 export const useLogin = () => {

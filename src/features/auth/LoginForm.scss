@@ -23,7 +23,7 @@
 .login-card h2 {
   font-size: 1.6rem;
   font-weight: 600;
-  margin-top: 0.9rem;
+  margin-top: 2.5rem;
   margin-bottom: 0.9rem;
   font-family: var(--font-heading);
   color: var(--color-text);
@@ -150,4 +150,17 @@
       color: #9333ea;
     }
   }
+}
+/* Cuando loading está activo en la card */
+.login-card.loading {
+  pointer-events: none;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Ícono de bloqueo */
+.locked-icon {
+  margin-right: 8px;
+  font-size: 1rem;
+  opacity: 0.9;
 }

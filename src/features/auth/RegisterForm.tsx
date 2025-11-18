@@ -10,6 +10,7 @@ export const Register = () => {
     register,
     handleSubmit,
     errors,
+    watch,
     loading,
     serverError,
     success,
@@ -80,6 +81,9 @@ export const Register = () => {
                 placeholder="Confirmar contraseña"
                 {...register('confirmPassword', {
                   required: 'Debe confirmar la contraseña',
+                  validate: (value) =>
+                    value === watch('password') ||
+                    'Las contraseñas no coinciden',
                 })}
               />
               <p className={`error ${errors.confirmPassword ? 'visible' : ''}`}>
@@ -91,7 +95,13 @@ export const Register = () => {
             {success && <p className="success">✅ Registro exitoso</p>}
 
             <button type="submit" className="btn-register" disabled={loading}>
-              {loading ? 'Registrando...' : 'Registrarse'}
+              {loading ? (
+                <>
+                  <FaLock className="locked-icon" /> Registrando...
+                </>
+              ) : (
+                'Registrarse'
+              )}
             </button>
 
             <p className="login-link">

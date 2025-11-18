@@ -1,4 +1,3 @@
-
 export interface RegisterResponse {
   message: string;
   token?: string;
@@ -38,7 +37,7 @@ export interface TokenResponse {
 }
 
 // Respuesta de registro (UserProfile según la API)
-export interface RegisterResponse {
+export interface RegisterUserProfile {
   id: string;
   username: string;
   email: string;

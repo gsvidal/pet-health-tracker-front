@@ -24,21 +24,14 @@ export const useRegister = () => {
     setSuccess(false);
 
     try {
-      // Simulación de espera de API
       await new Promise((resolve) => setTimeout(resolve, 1500));
-      // Validar contraseñas localmente
-      if (data.password !== data.confirmPassword) {
-        setServerError('Las contraseñas no coinciden');
-        setLoading(false);
-        return;
-      }
       // Simulación exitosa (despues se reemplaza con el backend)
       console.log('📦 Datos enviados:', data);
       setSuccess(true);
       reset();
-      toast.success('Registro exitoso, verifica tu correo')
-    } catch (error) {
-      console.error('❌ Error en el registro:', error);
+      toast.success('Registro exitoso, verifica tu correo');
+    } catch (err: unknown) {
+      console.error(err);
       setServerError('Ocurrió un error al registrar el usuario');
     } finally {
       setLoading(false);

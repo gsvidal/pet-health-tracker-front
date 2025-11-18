@@ -1,4 +1,4 @@
-import { FaEnvelope } from 'react-icons/fa';
+import { FaEnvelope, FaLock } from 'react-icons/fa';
 import { useRecoverPassword } from '../../hooks/useRecoverPassword';
 import './RecoverPasswordForm.scss';
 
@@ -44,7 +44,13 @@ export const RecoverPasswordForm = () => {
             </p>
           )}
           <button type="submit" className="btn-recover" disabled={loading}>
-            {loading ? 'Enviando...' : 'Enviar enlace'}
+            {loading ? (
+              <>
+                <FaLock className="locked-icon" /> Enviando...
+              </>
+            ) : (
+              'Enviar enlace'
+            )}
           </button>
         </form>
         <p className="back-login">
