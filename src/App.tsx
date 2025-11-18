@@ -6,15 +6,28 @@ import { FullLayout } from './layouts/FullLayout';
 import { RecoverPasswordPage } from './features/dashboard/pages/RecoverPassword/RecoverPasswordPage';
 import { Home } from './pages/Home/Home';
 import { Dashboard } from './features/dashboard/pages/Dashboard/Dashboard';
-import { Modal } from './components/Modal/ModalText';
 import { ExamplePage } from './features/example/pages/ExamplePage/ExamplePage';
 import { PRIVATE_ROUTES, PUBLIC_ROUTES } from './config/routes';
 import { PrivateGuard } from './components/guards/PrivateGuard';
 import { Toaster } from 'react-hot-toast';
 import { LoginPage } from './features/dashboard/pages/Login/LoginPage';
 import { NotFound } from './components/NotFound/NotFound';
+import { ModalText } from './components/Modal/ModalText';
+import { useModalStore } from './store/modal.store';
 
 function App() {
+  const {
+    isOpen,
+    title,
+    content,
+    variant,
+    onConfirm,
+    onCancel,
+    confirmLabel,
+    cancelLabel,
+    closeModal,
+  } = useModalStore();
+
   return (
     <>
       <main>
@@ -41,7 +54,17 @@ function App() {
         </Routes>
       </main>
       {/* // <Footer /> Todo: Crear Footer */}
-      <Modal />
+      <ModalText
+        isOpen={isOpen}
+        onClose={closeModal}
+        title={title || undefined}
+        content={content}
+        variant={variant}
+        onConfirm={onConfirm || undefined}
+        onCancel={onCancel || undefined}
+        confirmLabel={confirmLabel}
+        cancelLabel={cancelLabel}
+      />
       <Toaster position="top-center" toastOptions={{ duration: 5000 }} />
     </>
   );
