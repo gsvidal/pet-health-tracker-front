@@ -1,7 +1,9 @@
+import { Footer } from '../Footer/Footer';
+import { Header } from '../Header/Header';
 import { Features } from './Features';
-import { Footer } from './Footer';
-import { Header } from './Header';
+
 import { Hero } from './Hero';
+// import './Home.scss';
 import './Home.scss';
 import { HomeUs } from './HomeUs';
 

@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { Button } from '../../components/Button/Button';
 import { Heart } from 'lucide-react';
-import "./Home.scss";
-//import './Header.scss';
+//import "./Home.scss";
 import { useNavigate } from 'react-router-dom';
 
 export function Header() {

@@ -1,7 +1,6 @@
 import { Heart } from 'lucide-react';
 import { LuFacebook, LuInstagram, LuLinkedin, LuTwitter } from 'react-icons/lu';
-import "./Home.scss";
-//import './Footer.scss';
+//import "./Home.scss";
 
 export const Footer = () => {
   return (
