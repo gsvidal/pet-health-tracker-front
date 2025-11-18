@@ -1,12 +1,7 @@
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
+import { useAuthStore } from '../store/auth.store';
+import type { RegisterRequest } from '../types/auth.type';
 
-type RegisterFormData = {
-  email: string;
-  password: string;
-  confirmPassword: string;
-};
 export const useRegister = () => {
   const {
     register,
@@ -14,37 +9,34 @@ export const useRegister = () => {
     formState: { errors },
     watch,
     reset,
-  } = useForm<RegisterFormData>();
-  const [loading, setLoading] = useState(false);
-  const [serverError, setServerError] = useState('');
-  const [success, setSuccess] = useState(false);
-  const onSubmit = async (data: RegisterFormData) => {
-    setLoading(true);
-    setServerError('');
-    setSuccess(false);
+  } = useForm<RegisterRequest & { confirmPassword: string }>();
 
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      // Simulación exitosa (despues se reemplaza con el backend)
-      console.log('📦 Datos enviados:', data);
-      setSuccess(true);
-      reset();
-      toast.success('Registro exitoso, verifica tu correo');
-    } catch (err: unknown) {
-      console.error(err);
-      setServerError('Ocurrió un error al registrar el usuario');
-    } finally {
-      setLoading(false);
+  const registerUser = useAuthStore((state) => state.register);
+  const loading = useAuthStore((state) => state.loading);
+  const error = useAuthStore((state) => state.error);
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+
+  const onSubmit = async (
+    data: RegisterRequest & { confirmPassword: string },
+  ) => {
+    if (data.password !== data.confirmPassword) {
+      return;
     }
+    await registerUser({
+      email: data.email,
+      password: data.password,
+    });
+    reset();
   };
+
   return {
     register,
     handleSubmit,
     errors,
     watch,
     loading,
-    serverError,
-    success,
+    serverError: error,
+    success: isAuthenticated,
     onSubmit,
   };
 };

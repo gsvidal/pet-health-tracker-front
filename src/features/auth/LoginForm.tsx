@@ -1,10 +1,5 @@
-import {
-  FaEnvelope,
-  FaLock,
-  FaGoogle,
-  FaEye,
-  FaEyeSlash,
-} from 'react-icons/fa';
+import { FaEnvelope, FaLock, FaGoogle, FaEye } from 'react-icons/fa';
+import { GrFormViewHide } from 'react-icons/gr';
 import { useLogin } from '../../hooks/useLogin';
 import './LoginForm.scss';
 import { useState } from 'react';
@@ -67,7 +62,7 @@ export const LoginForm = () => {
               className="toggle-password"
               onClick={() => setShowPassword(!showPassword)}
             >
-              {showPassword ? <FaEyeSlash /> : <FaEye />}
+              {showPassword ? <GrFormViewHide /> : <FaEye />}
             </span>
             <p className={`error ${errors.password ? 'visible' : ''}`}>
               {errors.password?.message}

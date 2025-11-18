@@ -1,4 +1,6 @@
-import { FaEnvelope, FaLock, FaHeart, FaEye, FaEyeSlash } from 'react-icons/fa';
+import { FaEnvelope, FaLock, FaHeart, FaEye } from 'react-icons/fa';
+import { GrFormViewHide } from 'react-icons/gr';
+
 import { useRegister } from '../../hooks/useRegister';
 import { useState } from 'react';
 import { Modal } from '../../components/Modal/Modal';
@@ -77,7 +79,7 @@ export const Register = () => {
                 className="toggle-password"
                 onClick={() => setShowPassword(!showPassword)}
               >
-                {showPassword ? <FaEyeSlash /> : <FaEye />}
+                {showPassword ? <GrFormViewHide /> : <FaEye />}
               </span>
 
               <p className={`error ${errors.password ? 'visible' : ''}`}>
@@ -102,7 +104,7 @@ export const Register = () => {
                 className="toggle-password"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
               >
-                {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                {showConfirmPassword ? <GrFormViewHide /> : <FaEye />}
               </span>
 
               <p className={`error ${errors.confirmPassword ? 'visible' : ''}`}>

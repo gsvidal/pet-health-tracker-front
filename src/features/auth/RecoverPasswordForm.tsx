@@ -3,15 +3,31 @@ import { useRecoverPassword } from '../../hooks/useRecoverPassword';
 import './RecoverPasswordForm.scss';
 
 export const RecoverPasswordForm = () => {
-  const { register, handleSubmit, errors, loading, serverError, onSubmit } =
-    useRecoverPassword();
+  const {
+    register,
+    handleSubmit,
+    errors,
+    loading,
+    serverError,
+    success,
+    onSubmit,
+  } = useRecoverPassword();
   return (
     <div className="recover-container">
       <div className={`recover-card ${loading ? 'loading' : ''}`}>
         <h2>Recuperar contraseña</h2>
         <p className="subtitle">
-          Ingresa correo y te enviaremos un enlace para restablecerla
+          Ingresa tu correo y te enviaremos un enlace para restablecerla.
         </p>
+
+        {/* Si la operación fue exitosa, mostramos un aviso */}
+        {success && (
+          <p className="success-message">
+            ✔ Revisa tu correo: te enviamos un enlace para restablecer tu
+            contraseña.
+          </p>
+        )}
+
         <form onSubmit={handleSubmit(onSubmit)} className="recover-form">
           <div className="input-group">
             <FaEnvelope className="input-icon" />
