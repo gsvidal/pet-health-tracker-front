@@ -29,7 +29,7 @@ export interface LoginResponse {
 export interface RecoverPasswordRequest {
   email: string;
 }
-export interface RequestPasswordReset {
+export interface ReqPasswordResetResponse {
   message: string;
 }
 // ----------- Tokens -----------

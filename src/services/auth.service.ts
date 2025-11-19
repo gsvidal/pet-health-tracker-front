@@ -4,7 +4,7 @@ import type {
   RegisterResponse,
   LoginRequest,
   LoginResponse,
-  RequestPasswordReset,
+  ReqPasswordResetResponse,
 } from '../types/auth.type';
 
 // URL base del backend
@@ -33,20 +33,28 @@ export const loginUser = async (data: LoginRequest): Promise<LoginResponse> => {
     throw error;
   }
 };
-// Solicitud cambio de contraseña
+// Solicitar email de recuperación
 export const requestPasswordReset = async (
   email: string,
-): Promise<RequestPasswordReset> => {
-  const response = await axios.post<RequestPasswordReset>(
+): Promise<ReqPasswordResetResponse> => {
+  const response = await axios.post<ReqPasswordResetResponse>(
     `${API_URL}/request-password-reset`,
     { email },
   );
   return response.data;
 };
-
-// Objeto agrupado
+// Resetear contraseña con token
+export const resetPassword = async (data: {
+  token: string;
+  password: string;
+}) => {
+  const response = await axios.post(`${API_URL}/reset-password`, data);
+  return response.data;
+};
+// Exportar objeto general con todos los servicios
 export const authService = {
   register: registerUser,
   login: loginUser,
   requestPasswordReset,
+  resetPassword,
 };
