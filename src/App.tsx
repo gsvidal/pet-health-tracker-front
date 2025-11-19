@@ -12,6 +12,7 @@ import { PRIVATE_ROUTES, PUBLIC_ROUTES } from './config/routes';
 import { PrivateGuard } from './components/guards/PrivateGuard';
 import { Toaster } from 'react-hot-toast';
 import { LoginPage } from './features/dashboard/pages/Login/LoginPage';
+import { VerifyEmailPage } from './features/dashboard/pages/VerifyEmail/VerifyEmailPage';
 
 function App() {
   return (
@@ -28,6 +29,10 @@ function App() {
             <Route
               path={PUBLIC_ROUTES.RECOVER_PSW}
               element={<RecoverPasswordPage />}
+            />
+            <Route
+              path={PUBLIC_ROUTES.VERIFY_EMAIL}
+              element={<VerifyEmailPage />}
             />
           </Route>
 

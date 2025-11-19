@@ -51,10 +51,15 @@ export const resetPassword = async (data: {
   const response = await axios.post(`${API_URL}/reset-password`, data);
   return response.data;
 };
+// Verificacion de Email
+export const verifyEmailRequest = (token: string) => {
+  return axios.get(`/auth/verify-email?token=${token}`);
+};
 // Exportar objeto general con todos los servicios
 export const authService = {
   register: registerUser,
   login: loginUser,
   requestPasswordReset,
   resetPassword,
+  verifyEmailRequest,
 };

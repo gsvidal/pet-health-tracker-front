@@ -1,7 +1,11 @@
 import { create } from 'zustand';
 import { toast } from 'react-hot-toast';
 import type { User } from '../models/user.model';
-import { registerUser, loginUser } from '../services/auth.service';
+import {
+  registerUser,
+  loginUser,
+  verifyEmailRequest,
+} from '../services/auth.service';
 import type { RegisterRequest, LoginRequest } from '../types/auth.type';
 import { adaptUserProfileToUser } from '../adapters/user/user.adapter';
 import { callApi } from '../utils/apiHelper';
@@ -20,6 +24,8 @@ interface AuthState {
   logout: () => void;
   clearError: () => void;
   mockLogin: () => void;
+
+  verifyEmail: (token: string) => Promise<void>; // <-- AGREGAR ESTO
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
@@ -124,5 +130,21 @@ export const useAuthStore = create<AuthState>((set) => ({
     });
 
     toast.success('Sesión mock iniciada correctamente ✔️');
+  },
+
+  verifyEmail: async (token: string) => {
+    set({ loading: true, error: null });
+
+    const { data, error } = await callApi(() => verifyEmailRequest(token));
+
+    if (error || !data) {
+      const message = error || 'Error al verificar email';
+      set({ loading: false, error: message });
+      throw new Error(message);
+    }
+
+    toast.success('Email verificado correctamente ✔️');
+
+    set({ loading: false, error: null });
   },
 }));
