@@ -4,11 +4,12 @@ import type {
   RegisterResponse,
   LoginRequest,
   LoginResponse,
-  RecoverPasswordResponse,
+  RequestPasswordReset,
 } from '../types/auth.type';
 
 // URL base del backend
-const API_BASE_URL = import.meta.env.VITE_API_URL;
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL || 'https://pet-healthcare-back.onrender.com';
 const API_URL = `${API_BASE_URL}/auth`;
 
 // Registro de usuario
@@ -32,11 +33,11 @@ export const loginUser = async (data: LoginRequest): Promise<LoginResponse> => {
     throw error;
   }
 };
-// Recuperación de contraseña
-export const recoverPassword = async (
+// Solicitud cambio de contraseña
+export const requestPasswordReset = async (
   email: string,
-): Promise<RecoverPasswordResponse> => {
-  const response = await axios.post<RecoverPasswordResponse>(
+): Promise<RequestPasswordReset> => {
+  const response = await axios.post<RequestPasswordReset>(
     `${API_URL}/request-password-reset`,
     { email },
   );
@@ -47,5 +48,5 @@ export const recoverPassword = async (
 export const authService = {
   register: registerUser,
   login: loginUser,
-  recoverPassword,
+  requestPasswordReset,
 };

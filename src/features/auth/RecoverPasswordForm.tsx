@@ -1,17 +1,10 @@
 import { FaEnvelope, FaLock } from 'react-icons/fa';
-import { useRecoverPassword } from '../../hooks/useRecoverPassword';
+import { useRecoverPassword } from '../../hooks/useReqPasswordReset';
 import './RecoverPasswordForm.scss';
 
 export const RecoverPasswordForm = () => {
-  const {
-    register,
-    handleSubmit,
-    errors,
-    loading,
-    serverError,
-    success,
-    onSubmit,
-  } = useRecoverPassword();
+  const { register, handleSubmit, errors, loading, onSubmit } =
+    useRecoverPassword();
   return (
     <div className="recover-container">
       <div className={`recover-card ${loading ? 'loading' : ''}`}>
@@ -19,15 +12,6 @@ export const RecoverPasswordForm = () => {
         <p className="subtitle">
           Ingresa tu correo y te enviaremos un enlace para restablecerla.
         </p>
-
-        {/* Si la operación fue exitosa, mostramos un aviso */}
-        {success && (
-          <p className="success-message">
-            ✔ Revisa tu correo: te enviamos un enlace para restablecer tu
-            contraseña.
-          </p>
-        )}
-
         <form onSubmit={handleSubmit(onSubmit)} className="recover-form">
           <div className="input-group">
             <FaEnvelope className="input-icon" />
@@ -46,8 +30,13 @@ export const RecoverPasswordForm = () => {
               {errors.email?.message}
             </p>
           </div>
-          {serverError && <p className="error server">{serverError}</p>}
-
+          {/*serverError && <p className="error server">{serverError}</p>*/}
+          {/*success && (
+            <p className="success-message">
+              ✔ Revisa tu correo: te enviamos un enlace para restablecer tu
+              contraseña.
+            </p>
+          )*/}
           <button type="submit" className="btn-recover" disabled={loading}>
             {loading ? (
               <>

@@ -1,3 +1,8 @@
+// ---------- Registro ----------
+export interface RegisterRequest {
+  email: string;
+  password: string;
+}
 export interface RegisterResponse {
   message: string;
   token?: string;
@@ -7,7 +12,11 @@ export interface RegisterResponse {
     email: string;
   };
 }
-
+// -------- Inicio Sesion --------
+export interface LoginRequest {
+  email: string;
+  password: string;
+}
 export interface LoginResponse {
   token: string;
   user: {
@@ -16,27 +25,21 @@ export interface LoginResponse {
     email: string;
   };
 }
-// Login - solo email y password
-export interface LoginRequest {
+// --- Solicitud cambio de contraseña ----
+export interface RecoverPasswordRequest {
   email: string;
-  password: string;
 }
-
-// Register - solo email y password
-export interface RegisterRequest {
-  email: string;
-  password: string;
+export interface RequestPasswordReset {
+  message: string;
 }
-
-// Respuesta de tokens
+// ----------- Tokens -----------
 export interface TokenResponse {
   access_token: string;
   refresh_token: string;
   token_type: string;
   expires_in: number;
 }
-
-// Respuesta de registro (UserProfile según la API)
+// ----------- Perfil -----------
 export interface RegisterUserProfile {
   id: string;
   username: string;
@@ -48,7 +51,4 @@ export interface RegisterUserProfile {
   email_verified: boolean;
   is_active: boolean;
   created_at: string;
-}
-export interface RecoverPasswordResponse {
-  message: string;
 }
