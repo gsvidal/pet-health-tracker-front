@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import { authService } from '../services/auth.service';
 import type { AxiosError } from 'axios';
-import type { RecoverPasswordResponse } from '../types/auth.type';
+import type { ReqPasswordResetResponse } from '../types/auth.type';
 
 type RecoverRequest = {
   email: string;
@@ -22,11 +22,11 @@ export const useRecoverPassword = () => {
       setLoading(true);
       setServerError('');
       setSuccess(false);
-      await authService.recoverPassword(data.email);
+      await authService.requestPasswordReset(data.email);
       setSuccess(true);
       reset();
     } catch (error: unknown) {
-      const axiosError = error as AxiosError<RecoverPasswordResponse>;
+      const axiosError = error as AxiosError<ReqPasswordResetResponse>;
       setServerError(
         axiosError.response?.data?.message ||
           'No pudimos enviar el correo. Intentá nuevamente.',

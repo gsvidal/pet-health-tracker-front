@@ -14,6 +14,7 @@ import { LoginPage } from './features/dashboard/pages/Login/LoginPage';
 import { NotFound } from './components/NotFound/NotFound';
 import { ModalText } from './components/Modal/ModalText';
 import { useModalStore } from './store/modal.store';
+import { VerifyEmailPage } from './features/dashboard/pages/VerifyEmail/VerifyEmailPage';
 
 function App() {
   const {
@@ -42,6 +43,10 @@ function App() {
             <Route
               path={PUBLIC_ROUTES.RECOVER_PSW}
               element={<RecoverPasswordPage />}
+            />
+            <Route
+              path={PUBLIC_ROUTES.VERIFY_EMAIL}
+              element={<VerifyEmailPage />}
             />
           </Route>
 

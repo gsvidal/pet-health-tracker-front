@@ -1,7 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { useState } from 'react';
-import axios from 'axios';
-import { loginUser } from '../services/auth.service';
+import { useAuthStore } from '../store/auth.store';
 import type { LoginRequest } from '../types/auth.type';
 
 export const useLogin = () => {
@@ -9,41 +7,27 @@ export const useLogin = () => {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm<LoginRequest>();
-  const [loading, setLoading] = useState(false);
-  const [serverError, setServerError] = useState('');
-  const [success, setSuccess] = useState(false);
+
+  const loginUser = useAuthStore((state) => state.login);
+  const loading = useAuthStore((state) => state.loading);
+  const error = useAuthStore((state) => state.error);
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+
   const onSubmit = async (data: LoginRequest) => {
-    try {
-      setLoading(true);
-      setServerError('');
-      setSuccess(false);
-      const response = await loginUser(data);
-      // Guardado de token
-      localStorage.setItem('token', response.token);
-      localStorage.setItem('user', JSON.stringify(response.user));
-      setSuccess(true);
-      reset();
-    } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
-        setServerError(
-          error.response?.data?.message || 'Error al iniciar sesión',
-        );
-      } else {
-        setServerError('Error inesperado');
-      }
-    } finally {
-      setLoading(false);
-    }
+    await loginUser({
+      email: data.email,
+      password: data.password,
+    });
   };
+
   return {
     register,
     handleSubmit,
     errors,
     loading,
-    serverError,
-    success,
+    serverError: error,
+    success: isAuthenticated,
     onSubmit,
   };
 };
