@@ -132,20 +132,27 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     set({
       user: {
         id: 'dev-user',
-        email: 'dev@example.com',
-        username: 'devUser',
-        fullName: 'Developer User',
-        role: 'admin',
+        email: 'miltonfruizok@outlook.es',
+        username: 'milton',
+        fullName: 'Milton Ruiz',
+        role: 'user',
         createdAt: new Date().toISOString(),
       },
       accessToken: 'dev-access-token',
       refreshToken: 'dev-refresh-token',
-      isAuthenticated: true,
-      loading: false,
+      //isAuthenticated: true,
+      loading: true,
       error: null,
     });
+    setTimeout(() => {
+      set({
+        loading: false,
+        isAuthenticated: true,
+      });
+      toast.success('Sesión mock iniciada ✔️');
+    }, 3000);
 
-    toast.success('Sesión mock iniciada ✔️');
+    // toast.success('Sesión mock iniciada ✔️');
   },
 
   verifyEmail: async (token: string) => {

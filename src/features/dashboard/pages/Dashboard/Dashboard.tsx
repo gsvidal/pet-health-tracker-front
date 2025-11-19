@@ -15,11 +15,11 @@ export const Dashboard = () => {
 
   return (
     <>
-      <p style={{ fontSize: '40px' }}>//Header?</p>
+      {/*<p style={{ fontSize: '40px' }}>//Header?</p>*/}
       <section className="section section--dashboard">
         <div className="container container--dashboard">
           <h1 className="example__title">Dashboard</h1>
-          <p>Bienvenid@ de vuelta, {user?.username}</p>
+          <p>Bienvenid@ de vuelta, {user?.fullName}</p>
 
           <DashboardUserCard user={user} />
 
@@ -48,7 +48,7 @@ export const Dashboard = () => {
               </div>
             )}
           </div>
-          <p style={{ fontSize: '40px' }}>//Boton Agregar Mascota</p>
+          {/*<p style={{ fontSize: '40px' }}>//Boton Agregar Mascota</p>*/}
         </div>
       </section>
     </>
