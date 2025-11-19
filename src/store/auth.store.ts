@@ -22,11 +22,10 @@ interface AuthState {
 
   register: (data: RegisterRequest) => Promise<void>;
   login: (data: LoginRequest) => Promise<void>;
-  logout: () => void;
+  logout: () => Promise<void>;
   refreshTokens: () => Promise<void>;
   clearError: () => void;
   mockLogin: () => void;
-
   verifyEmail: (token: string) => Promise<void>;
   setAuth: (data: Partial<AuthState>) => void;
 }
@@ -127,19 +126,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     });
   },
 
-  logout: () => {
-    set({
-      user: null,
-      accessToken: null,
-      refreshToken: null,
-      isAuthenticated: false,
-      loading: false,
-      error: null,
-    });
-
-    toast('Sesión finalizada', { icon: '👋' });
-  },
-
   clearError: () => set({ error: null }),
 
   mockLogin: () => {
@@ -178,6 +164,29 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
     toast.success('Email verificado correctamente ✔️');
     set({ loading: false, error: null });
+  },
+
+  logout: async () => {
+    set({ loading: true, error: null });
+    const accessToken = useAuthStore.getState().accessToken;
+    if (accessToken) {
+      await callApi({
+        url: '/auth/logout',
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+    }
+    set({
+      user: null,
+      accessToken: null,
+      refreshToken: null,
+      isAuthenticated: false,
+      loading: false,
+      error: null,
+    });
+    toast.success('Sesión cerrada correctamente 👋');
   },
 
   setAuth: (authData: Partial<AuthState>) =>
