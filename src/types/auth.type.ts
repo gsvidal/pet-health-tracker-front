@@ -5,20 +5,16 @@ export interface RegisterRequest {
 }
 export interface RegisterResponse {
   message: string;
-  token?: string;
-  user?: {
-    id: number;
-    name: string;
-    email: string;
-  };
 }
+
 // -------- Inicio Sesion --------
 export interface LoginRequest {
   email: string;
   password: string;
 }
 export interface LoginResponse {
-  token: string;
+  access_token: string;
+  refresh_token: string;
   user: {
     id: number;
     name: string;
@@ -30,15 +26,16 @@ export interface RecoverPasswordRequest {
   email: string;
 }
 export interface ReqPasswordResetResponse {
-  message: string;
+  message: string | null;
+  detail?: string;
 }
+
 // ----------- Tokens -----------
 export interface TokenResponse {
   access_token: string;
   refresh_token: string;
-  token_type: string;
-  expires_in: number;
 }
+
 // ----------- Perfil -----------
 export interface RegisterUserProfile {
   id: string;

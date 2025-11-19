@@ -1,13 +1,15 @@
 import { create } from 'zustand';
 import { toast } from 'react-hot-toast';
 import type { User } from '../models/user.model';
-import {
-  registerUser,
-  loginUser,
-  verifyEmailRequest,
-} from '../services/auth.service';
-import type { RegisterRequest, LoginRequest } from '../types/auth.type';
-import { adaptUserProfileToUser } from '../adapters/user/user.adapter';
+
+import type {
+  RegisterRequest,
+  RegisterResponse,
+  LoginRequest,
+  LoginResponse,
+  TokenResponse,
+} from '../types/auth.type';
+
 import { callApi } from '../utils/apiHelper';
 
 interface AuthState {
@@ -18,17 +20,18 @@ interface AuthState {
   loading: boolean;
   error: string | null;
 
-  // Acciones
   register: (data: RegisterRequest) => Promise<void>;
   login: (data: LoginRequest) => Promise<void>;
   logout: () => void;
+  refreshTokens: () => Promise<void>;
   clearError: () => void;
   mockLogin: () => void;
 
-  verifyEmail: (token: string) => Promise<void>; // <-- AGREGAR ESTO
+  verifyEmail: (token: string) => Promise<void>;
+  setAuth: (data: Partial<AuthState>) => void;
 }
 
-export const useAuthStore = create<AuthState>((set) => ({
+export const useAuthStore = create<AuthState>((set, get) => ({
   user: null,
   accessToken: null,
   refreshToken: null,
@@ -39,61 +42,89 @@ export const useAuthStore = create<AuthState>((set) => ({
   register: async (data: RegisterRequest) => {
     set({ loading: true, error: null });
 
-    const { data: userProfile, error } = await callApi(() =>
-      registerUser(data),
-    );
+    const { data: response, error } = await callApi<RegisterResponse>({
+      url: '/auth/register',
+      method: 'POST',
+      data,
+    });
 
-    if (error || !userProfile) {
+    if (error || !response) {
       const message = error || 'Error al registrar usuario';
       toast.error(message);
-      set({
-        error: message,
-        loading: false,
-        isAuthenticated: false,
-      });
+      set({ loading: false, error: message });
       throw new Error(message);
     }
 
-    // Usar adapter para transformar la data
-    const user = adaptUserProfileToUser(userProfile);
+    toast.success(
+      'Registro exitoso. Revisa tu correo para verificar tu email 📩',
+    );
 
-    set({
-      user,
-      isAuthenticated: true,
-      loading: false,
-      error: null,
-    });
-    toast.success('Usuario registrado correctamente ✨');
+    set({ loading: false, error: null });
   },
 
   login: async (data: LoginRequest) => {
     set({ loading: true, error: null });
 
-    const { data: tokenResponse, error } = await callApi(() => loginUser(data));
+    const { data: response, error } = await callApi<LoginResponse>({
+      url: '/auth/login',
+      method: 'POST',
+      data,
+    });
 
-    if (error || !tokenResponse) {
-      const message = error || 'Error al iniciar sesión';
+    if (error || !response) {
+      const message = error || 'Credenciales incorrectas';
       toast.error(message);
       set({
         error: message,
         loading: false,
         isAuthenticated: false,
-        accessToken: null,
-        refreshToken: null,
       });
       throw new Error(message);
     }
 
     set({
-      accessToken: tokenResponse.access_token,
-      refreshToken: tokenResponse.refresh_token,
+      user: {
+        id: String(response.user.id),
+        email: response.user.email,
+        username: response.user.name,
+        fullName: response.user.name,
+        role: 'USER',
+        createdAt: new Date().toISOString(),
+      },
+      accessToken: response.access_token,
+      refreshToken: response.refresh_token,
       isAuthenticated: true,
       loading: false,
       error: null,
     });
 
     toast.success('Sesión iniciada correctamente ✔️');
-    // TODO: Obtener perfil del usuario con /auth/me usando el accessToken
+  },
+
+  refreshTokens: async () => {
+    const refreshToken = get().refreshToken;
+    if (!refreshToken) {
+      console.warn('No hay refresh token disponible');
+      return;
+    }
+
+    const { data, error } = await callApi<TokenResponse>({
+      url: '/auth/refresh',
+      method: 'POST',
+      data: { refresh_token: refreshToken },
+    });
+
+    if (error || !data) {
+      console.error('Error al refrescar token:', error);
+      get().logout();
+      return;
+    }
+
+    set({
+      accessToken: data.access_token,
+      refreshToken: data.refresh_token,
+      isAuthenticated: true,
+    });
   },
 
   logout: () => {
@@ -105,12 +136,11 @@ export const useAuthStore = create<AuthState>((set) => ({
       loading: false,
       error: null,
     });
+
     toast('Sesión finalizada', { icon: '👋' });
   },
 
-  clearError: () => {
-    set({ error: null });
-  },
+  clearError: () => set({ error: null }),
 
   mockLogin: () => {
     set({
@@ -129,13 +159,16 @@ export const useAuthStore = create<AuthState>((set) => ({
       error: null,
     });
 
-    toast.success('Sesión mock iniciada correctamente ✔️');
+    toast.success('Sesión mock iniciada ✔️');
   },
 
   verifyEmail: async (token: string) => {
     set({ loading: true, error: null });
 
-    const { data, error } = await callApi(() => verifyEmailRequest(token));
+    const { data, error } = await callApi({
+      url: `/auth/verify-email/${token}`,
+      method: 'GET',
+    });
 
     if (error || !data) {
       const message = error || 'Error al verificar email';
@@ -144,7 +177,12 @@ export const useAuthStore = create<AuthState>((set) => ({
     }
 
     toast.success('Email verificado correctamente ✔️');
-
     set({ loading: false, error: null });
   },
+
+  setAuth: (authData: Partial<AuthState>) =>
+    set((state) => ({
+      ...state,
+      ...authData,
+    })),
 }));
