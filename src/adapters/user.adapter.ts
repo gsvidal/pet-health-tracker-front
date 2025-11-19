@@ -1,5 +1,5 @@
-import type { User } from '../../models/user.model';
-import type { RegisterResponse } from '../../types/auth.type';
+import type { User } from '../models/user.model';
+import type { RegisterResponse } from '../types/auth.type';
 
 /**
  * Adapta UserProfile del backend (snake_case) a User del frontend (camelCase)

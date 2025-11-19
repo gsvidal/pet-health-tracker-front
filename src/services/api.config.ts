@@ -35,19 +35,3 @@ apiClient.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
-// Usage:
-// In authService.service.ts
-
-// Helper para rutas de auth
-// const authEndpoint = (path: string) => `/auth${path}`;
-
-// export const registerUser = async (
-//   data: RegisterRequest,
-// ): Promise<RegisterResponse> => {
-//   const response = await apiClient.post<RegisterResponse>(
-//     authEndpoint('/register'),
-//     data,
-//   );
-//   return response.data;
-// };
