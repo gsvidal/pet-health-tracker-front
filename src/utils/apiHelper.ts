@@ -10,7 +10,27 @@ export async function callApi<T>(
     const data = await promiseFn();
     return { data, error: null };
   } catch (err) {
-    const errorMessage = err instanceof Error ? err.message : 'Unknown error';
-    return { data: null, error: errorMessage };
+    let message = 'Error desconocido';
+    if (err && typeof err === 'object') {
+      const axiosError = err as {
+        response?: {
+          data?: { message?: string; detail?: string };
+        };
+        message?: string;
+      };
+      // Mensaje definido en el back
+      if (axiosError.response?.data?.message) {
+        message = axiosError.response.data.message;
+      }
+      // Detalle del mensaje
+      else if (axiosError.response?.data?.detail) {
+        message = axiosError.response.data.detail;
+      }
+      // Mensaje genérico
+      else if (axiosError.message) {
+        message = axiosError.message;
+      }
+    }
+    return { data: null, error: message };
   }
 }

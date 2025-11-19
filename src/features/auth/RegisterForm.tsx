@@ -15,6 +15,7 @@ export const Register = () => {
     watch,
     loading,
     serverError,
+    localError,
     success,
     onSubmit,
   } = useRegister();
@@ -69,9 +70,9 @@ export const Register = () => {
                 placeholder="Contraseña"
                 {...register('password', {
                   required: 'La contraseña es obligatoria',
-                  minLength: {
-                    value: 6,
-                    message: 'Debe tener al menos 6 caracteres',
+                  pattern: {
+                    value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/,
+                    message: 'Mínimo 8 caracteres, 1 mayúscula y 1 número',
                   },
                 })}
               />
@@ -113,6 +114,7 @@ export const Register = () => {
             </div>
 
             {serverError && <p className="error server">{serverError}</p>}
+            {localError && <p className="error server">{localError}</p>}
             {success && <p className="success">✅ Registro exitoso</p>}
 
             <button type="submit" className="btn-register" disabled={loading}>
