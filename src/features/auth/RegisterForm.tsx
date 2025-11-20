@@ -1,4 +1,6 @@
-import { FaEnvelope, FaLock, FaHeart } from 'react-icons/fa';
+import { FaEnvelope, FaLock, FaHeart, FaEye } from 'react-icons/fa';
+import { GrFormViewHide } from 'react-icons/gr';
+
 import { useRegister } from '../../hooks/useRegister';
 import { useState } from 'react';
 import { Modal } from '../../components/Modal/Modal';
@@ -10,12 +12,17 @@ export const Register = () => {
     register,
     handleSubmit,
     errors,
+    watch,
     loading,
     serverError,
+    localError,
     success,
     onSubmit,
   } = useRegister();
   const [openLogin, setOpenLogin] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   return (
     <>
       {/* Modal de Login */}
@@ -57,17 +64,25 @@ export const Register = () => {
 
             <div className="input-group">
               <FaLock className="input-icon" />
+
               <input
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 placeholder="Contraseña"
                 {...register('password', {
                   required: 'La contraseña es obligatoria',
-                  minLength: {
-                    value: 6,
-                    message: 'Debe tener al menos 6 caracteres',
+                  pattern: {
+                    value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/,
+                    message: 'Mínimo 8 caracteres, 1 mayúscula y 1 número',
                   },
                 })}
               />
+              <span
+                className="toggle-password"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <GrFormViewHide /> : <FaEye />}
+              </span>
+
               <p className={`error ${errors.password ? 'visible' : ''}`}>
                 {errors.password?.message || ''}
               </p>
@@ -75,23 +90,41 @@ export const Register = () => {
 
             <div className="input-group">
               <FaLock className="input-icon" />
+
               <input
-                type="password"
+                type={showConfirmPassword ? 'text' : 'password'}
                 placeholder="Confirmar contraseña"
                 {...register('confirmPassword', {
                   required: 'Debe confirmar la contraseña',
+                  validate: (value) =>
+                    value === watch('password') ||
+                    'Las contraseñas no coinciden',
                 })}
               />
+              <span
+                className="toggle-password"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              >
+                {showConfirmPassword ? <GrFormViewHide /> : <FaEye />}
+              </span>
+
               <p className={`error ${errors.confirmPassword ? 'visible' : ''}`}>
                 {errors.confirmPassword?.message || ''}
               </p>
             </div>
 
             {serverError && <p className="error server">{serverError}</p>}
+            {localError && <p className="error server">{localError}</p>}
             {success && <p className="success">✅ Registro exitoso</p>}
 
             <button type="submit" className="btn-register" disabled={loading}>
-              {loading ? 'Registrando...' : 'Registrarse'}
+              {loading ? (
+                <>
+                  <FaLock className="locked-icon" /> Registrando...
+                </>
+              ) : (
+                'Registrarse'
+              )}
             </button>
 
             <p className="login-link">

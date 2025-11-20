@@ -23,7 +23,7 @@
 .login-card h2 {
   font-size: 1.6rem;
   font-weight: 600;
-  margin-top: 0.9rem;
+  margin-top: 2.5rem;
   margin-bottom: 0.9rem;
   font-family: var(--font-heading);
   color: var(--color-text);
@@ -150,4 +150,33 @@
       color: #9333ea;
     }
   }
+}
+.login-card.loading {
+  pointer-events: none;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+.locked-icon {
+  margin-right: 8px;
+  font-size: 1rem;
+  opacity: 0.9;
+}
+.toggle-password {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 1.4rem;
+  color: var(--color-text-secondary);
+  transition: color 0.2s ease;
+  opacity: 0.6;
+
+  &:hover {
+    opacity: 0.9;
+    color: var(-color-text);
+  }
+}
+.input-group input {
+  padding-right: 2.7rem;
 }

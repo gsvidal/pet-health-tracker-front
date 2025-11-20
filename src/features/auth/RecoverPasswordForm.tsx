@@ -1,23 +1,16 @@
-import { FaEnvelope } from 'react-icons/fa';
-import { useRecoverPassword } from '../../hooks/useRecoverPassword';
+import { FaEnvelope, FaLock } from 'react-icons/fa';
+import { useRecoverPassword } from '../../hooks/useReqPasswordReset';
 import './RecoverPasswordForm.scss';
 
 export const RecoverPasswordForm = () => {
-  const {
-    register,
-    handleSubmit,
-    errors,
-    loading,
-    serverError,
-    success,
-    onSubmit,
-  } = useRecoverPassword();
+  const { register, handleSubmit, errors, loading, onSubmit } =
+    useRecoverPassword();
   return (
     <div className="recover-container">
       <div className={`recover-card ${loading ? 'loading' : ''}`}>
         <h2>Recuperar contraseña</h2>
         <p className="subtitle">
-          Ingresa correo y te enviaremos un enlace para restablecerla
+          Ingresa tu correo y te enviaremos un enlace para restablecerla.
         </p>
         <form onSubmit={handleSubmit(onSubmit)} className="recover-form">
           <div className="input-group">
@@ -37,14 +30,21 @@ export const RecoverPasswordForm = () => {
               {errors.email?.message}
             </p>
           </div>
-          {serverError && <p className="error server">{serverError}</p>}
-          {success && (
-            <p className="success show">
-              ✔ ¡Listo! Revisá tu correo para continuar
+          {/*serverError && <p className="error server">{serverError}</p>*/}
+          {/*success && (
+            <p className="success-message">
+              ✔ Revisa tu correo: te enviamos un enlace para restablecer tu
+              contraseña.
             </p>
-          )}
+          )*/}
           <button type="submit" className="btn-recover" disabled={loading}>
-            {loading ? 'Enviando...' : 'Enviar enlace'}
+            {loading ? (
+              <>
+                <FaLock className="locked-icon" /> Enviando...
+              </>
+            ) : (
+              'Enviar enlace'
+            )}
           </button>
         </form>
         <p className="back-login">

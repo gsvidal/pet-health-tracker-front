@@ -1,49 +1,51 @@
 import { useForm } from 'react-hook-form';
-import { useState } from 'react';
-import axios from 'axios';
-import { loginUser } from '../services/authService';
+import { useAuthStore } from '../store/auth.store';
 import type { LoginRequest } from '../types/auth.type';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { PRIVATE_ROUTES } from '../config/routes';
 
 export const useLogin = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm<LoginRequest>();
-  const [loading, setLoading] = useState(false);
-  const [serverError, setServerError] = useState('');
-  const [success, setSuccess] = useState(false);
-  const onSubmit = async (data: LoginRequest) => {
-    try {
-      setLoading(true);
-      setServerError('');
-      setSuccess(false);
-      const response = await loginUser(data);
-      // Guardado de token
-      localStorage.setItem('token', response.token);
-      localStorage.setItem('user', JSON.stringify(response.user));
-      setSuccess(true);
-      reset();
-    } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
-        setServerError(
-          error.response?.data?.message || 'Error al iniciar sesión',
-        );
-      } else {
-        setServerError('Error inesperado');
-      }
-    } finally {
-      setLoading(false);
+
+  const loginUser = useAuthStore((state) => state.login);
+  const mockLoginUser = useAuthStore((state) => state.mockLogin);
+
+  const loading = useAuthStore((state) => state.loading);
+  const error = useAuthStore((state) => state.error);
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate(PRIVATE_ROUTES.DASHBOARD);
     }
+  });
+  const onSubmit = async (data: LoginRequest) => {
+    {
+      /*await loginUser({
+      email: data.email,
+      password: data.password,
+    });*/
+    }
+    {
+      /*setTimeout(() => {
+      mockLoginUser();
+    }, 1500);*/
+    }
+    mockLoginUser();
   };
+
   return {
     register,
     handleSubmit,
     errors,
     loading,
-    serverError,
-    success,
+    serverError: error,
+    success: isAuthenticated,
     onSubmit,
   };
 };

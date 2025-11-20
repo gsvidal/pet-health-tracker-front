@@ -1,12 +1,8 @@
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
+import { useState } from 'react';
+import { useAuthStore } from '../store/auth.store';
+import type { RegisterRequest } from '../types/auth.type';
 
-type RegisterFormData = {
-  email: string;
-  password: string;
-  confirmPassword: string;
-};
 export const useRegister = () => {
   const {
     register,
@@ -14,34 +10,30 @@ export const useRegister = () => {
     formState: { errors },
     watch,
     reset,
-  } = useForm<RegisterFormData>();
-  const [loading, setLoading] = useState(false);
-  const [serverError, setServerError] = useState('');
-  const [success, setSuccess] = useState(false);
-  const onSubmit = async (data: RegisterFormData) => {
-    setLoading(true);
-    setServerError('');
-    setSuccess(false);
-
+  } = useForm<RegisterRequest & { confirmPassword: string }>();
+  const registerUser = useAuthStore((state) => state.register);
+  const loading = useAuthStore((state) => state.loading);
+  const serverError = useAuthStore((state) => state.error);
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const clearError = useAuthStore((state) => state.clearError);
+  const [localError, setLocalError] = useState<string | null>(null);
+  const onSubmit = async (
+    data: RegisterRequest & { confirmPassword: string },
+  ) => {
+    setLocalError(null);
+    clearError();
+    if (data.password !== data.confirmPassword) {
+      setLocalError('Las contraseñas no coinciden');
+      return;
+    }
     try {
-      // Simulación de espera de API
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      // Validar contraseñas localmente
-      if (data.password !== data.confirmPassword) {
-        setServerError('Las contraseñas no coinciden');
-        setLoading(false);
-        return;
-      }
-      // Simulación exitosa (despues se reemplaza con el backend)
-      console.log('📦 Datos enviados:', data);
-      setSuccess(true);
+      await registerUser({
+        email: data.email,
+        password: data.password,
+      });
       reset();
-      toast.success('Registro exitoso, verifica tu correo')
-    } catch (error) {
-      console.error('❌ Error en el registro:', error);
-      setServerError('Ocurrió un error al registrar el usuario');
-    } finally {
-      setLoading(false);
+    } catch (err) {
+      console.error('Error en registro:', err);
     }
   };
   return {
@@ -51,7 +43,8 @@ export const useRegister = () => {
     watch,
     loading,
     serverError,
-    success,
+    localError,
+    success: isAuthenticated,
     onSubmit,
   };
 };

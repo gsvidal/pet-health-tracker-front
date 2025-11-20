@@ -1,6 +1,8 @@
-import { FaEnvelope, FaLock, FaGoogle } from 'react-icons/fa';
+import { FaEnvelope, FaLock, FaGoogle, FaEye } from 'react-icons/fa';
+import { GrFormViewHide } from 'react-icons/gr';
 import { useLogin } from '../../hooks/useLogin';
 import './LoginForm.scss';
+import { useState } from 'react';
 
 export const LoginForm = () => {
   const {
@@ -12,6 +14,7 @@ export const LoginForm = () => {
     success,
     onSubmit,
   } = useLogin();
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <div className="login-container">
@@ -20,11 +23,13 @@ export const LoginForm = () => {
         <p className="subtitle">Accedé al panel y gestiona todo fácilmente</p>
 
         <form onSubmit={handleSubmit(onSubmit)} className="login-form">
+          {/* Email */}
           <div className="input-group">
             <FaEnvelope className="input-icon" />
             <input
               type="email"
               placeholder="Correo electrónico"
+              aria-label="Correo electrónico"
               {...register('email', {
                 required: 'El correo es obligatorio',
                 pattern: {
@@ -38,11 +43,13 @@ export const LoginForm = () => {
             </p>
           </div>
 
+          {/* Contraseña */}
           <div className="input-group">
             <FaLock className="input-icon" />
             <input
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               placeholder="Contraseña"
+              aria-label="Contraseña"
               {...register('password', {
                 required: 'La contraseña es obligatoria',
                 minLength: {
@@ -51,24 +58,41 @@ export const LoginForm = () => {
                 },
               })}
             />
+            <span
+              className="toggle-password"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <GrFormViewHide /> : <FaEye />}
+            </span>
             <p className={`error ${errors.password ? 'visible' : ''}`}>
               {errors.password?.message}
             </p>
           </div>
 
+          {/* Enlace Recover Password */}
           <p className="forgot-password">
             <a href="/recover-password">¿Olvidaste la contraseña?</a>
           </p>
 
+          {/* Errores y éxito */}
           {serverError && <p className="error server">{serverError}</p>}
           {success && <p className="success">Ingreso exitoso</p>}
 
+          {/* Botón Login */}
           <button type="submit" className="btn-login" disabled={loading}>
-            {loading ? 'Ingresando...' : 'Ingresar'}
+            {loading ? (
+              <>
+                <FaLock className="locked-icon" /> Ingresando...
+              </>
+            ) : (
+              'Ingresar'
+            )}
           </button>
 
+          {/* Divider */}
           <div className="separator">o</div>
 
+          {/* Login con Google */}
           <button
             type="button"
             className="btn-google"
