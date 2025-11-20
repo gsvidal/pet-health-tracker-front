@@ -15,6 +15,7 @@ import { NotFound } from './components/NotFound/NotFound';
 import { ModalText } from './components/Modal/ModalText';
 import { useModalStore } from './store/modal.store';
 import { VerifyEmailPage } from './features/dashboard/pages/VerifyEmail/VerifyEmailPage';
+import { CreatePetForm } from './features/dashboard/pages/PetForm/PetFormPage';
 
 function App() {
   const {

@@ -4,10 +4,14 @@ import { useAuthStore } from '../../../../store/auth.store';
 import { usePetStore } from '../../../../store/pet.store';
 import { DashboardUserCard } from '../../components/DashboardUserCard/DashboardUserCard';
 import { DashboardPetCard } from '../../components/DashboardPetCard/DashboardPetCard';
+import { useNavigate } from 'react-router-dom';
+import { Button } from '../../../../components/Button/Button';
+import { Plus } from 'lucide-react';
 
 export const Dashboard = () => {
   const { user } = useAuthStore();
   const { pets, loading, mockPets } = usePetStore();
+  const router = useNavigate();
 
   useEffect(() => {
     mockPets();
@@ -48,7 +52,19 @@ export const Dashboard = () => {
               </div>
             )}
           </div>
-          {/*<p style={{ fontSize: '40px' }}>//Boton Agregar Mascota</p>*/}
+          <div className="mt-8">
+            <Button
+              variant="outline"
+              size="lg"
+              style={{ width: '100%' }}
+              onClick={() => {
+                router('/pets/create');
+              }}
+            >
+              <Plus className="h-5 w-5 mr-2" />
+              Agregar Mascota
+            </Button>
+          </div>
         </div>
       </section>
     </>

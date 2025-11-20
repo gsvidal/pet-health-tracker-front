@@ -1,7 +1,12 @@
+import './PetFormPage.scss';
 import { useState } from "react";
 import { Heart, Upload, X } from "lucide-react";
+import { Formpet } from '../../../../services/pet.service';
+import { useNavigate } from "react-router-dom";
 
 export function CreatePetForm() {
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({
     name: "",
     species: "",
@@ -14,18 +19,38 @@ export function CreatePetForm() {
     notes: "",
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
   };
 
-  const handleSubmit = () => {
-    console.log("Formulario enviado:", form);
+  const handleSubmit = async () => {
+    const payload = {
+      name: form.name,
+      species: form.species,
+      breed: form.breed,
+      birth_date: form.birth_date,
+      age_years: Number(form.age),
+      weight_kg: Number(form.weight),
+      sex: form.sex,
+      photo_url: form.photo,
+      notes: form.notes,
+    };
+
+    try {
+      await Formpet(payload);
+      navigate("/dashboard"); // Redirección al Dashboard
+    } catch (error) {
+      console.error("Error al crear mascota:", error);
+    }
   };
 
   return (
     <div className="create-pet-container">
       <div className="create-pet-card">
+
         {/* Header */}
         <div className="card-header">
           <div className="header-icon">
@@ -57,12 +82,12 @@ export function CreatePetForm() {
               <label>Especie <span className="required">*</span></label>
               <select name="species" value={form.species} onChange={handleChange}>
                 <option value="">Selecciona una especie</option>
-                <option value="Perro">Perro</option>
-                <option value="Gato">Gato</option>
-                <option value="Ave">Ave</option>
-                <option value="Conejo">Conejo</option>
-                <option value="Hamster">Hamster</option>
-                <option value="Otro">Otro</option>
+                <option value="perro">Perro</option>
+                <option value="gato">Gato</option>
+                <option value="ave">Ave</option>
+                <option value="conejo">Conejo</option>
+                <option value="hamster">Hamster</option>
+                <option value="otro">Otro</option>
               </select>
             </div>
 
@@ -81,9 +106,9 @@ export function CreatePetForm() {
           <div className="field">
             <label>Sexo <span className="required">*</span></label>
             <select name="sex" value={form.sex} onChange={handleChange}>
-              <option value="">Macho</option>
-              <option value="Macho">Macho</option>
-              <option value="Hembra">Hembra</option>
+              <option value="">Selecciona una opción</option>
+              <option value="macho">Macho</option>
+              <option value="hembra">Hembra</option>
             </select>
           </div>
         </div>
@@ -96,9 +121,8 @@ export function CreatePetForm() {
             <div className="field">
               <label>Fecha de Nacimiento <span className="required">*</span></label>
               <input
-                type="text"
+                type="date"
                 name="birth_date"
-                placeholder="dd/mm/aaaa"
                 value={form.birth_date}
                 onChange={handleChange}
               />
@@ -146,19 +170,17 @@ export function CreatePetForm() {
                 <Upload size={16} />
               </button>
             </div>
-            <span className="hint">Opcional: Agrega una foto de tu mascota</span>
           </div>
 
           <div className="field">
             <label>Notas</label>
             <textarea
               name="notes"
-              placeholder="Información adicional sobre tu mascota (alergias, medicamentos, comportamiento especial, etc.)"
+              placeholder="Información adicional sobre tu mascota"
               value={form.notes}
               onChange={handleChange}
               rows={4}
             />
-            <span className="hint">Opcional: Agrega cualquier información relevante</span>
           </div>
         </div>
 
@@ -173,6 +195,7 @@ export function CreatePetForm() {
             Cancelar
           </button>
         </div>
+
       </div>
     </div>
   );
