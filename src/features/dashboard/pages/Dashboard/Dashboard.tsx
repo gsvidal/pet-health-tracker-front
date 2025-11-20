@@ -7,6 +7,7 @@ import { DashboardPetCard } from '../../components/DashboardPetCard/DashboardPet
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../../../../components/Button/Button';
 import { Plus } from 'lucide-react';
+import { Header } from '../../../../pages/Header/Header';
 
 export const Dashboard = () => {
   const { user } = useAuthStore();
@@ -20,6 +21,7 @@ export const Dashboard = () => {
   return (
     <>
       {/*<p style={{ fontSize: '40px' }}>//Header?</p>*/}
+      <Header path='dashboard'/>
       <section className="section section--dashboard">
         <div className="container container--dashboard">
           <h1 className="example__title">Dashboard</h1>
@@ -52,19 +54,19 @@ export const Dashboard = () => {
               </div>
             )}
           </div>
-          <div className="mt-8">
-            <Button
-              variant="outline"
-              size="lg"
-              style={{ width: '100%' }}
-              onClick={() => {
-                router('/pets/create');
-              }}
-            >
-              <Plus className="h-5 w-5 mr-2" />
-              Agregar Mascota
-            </Button>
-          </div>
+          {/* <div className='button'> */}
+          <Button
+            variant="outline"
+            size="lg"
+            style={{ width: '100%', marginTop: '29px' }}
+            onClick={() => {
+              router('/pets/create');
+            }}
+          >
+            <Plus className="h-5 w-5 mr-2" />
+            Agregar Mascota
+          </Button>
+          {/* </div> */}
         </div>
       </section>
     </>

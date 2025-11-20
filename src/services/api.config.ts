@@ -20,18 +20,25 @@ apiClient.interceptors.request.use(
     }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
 );
 
 // Interceptor para manejar errores globales
-apiClient.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    if (error.response?.status === 401) {
-      // Token expirado o inválido
-      useAuthStore.getState().logout();
-      // Redirigir a login si es necesario
-    }
-    return Promise.reject(error);
-  }
-);
+// apiClient.interceptors.response.use(
+//   (response) => response,
+//   async (error) => {
+//     if (error.response?.status === 401) {
+//       const { accessToken, isAuthenticated } = useAuthStore.getState();
+
+//       // Solo hacer logout si hay un token almacenado (token expirado)
+//       // Si no hay token, es un error de credenciales en login/register (no hacer logout)
+//       if (accessToken && isAuthenticated) {
+//         // Token expirado o inválido - hacer logout
+//         useAuthStore.getState().logout();
+//       }
+//       // Si no hay token, es un error de credenciales, no hacer nada
+//       // (el error se manejará en el componente/hook correspondiente)
+//     }
+//     return Promise.reject(error);
+//   }
+// );

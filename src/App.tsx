@@ -54,7 +54,10 @@ function App() {
           <Route element={<PrivateGuard />}>
             <Route element={<MainLayout />}>
               <Route path={PRIVATE_ROUTES.DASHBOARD} element={<Dashboard />} />
-              <Route path={PRIVATE_ROUTES.CREATE_PET} element={<CreatePetForm />} />
+              <Route
+                path={PRIVATE_ROUTES.CREATE_PET}
+                element={<CreatePetForm />}
+              />
             </Route>
           </Route>
           <Route path="*" element={<NotFound />} />

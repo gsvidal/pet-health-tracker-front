@@ -12,9 +12,7 @@ export const useLogin = () => {
     formState: { errors },
   } = useForm<LoginRequest>();
 
-  // const loginUser = useAuthStore((state) => state.login);
   const mockLoginUser = useAuthStore((state) => state.mockLogin);
-
   const loading = useAuthStore((state) => state.loading);
   const error = useAuthStore((state) => state.error);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);

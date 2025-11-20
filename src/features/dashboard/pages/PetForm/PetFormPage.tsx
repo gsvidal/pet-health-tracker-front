@@ -1,32 +1,35 @@
 import './PetFormPage.scss';
-import { useState } from "react";
-import { Heart, Upload, X } from "lucide-react";
-import { Formpet } from '../../../../services/pet.service';
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import { Heart, Upload, X } from 'lucide-react';
+import { PetForm } from '../../../../services/pet.service';
+import { useNavigate } from 'react-router-dom';
 
 export function CreatePetForm() {
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
-    name: "",
-    species: "",
-    breed: "",
-    sex: "",
-    birth_date: "",
-    age: "",
-    weight: "",
-    photo: "",
-    notes: "",
+    name: '',
+    species: '',
+    breed: '',
+    sex: '',
+    birth_date: '',
+    age: '',
+    weight: '',
+    photo: '',
+    notes: '',
   });
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
   ) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     const payload = {
       name: form.name,
       species: form.species,
@@ -40,17 +43,16 @@ export function CreatePetForm() {
     };
 
     try {
-      await Formpet(payload);
-      navigate("/dashboard"); // Redirección al Dashboard
+      await PetForm(payload);
+      // navigate('/dashboard'); // Redirección al Dashboard
     } catch (error) {
-      console.error("Error al crear mascota:", error);
+      console.error('Error al crear mascota:', error);
     }
   };
 
   return (
-    <div className="create-pet-container">
+    <form className="create-pet-container" onSubmit={handleSubmit}>
       <div className="create-pet-card">
-
         {/* Header */}
         <div className="card-header">
           <div className="header-icon">
@@ -58,7 +60,10 @@ export function CreatePetForm() {
           </div>
           <div>
             <h2>Crear Nueva Mascota</h2>
-            <p>Completa la información de tu mascota para comenzar a gestionar su salud</p>
+            <p>
+              Completa la información de tu mascota para comenzar a gestionar su
+              salud
+            </p>
           </div>
         </div>
 
@@ -67,20 +72,30 @@ export function CreatePetForm() {
           <h3>Información Básica</h3>
 
           <div className="field">
-            <label>Nombre de la Mascota <span className="required">*</span></label>
+            <label>
+              Nombre de la Mascota <span className="required">*</span>
+            </label>
             <input
               type="text"
               name="name"
               placeholder="Ej: Max, Luna, Rocky..."
               value={form.name}
               onChange={handleChange}
+              required
             />
           </div>
 
           <div className="field-row">
             <div className="field">
-              <label>Especie <span className="required">*</span></label>
-              <select name="species" value={form.species} onChange={handleChange}>
+              <label>
+                Especie <span className="required">*</span>
+              </label>
+              <select
+                name="species"
+                value={form.species}
+                onChange={handleChange}
+                required
+              >
                 <option value="">Selecciona una especie</option>
                 <option value="perro">Perro</option>
                 <option value="gato">Gato</option>
@@ -92,7 +107,9 @@ export function CreatePetForm() {
             </div>
 
             <div className="field">
-              <label>Raza <span className="required">*</span></label>
+              <label>
+                Raza <span className="required">*</span>
+              </label>
               <input
                 type="text"
                 name="breed"
@@ -104,7 +121,9 @@ export function CreatePetForm() {
           </div>
 
           <div className="field">
-            <label>Sexo <span className="required">*</span></label>
+            <label>
+              Sexo <span className="required">*</span>
+            </label>
             <select name="sex" value={form.sex} onChange={handleChange}>
               <option value="">Selecciona una opción</option>
               <option value="macho">Macho</option>
@@ -119,7 +138,9 @@ export function CreatePetForm() {
 
           <div className="field-row">
             <div className="field">
-              <label>Fecha de Nacimiento <span className="required">*</span></label>
+              <label>
+                Fecha de Nacimiento <span className="required">*</span>
+              </label>
               <input
                 type="date"
                 name="birth_date"
@@ -129,7 +150,9 @@ export function CreatePetForm() {
             </div>
 
             <div className="field">
-              <label>Edad (años) <span className="required">*</span></label>
+              <label>
+                Edad (años) <span className="required">*</span>
+              </label>
               <input
                 type="text"
                 name="age"
@@ -138,10 +161,13 @@ export function CreatePetForm() {
                 onChange={handleChange}
               />
             </div>
+
           </div>
 
           <div className="field">
-            <label>Peso (kg) <span className="required">*</span></label>
+            <label>
+              Peso (kg) <span className="required">*</span>
+            </label>
             <input
               type="text"
               name="weight"
@@ -186,7 +212,7 @@ export function CreatePetForm() {
 
         {/* Botones */}
         <div className="actions">
-          <button onClick={handleSubmit} className="btn-submit">
+          <button className="btn-submit">
             <Heart size={18} fill="white" />
             Crear Mascota
           </button>
@@ -195,8 +221,7 @@ export function CreatePetForm() {
             Cancelar
           </button>
         </div>
-
       </div>
-    </div>
+    </form>
   );
 }

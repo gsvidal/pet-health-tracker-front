@@ -20,7 +20,7 @@ export const getPetById = async (id: string): Promise<PetResponse> => {
   return response.data;
 };
 
-export const Formpet = async (datos:createPet): Promise<PetResponse[]> => {
+export const PetForm = async (datos:createPet): Promise<PetResponse[]> => {
   const response = await apiClient.post<PetResponse[]>(PETS_ENDPOINT, datos);
   return response.data;
 };
