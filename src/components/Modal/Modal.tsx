@@ -1,4 +1,5 @@
 import './Modal.scss';
+import { IoCloseOutline } from 'react-icons/io5';
 
 interface ModalProps {
   isOpen: boolean;
@@ -10,6 +11,9 @@ export const Modal = ({ isOpen, onClose, children }: ModalProps) => {
   return (
     <div className={`modal-overlay ${isOpen ? 'open' : ''}`} onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+        <button className="modal-close-btn" onClick={onClose}>
+          <IoCloseOutline />
+        </button>
         {children}
       </div>
     </div>
