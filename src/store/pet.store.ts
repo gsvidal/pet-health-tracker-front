@@ -3,7 +3,7 @@ import { toast } from 'react-hot-toast';
 import type { Pet } from '../models/pet.model';
 import { getPets, getPetById } from '../services/pet.service';
 import { adaptPetResponseToPet } from '../adapters/pet.adapter';
-// import { callApi } from '../utils/apiHelper'; // TODO: Restaurar cuando apiHelper original esté listo
+import { callApi } from '../utils/apiHelper';
 
 interface PetState {
   pets: Pet[];
@@ -28,59 +28,49 @@ export const usePetStore = create<PetState>((set, get) => ({
   fetchPets: async () => {
     set({ loading: true, error: null });
 
-    // TODO: Restaurar cuando apiHelper original esté listo
-    // const { data: petsResponse, error } = await callApi(() => getPets());
+    const { data: petsResponse, error } = await callApi(() => getPets());
 
-    try {
-      const petsResponse = await getPets();
-      const pets = petsResponse.map(adaptPetResponseToPet);
-
-      set({
-        pets,
-        loading: false,
-        error: null,
-      });
-    } catch (err: any) {
-      const message =
-        err.response?.data?.message ||
-        err.response?.data?.detail ||
-        err.message ||
-        'Error al obtener mascotas';
+    if (error || !petsResponse) {
+      const message = error || 'Error al obtener mascotas';
       toast.error(message);
       set({
         error: message,
         loading: false,
       });
+      return;
     }
+
+    const pets = petsResponse.map(adaptPetResponseToPet);
+
+    set({
+      pets,
+      loading: false,
+      error: null,
+    });
   },
 
   fetchPetById: async (id: string) => {
     set({ loading: true, error: null });
 
-    // TODO: Restaurar cuando apiHelper original esté listo
-    // const { data: petResponse, error } = await callApi(() => getPetById(id));
+    const { data: petResponse, error } = await callApi(() => getPetById(id));
 
-    try {
-      const petResponse = await getPetById(id);
-      const pet = adaptPetResponseToPet(petResponse);
-
-      set({
-        selectedPet: pet,
-        loading: false,
-        error: null,
-      });
-    } catch (err: any) {
-      const message =
-        err.response?.data?.message ||
-        err.response?.data?.detail ||
-        err.message ||
-        'Error al obtener la mascota';
+    if (error || !petResponse) {
+      const message = error || 'Error al obtener la mascota';
       toast.error(message);
       set({
         error: message,
         loading: false,
       });
+      return;
     }
+
+    const pet = adaptPetResponseToPet(petResponse);
+
+    set({
+      selectedPet: pet,
+      loading: false,
+      error: null,
+    });
   },
 
   getPetById: (id: string) => {

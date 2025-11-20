@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
-import { authService } from '../services/auth.service';
+import { requestPasswordReset } from '../services/auth.service';
 import type { AxiosError } from 'axios';
 
 type RecoverPasswordForm = {
@@ -22,7 +22,7 @@ export const useRecoverPassword = () => {
     setServerError('');
     setSuccess(false);
     try {
-      const response = await authService.requestPasswordReset(data.email);
+      const response = await requestPasswordReset(data.email);
       console.log('📩 Respuesta del backend:', response);
       toast.success('¡Revisa tu correo, enviamos un link!');
       setSuccess(true);
