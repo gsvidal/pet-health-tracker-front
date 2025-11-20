@@ -1,12 +1,9 @@
 .register-page {
   display: flex;
   height: 100vh;
-  background: linear-gradient(
-    120deg,
-    var(--color-gradient-start),
-    var(--color-gradient-end)
-  );
   transition: all 0.3s ease;
+  margin: 0;
+  padding: 0;
 }
 
 .register-left {
@@ -74,8 +71,8 @@
   background: var(--color-bg);
   transition: all var(--transition);
 }
-/* ======== RESPONSIVE: A PARTIR DE 991PX ======== */
-@media (max-width: 991px) {
+/* ======== Diseño Responsive ======== */
+@media (max-width: 1023px) {
   .register-page {
     position: relative;
   }
@@ -85,10 +82,11 @@
     position: absolute;
     width: 100%;
     height: 100%;
+    pointer-events: none;
   }
 
   .register-right {
-    margin-top: 9rem;
+    margin-bottom: 4rem;
     flex: none;
     background: transparent;
     padding: 0;
@@ -108,6 +106,7 @@
   }
 
   #pet-title {
+    justify-content: center;
     margin-top: -25rem;
     font-size: 2.3rem;
   }

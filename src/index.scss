@@ -46,15 +46,21 @@
   --radius-md: 8px;
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
   --shadow-md: 0 2px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 3px 6px rgba(0, 0, 0, 0.25);
 
   /* TRANSITIONS */
   --transition: 0.2s ease-in-out;
 
   /* ===== Feedback ===== */
-  --color-success: #7df3a8;
+  --color-success: #abffca;
+  --color-success-text: #147638;
   --color-warning: #fbd74a;
+  --color-warning-text: #866f10;
+  --color-error-light: #ffd4d4;
   --color-error: #fb7e7e;
+  --color-error-text: #da0b0b;
   --color-info: #72a6fb;
+  --color-info-text: #103775;
 }
 
 [data-theme='dark'] {
