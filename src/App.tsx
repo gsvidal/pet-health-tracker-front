@@ -12,6 +12,7 @@ import { PRIVATE_ROUTES, PUBLIC_ROUTES } from './config/routes';
 import { PrivateGuard } from './components/guards/PrivateGuard';
 import { Toaster } from 'react-hot-toast';
 import { LoginPage } from './features/dashboard/pages/Login/LoginPage';
+import { CreatePetForm } from './components/CreatePetForm';
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
           <Route element={<PrivateGuard />}>
             <Route element={<MainLayout />}>
               <Route path={PRIVATE_ROUTES.DASHBOARD} element={<Dashboard />} />
+              <Route path={PRIVATE_ROUTES.CREATE_PET} element={<CreatePetForm />} />
             </Route>
           </Route>
           {/* TODO: Crear NotFound page */}
