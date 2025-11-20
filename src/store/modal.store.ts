@@ -59,9 +59,9 @@ export const useModalStore = create<ModalState>((set) => ({
 
   closeModal: () => {
     set({
-      isOpen: false,
-      title: null,
-      content: null,
+        isOpen: false,
+        title: null,
+        content: null,
       variant: 'default',
       onConfirm: null,
       onCancel: null,

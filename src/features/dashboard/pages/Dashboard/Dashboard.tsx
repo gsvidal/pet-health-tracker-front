@@ -20,8 +20,7 @@ export const Dashboard = () => {
 
   return (
     <>
-      {/*<p style={{ fontSize: '40px' }}>//Header?</p>*/}
-      <Header path='dashboard'/>
+      <Header />
       <section className="section section--dashboard">
         <div className="container container--dashboard">
           <h1 className="example__title">Dashboard</h1>

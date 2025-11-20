@@ -13,14 +13,3 @@ export interface Pet {
   createdAt: string;
   updatedAt: string;
 }
-export interface createPet {
-  name: string;
-  species: string;
-  breed?: string | null;
-  birthDate?: string | null;
-  ageYears?: number | null;
-  weightKg?: string | null;
-  sex?: string | null;
-  photoUrl?: string | null;
-  notes?: string | null;
-}

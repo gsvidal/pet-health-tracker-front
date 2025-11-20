@@ -16,6 +16,8 @@ export const useRegister = () => {
   const serverError = useAuthStore((state) => state.error);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const clearError = useAuthStore((state) => state.clearError);
+
+  
   const [localError, setLocalError] = useState<string | null>(null);
   const onSubmit = async (
     data: RegisterRequest & { confirmPassword: string },

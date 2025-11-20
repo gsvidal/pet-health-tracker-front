@@ -40,6 +40,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       authService.register(data),
     );
 
+    // TEMPORAL: Ver qué envía el backend
+    console.log('Respuesta del backend:', response);
+
     if (error || !response) {
       const message = error || 'Error al registrar usuario';
       toast.error(message);

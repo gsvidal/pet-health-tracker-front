@@ -2,15 +2,19 @@ import { useState } from 'react';
 import { Button } from '../../components/Button/Button';
 import { Heart } from 'lucide-react';
 //import "./Home.scss";
-import { useNavigate } from 'react-router-dom';
-interface HeaderProps {
-  path?: 'home' | 'dashboard';
-}
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useAuthStore } from '../../store/auth.store';
+import { PUBLIC_ROUTES } from '../../config/routes';
+// interface HeaderProps {
+//   path?: 'home' | 'dashboard';
+// }
 
-export const Header: React.FC<HeaderProps> = ({ path }) => {
+export const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
-
+  const { pathname } = useLocation();
+  const { logout } = useAuthStore();
+  console.log('pathname: ', pathname);
   return (
     <header className="sticky-header">
       <div className="container">
@@ -35,28 +39,31 @@ export const Header: React.FC<HeaderProps> = ({ path }) => {
 
         {/* Navegación */}
         <nav className={menuOpen ? 'open' : ''}>
-          <a href="#inicio" onClick={() => setMenuOpen(false)}>
-            Inicio
-          </a>
-          <a href="#caracteristicas" onClick={() => setMenuOpen(false)}>
-            Características
-          </a>
-          <a href="#nosotros" onClick={() => setMenuOpen(false)}>
-            Nosotros
-          </a>
-          <a href="#contacto" onClick={() => setMenuOpen(false)}>
-            Contacto
-          </a>
-
+          {pathname === '/' && (
+            <>
+              <a href="#inicio" onClick={() => setMenuOpen(false)}>
+                Inicio
+              </a>
+              <a href="#caracteristicas" onClick={() => setMenuOpen(false)}>
+                Características
+              </a>
+              <a href="#nosotros" onClick={() => setMenuOpen(false)}>
+                Nosotros
+              </a>
+              <a href="#contacto" onClick={() => setMenuOpen(false)}>
+                Contacto
+              </a>
+            </>
+          )}{' '}
           <div className="btn-wrapper">
-            {path === 'dashboard' ? (
+            {pathname === '/dashboard' ? (
               <Button
                 size="lg"
                 variant="primary"
                 onClick={() => {
                   setMenuOpen(false);
-                  navigate('/');
-                  // TODO: Logout correctamente
+                  navigate(PUBLIC_ROUTES.HOME);
+                  logout();
                 }}
               >
                 Logout
@@ -67,7 +74,7 @@ export const Header: React.FC<HeaderProps> = ({ path }) => {
                 variant="primary"
                 onClick={() => {
                   setMenuOpen(false);
-                  navigate('/register');
+                  navigate(PUBLIC_ROUTES.REGISTER);
                 }}
               >
                 Registrarse

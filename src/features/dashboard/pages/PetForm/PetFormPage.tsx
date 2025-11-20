@@ -1,21 +1,25 @@
 import './PetFormPage.scss';
 import React, { useState } from 'react';
 import { Heart, Upload, X } from 'lucide-react';
-import { PetForm } from '../../../../services/pet.service';
+import { usePetStore } from '../../../../store/pet.store';
 import { useNavigate } from 'react-router-dom';
+import type {
+  PetFormData,
+  PetFormState,
+} from '../../../../adapters/pet.adapter';
 
 export function CreatePetForm() {
   const navigate = useNavigate();
-
-  const [form, setForm] = useState({
+  const { createPet, loading  } = usePetStore();
+  const [formData, setFormData] = useState<PetFormState>({
     name: '',
     species: '',
     breed: '',
     sex: '',
-    birth_date: '',
-    age: '',
-    weight: '',
-    photo: '',
+    birthDate: '',
+    ageYears: '',
+    weightKg: '',
+    photoUrl: '',
     notes: '',
   });
 
@@ -25,29 +29,29 @@ export function CreatePetForm() {
     >,
   ) => {
     const { name, value } = e.target;
-    setForm({ ...form, [name]: value });
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const payload = {
-      name: form.name,
-      species: form.species,
-      breed: form.breed,
-      birth_date: form.birth_date,
-      age_years: Number(form.age),
-      weight_kg: Number(form.weight),
-      sex: form.sex,
-      photo_url: form.photo,
-      notes: form.notes,
+
+    // Convertir PetFormState (strings) a PetFormData (null para vacíos, number para numéricos)
+    const payload: PetFormData = {
+      name: formData.name,
+      species: formData.species,
+      breed: formData.breed || null,
+      birthDate: formData.birthDate || null,
+      ageYears: formData.ageYears ? Number(formData.ageYears) : null,
+      weightKg: formData.weightKg || null,
+      sex: formData.sex || null,
+      photoUrl: formData.photoUrl || null,
+      notes: formData.notes || null,
     };
 
-    try {
-      await PetForm(payload);
-      // navigate('/dashboard'); // Redirección al Dashboard
-    } catch (error) {
-      console.error('Error al crear mascota:', error);
-    }
+    await createPet(payload);
+    // Si fue exitoso, el store ya muestra el toast
+    // Si hubo error, el store ya lo maneja con toast
+    // No necesitamos try/catch porque callApi no lanza excepciones
   };
 
   return (
@@ -79,7 +83,7 @@ export function CreatePetForm() {
               type="text"
               name="name"
               placeholder="Ej: Max, Luna, Rocky..."
-              value={form.name}
+              value={formData.name}
               onChange={handleChange}
               required
             />
@@ -92,7 +96,7 @@ export function CreatePetForm() {
               </label>
               <select
                 name="species"
-                value={form.species}
+                value={formData.species}
                 onChange={handleChange}
                 required
               >
@@ -114,7 +118,7 @@ export function CreatePetForm() {
                 type="text"
                 name="breed"
                 placeholder="Ej: Golden Retriever, Siamés..."
-                value={form.breed}
+                value={formData.breed}
                 onChange={handleChange}
               />
             </div>
@@ -124,7 +128,7 @@ export function CreatePetForm() {
             <label>
               Sexo <span className="required">*</span>
             </label>
-            <select name="sex" value={form.sex} onChange={handleChange}>
+            <select name="sex" value={formData.sex} onChange={handleChange}>
               <option value="">Selecciona una opción</option>
               <option value="macho">Macho</option>
               <option value="hembra">Hembra</option>
@@ -143,8 +147,8 @@ export function CreatePetForm() {
               </label>
               <input
                 type="date"
-                name="birth_date"
-                value={form.birth_date}
+                name="birthDate"
+                value={formData.birthDate}
                 onChange={handleChange}
               />
             </div>
@@ -155,13 +159,12 @@ export function CreatePetForm() {
               </label>
               <input
                 type="text"
-                name="age"
+                name="ageYears"
                 placeholder="Ej: 3"
-                value={form.age}
+                value={formData.ageYears}
                 onChange={handleChange}
               />
             </div>
-
           </div>
 
           <div className="field">
@@ -170,9 +173,9 @@ export function CreatePetForm() {
             </label>
             <input
               type="text"
-              name="weight"
+              name="weightKg"
               placeholder="Ej: 28.5"
-              value={form.weight}
+              value={formData.weightKg}
               onChange={handleChange}
             />
           </div>
@@ -187,9 +190,9 @@ export function CreatePetForm() {
             <div className="input-group">
               <input
                 type="text"
-                name="photo"
+                name="photoUrl"
                 placeholder="https://ejemplo.com/foto-mascota.jpg"
-                value={form.photo}
+                value={formData.photoUrl}
                 onChange={handleChange}
               />
               <button type="button" className="icon-btn">
@@ -203,7 +206,7 @@ export function CreatePetForm() {
             <textarea
               name="notes"
               placeholder="Información adicional sobre tu mascota"
-              value={form.notes}
+              value={formData.notes}
               onChange={handleChange}
               rows={4}
             />
@@ -212,11 +215,15 @@ export function CreatePetForm() {
 
         {/* Botones */}
         <div className="actions">
-          <button className="btn-submit">
+          <button type="submit" className="btn-submit" disabled={loading}>
             <Heart size={18} fill="white" />
-            Crear Mascota
+            {loading ? 'Creando...' : 'Crear Mascota'}
           </button>
-          <button className="btn-cancel">
+          <button
+            type="button"
+            className="btn-cancel"
+            onClick={() => navigate('/dashboard')}
+          >
             <X size={18} />
             Cancelar
           </button>
