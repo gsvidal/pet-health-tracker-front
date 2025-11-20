@@ -50,3 +50,28 @@
     grid-template-columns: repeat(3, 1fr);
   }
 }
+
+.dashboard__add-pet {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.dashboard__add-pet-btn {
+  width: 100%;
+  max-width: 500px;      // 👈 tamaño grande central
+  font-size: 1.3rem;      // 👈 texto más grande
+  padding: 1rem 2rem;     // 👈 más alto
+  border-radius: 12px;    // 👈 curvas suaves
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;              // 👈 espacio entre icono y texto
+  font-weight: 600;
+}
+
+.icon-plus {
+  width: 24px;
+  height: 24px;
+}
+

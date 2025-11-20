@@ -9,6 +9,7 @@ export const PUBLIC_ROUTES = {
 
 export const PRIVATE_ROUTES = {
   DASHBOARD: '/dashboard',
+  CREATE_PET: '/pets/create',
   // Future routes:
   // PETS: '/pets',
   // PET_DETAIL: '/pets/:id',

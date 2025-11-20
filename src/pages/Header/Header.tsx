@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { Button } from '../../components/Button/Button';
 import { Heart } from 'lucide-react';
-import './HomeHeader.scss';
+//import "./Home.scss";
 import { useNavigate } from 'react-router-dom';
 
-export function HomeHeader() {
+export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
 
