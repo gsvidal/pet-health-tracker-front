@@ -1,7 +1,12 @@
 import { create } from 'zustand';
 import { toast } from 'react-hot-toast';
 import type { Pet } from '../models/pet.model';
-import { getPets, getPetById } from '../services/pet.service';
+import type { PetFormData } from '../adapters/pet.adapter';
+import {
+  getPets,
+  getPetById,
+  createPet as createPetService,
+} from '../services/pet.service';
 import { adaptPetResponseToPet } from '../adapters/pet.adapter';
 import { callApi } from '../utils/apiHelper';
 
@@ -14,6 +19,7 @@ interface PetState {
   // Acciones
   fetchPets: () => Promise<void>;
   fetchPetById: (id: string) => Promise<void>;
+  createPet: (petData: PetFormData) => Promise<void>;
   getPetById: (id: string) => Pet | undefined;
   clearError: () => void;
   mockPets: () => void;
@@ -71,6 +77,35 @@ export const usePetStore = create<PetState>((set, get) => ({
       loading: false,
       error: null,
     });
+  },
+
+  createPet: async (petData: PetFormData) => {
+    set({ loading: true, error: null });
+
+    const { data: petResponse, error } = await callApi(() =>
+      createPetService(petData),
+    );
+
+    if (error || !petResponse) {
+      const message = error || 'Error al crear la mascota';
+      toast.error(message);
+      set({
+        error: message,
+        loading: false,
+      });
+      return;
+    }
+
+    const newPet = adaptPetResponseToPet(petResponse);
+
+    // Agregar la nueva mascota al estado
+    set((state) => ({
+      pets: [...state.pets, newPet],
+      loading: false,
+      error: null,
+    }));
+
+    toast.success('Mascota creada correctamente ✔️');
   },
 
   getPetById: (id: string) => {

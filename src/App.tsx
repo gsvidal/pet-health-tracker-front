@@ -15,6 +15,7 @@ import { NotFound } from './components/NotFound/NotFound';
 import { ModalText } from './components/Modal/ModalText';
 import { useModalStore } from './store/modal.store';
 import { VerifyEmailPage } from './features/dashboard/pages/VerifyEmail/VerifyEmailPage';
+import { CreatePetForm } from './features/dashboard/pages/PetForm/PetFormPage';
 
 function App() {
   const {
@@ -53,6 +54,10 @@ function App() {
           <Route element={<PrivateGuard />}>
             <Route element={<MainLayout />}>
               <Route path={PRIVATE_ROUTES.DASHBOARD} element={<Dashboard />} />
+              <Route
+                path={PRIVATE_ROUTES.CREATE_PET}
+                element={<CreatePetForm />}
+              />
             </Route>
           </Route>
           <Route path="*" element={<NotFound />} />

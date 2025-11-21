@@ -4,10 +4,15 @@ import { useAuthStore } from '../../../../store/auth.store';
 import { usePetStore } from '../../../../store/pet.store';
 import { DashboardUserCard } from '../../components/DashboardUserCard/DashboardUserCard';
 import { DashboardPetCard } from '../../components/DashboardPetCard/DashboardPetCard';
+import { useNavigate } from 'react-router-dom';
+import { Button } from '../../../../components/Button/Button';
+import { Plus } from 'lucide-react';
+import { Header } from '../../../../pages/Header/Header';
 
 export const Dashboard = () => {
   const { user } = useAuthStore();
   const { pets, loading, mockPets } = usePetStore();
+  const router = useNavigate();
 
   useEffect(() => {
     mockPets();
@@ -15,7 +20,7 @@ export const Dashboard = () => {
 
   return (
     <>
-      {/*<p style={{ fontSize: '40px' }}>//Header?</p>*/}
+      <Header />
       <section className="section section--dashboard">
         <div className="container container--dashboard">
           <h1 className="example__title">Dashboard</h1>
@@ -48,7 +53,19 @@ export const Dashboard = () => {
               </div>
             )}
           </div>
-          {/*<p style={{ fontSize: '40px' }}>//Boton Agregar Mascota</p>*/}
+          {/* <div className='button'> */}
+          <Button
+            variant="outline"
+            size="lg"
+            style={{ width: '100%', marginTop: '29px' }}
+            onClick={() => {
+              router('/pets/create');
+            }}
+          >
+            <Plus className="h-5 w-5 mr-2" />
+            Agregar Mascota
+          </Button>
+          {/* </div> */}
         </div>
       </section>
     </>

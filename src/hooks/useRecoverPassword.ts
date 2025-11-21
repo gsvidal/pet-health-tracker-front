@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
-import { authService } from '../services/auth.service';
+import { requestPasswordReset } from '../services/auth.service';
 import type { AxiosError } from 'axios';
 import type { ReqPasswordResetResponse } from '../types/auth.type';
 
@@ -22,7 +22,7 @@ export const useRecoverPassword = () => {
       setLoading(true);
       setServerError('');
       setSuccess(false);
-      await authService.requestPasswordReset(data.email);
+      await requestPasswordReset(data.email);
       setSuccess(true);
       reset();
     } catch (error: unknown) {

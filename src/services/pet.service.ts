@@ -1,5 +1,6 @@
 import { apiClient } from './api.config';
-import type { PetResponse } from '../adapters/pet.adapter';
+import type { PetResponse, PetFormData } from '../adapters/pet.adapter';
+import { adaptPetToPetRequest } from '../adapters/pet.adapter';
 
 const PETS_ENDPOINT = '/pets';
 
@@ -16,5 +17,17 @@ export const getPets = async (): Promise<PetResponse[]> => {
  */
 export const getPetById = async (id: string): Promise<PetResponse> => {
   const response = await apiClient.get<PetResponse>(`${PETS_ENDPOINT}/${id}`);
+  return response.data;
+};
+
+/**
+ * Crea una nueva mascota
+ */
+export const createPet = async (petData: PetFormData): Promise<PetResponse> => {
+  const requestData = adaptPetToPetRequest(petData);
+  const response = await apiClient.post<PetResponse>(
+    PETS_ENDPOINT,
+    requestData,
+  );
   return response.data;
 };
