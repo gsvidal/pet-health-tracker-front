@@ -90,7 +90,7 @@ export const LoginForm = () => {
           </button>
 
           {/* Divider */}
-          <div className="separator">o</div>
+          <div className="separator">o continúa con</div>
 
           {/* Login con Google */}
           <button
@@ -100,6 +100,11 @@ export const LoginForm = () => {
           >
             <FaGoogle /> Ingresar con Google
           </button>
+
+          {/* Link para registrarse */}
+          <p className="register-link">
+            ¿No tienes cuenta? <a href="/register">Regístrate</a>
+          </p>
         </form>
       </div>
     </div>

@@ -94,17 +94,17 @@
   margin-top: 0.7rem;
   cursor: pointer;
   transition: background var(--transition);
-}
-.btn-login:hover {
-  background: linear-gradient(
-    90deg,
-    var(--color-secondary-hover),
-    var(--color-primary-hover)
-  );
-  opacity: 0.9;
+  &:hover {
+    background: linear-gradient(
+      90deg,
+      var(--color-secondary-hover),
+      var(--color-primary-hover)
+    );
+    opacity: 0.9;
+  }
 }
 .separator {
-  margin: 1rem 0;
+  margin: 0.5rem 0;
   color: var(--color-text-secondary);
   font-size: 1rem;
 }
@@ -121,15 +121,15 @@
   background: #fff;
   cursor: pointer;
   transition: background var(--transition);
-}
-.btn-google:hover {
-  color: white;
-  background: linear-gradient(
-    90deg,
-    var(--color-secondary-hover),
-    var(--color-primary-hover)
-  );
-  opacity: 0.9;
+  &:hover {
+    color: white;
+    background: linear-gradient(
+      90deg,
+      var(--color-secondary-hover),
+      var(--color-primary-hover)
+    );
+    opacity: 0.9;
+  }
 }
 .server {
   margin-bottom: 0.7rem;
@@ -179,4 +179,20 @@
 }
 .input-group input {
   padding-right: 2.7rem;
+}
+.register-link {
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: -3px;
+  a {
+    color: var(--color-primary);
+    font-size: inherit;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+    &:hover {
+      text-decoration: underline;
+      color: var(-color-text);
+    }
+  }
 }
