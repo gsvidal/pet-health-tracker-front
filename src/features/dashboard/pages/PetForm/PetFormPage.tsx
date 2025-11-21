@@ -1,16 +1,15 @@
 import './PetFormPage.scss';
 import React, { useState } from 'react';
-import { Heart, Upload, X } from 'lucide-react';
+import { Heart, Upload } from 'lucide-react';
 import { usePetStore } from '../../../../store/pet.store';
-import { useNavigate } from 'react-router-dom';
 import type {
   PetFormData,
   PetFormState,
 } from '../../../../adapters/pet.adapter';
 
 export function CreatePetForm() {
-  const navigate = useNavigate();
-  const { createPet, loading  } = usePetStore();
+  const { createPet, loading } = usePetStore();
+
   const [formData, setFormData] = useState<PetFormState>({
     name: '',
     species: '',
@@ -35,28 +34,26 @@ export function CreatePetForm() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    // Convertir PetFormState (strings) a PetFormData (null para vacíos, number para numéricos)
     const payload: PetFormData = {
       name: formData.name,
       species: formData.species,
       breed: formData.breed || null,
       birthDate: formData.birthDate || null,
       ageYears: formData.ageYears ? Number(formData.ageYears) : null,
-      weightKg: formData.weightKg || null,
+      weightKg: formData.weightKg,
       sex: formData.sex || null,
       photoUrl: formData.photoUrl || null,
       notes: formData.notes || null,
     };
 
     await createPet(payload);
-    // Si fue exitoso, el store ya muestra el toast
-    // Si hubo error, el store ya lo maneja con toast
-    // No necesitamos try/catch porque callApi no lanza excepciones
+    // El store maneja errores y toasts
   };
 
   return (
     <form className="create-pet-container" onSubmit={handleSubmit}>
       <div className="create-pet-card">
+
         {/* Header */}
         <div className="card-header">
           <div className="header-icon">
@@ -65,8 +62,7 @@ export function CreatePetForm() {
           <div>
             <h2>Crear Nueva Mascota</h2>
             <p>
-              Completa la información de tu mascota para comenzar a gestionar su
-              salud
+              Completa la información de tu mascota para comenzar a gestionar su salud
             </p>
           </div>
         </div>
@@ -75,6 +71,7 @@ export function CreatePetForm() {
         <div className="section">
           <h3>Información Básica</h3>
 
+          {/* Nombre obligatorio */}
           <div className="field">
             <label>
               Nombre de la Mascota <span className="required">*</span>
@@ -90,6 +87,8 @@ export function CreatePetForm() {
           </div>
 
           <div className="field-row">
+
+            {/* Especie obligatoria */}
             <div className="field">
               <label>
                 Especie <span className="required">*</span>
@@ -110,10 +109,9 @@ export function CreatePetForm() {
               </select>
             </div>
 
+            {/* Raza */}
             <div className="field">
-              <label>
-                Raza <span className="required">*</span>
-              </label>
+              <label>Raza</label>
               <input
                 type="text"
                 name="breed"
@@ -125,10 +123,12 @@ export function CreatePetForm() {
           </div>
 
           <div className="field">
-            <label>
-              Sexo <span className="required">*</span>
-            </label>
-            <select name="sex" value={formData.sex} onChange={handleChange}>
+            <label>Sexo</label>
+            <select
+              name="sex"
+              value={formData.sex}
+              onChange={handleChange}
+            >
               <option value="">Selecciona una opción</option>
               <option value="macho">Macho</option>
               <option value="hembra">Hembra</option>
@@ -142,9 +142,7 @@ export function CreatePetForm() {
 
           <div className="field-row">
             <div className="field">
-              <label>
-                Fecha de Nacimiento <span className="required">*</span>
-              </label>
+              <label>Fecha de Nacimiento</label>
               <input
                 type="date"
                 name="birthDate"
@@ -154,11 +152,9 @@ export function CreatePetForm() {
             </div>
 
             <div className="field">
-              <label>
-                Edad (años) <span className="required">*</span>
-              </label>
+              <label>Edad (años)</label>
               <input
-                type="text"
+                type="number"
                 name="ageYears"
                 placeholder="Ej: 3"
                 value={formData.ageYears}
@@ -168,11 +164,9 @@ export function CreatePetForm() {
           </div>
 
           <div className="field">
-            <label>
-              Peso (kg) <span className="required">*</span>
-            </label>
+            <label>Peso (kg)</label>
             <input
-              type="text"
+              type="number"
               name="weightKg"
               placeholder="Ej: 28.5"
               value={formData.weightKg}
@@ -181,7 +175,7 @@ export function CreatePetForm() {
           </div>
         </div>
 
-        {/* Información Adicional */}
+        {/* Información adicional */}
         <div className="section">
           <h3>Información Adicional</h3>
 
@@ -191,7 +185,7 @@ export function CreatePetForm() {
               <input
                 type="text"
                 name="photoUrl"
-                placeholder="https://ejemplo.com/foto-mascota.jpg"
+                placeholder="https://ejemplo.com/foto.jpg"
                 value={formData.photoUrl}
                 onChange={handleChange}
               />
@@ -206,9 +200,9 @@ export function CreatePetForm() {
             <textarea
               name="notes"
               placeholder="Información adicional sobre tu mascota"
+              rows={4}
               value={formData.notes}
               onChange={handleChange}
-              rows={4}
             />
           </div>
         </div>
@@ -219,15 +213,17 @@ export function CreatePetForm() {
             <Heart size={18} fill="white" />
             {loading ? 'Creando...' : 'Crear Mascota'}
           </button>
-          <button
+
+{/*           <button
             type="button"
             className="btn-cancel"
             onClick={() => navigate('/dashboard')}
           >
             <X size={18} />
             Cancelar
-          </button>
+          </button> */}
         </div>
+
       </div>
     </form>
   );

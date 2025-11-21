@@ -117,7 +117,7 @@
 
         .field textarea {
           resize: vertical;
-          min-height: 100px;
+          min-height: 70px;
         }
 
         .field-row {
@@ -208,4 +208,11 @@
           .create-pet-card {
             padding: 1.5rem;
           }
+        }
+        /* Mensajes de error */
+        .error-text {
+          font-size: 1rem;
+          color: #ef4444; /* rojo */
+          margin-top: 0.25rem;
+          display: block;
         }
