@@ -8,7 +8,7 @@ export const LoginPage = () => {
   const navigate = useNavigate();
   const handleClose = () => {
     setOpenLogin(false);
-    navigate('/register');
+    navigate('/');
   };
   return (
     <Modal isOpen={openLogin} onClose={handleClose}>
