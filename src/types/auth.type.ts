@@ -22,10 +22,10 @@ export interface LoginResponse {
   };
 }
 // --- Solicitud cambio de contraseña ----
-export interface RecoverPasswordRequest {
+export interface ReqPassResetRequest {
   email: string;
 }
-export interface ReqPasswordResetResponse {
+export interface ReqPassResetResponse {
   message: string | null;
   detail?: string;
 }

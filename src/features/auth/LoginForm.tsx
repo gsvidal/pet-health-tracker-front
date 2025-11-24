@@ -71,7 +71,7 @@ export const LoginForm = () => {
 
           {/* Enlace Recover Password */}
           <p className="forgot-password">
-            <a href="/recover-password">¿Olvidaste la contraseña?</a>
+            <a href="/request-password-reset">¿Olvidaste la contraseña?</a>
           </p>
 
           {/* Errores y éxito */}

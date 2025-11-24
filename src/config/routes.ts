@@ -3,7 +3,7 @@ export const PUBLIC_ROUTES = {
   REGISTER: '/register',
   LOGIN: '/login',
   EXAMPLE: '/example',
-  RECOVER_PSW: '/recover-password',
+  RECOVER_PSW: '/request-password-reset',
   VERIFY_EMAIL: '/verify-email',
 } as const;
 

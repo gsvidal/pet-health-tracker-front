@@ -4,7 +4,7 @@ import type {
   RegisterResponse,
   LoginRequest,
   LoginResponse,
-  ReqPasswordResetResponse,
+  ReqPassResetResponse,
 } from '../types/auth.type';
 
 // URL base del backend
@@ -36,8 +36,8 @@ export const loginUser = async (data: LoginRequest): Promise<LoginResponse> => {
 // Solicitar email de recuperación
 export const requestPasswordReset = async (
   email: string,
-): Promise<ReqPasswordResetResponse> => {
-  const response = await axios.post<ReqPasswordResetResponse>(
+): Promise<ReqPassResetResponse> => {
+  const response = await axios.post<ReqPassResetResponse>(
     `${API_URL}/request-password-reset`,
     { email },
   );
