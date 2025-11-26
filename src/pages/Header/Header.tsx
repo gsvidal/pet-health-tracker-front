@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { Button } from '../../components/Button/Button';
-import { Heart } from 'lucide-react';
+import { Heart, ArrowLeft } from 'lucide-react';
 //import "./Home.scss";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/auth.store';
 import { PUBLIC_ROUTES } from '../../config/routes';
+import './Header.scss';
 // interface HeaderProps {
 //   path?: 'home' | 'dashboard';
 // }
@@ -14,10 +15,25 @@ export const Header = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { logout } = useAuthStore();
+
   console.log('pathname: ', pathname);
+
+  const showBackButton = pathname.startsWith('/pets/:id');
+
   return (
     <header className="sticky-header">
       <div className="container">
+        {/* Botón Volver */}
+        {showBackButton && (
+          <button
+            className="header-back-btn"
+            onClick={() => navigate('/dashboard')}
+            aria-label="Volver"
+          >
+            <ArrowLeft size={24} />
+          </button>
+        )}
+
         {/* Logo */}
         <div className="logo">
           <div className="logo-icon">
@@ -54,7 +70,8 @@ export const Header = () => {
                 Contacto
               </a>
             </>
-          )}{' '}
+          )}
+
           <div className="btn-wrapper">
             {pathname === '/dashboard' ? (
               <Button

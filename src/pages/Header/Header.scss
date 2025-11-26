@@ -1,0 +1,17 @@
+.header-back-btn {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: white;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  z-index: 10;
+
+  svg {
+    stroke-width: 2.5;
+  }
+}

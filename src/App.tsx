@@ -16,6 +16,7 @@ import { ModalText } from './components/Modal/ModalText';
 import { useModalStore } from './store/modal.store';
 import { VerifyEmailPage } from './features/dashboard/pages/VerifyEmail/VerifyEmailPage';
 import { CreatePetForm } from './features/dashboard/pages/PetForm/PetFormPage';
+import { DetailsPage } from './features/dashboard/pages/Details/DetailsPage';
 
 function App() {
   const {
@@ -57,6 +58,10 @@ function App() {
               <Route
                 path={PRIVATE_ROUTES.CREATE_PET}
                 element={<CreatePetForm />}
+              />
+              <Route
+                path={PRIVATE_ROUTES.PET_DETAIL}
+                element={<DetailsPage />}
               />
             </Route>
           </Route>
