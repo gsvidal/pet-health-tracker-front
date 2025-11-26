@@ -1,13 +1,10 @@
 import { useState } from 'react';
 import { Button } from '../../components/Button/Button';
 import { Heart } from 'lucide-react';
-//import "./Home.scss";
+import "./Header.scss";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/auth.store';
 import { PUBLIC_ROUTES } from '../../config/routes';
-// interface HeaderProps {
-//   path?: 'home' | 'dashboard';
-// }
 
 export const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);

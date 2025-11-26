@@ -1,6 +1,6 @@
 import './PetFormPage.scss';
 import React, { useState } from 'react';
-import { Heart, Upload } from 'lucide-react';
+import { Heart, Upload, X } from 'lucide-react';
 import { usePetStore } from '../../../../store/pet.store';
 import type {
   PetFormData,
@@ -9,6 +9,7 @@ import type {
 
 export function CreatePetForm() {
   const { createPet, loading } = usePetStore();
+
 
   const [formData, setFormData] = useState<PetFormState>({
     name: '',
@@ -53,7 +54,6 @@ export function CreatePetForm() {
   return (
     <form className="create-pet-container" onSubmit={handleSubmit}>
       <div className="create-pet-card">
-
         {/* Header */}
         <div className="card-header">
           <div className="header-icon">
@@ -62,7 +62,8 @@ export function CreatePetForm() {
           <div>
             <h2>Crear Nueva Mascota</h2>
             <p>
-              Completa la información de tu mascota para comenzar a gestionar su salud
+              Completa la información de tu mascota para comenzar a gestionar su
+              salud
             </p>
           </div>
         </div>
@@ -87,7 +88,6 @@ export function CreatePetForm() {
           </div>
 
           <div className="field-row">
-
             {/* Especie obligatoria */}
             <div className="field">
               <label>
@@ -124,11 +124,7 @@ export function CreatePetForm() {
 
           <div className="field">
             <label>Sexo</label>
-            <select
-              name="sex"
-              value={formData.sex}
-              onChange={handleChange}
-            >
+            <select name="sex" value={formData.sex} onChange={handleChange}>
               <option value="">Selecciona una opción</option>
               <option value="macho">Macho</option>
               <option value="hembra">Hembra</option>
@@ -214,16 +210,7 @@ export function CreatePetForm() {
             {loading ? 'Creando...' : 'Crear Mascota'}
           </button>
 
-{/*           <button
-            type="button"
-            className="btn-cancel"
-            onClick={() => navigate('/dashboard')}
-          >
-            <X size={18} />
-            Cancelar
-          </button> */}
         </div>
-
       </div>
     </form>
   );

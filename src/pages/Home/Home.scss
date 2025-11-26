@@ -1,165 +1,4 @@
-//header
-.sticky-header {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  min-width:100%;
-  border-bottom: 1px solid var(--color-border);
-  background-color: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(8px);
-  transition: background-color var(--transition);
-
-  .container {
-    max-width: var(--container-lg);
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 64px;
-    padding: 0 var(--space-md);
-    position: relative;
-  }
-
-  /* LOGO */
-  .logo {
-    display: flex;
-    align-items: center;
-    gap: var(--space-sm);
-
-    .logo-icon {
-      display: flex;
-      height: 40px;
-      width: 40px;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      background: linear-gradient(
-        to bottom right,
-        var(--color-gradient-start),
-        var(--color-gradient-end)
-      );
-    }
-
-    .logo-text {
-      font-size: 2.00rem;
-      color: var(--color-text);
-      font-family: var(--font-heading);
-      font-weight: 600;
-    }
-
-    /* Botón Hamburguesa (oculto en desktop) */
-    .menu-toggle {
-      display: none;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      gap: 5px;
-      width: 36px;
-      height: 36px;
-      border: none;
-      background: transparent;
-      cursor: pointer;
-
-      span {
-        display: block;
-        width: 24px;
-        height: 2px;
-        background-color: var(--color-text);
-        border-radius: 2px;
-        transition: all 0.3s ease;
-      }
-
-      &.open span:nth-child(1) {
-        transform: rotate(45deg) translate(5px, 5px);
-      }
-
-      &.open span:nth-child(2) {
-        opacity: 0;
-      }
-
-      &.open span:nth-child(3) {
-        transform: rotate(-45deg) translate(5px, -5px);
-      }
-    }
-  }
-
-  /* NAV (Desktop) */
-  nav {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-
-    // Tamaño letra header nav
-    a {
-      font-size: 1.5rem;
-      color: var(--color-text-secondary);
-      transition: color var(--transition);
-      text-decoration: none;
-
-      &:hover {
-        color: var(--color-text);
-      }
-    }
-
-    .btn-wrapper {
-      display: flex;
-      align-items: center;
-      gap: var(--space-md);
-      margin-left: var(--space-sm);
-    }
-  }
-
-  /* ========================
-     RESPONSIVE (Mobile)
-  =========================*/
-  @media (max-width: 768px) {
-    .logo {
-      width: 100%;
-      justify-content: space-between;
-
-      .menu-toggle {
-        display: flex;
-      }
-    }
-
-    nav {
-      position: absolute;
-      top: 64px;
-      left: 0;
-      width: 100%;
-      flex-direction: column;
-      align-items: center;
-      background-color: var(--color-bg);
-      border-top: 1px solid var(--color-border);
-      box-shadow: var(--shadow-md);
-      padding: var(--space-md);
-      display: none;
-      opacity: 0;
-      transform: translateY(-10px);
-      transition: all 0.3s ease;
-
-      &.open {
-        display: flex;
-        opacity: 1;
-        transform: translateY(0);
-      }
-
-      a {
-        width: 100%;
-        text-align: center;
-        padding: var(--space-sm) 0;
-      }
-
-      .btn-wrapper {
-        margin-top: var(--space-md);
-        justify-content: center;
-      }
-    }
-  }
-}
-
 //hero
-
 .hero {
   max-width: 1280px;
   margin: 0 auto;
@@ -198,7 +37,7 @@
     }
 
     p {
-      font-size: 1.3rem;
+      font-size: 1.6rem;
       color: #4b5563;
       line-height: 1.6;
     }
@@ -281,7 +120,6 @@
 //features
 
 .home-features {
-  
   background: #f9fafb;
   padding: 80px 0;
 
@@ -313,7 +151,7 @@
     }
 
     p {
-      font-size: 16px;
+      font-size: 1.6rem;
       color: #6b7280;
       max-width: 700px;
       margin: 0 auto;
@@ -330,13 +168,24 @@
     border: none;
     background: #fff;
     border-radius: 16px;
-    padding: 20px;
+    padding: 10px;
+    @media (min-width: 768px) {
+      padding: 20px;
+    }
     transition: 0.3s ease;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 
     &:hover {
       transform: translateY(-4px);
       box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    }
+    .card-header {
+      display: flex;
+      flex-direction: column;
+      padding: 12px;
+      @media (min-width: 768px) {
+        padding: 24px;
+      }
     }
   }
 
@@ -386,7 +235,7 @@ section {
 .content {
   max-width: 768px;
   margin: 0 auto;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .badge {
@@ -457,7 +306,7 @@ section {
   margin-bottom: 20px;
 }
 .content-2 p {
-  font-size: 18px;
+  font-size: 1.6rem;
 }
 
 .image-container-2 {
