@@ -22,13 +22,13 @@ export const VerifyEmailPage = () => {
       toast.success(successMessage);
       const id = setTimeout(() => {
         navigate(PUBLIC_ROUTES.LOGIN);
-      }, 10000);
+      }, 2000);
       return () => {
         clearTimeout(id);
-      }
+      };
     }
     if (errorMessage) toast.error(errorMessage);
-  }, [successMessage, errorMessage]);
+  }, [successMessage, errorMessage, navigate]);
 
   if (!token) return <p>Token inválido.</p>;
 

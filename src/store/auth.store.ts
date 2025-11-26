@@ -147,9 +147,10 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   verifyEmail: async (token: string) => {
     set({ loading: true, error: null });
 
-    const { data, error } = await callApi(() => authService.verifyEmail(token));
+    const { error } = await callApi(() => authService.verifyEmail(token));
 
-    if (error || !data) {
+    // Solo verificar error, no data (porque el backend retorna null en éxito)
+    if (error) {
       const message = error || 'Error al verificar email';
       set({ loading: false, error: message });
       throw new Error(message);
