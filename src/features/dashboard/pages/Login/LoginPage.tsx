@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Modal } from '../../../../components/Modal/Modal';
-import { useState } from 'react';
+// import { useState } from 'react';
 import { LoginForm } from '../../../auth/LoginForm';
 
 export const LoginPage = () => {

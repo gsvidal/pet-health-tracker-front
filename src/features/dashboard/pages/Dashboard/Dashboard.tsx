@@ -10,13 +10,14 @@ import { Plus } from 'lucide-react';
 import { Header } from '../../../../pages/Header/Header';
 
 export const Dashboard = () => {
-  const { user } = useAuthStore();
+  const { user, getUserData } = useAuthStore();
   const { pets, loading, mockPets } = usePetStore();
   const router = useNavigate();
 
   useEffect(() => {
     mockPets();
-  }, [mockPets]);
+    getUserData();
+  }, []);
 
   return (
     <>
