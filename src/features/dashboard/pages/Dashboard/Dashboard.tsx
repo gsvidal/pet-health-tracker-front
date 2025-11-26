@@ -18,6 +18,10 @@ export const Dashboard = () => {
     mockPets();
   }, [mockPets]);
 
+  const handleViewDetails = (petId: string) => {
+    router(`/pets/${petId}`);
+  };
+
   return (
     <>
       <Header />
@@ -48,6 +52,7 @@ export const Dashboard = () => {
                     lastVisitLabel="Próximamente"
                     activeAlertsCount={1}
                     upcomingEventsCount={0}
+                    onViewDetails={handleViewDetails}
                   />
                 ))}
               </div>
@@ -58,9 +63,7 @@ export const Dashboard = () => {
             variant="outline"
             size="lg"
             style={{ width: '100%', marginTop: '29px' }}
-            onClick={() => {
-              router('/pets/create');
-            }}
+            onClick={() => router('/pets/create')}
           >
             <Plus className="h-5 w-5 mr-2" />
             Agregar Mascota
