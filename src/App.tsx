@@ -59,6 +59,10 @@ function App() {
                 path={PRIVATE_ROUTES.CREATE_PET}
                 element={<CreatePetForm />}
               />
+            </Route>
+          </Route>
+          <Route element={<PrivateGuard />}>
+            <Route element={<FullLayout />}>
               <Route
                 path={PRIVATE_ROUTES.PET_DETAIL}
                 element={<DetailsPage />}

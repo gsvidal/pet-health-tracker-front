@@ -1,0 +1,36 @@
+.pet-information {
+  width: 95%;
+  max-width: 1100px;
+  margin: 20px auto;
+
+  .tabs {
+    display: flex;
+    background: white;
+    border: 1px solid #e5e5e5;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+
+    button {
+      flex: 1;
+      padding: 12px 0;
+      background: white;
+      border: none;
+      cursor: pointer;
+      font-weight: 500;
+      color: #555;
+      font-size: 14px;
+      transition: 0.25s ease;
+
+      &:hover {
+        background: #f9f9f9;
+      }
+
+      &.active {
+        background: #f3e9ff;
+        color: #7b3bff;
+        font-weight: 600;
+      }
+    }
+  }
+}

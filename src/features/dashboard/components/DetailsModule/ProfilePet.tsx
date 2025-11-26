@@ -6,7 +6,7 @@ interface ProfilePetProps {
 }
 
 export const ProfilePet = ({ pet }: ProfilePetProps) => {
-  const photoUrl = pet.photoUrl?.[0] || '/default-pet.png';
+  const photoUrl = pet.photoUrl || '/default-pet.png';
 
   return (
     <div className="profile-pet-card">

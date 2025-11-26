@@ -1,0 +1,75 @@
+.pet-info-box {
+  background: white;
+  margin-top: 20px;
+  padding: 30px;
+  border-radius: 14px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  border: 1px solid #eaeaea;
+
+  h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  > p {
+    color: #777;
+    margin-bottom: 25px;
+    font-size: 14px;
+  }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+
+    label {
+      color: #888;
+      font-size: 12px;
+      margin-bottom: 3px;
+      display: block;
+    }
+
+    p {
+      font-size: 14px;
+      font-weight: 500;
+      margin: 0;
+    }
+  }
+
+  .notes {
+    margin-top: 25px;
+
+    label {
+      color: #888;
+      font-size: 12px;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    p {
+      margin: 0;
+      font-size: 14px;
+    }
+  }
+
+  .edit-btn {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+
+    button {
+      background: #7b3bff;
+      color: white;
+      border: none;
+      padding: 10px 28px;
+      border-radius: 10px;
+      font-size: 14px;
+      cursor: pointer;
+
+      &:hover {
+        background: #6a2de0;
+      }
+    }
+  }
+}

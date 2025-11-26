@@ -2,6 +2,8 @@ import { useState } from 'react';
 import PetInfoSection from './PetInfoSection';
 import type { Pet } from '../../../../models/pet.model';
 
+import './PetInformation.scss';
+
 interface PetInformationProps {
   pet: Pet;
 }

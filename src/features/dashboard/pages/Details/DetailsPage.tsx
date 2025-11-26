@@ -1,24 +1,37 @@
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { usePetDetails } from '../../../../hooks/usePetDetails';
+import { usePetStore } from '../../../../store/pet.store';
 import { Header } from '../../../../pages/Header/Header';
 import { ProfilePet } from '../../../dashboard/components/DetailsModule/ProfilePet';
 import { PetInformation } from '../../../dashboard/components/DetailsModule/PetInformation';
 
+import './DetailsPage.scss';
+
 export const DetailsPage = () => {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
 
-  const { pet, loading, error } = usePetDetails(id!);
+  const pets = usePetStore((state) => state.pets);
+  const getPetById = usePetStore((state) => state.getPetById);
+  const mockPets = usePetStore((state) => state.mockPets);
 
-  if (loading) return <p>Cargando...</p>;
-  if (error) return <p>Error: {error}</p>;
-  if (!pet) return <p>No se encontró la mascota</p>;
+  // Si no hay mascotas cargadas → cargamos los mocks
+  useEffect(() => {
+    if (pets.length === 0) {
+      mockPets();
+    }
+  }, [pets.length, mockPets]);
+
+  // Buscar mascota por id
+  const pet = getPetById(id!);
+
+  if (!pet) {
+    return <p>Cargando mascota...</p>;
+  }
 
   return (
     <div className="details-page">
       <Header />
-
       <ProfilePet pet={pet} />
-
       <PetInformation pet={pet} />
     </div>
   );

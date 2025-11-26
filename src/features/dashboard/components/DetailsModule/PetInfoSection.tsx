@@ -1,4 +1,6 @@
 import type { Pet } from '../../../../models/pet.model';
+import './PetInfoSection.scss';
+
 interface PetInfoSectionProps {
   pet: Pet;
 }
