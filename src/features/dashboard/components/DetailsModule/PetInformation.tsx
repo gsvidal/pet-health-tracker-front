@@ -3,6 +3,9 @@ import PetInfoSection from './PetInfoSection';
 import type { Pet } from '../../../../models/pet.model';
 
 import './PetInformation.scss';
+import { PetNutritionSection } from './PetNutritionsSection';
+import { PetVisitSection } from './PetVisitSection';
+import { PetVaccineSection } from './PetVaccineSection';
 
 interface PetInformationProps {
   pet: Pet;
@@ -42,7 +45,9 @@ export const PetInformation = ({ pet }: PetInformationProps) => {
       </div>
 
       {tab === 'info' && <PetInfoSection pet={pet} />}
-      {/* Falta agregar tabs */}
+      {tab === 'vaccines' && <PetVaccineSection pet={pet} />}
+      {tab === 'nutrition' && <PetNutritionSection pet={pet} />}
+      {tab === 'visits' && <PetVisitSection pet={pet} />}
     </div>
   );
 };
