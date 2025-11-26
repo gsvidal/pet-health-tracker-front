@@ -7,7 +7,7 @@ interface PetInfoSectionProps {
 
 export default function PetInfoSection({ pet }: PetInfoSectionProps) {
   return (
-    <div className="pet-info-box">
+    <div className="pet-section-card pet-section-card--info">
       <h3>Información General</h3>
       <p>Detalles completos de tu mascota</p>
       <div className="info-grid">

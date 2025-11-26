@@ -85,7 +85,7 @@ export const Header = () => {
               >
                 Logout
               </Button>
-            ) : (
+            ) : pathname === '/' && (
               <Button
                 size="lg"
                 variant="primary"
@@ -97,6 +97,7 @@ export const Header = () => {
                 Registrarse
               </Button>
             )}
+            {/* TODO: agregar volver a pagina pet */}
           </div>
         </nav>
       </div>
