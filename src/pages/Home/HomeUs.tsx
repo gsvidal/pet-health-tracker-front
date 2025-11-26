@@ -1,5 +1,6 @@
 import { ArrowRight, CircleCheck } from 'lucide-react';
-import './HomeUs.scss';
+import "./Home.scss";
+//import './HomeUs.scss';
 import { Button } from '../../components/Button/Button';
 
 export const HomeUs = () => {

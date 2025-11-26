@@ -1,8 +1,9 @@
 import { Button } from "../../components/Button/Button";
-import "./HomeHero.scss";
+import "./Home.scss";
+//import "./Hero.scss";
 import { ArrowRight } from "lucide-react";
 
-export function HomeHero() {
+export function Hero() {
   const imgUrl =
     "https://images.unsplash.com/photo-1728661631084-5f44797184e3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080";
 

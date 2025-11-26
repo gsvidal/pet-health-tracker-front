@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { apiClient } from './api.config';
 import type {
   RegisterRequest,
   RegisterResponse,
@@ -7,33 +7,55 @@ import type {
   ReqPassResetResponse,
 } from '../types/auth.type';
 
-// URL base del backend
-const API_BASE_URL =
-  import.meta.env.VITE_API_URL || 'https://pet-healthcare-back.onrender.com';
-const API_URL = `${API_BASE_URL}/auth`;
+const AUTH_ENDPOINT = '/auth';
 
-// Registro de usuario
-export const registerUser = async (
+/**
+ * Registra un nuevo usuario
+ */
+export const register = async (
   data: RegisterRequest,
 ): Promise<RegisterResponse> => {
-  const response = await axios.post<RegisterResponse>(
-    `${API_URL}/register`,
+  const response = await apiClient.post<RegisterResponse>(
+    `${AUTH_ENDPOINT}/register`,
     data,
   );
   return response.data;
 };
 
-// Inicio de sesión
-export const loginUser = async (data: LoginRequest): Promise<LoginResponse> => {
-  try {
-    const response = await axios.post<LoginResponse>(`${API_URL}/login`, data);
-    return response.data;
-  } catch (error) {
-    console.error('Error en loginUser:', error);
-    throw error;
-  }
+/**
+ * Inicia sesión
+ */
+export const login = async (data: LoginRequest): Promise<LoginResponse> => {
+  const response = await apiClient.post<LoginResponse>(
+    `${AUTH_ENDPOINT}/login`,
+    data,
+  );
+  return response.data;
 };
-// Solicitar email de recuperación
+
+/**
+ * Refresca los tokens
+ */
+export const refreshTokens = async (
+  refreshToken: string,
+): Promise<TokenResponse> => {
+  const response = await apiClient.post<TokenResponse>(
+    `${AUTH_ENDPOINT}/refresh`,
+    { refresh_token: refreshToken },
+  );
+  return response.data;
+};
+
+/**
+ * Cierra sesión
+ */
+export const logout = async (): Promise<void> => {
+  await apiClient.post(`${AUTH_ENDPOINT}/logout`);
+};
+
+/**
+ * Solicita recuperación de contraseña
+ */
 export const requestPasswordReset = async (
   email: string,
 ): Promise<ReqPassResetResponse> => {
@@ -43,23 +65,20 @@ export const requestPasswordReset = async (
   );
   return response.data;
 };
-// Resetear contraseña con token
+
+/**
+ * Resetea la contraseña con token
+ */
 export const resetPassword = async (data: {
   token: string;
   password: string;
-}) => {
-  const response = await axios.post(`${API_URL}/reset-password`, data);
-  return response.data;
+}): Promise<void> => {
+  await apiClient.post(`${AUTH_ENDPOINT}/reset-password`, data);
 };
-// Verificacion de Email
-export const verifyEmailRequest = (token: string) => {
-  return axios.get(`/auth/verify-email?token=${token}`);
-};
-// Exportar objeto general con todos los servicios
-export const authService = {
-  register: registerUser,
-  login: loginUser,
-  requestPasswordReset,
-  resetPassword,
-  verifyEmailRequest,
+
+/**
+ * Verifica el email con token
+ */
+export const verifyEmail = async (token: string): Promise<void> => {
+  await apiClient.get(`${AUTH_ENDPOINT}/verify-email/${token}`);
 };

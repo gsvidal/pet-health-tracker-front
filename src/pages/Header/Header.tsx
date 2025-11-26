@@ -1,0 +1,88 @@
+import { useState } from 'react';
+import { Button } from '../../components/Button/Button';
+import { Heart } from 'lucide-react';
+//import "./Home.scss";
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useAuthStore } from '../../store/auth.store';
+import { PUBLIC_ROUTES } from '../../config/routes';
+// interface HeaderProps {
+//   path?: 'home' | 'dashboard';
+// }
+
+export const Header = () => {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const { logout } = useAuthStore();
+  console.log('pathname: ', pathname);
+  return (
+    <header className="sticky-header">
+      <div className="container">
+        {/* Logo */}
+        <div className="logo">
+          <div className="logo-icon">
+            <Heart className="h-6 w-6 text-white" fill="white" />
+          </div>
+          <span className="logo-text">Pet Health Tracker</span>
+
+          {/* Botón Hamburguesa */}
+          <button
+            className={`menu-toggle ${menuOpen ? 'open' : ''}`}
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Abrir menú"
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+
+        {/* Navegación */}
+        <nav className={menuOpen ? 'open' : ''}>
+          {pathname === '/' && (
+            <>
+              <a href="#inicio" onClick={() => setMenuOpen(false)}>
+                Inicio
+              </a>
+              <a href="#caracteristicas" onClick={() => setMenuOpen(false)}>
+                Características
+              </a>
+              <a href="#nosotros" onClick={() => setMenuOpen(false)}>
+                Nosotros
+              </a>
+              <a href="#contacto" onClick={() => setMenuOpen(false)}>
+                Contacto
+              </a>
+            </>
+          )}{' '}
+          <div className="btn-wrapper">
+            {pathname === '/dashboard' ? (
+              <Button
+                size="lg"
+                variant="primary"
+                onClick={() => {
+                  setMenuOpen(false);
+                  navigate(PUBLIC_ROUTES.HOME);
+                  logout();
+                }}
+              >
+                Logout
+              </Button>
+            ) : (
+              <Button
+                size="lg"
+                variant="primary"
+                onClick={() => {
+                  setMenuOpen(false);
+                  navigate(PUBLIC_ROUTES.REGISTER);
+                }}
+              >
+                Registrarse
+              </Button>
+            )}
+          </div>
+        </nav>
+      </div>
+    </header>
+  );
+};

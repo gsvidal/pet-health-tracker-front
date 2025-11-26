@@ -1,52 +1,94 @@
-import './Modal.scss';
-import { useEffect } from 'react';
-import { useModalStore } from '../../store/modal.store';
 import { X } from 'lucide-react';
+import { Button } from '../Button/Button';
+import './ModalText.scss';
+import { useEffect } from 'react';
 
-export const Modal = () => {
-  const { isOpen, content, title, closeModal } = useModalStore();
+type ModalTextVariant = 'default' | 'confirm';
+
+interface ModalTextProps {
+  isOpen: boolean;
+  onClose: () => void;
+  title?: string;
+  content: React.ReactNode;
+  variant?: ModalTextVariant;
+  onConfirm?: () => void;
+  onCancel?: () => void;
+  confirmLabel?: string;
+  cancelLabel?: string;
+}
+
+export const ModalText = ({
+  isOpen,
+  onClose,
+  title,
+  content,
+  variant = 'default',
+  onConfirm,
+  onCancel,
+  confirmLabel = 'Confirmar',
+  cancelLabel = 'Cancelar',
+}: ModalTextProps) => {
+  if (!isOpen) return null;
+
+  const handleConfirm = () => {
+    onConfirm?.();
+    onClose();
+  };
+
+  const handleCancel = () => {
+    onCancel?.();
+    onClose();
+  };
 
   // Cerrar con ESC
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isOpen) {
-        closeModal();
+        onClose();
       }
     };
 
     if (isOpen) {
       document.addEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'hidden'; // Prevenir scroll
+      document.body.style.overflow = 'hidden';
     }
 
     return () => {
       document.removeEventListener('keydown', handleEscape);
       document.body.style.overflow = 'unset';
     };
-  }, [isOpen, closeModal]);
-
-  if (!isOpen) return null;
-
-  const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.target === e.currentTarget) {
-      closeModal();
-    }
-  };
+  }, [isOpen, onClose]);
 
   return (
-    <div className="modal-overlay" onClick={handleOverlayClick}>
-      <div className="modal-container">
-        <div className="modal-header">
-          {title && <h2 className="modal-title">{title}</h2>}
+    <div
+      className={`modal-text-overlay ${isOpen ? 'open' : ''}`}
+      onClick={onClose}
+    >
+      <div
+        className="modal-text-container"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="modal-text-header">
+          {title && <h2 className="modal-text-title">{title}</h2>}
           <button
-            className="modal-close"
-            onClick={closeModal}
+            className="modal-text-close"
+            onClick={onClose}
             aria-label="Cerrar modal"
           >
-            <X size={20} />
+            <X size={16} />
           </button>
         </div>
-        <div className="modal-content">{content}</div>
+        <div className="modal-text-content">{content}</div>
+        {variant === 'confirm' && (
+          <div className="modal-text-actions">
+            <Button variant="outline" onClick={handleCancel}>
+              {cancelLabel}
+            </Button>
+            <Button variant="primary" onClick={handleConfirm}>
+              {confirmLabel}
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );

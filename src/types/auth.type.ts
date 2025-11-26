@@ -3,9 +3,8 @@ export interface RegisterRequest {
   email: string;
   password: string;
 }
-export interface RegisterResponse {
-  message: string;
-}
+// El backend retorna directamente el perfil del usuario
+export type RegisterResponse = RegisterUserProfile;
 
 // -------- Inicio Sesion --------
 export interface LoginRequest {

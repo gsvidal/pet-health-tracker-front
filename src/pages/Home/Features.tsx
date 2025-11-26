@@ -1,6 +1,7 @@
 import { Calendar, Syringe, UtensilsCrossed, Bell, FileText, Heart, LayoutDashboard, Shield } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardDescription } from "../../components/Card/Card";
-import "./HomeFeatures.scss";
+import "./Home.scss";
+// import "./Features.scss";
 
 const features = [
   { icon: Heart, title: "Perfiles Completos de Mascotas", description: "Crea y gestiona perfiles con nombre, especie, raza, edad, peso y foto. Edita o elimina información cuando lo necesites." },
@@ -13,7 +14,7 @@ const features = [
   { icon: FileText, title: "Historial Médico Completo", description: "Acceso instantáneo al historial médico completo con todos los registros de salud organizados." },
 ];
 
-export function HomeFeatures() {
+export function Features() {
   return (
     <section id="caracteristicas" className="home-features">
       <div className="container">

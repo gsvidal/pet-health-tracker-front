@@ -2,15 +2,10 @@ import { create } from 'zustand';
 import { toast } from 'react-hot-toast';
 import type { User } from '../models/user.model';
 
-import type {
-  RegisterRequest,
-  RegisterResponse,
-  LoginRequest,
-  LoginResponse,
-  TokenResponse,
-} from '../types/auth.type';
+import type { RegisterRequest, LoginRequest } from '../types/auth.type';
 
 import { callApi } from '../utils/apiHelper';
+import * as authService from '../services/auth.service';
 
 interface AuthState {
   user: User | null;
@@ -41,11 +36,12 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   register: async (data: RegisterRequest) => {
     set({ loading: true, error: null });
 
-    const { data: response, error } = await callApi<RegisterResponse>({
-      url: '/auth/register',
-      method: 'POST',
-      data,
-    });
+    const { data: response, error } = await callApi(() =>
+      authService.register(data),
+    );
+
+    // TEMPORAL: Ver qué envía el backend
+    console.log('Respuesta del backend:', response);
 
     if (error || !response) {
       const message = error || 'Error al registrar usuario';
@@ -64,11 +60,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   login: async (data: LoginRequest) => {
     set({ loading: true, error: null });
 
-    const { data: response, error } = await callApi<LoginResponse>({
-      url: '/auth/login',
-      method: 'POST',
-      data,
-    });
+    const { data: response, error } = await callApi(() =>
+      authService.login(data),
+    );
 
     if (error || !response) {
       const message = error || 'Credenciales incorrectas';
@@ -107,11 +101,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       return;
     }
 
-    const { data, error } = await callApi<TokenResponse>({
-      url: '/auth/refresh',
-      method: 'POST',
-      data: { refresh_token: refreshToken },
-    });
+    const { data, error } = await callApi(() =>
+      authService.refreshTokens(refreshToken),
+    );
 
     if (error || !data) {
       console.error('Error al refrescar token:', error);
@@ -132,29 +124,33 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     set({
       user: {
         id: 'dev-user',
-        email: 'dev@example.com',
-        username: 'devUser',
-        fullName: 'Developer User',
-        role: 'admin',
+        email: 'miltonfruizok@outlook.es',
+        username: 'milton',
+        fullName: 'Milton Ruiz',
+        role: 'user',
         createdAt: new Date().toISOString(),
       },
       accessToken: 'dev-access-token',
       refreshToken: 'dev-refresh-token',
-      isAuthenticated: true,
-      loading: false,
+      //isAuthenticated: true,
+      loading: true,
       error: null,
     });
+    setTimeout(() => {
+      set({
+        loading: false,
+        isAuthenticated: true,
+      });
+      toast.success('Sesión mock iniciada ✔️');
+    }, 3000);
 
-    toast.success('Sesión mock iniciada ✔️');
+    // toast.success('Sesión mock iniciada ✔️');
   },
 
   verifyEmail: async (token: string) => {
     set({ loading: true, error: null });
 
-    const { data, error } = await callApi({
-      url: `/auth/verify-email/${token}`,
-      method: 'GET',
-    });
+    const { data, error } = await callApi(() => authService.verifyEmail(token));
 
     if (error || !data) {
       const message = error || 'Error al verificar email';
@@ -168,15 +164,14 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
   logout: async () => {
     set({ loading: true, error: null });
-    const accessToken = useAuthStore.getState().accessToken;
+    const accessToken = get().accessToken;
     if (accessToken) {
-      await callApi({
-        url: '/auth/logout',
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
+      try {
+        await callApi(() => authService.logout());
+      } catch (err) {
+        // Ignorar errores en logout (puede que el token ya sea inválido)
+        console.warn('Error al cerrar sesión en el servidor:', err);
+      }
     }
     set({
       user: null,
