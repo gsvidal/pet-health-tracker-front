@@ -1,4 +1,3 @@
-import { Button } from '../../../../components/Button/Button';
 import type { Pet } from '../../../../models/pet.model';
 import './PetVaccineSection.scss';
 
@@ -6,9 +5,7 @@ interface PetVaccineSectionProps {
   pet: Pet;
 }
 
-export const PetVaccineSection: React.FC<PetVaccineSectionProps> = ({
-  pet,
-}) => {
+export const PetVaccineSection: React.FC<PetVaccineSectionProps> = () => {
   return (
     <>
       {/* <div className="pet-section-card pet-section-card--button">
