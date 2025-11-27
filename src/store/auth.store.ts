@@ -14,6 +14,7 @@ interface AuthState {
   isAuthenticated: boolean;
   loading: boolean;
   error: string | null;
+  // TODO: add tokenType and expiresIn (from Login response)
 
   register: (data: RegisterRequest) => Promise<void>;
   login: (data: LoginRequest) => Promise<void>;
@@ -23,6 +24,7 @@ interface AuthState {
   mockLogin: () => void;
   verifyEmail: (token: string) => Promise<void>;
   setAuth: (data: Partial<AuthState>) => void;
+  getUserData: () => Promise<void>;
 }
 
 export const useAuthStore = create<AuthState>((set, get) => ({
@@ -63,6 +65,8 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     const { data: response, error } = await callApi(() =>
       authService.login(data),
     );
+    console.log('response: ', response);
+    console.log('error: ', error);
 
     if (error || !response) {
       const message = error || 'Credenciales incorrectas';
@@ -76,14 +80,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     }
 
     set({
-      user: {
-        id: String(response.user.id),
-        email: response.user.email,
-        username: response.user.name,
-        fullName: response.user.name,
-        role: 'USER',
-        createdAt: new Date().toISOString(),
-      },
       accessToken: response.access_token,
       refreshToken: response.refresh_token,
       isAuthenticated: true,
@@ -101,21 +97,22 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       return;
     }
 
-    const { data, error } = await callApi(() =>
-      authService.refreshTokens(refreshToken),
-    );
+    // TODO: uncoment
+    // const { data, error } = await callApi(() =>
+    //   authService.refreshTokens(refreshToken),
+    // );
 
-    if (error || !data) {
-      console.error('Error al refrescar token:', error);
-      get().logout();
-      return;
-    }
+    // if (error || !data) {
+    //   console.error('Error al refrescar token:', error);
+    //   get().logout();
+    //   return;
+    // }
 
-    set({
-      accessToken: data.access_token,
-      refreshToken: data.refresh_token,
-      isAuthenticated: true,
-    });
+    // set({
+    //   accessToken: data.access_token,
+    //   refreshToken: data.refresh_token,
+    //   isAuthenticated: true,
+    // });
   },
 
   clearError: () => set({ error: null }),
@@ -150,9 +147,10 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   verifyEmail: async (token: string) => {
     set({ loading: true, error: null });
 
-    const { data, error } = await callApi(() => authService.verifyEmail(token));
+    const { error } = await callApi(() => authService.verifyEmail(token));
 
-    if (error || !data) {
+    // Solo verificar error, no data (porque el backend retorna null en éxito)
+    if (error) {
       const message = error || 'Error al verificar email';
       set({ loading: false, error: message });
       throw new Error(message);
@@ -189,4 +187,25 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       ...state,
       ...authData,
     })),
+
+  getUserData: async () => {
+    set({ loading: true, error: null });
+
+    const { data: user, error } = await callApi(() =>
+      authService.getUserData(),
+    );
+
+    if (error || !user) {
+      const message = error || 'Error al obtener datos del usuario';
+      console.error('Error al obtener datos del usuario:', error);
+      set({ loading: false, error: message });
+      throw new Error(message);
+    }
+
+    set({
+      user,
+      loading: false,
+      error: null,
+    });
+  },
 }));

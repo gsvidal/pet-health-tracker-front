@@ -12,5 +12,9 @@ export function adaptUserProfileToUser(userProfile: RegisterUserProfile): User {
     fullName: userProfile.full_name,
     role: userProfile.role,
     createdAt: userProfile.created_at,
+    isActive: userProfile.is_active,
+    emailVerified: userProfile.email_verified,
+    phone: userProfile.phone,
+    timezone: userProfile.timezone,
   };
 }

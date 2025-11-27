@@ -4,7 +4,7 @@ interface PetNutritionSectionProps {
   pet: Pet;
 }
 
-export const PetNutritionSection:React.FC<PetNutritionSectionProps> = ({pet}) => {
+export const PetNutritionSection:React.FC<PetNutritionSectionProps> = () => {
 
   return <div className="pet-section-card">Seccion Nutricion</div>;
 };
