@@ -1,3 +1,5 @@
+// TODO: descomentar todo esto se comento por temas de build
+
 import { useCallback } from 'react';
 import { callApi } from '../utils/apiHelper';
 import { useAuthStore } from '../store/auth.store';

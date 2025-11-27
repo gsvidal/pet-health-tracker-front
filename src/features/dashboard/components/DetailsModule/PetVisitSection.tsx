@@ -4,6 +4,6 @@ interface PetVisitSectionProps {
   pet: Pet;
 }
 
-export const PetVisitSection:React.FC<PetVisitSectionProps> = ({pet}) => {
+export const PetVisitSection:React.FC<PetVisitSectionProps> = () => {
 
   return <div className="pet-section-card">Seccion Visitas</div>;};
