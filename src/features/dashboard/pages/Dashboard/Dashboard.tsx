@@ -1,30 +1,35 @@
 import './Dashboard.scss';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useAuthStore } from '../../../../store/auth.store';
 import { usePetStore } from '../../../../store/pet.store';
 import { DashboardUserCard } from '../../components/DashboardUserCard/DashboardUserCard';
 import { DashboardPetCard } from '../../components/DashboardPetCard/DashboardPetCard';
-import { useNavigate } from 'react-router-dom';
 import { Button } from '../../../../components/Button/Button';
 import { Plus } from 'lucide-react';
 import { Header } from '../../../../pages/Header/Header';
+import { Modal } from '../../../../components/Modal/Modal';
+import { CreatePetForm } from '../PetForm/PetFormPage';
 
 export const Dashboard = () => {
   const { user, getUserData } = useAuthStore();
   const { pets, loading, mockPets } = usePetStore();
-  const router = useNavigate();
+  const [openPetForm, setOpenPetForm] = useState(false);
 
   useEffect(() => {
     mockPets();
     getUserData();
   }, []);
 
-  const handleViewDetails = (petId: string) => {
-    router(`/pets/${petId}`);
-  };
+  // const handleViewDetails = (petId: string) => {
+  //   router(`/pets/${petId}`);
+  // };
 
   return (
     <>
+      {/* Modal de Login */}
+      <Modal isOpen={openPetForm} onClose={() => setOpenPetForm(false)}>
+        <CreatePetForm />
+      </Modal>
       <Header />
       <section className="section section--dashboard">
         <div className="container container--dashboard">
@@ -53,7 +58,7 @@ export const Dashboard = () => {
                     lastVisitLabel="Próximamente"
                     activeAlertsCount={1}
                     upcomingEventsCount={0}
-                    onViewDetails={handleViewDetails}
+                    // onViewDetails={handleViewDetails}
                   />
                 ))}
               </div>
@@ -64,7 +69,7 @@ export const Dashboard = () => {
             variant="outline"
             size="lg"
             style={{ width: '100%', marginTop: '29px' }}
-            onClick={() => router('/pets/create')}
+            onClick={() => setOpenPetForm(true)}
           >
             <Plus className="h-5 w-5 mr-2" />
             Agregar Mascota

@@ -1,14 +1,10 @@
 import { useState } from 'react';
 import { Button } from '../../components/Button/Button';
 import { Heart, ArrowLeft } from 'lucide-react';
-//import "./Home.scss";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/auth.store';
 import { PUBLIC_ROUTES } from '../../config/routes';
 import './Header.scss';
-// interface HeaderProps {
-//   path?: 'home' | 'dashboard';
-// }
 
 export const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -85,17 +81,19 @@ export const Header = () => {
               >
                 Logout
               </Button>
-            ) : pathname === '/' && (
-              <Button
-                size="lg"
-                variant="primary"
-                onClick={() => {
-                  setMenuOpen(false);
-                  navigate(PUBLIC_ROUTES.REGISTER);
-                }}
-              >
-                Registrarse
-              </Button>
+            ) : (
+              pathname === '/' && (
+                <Button
+                  size="lg"
+                  variant="primary"
+                  onClick={() => {
+                    setMenuOpen(false);
+                    navigate(PUBLIC_ROUTES.REGISTER);
+                  }}
+                >
+                  Registrarse
+                </Button>
+              )
             )}
             {/* TODO: agregar volver a pagina pet */}
           </div>
