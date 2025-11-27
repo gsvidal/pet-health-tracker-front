@@ -12,5 +12,5 @@ export const PRIVATE_ROUTES = {
   CREATE_PET: '/pets/create',
   // Future routes:
   // PETS: '/pets',
-  // PET_DETAIL: '/pets/:id',
+  PET_DETAIL: '/pets/:id',
 } as const;

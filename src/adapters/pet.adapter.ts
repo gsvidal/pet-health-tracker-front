@@ -86,6 +86,7 @@ export function adaptPetResponseToPet(petResponse: PetResponse): Pet {
     ownerId: petResponse.owner_id,
     createdAt: petResponse.created_at,
     updatedAt: petResponse.updated_at,
+    healthStatus: null,
   };
 }
 
