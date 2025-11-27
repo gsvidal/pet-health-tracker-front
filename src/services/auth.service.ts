@@ -6,6 +6,7 @@ import type {
   LoginResponse,
   ReqPassResetResponse,
   RegisterUserProfile,
+  TokenResponse,
 } from '../types/auth.type';
 import type { User } from '../models/user.model';
 import { adaptUserProfileToUser } from '../adapters/user.adapter';
@@ -40,15 +41,15 @@ export const login = async (data: LoginRequest): Promise<LoginResponse> => {
 /**
  * Refresca los tokens
  */
-// export const refreshTokens = async (
-//   refreshToken: string,
-// ): Promise<TokenResponse> => {
-//   const response = await apiClient.post<TokenResponse>(
-//     `${AUTH_ENDPOINT}/refresh`,
-//     { refresh_token: refreshToken },
-//   );
-//   return response.data;
-// };
+export const refreshTokens = async (
+  refreshToken: string,
+): Promise<TokenResponse> => {
+  const response = await apiClient.post<TokenResponse>(
+    `${AUTH_ENDPOINT}/refresh`,
+    { refresh_token: refreshToken },
+  );
+  return response.data;
+};
 
 /**
  * Cierra sesión

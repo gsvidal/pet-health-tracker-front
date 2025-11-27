@@ -97,22 +97,21 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       return;
     }
 
-    // TODO: uncoment
-    // const { data, error } = await callApi(() =>
-    //   authService.refreshTokens(refreshToken),
-    // );
+    const { data, error } = await callApi(() =>
+      authService.refreshTokens(refreshToken),
+    );
 
-    // if (error || !data) {
-    //   console.error('Error al refrescar token:', error);
-    //   get().logout();
-    //   return;
-    // }
+    if (error || !data) {
+      console.error('Error al refrescar token:', error);
+      get().logout();
+      return;
+    }
 
-    // set({
-    //   accessToken: data.access_token,
-    //   refreshToken: data.refresh_token,
-    //   isAuthenticated: true,
-    // });
+    set({
+      accessToken: data.access_token,
+      refreshToken: data.refresh_token,
+      isAuthenticated: true,
+    });
   },
 
   clearError: () => set({ error: null }),
