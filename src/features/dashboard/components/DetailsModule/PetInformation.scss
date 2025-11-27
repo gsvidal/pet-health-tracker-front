@@ -7,29 +7,47 @@
     display: flex;
     background: white;
     border: 1px solid #e5e5e5;
-    border-radius: 14px;
+    border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+    box-shadow: var(--shadow-md, 0 2px 6px rgba(0, 0, 0, 0.1));
 
     button {
       flex: 1;
-      padding: 12px 0;
+      padding: 8px 0;
       background: white;
       border: none;
       cursor: pointer;
       font-weight: 500;
       color: #555;
-      font-size: 14px;
-      transition: 0.25s ease;
+      font-size: 1.1rem;
+      margin: 3px;
 
-      &:hover {
-        background: #f9f9f9;
+      #menu-title {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+
+        .icon-tabs {
+          margin-right: 4px;
+        }
       }
 
       &.active {
-        background: #f3e9ff;
-        color: #7b3bff;
-        font-weight: 600;
+        background: linear-gradient(
+          90deg,
+          var(--color-gradient-start),
+          var(--color-gradient-end)
+        );
+        color: white;
+        border-radius: 20px;
+        margin: 3px;
+        #menu-title {
+          color: white;
+        }
+        .icon-tabs {
+          color: white;
+        }
       }
     }
   }
