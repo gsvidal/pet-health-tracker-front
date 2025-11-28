@@ -4,9 +4,12 @@ import type {
   RegisterResponse,
   LoginRequest,
   LoginResponse,
+  ReqPassResetResponse,
+  RegisterUserProfile,
   TokenResponse,
-  ReqPasswordResetResponse,
 } from '../types/auth.type';
+import type { User } from '../models/user.model';
+import { adaptUserProfileToUser } from '../adapters/user.adapter';
 
 const AUTH_ENDPOINT = '/auth';
 
@@ -27,6 +30,7 @@ export const register = async (
  * Inicia sesión
  */
 export const login = async (data: LoginRequest): Promise<LoginResponse> => {
+  console.log('login data auth service: ', data);
   const response = await apiClient.post<LoginResponse>(
     `${AUTH_ENDPOINT}/login`,
     data,
@@ -59,8 +63,8 @@ export const logout = async (): Promise<void> => {
  */
 export const requestPasswordReset = async (
   email: string,
-): Promise<ReqPasswordResetResponse> => {
-  const response = await apiClient.post<ReqPasswordResetResponse>(
+): Promise<ReqPassResetResponse> => {
+  const response = await apiClient.post<ReqPassResetResponse>(
     `${AUTH_ENDPOINT}/request-password-reset`,
     { email },
   );
@@ -81,5 +85,15 @@ export const resetPassword = async (data: {
  * Verifica el email con token
  */
 export const verifyEmail = async (token: string): Promise<void> => {
-  await apiClient.get(`${AUTH_ENDPOINT}/verify-email/${token}`);
+  await apiClient.post(`${AUTH_ENDPOINT}/verify-email`, { token });
+};
+
+/**
+ * Obtiene los datos del usuario autenticado
+ */
+export const getUserData = async (): Promise<User> => {
+  const response = await apiClient.get<RegisterUserProfile>(
+    `${AUTH_ENDPOINT}/me`,
+  );
+  return adaptUserProfileToUser(response.data);
 };

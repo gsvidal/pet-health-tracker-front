@@ -14,17 +14,19 @@ export interface LoginRequest {
 export interface LoginResponse {
   access_token: string;
   refresh_token: string;
-  user: {
-    id: number;
-    name: string;
-    email: string;
-  };
+  token_type: 'bearer';
+  expires_in: number;
+  // user: {
+  //   id: number;
+  //   name: string;
+  //   email: string;
+  // };
 }
 // --- Solicitud cambio de contraseña ----
-export interface RecoverPasswordRequest {
+export interface ReqPassResetRequest {
   email: string;
 }
-export interface ReqPasswordResetResponse {
+export interface ReqPassResetResponse {
   message: string | null;
   detail?: string;
 }

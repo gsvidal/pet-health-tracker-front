@@ -2,10 +2,13 @@ import { Navigate, Outlet } from 'react-router-dom';
 import { useAuthStore } from '../../store/auth.store';
 import { PUBLIC_ROUTES } from '../../config/routes';
 
+// En PrivateGuard.tsx
 export const PrivateGuard = () => {
-  const { isAuthenticated, loading } = useAuthStore();
+  const { isAuthenticated, loading, accessToken } = useAuthStore();
 
-  if (loading) {
+  // Solo bloquear si estamos cargando Y no tenemos token (autenticación inicial)
+  // Si ya tenemos token pero loading es true (por getUserData), no bloquear
+  if (loading && !accessToken) {
     return (
       <div className="guard-loading">
         <p>Validando sesión...</p>

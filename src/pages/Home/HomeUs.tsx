@@ -1,9 +1,12 @@
 import { ArrowRight, CircleCheck } from 'lucide-react';
-import "./Home.scss";
+import './Home.scss';
 //import './HomeUs.scss';
 import { Button } from '../../components/Button/Button';
+import { useNavigate } from 'react-router-dom';
+import { PUBLIC_ROUTES } from '../../config/routes';
 
 export const HomeUs = () => {
+  const navigate = useNavigate();
   return (
     <>
       <section className="section-1" id="nosotros">
@@ -79,7 +82,10 @@ export const HomeUs = () => {
               en Pet Health Tracker.
             </p>
             <div className="buttons-container">
-              <Button variant="outline">
+              <Button
+                variant="outline"
+                onClick={() => navigate(PUBLIC_ROUTES.REGISTER)}
+              >
                 Crear Cuenta Gratuita
                 <ArrowRight style={{ marginLeft: 8, width: 20, height: 20 }} />
               </Button>

@@ -1,12 +1,18 @@
-import { Modal } from '../../../../components/Modal/Modal';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Modal } from '../../../../components/Modal/Modal';
+// import { useState } from 'react';
 import { LoginForm } from '../../../auth/LoginForm';
 
 export const LoginPage = () => {
   const [openLogin, setOpenLogin] = useState(true);
-
+  const navigate = useNavigate();
+  const handleClose = () => {
+    setOpenLogin(false);
+    navigate('/');
+  };
   return (
-    <Modal isOpen={openLogin} onClose={() => setOpenLogin(false)}>
+    <Modal isOpen={openLogin} onClose={handleClose}>
       <LoginForm />
     </Modal>
   );
