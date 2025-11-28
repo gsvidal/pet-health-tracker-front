@@ -24,13 +24,13 @@ export const ProfilePet = ({ pet }: ProfilePetProps) => {
         </p>
         <div className="profile-stats">
           <div>
-            <strong>Edad:</strong> {pet.ageYears} años
+            <strong>Edad:</strong> <p>{pet.ageYears} años</p>
           </div>
           <div>
-            <strong>Peso:</strong> {pet.weightKg} kg
+            <strong>Peso:</strong> <p>{pet.weightKg} kg</p>
           </div>
           <div>
-            <strong>Sexo:</strong> {pet.sex}
+            <strong>Sexo:</strong> <p>{pet.sex}</p>
           </div>
           <div>
             <strong>Estado:</strong>

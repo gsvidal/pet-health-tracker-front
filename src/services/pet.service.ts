@@ -31,3 +31,14 @@ export const createPet = async (petData: PetFormData): Promise<PetResponse> => {
   );
   return response.data;
 };
+
+/**
+ * Actualiza una mascota por ID
+ */
+
+export const updatePetService = async (id: string, petData: PetFormData) => {
+  const requestData = adaptPetToPetRequest(petData);
+
+  const response = await apiClient.patch(`${PETS_ENDPOINT}/${id}`, requestData);
+  return response.data;
+};

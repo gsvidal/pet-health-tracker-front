@@ -6,6 +6,7 @@ import {
   getPets,
   getPetById,
   createPet as createPetService,
+  updatePetService,
 } from '../services/pet.service';
 import { adaptPetResponseToPet } from '../adapters/pet.adapter';
 import { callApi } from '../utils/apiHelper';
@@ -23,6 +24,7 @@ interface PetState {
   getPetById: (id: string) => Pet | undefined;
   clearError: () => void;
   mockPets: () => void;
+  updatePet: (id: string, petData: PetFormData) => Promise<void>;
 }
 
 export const usePetStore = create<PetState>((set, get) => ({
@@ -158,5 +160,42 @@ export const usePetStore = create<PetState>((set, get) => ({
     });
 
     toast.success('Mascotas mock cargadas correctamente ✔️');
+  },
+
+  updatePet: async (id, petData) => {
+    if (id.startsWith('mock-')) {
+      console.warn('Mascota mock detectada. No se enviará update al backend.');
+
+      // Simula actualización local
+      const updatedPet = {
+        ...get().selectedPet,
+        ...petData,
+        id: id,
+      };
+      set((state) => ({
+        pets: state.pets.map((p) => (p.id === id ? updatedPet : p)),
+        selectedPet: updatedPet,
+      }));
+      toast.success('Mascota mock actualizada localmente ✔️');
+      return;
+    }
+    set({ loading: true, error: null });
+    const { data: petResponse, error } = await callApi(() =>
+      updatePetService(id, petData),
+    );
+    if (error || !petResponse) {
+      const message = error || 'Error al actualizar la mascota';
+      toast.error(message);
+      set({ error: message, loading: false });
+      return;
+    }
+    const updatedPet = adaptPetResponseToPet(petResponse);
+    set((state) => ({
+      pets: state.pets.map((p) => (p.id === id ? updatedPet : p)),
+      selectedPet: updatedPet,
+      loading: false,
+      error: null,
+    }));
+    toast.success('Mascota actualizada correctamente ✔️');
   },
 }));
