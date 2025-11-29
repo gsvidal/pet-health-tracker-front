@@ -2,7 +2,8 @@ import { useState } from 'react';
 import type { Pet } from '../../../../models/pet.model';
 import { usePetStore } from '../../../../store/pet.store';
 import './PetInfoSection.scss';
-import { FaRegEdit, FaRegSave } from 'react-icons/fa';
+import { FaRegEdit, FaCheck } from 'react-icons/fa';
+import { IoCloseOutline } from 'react-icons/io5';
 
 interface PetInfoSectionProps {
   pet: Pet;
@@ -16,6 +17,7 @@ interface ErrorState {
   breed: string;
   ageYears: string;
   healthStatus: string;
+  photoUrl: string;
   notes: string;
 }
 
@@ -32,6 +34,7 @@ export default function PetInfoSection({ pet }: PetInfoSectionProps) {
     breed: '',
     ageYears: '',
     healthStatus: '',
+    photoUrl: '',
     notes: '',
   });
 
@@ -87,6 +90,7 @@ export default function PetInfoSection({ pet }: PetInfoSectionProps) {
     weightKg: String(pet.weightKg ?? ''),
     sex: pet.sex ?? '',
     healthStatus: pet.healthStatus ?? '',
+    photoUrl: pet.photoUrl ?? '',
     notes: pet.notes ?? '',
   });
 
@@ -117,34 +121,49 @@ export default function PetInfoSection({ pet }: PetInfoSectionProps) {
     setIsEditing(false);
   };
 
+  const handleCancel = () => {
+    setFormData({
+      name: pet.name,
+      species: pet.species,
+      breed: pet.breed ?? '',
+      birthDate: pet.birthDate ? pet.birthDate.split('T')[0] : '',
+      ageYears: pet.ageYears ? String(pet.ageYears) : '',
+      weightKg: String(pet.weightKg ?? ''),
+      sex: pet.sex ?? '',
+      healthStatus: pet.healthStatus ?? '',
+      photoUrl: pet.photoUrl ?? '',
+      notes: pet.notes ?? '',
+    });
+
+    setErrors({
+      name: '',
+      species: '',
+      birthDate: '',
+      weightKg: '',
+      sex: '',
+      breed: '',
+      ageYears: '',
+      healthStatus: '',
+      photoUrl: '',
+      notes: '',
+    });
+
+    setIsEditing(false);
+  };
+
   return (
-    <div className="pet-section-card pet-section-card--info">
+    <div
+      className={`pet-section-card pet-section-card--info ${isEditing ? 'editing' : ''}`}
+    >
       <div className="information-header">
         <div className="general-information">
           <h3>Información General</h3>
           <p>Detalles completos de tu mascota</p>
         </div>
-        <div className="edit-btn">
-          {!isEditing ? (
-            <button onClick={() => setIsEditing(true)}>
-              <p id="general-title">
-                <FaRegEdit className="icon-general" size={15} />
-                Editar
-              </p>
-            </button>
-          ) : (
-            <button id="save-button" onClick={handleSave}>
-              <p id="save-title">
-                <FaRegSave className="icon-general" size={15} />
-                Guardar
-              </p>
-            </button>
-          )}
-        </div>
       </div>
-
+      {isEditing && <p id="text-basics">Informacion Básica</p>}
       <div className="info-grid">
-        <div>
+        <div className="name-container">
           <label>Nombre</label>
           {isEditing ? (
             <>
@@ -161,7 +180,7 @@ export default function PetInfoSection({ pet }: PetInfoSectionProps) {
           )}
         </div>
 
-        <div>
+        <div className="species-container">
           <label>Especie</label>
           {isEditing ? (
             <>
@@ -178,7 +197,7 @@ export default function PetInfoSection({ pet }: PetInfoSectionProps) {
           )}
         </div>
 
-        <div>
+        <div className="race-container">
           <label>Raza</label>
           {isEditing ? (
             <>
@@ -195,7 +214,7 @@ export default function PetInfoSection({ pet }: PetInfoSectionProps) {
           )}
         </div>
 
-        <div>
+        <div className="date-container">
           <label>Fecha de nacimiento</label>
           {isEditing ? (
             <>
@@ -213,7 +232,7 @@ export default function PetInfoSection({ pet }: PetInfoSectionProps) {
           )}
         </div>
 
-        <div>
+        <div className="birth-container">
           <label>Edad</label>
           {isEditing ? (
             <>
@@ -231,7 +250,7 @@ export default function PetInfoSection({ pet }: PetInfoSectionProps) {
           )}
         </div>
 
-        <div>
+        <div className="weight-container">
           <label>Peso</label>
           {isEditing ? (
             <>
@@ -249,7 +268,7 @@ export default function PetInfoSection({ pet }: PetInfoSectionProps) {
           )}
         </div>
 
-        <div>
+        <div className="sex-container">
           <label>Sexo</label>
           {isEditing ? (
             <>
@@ -264,13 +283,14 @@ export default function PetInfoSection({ pet }: PetInfoSectionProps) {
                 <option value="Hembra">Hembra</option>
               </select>
               {errors.sex && <p id="error-details">{errors.sex}</p>}
+              <p id="text-fisics">Detalles Físicos</p>
             </>
           ) : (
             <p>{pet.sex || '—'}</p>
           )}
         </div>
 
-        <div>
+        <div className="health-container">
           <label>Estado de Salud</label>
           {isEditing ? (
             <>
@@ -288,22 +308,63 @@ export default function PetInfoSection({ pet }: PetInfoSectionProps) {
             <p>{pet.healthStatus}</p>
           )}
         </div>
-      </div>
 
-      <div className="notes">
-        <label>Notas</label>
-        {isEditing ? (
-          <>
-            <textarea
-              name="notes"
-              value={formData.notes}
+        {isEditing && (
+          <div className="photo-container">
+            <p id="text-aditional">Informacion Adicional</p>
+            <label>URL de Foto</label>
+            <input
+              placeholder="https://ejemplo.com/foto-mascota.jpg"
+              name="photoUrl"
+              value={formData.photoUrl}
               onChange={handleChange}
-              className={errors.notes ? 'input-error' : ''}
+              className={errors.photoUrl ? 'input-error' : ''}
             />
-            {errors.notes && <p id="error-details">{errors.notes}</p>}
-          </>
+            <p id="optional-text">* Opcional: Agrega foto de tu mascota</p>
+            {errors.photoUrl && <p id="error-details">{errors.photoUrl}</p>}
+          </div>
+        )}
+
+        <div className="notes">
+          <label>Nota</label>
+          {isEditing ? (
+            <>
+              <textarea
+                name="notes"
+                value={formData.notes}
+                onChange={handleChange}
+                className={errors.notes ? 'input-error' : ''}
+              />
+              {errors.notes && <p id="error-details">{errors.notes}</p>}
+            </>
+          ) : (
+            <p>{pet.notes}</p>
+          )}
+        </div>
+      </div>
+      <div className="edit-btn">
+        {!isEditing ? (
+          <button onClick={() => setIsEditing(true)}>
+            <p id="general-title">
+              <FaRegEdit className="icon-general" size={15} />
+              Editar Informacion
+            </p>
+          </button>
         ) : (
-          <p>{pet.notes}</p>
+          <>
+            <button id="save-button" onClick={handleSave}>
+              <p id="save-title">
+                <FaCheck className="icon-general" size={12} />
+                Guardar
+              </p>
+            </button>
+            <button id="cancel-button" onClick={handleCancel}>
+              <p id="cancel-title">
+                <IoCloseOutline className="icon-general" size={15} />
+                Cancelar
+              </p>
+            </button>
+          </>
         )}
       </div>
     </div>
