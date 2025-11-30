@@ -1,22 +1,50 @@
 import type { Pet } from '../../../../models/pet.model';
 import './PetNutritionSection.scss';
+import { FaPlus } from 'react-icons/fa6';
+import { PetRegisterFoodForm } from './PetRegisterFoodForm';
+import { useState } from 'react';
 
 interface PetNutritionSectionProps {
   pet: Pet;
 }
-
 export const PetNutritionSection: React.FC<PetNutritionSectionProps> = ({
   pet,
 }) => {
+  const [showForm, setShowForm] = useState(false);
+
   return (
     <div className="nutrition-container">
       {/* ---- Título principal ---- */}
       <div className="nutrition-header">
-        <div>
-          <h3>Seguimiento Nutricional</h3>
-          <p>Controla la alimentación y dieta de {pet.name}</p>
+        <div className="nutrition-header-top">
+          <div>
+            <h3>Seguimiento Nutricional</h3>
+            <p>Controla la alimentación y dieta de {pet.name}</p>
+          </div>
+
+          <div className="register-food-btn">
+            <button id="primary-reg-btn" onClick={() => setShowForm(!showForm)}>
+              <p id="register-food-title">
+                <FaPlus className="icon-reg-food" size={15} />
+                Registrar Comida
+              </p>
+            </button>
+          </div>
         </div>
-        <button className="primary-btn">Registrar Comida</button>
+
+        {/* --- Formulario Registro Comida --- */}
+        <div className={`nutrition-form-wrapper ${showForm ? 'open' : ''}`}>
+          {showForm && (
+            <PetRegisterFoodForm
+              pet={pet}
+              onClose={() => setShowForm(false)}
+              onFoodAdded={(newMeal) => {
+                console.log('Nueva comida agregada:', newMeal);
+                setShowForm(false);
+              }}
+            />
+          )}
+        </div>
       </div>
 
       {/* ---- Recordatorios ---- */}
@@ -67,7 +95,6 @@ export const PetNutritionSection: React.FC<PetNutritionSectionProps> = ({
           {/* Día actual */}
           <div className="history-day">
             <span className="day-label">Hoy</span>
-
             <div className="history-item">
               <div className="history-avatar">M</div>
               <div className="history-info">
@@ -97,7 +124,6 @@ export const PetNutritionSection: React.FC<PetNutritionSectionProps> = ({
           {/* Día anterior */}
           <div className="history-day">
             <span className="day-label">Lunes, 24 de noviembre de 2025</span>
-
             <div className="history-item">
               <div className="history-avatar">M</div>
               <div className="history-info">

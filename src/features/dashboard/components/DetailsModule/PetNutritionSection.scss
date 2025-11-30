@@ -12,40 +12,83 @@
 .nutrition-header {
   background: white;
   padding: 22px 28px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+
   margin: 5px auto;
   border: 1px solid #e5e5e5;
   background: white;
   border-radius: var(--radius-md, 8px);
+  margin-bottom: 25px;
 
   h3 {
     margin: 0;
-    font-size: 18px;
+    font-size: 1.2rem;
+    font-weight: 600;
   }
 
   p {
+    font-size: 1.1rem;
+    font-weight: 400;
     margin: 2px 0 0;
-    font-size: 14px;
-    color: #777;
+
+    color: var(--color-text-secondary, #6b7280);
+  }
+  .register-food-btn {
+    display: flex;
+    justify-content: center;
+    button {
+      border: 1px solid var(--color-border);
+      font-family: var(--font-heading);
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    #primary-reg-btn {
+      border: none;
+      color: white;
+      background: linear-gradient(
+        90deg,
+        var(--color-gradient-start),
+        var(--color-gradient-end)
+      );
+      padding: 1rem 2.3rem;
+      cursor: pointer;
+      &:hover {
+        background-color: var(--color-primary-bg);
+        opacity: 0.9;
+      }
+      #register-food-title {
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        .icon-reg-food {
+          margin-right: 4px;
+        }
+      }
+    }
   }
 }
-
-.primary-btn {
-  background: #7b3bff;
-  color: white;
-  padding: 10px 22px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 14px;
-
-  &:hover {
-    background: #6930e5;
-  }
+/* Header normal (título + botón) */
+.nutrition-header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-
+/* Wrapper animado */
+.nutrition-form-wrapper {
+  max-height: 0;
+  overflow: hidden;
+  transition:
+    max-height 0.35s ease,
+    opacity 0.25s ease;
+  opacity: 0;
+}
+/* Se despliega */
+.nutrition-form-wrapper.open {
+  max-height: 1000px;
+  opacity: 1;
+  margin-top: 15px;
+}
 /* --- TARJETAS --- */
 .nutrition-card {
   margin-top: 20px;

@@ -39,7 +39,7 @@
     select,
     input {
       width: 100%;
-      padding: 1rem 0.8rem;
+      padding: 0.7rem 0.8rem;
       border: 1px solid #eee;
       border-radius: 6px;
       background-color: #f8f8f8;
@@ -188,6 +188,17 @@
   grid-template-rows: repeat(7, auto);
   grid-row-gap: 16px;
   grid-column-gap: 24px;
+  animation: slideDown 0.3s ease-out;
+}
+@keyframes slideDown {
+  from {
+    transform: translateY(-15px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 .pet-section-card--info.editing .name-container {
   grid-area: 1 / 1 / 2 / 3;
