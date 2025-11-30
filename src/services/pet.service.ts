@@ -31,3 +31,10 @@ export const createPet = async (petData: PetFormData): Promise<PetResponse> => {
   );
   return response.data;
 };
+
+/**
+ * Elimina una mascota
+ */
+export const deletePet = async (id: string): Promise<void> => {
+  await apiClient.delete(`${PETS_ENDPOINT}/${id}`);
+};

@@ -28,19 +28,7 @@ export const ModalText = ({
   confirmLabel = 'Confirmar',
   cancelLabel = 'Cancelar',
 }: ModalTextProps) => {
-  if (!isOpen) return null;
-
-  const handleConfirm = () => {
-    onConfirm?.();
-    onClose();
-  };
-
-  const handleCancel = () => {
-    onCancel?.();
-    onClose();
-  };
-
-  // Cerrar con ESC
+  // Cerrar con ESC y manejar scroll
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isOpen) {
@@ -58,6 +46,18 @@ export const ModalText = ({
       document.body.style.overflow = 'unset';
     };
   }, [isOpen, onClose]);
+
+  if (!isOpen) return null;
+
+  const handleConfirm = () => {
+    onConfirm?.();
+    onClose();
+  };
+
+  const handleCancel = () => {
+    onCancel?.();
+    onClose();
+  };
 
   return (
     <div

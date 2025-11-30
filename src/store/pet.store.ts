@@ -6,6 +6,7 @@ import {
   getPets,
   getPetById,
   createPet as createPetService,
+  deletePet as deletePetService,
 } from '../services/pet.service';
 import { adaptPetResponseToPet } from '../adapters/pet.adapter';
 import { callApi } from '../utils/apiHelper';
@@ -19,10 +20,11 @@ interface PetState {
   // Acciones
   fetchPets: () => Promise<void>;
   fetchPetById: (id: string) => Promise<void>;
-  createPet: (petData: PetFormData) => Promise<void>;
+  createPet: (petData: PetFormData) => Promise<boolean>;
   getPetById: (id: string) => Pet | undefined;
   clearError: () => void;
   mockPets: () => void;
+  deletePet: (id: string) => Promise<void>;
 }
 
 export const usePetStore = create<PetState>((set, get) => ({
@@ -93,7 +95,7 @@ export const usePetStore = create<PetState>((set, get) => ({
         error: message,
         loading: false,
       });
-      return;
+      return false;
     }
 
     const newPet = adaptPetResponseToPet(petResponse);
@@ -106,6 +108,7 @@ export const usePetStore = create<PetState>((set, get) => ({
     }));
 
     toast.success('Mascota creada correctamente ✔️');
+    return true;
   },
 
   getPetById: (id: string) => {
@@ -158,5 +161,29 @@ export const usePetStore = create<PetState>((set, get) => ({
     });
 
     toast.success('Mascotas mock cargadas correctamente ✔️');
+  },
+
+  deletePet: async (id: string) => {
+    set({ loading: true, error: null });
+
+    const { error } = await callApi(() => deletePetService(id));
+
+    if (error) {
+      const message = error || 'Error al eliminar la mascota';
+      toast.error(message);
+      set({
+        error: message,
+        loading: false,
+      });
+      return;
+    }
+
+    set((state) => ({
+      pets: state.pets.filter((pet) => pet.id !== id),
+      loading: false,
+      error: null,
+    }));
+
+    toast.success('Mascota eliminada correctamente 🗑️');
   },
 }));
