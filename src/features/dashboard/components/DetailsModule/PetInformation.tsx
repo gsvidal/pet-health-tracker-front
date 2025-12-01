@@ -4,15 +4,14 @@ import type { Pet } from '../../../../models/pet.model';
 
 import './PetInformation.scss';
 import { PetNutritionSection } from './PetNutritionsSection';
-import { PetVisitSection } from './PetVisitSection';
-import { PetVaccineSection } from './PetVaccineSection';
+import { PetHealthSection } from './PetHealthSection';
 
 interface PetInformationProps {
   pet: Pet;
 }
 
 export const PetInformation = ({ pet }: PetInformationProps) => {
-  const [tab, setTab] = useState<'info' | 'vaccines' | 'nutrition' | 'visits'>(
+  const [tab, setTab] = useState<'info' | 'health' | 'nutrition' | 'visit'>(
     'info',
   );
   return (
@@ -25,10 +24,10 @@ export const PetInformation = ({ pet }: PetInformationProps) => {
           Información
         </button>
         <button
-          className={tab === 'vaccines' ? 'active' : ''}
-          onClick={() => setTab('vaccines')}
+          className={tab === 'health' ? 'active' : ''}
+          onClick={() => setTab('health')}
         >
-          Vacunas
+          Salud
         </button>
         <button
           className={tab === 'nutrition' ? 'active' : ''}
@@ -36,18 +35,11 @@ export const PetInformation = ({ pet }: PetInformationProps) => {
         >
           Nutrición
         </button>
-        <button
-          className={tab === 'visits' ? 'active' : ''}
-          onClick={() => setTab('visits')}
-        >
-          Visitas
-        </button>
       </div>
 
       {tab === 'info' && <PetInfoSection pet={pet} />}
-      {tab === 'vaccines' && <PetVaccineSection pet={pet} />}
+      {tab === 'health' && <PetHealthSection pet={pet} />}
       {tab === 'nutrition' && <PetNutritionSection pet={pet} />}
-      {tab === 'visits' && <PetVisitSection pet={pet} />}
     </div>
   );
 };
