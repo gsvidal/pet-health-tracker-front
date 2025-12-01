@@ -16,6 +16,7 @@ interface PetState {
   selectedPet: Pet | null;
   loading: boolean;
   error: string | null;
+  mockMode: boolean;
 
   // Acciones
   fetchPets: () => Promise<void>;
@@ -25,6 +26,7 @@ interface PetState {
   clearError: () => void;
   mockPets: () => void;
   updatePet: (id: string, petData: PetFormData) => Promise<void>;
+  setMockMode: (value: boolean) => void;
 }
 
 export const usePetStore = create<PetState>((set, get) => ({
@@ -32,19 +34,18 @@ export const usePetStore = create<PetState>((set, get) => ({
   selectedPet: null,
   loading: false,
   error: null,
+  mockMode: false,
+  setMockMode: (value) => set({ mockMode: value }),
 
   fetchPets: async () => {
-    set({ loading: true, error: null });
+    set({ loading: true, error: null, mockMode: false });
 
     const { data: petsResponse, error } = await callApi(() => getPets());
 
     if (error || !petsResponse) {
       const message = error || 'Error al obtener mascotas';
       toast.error(message);
-      set({
-        error: message,
-        loading: false,
-      });
+      set({ error: message, loading: false });
       return;
     }
 
@@ -65,10 +66,7 @@ export const usePetStore = create<PetState>((set, get) => ({
     if (error || !petResponse) {
       const message = error || 'Error al obtener la mascota';
       toast.error(message);
-      set({
-        error: message,
-        loading: false,
-      });
+      set({ error: message, loading: false });
       return;
     }
 
@@ -91,10 +89,7 @@ export const usePetStore = create<PetState>((set, get) => ({
     if (error || !petResponse) {
       const message = error || 'Error al crear la mascota';
       toast.error(message);
-      set({
-        error: message,
-        loading: false,
-      });
+      set({ error: message, loading: false });
       return;
     }
 
@@ -114,10 +109,7 @@ export const usePetStore = create<PetState>((set, get) => ({
     return get().pets.find((pet) => pet.id === id);
   },
 
-  clearError: () => {
-    set({ error: null });
-  },
-
+  clearError: () => set({ error: null }),
   mockPets: () => {
     const mockPet1: Pet = {
       id: 'mock-pet-1',
@@ -157,6 +149,7 @@ export const usePetStore = create<PetState>((set, get) => ({
       pets: [mockPet1, mockPet2],
       loading: false,
       error: null,
+      mockMode: true,
     });
 
     toast.success('Mascotas mock cargadas correctamente ✔️');

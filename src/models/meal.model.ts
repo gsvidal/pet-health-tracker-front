@@ -1,6 +1,7 @@
 export interface Meal {
   id: string;
   petId: string;
+  pet_id?: string;
   mealTime: string;
   description?: string | null;
   calories?: number | null;

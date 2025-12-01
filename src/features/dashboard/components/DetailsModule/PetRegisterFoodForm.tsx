@@ -16,6 +16,8 @@ export const PetRegisterFoodForm: React.FC<PetRegisterFoodFormProps> = ({
   onClose,
   onFoodAdded,
 }) => {
+  console.log('🐶 pet recibido en formulario:', pet); // <--- ACÁ
+
   const today = new Date().toISOString().split('T')[0];
   const [formData, setFormData] = useState({
     date: today,
@@ -46,12 +48,25 @@ export const PetRegisterFoodForm: React.FC<PetRegisterFoodFormProps> = ({
   };
   const handleSubmit = () => {
     if (!validate()) return;
+    if (!pet?.id) {
+      console.error('❌ ERROR: pet.id es undefined');
+      return;
+    }
     const meal: MealInput = {
       petId: pet.id,
-      ...formData,
+      date: formData.date,
+      time: formData.time,
+      type: formData.type,
+      food: formData.food,
+      quantity: formData.quantity,
+      notes: formData.notes,
     };
+
+    console.log('🚀 MealInput enviado:', meal);
+
     onFoodAdded(meal);
   };
+
   return (
     <div className="register-food-card">
       <h3>Registrar Nueva Comida</h3>
