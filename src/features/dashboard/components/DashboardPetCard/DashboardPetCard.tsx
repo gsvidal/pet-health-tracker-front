@@ -1,5 +1,5 @@
 import './DashboardPetCard.scss';
-import { AlertCircle, Syringe, Calendar, Bell, Trash2 } from 'lucide-react';
+import { Syringe, Calendar, Bell, Trash2, BellRing } from 'lucide-react';
 import type { Pet } from '../../../../models/pet.model';
 import { Button } from '../../../../components/Button/Button';
 import { useNavigate } from 'react-router-dom';
@@ -36,7 +36,7 @@ export const DashboardPetCard = ({
           </p>
         </div>
         <div className="dashboard-pet-card__alert">
-          <AlertCircle size={20} />
+          <BellRing color="#f5e213ff" />
         </div>
         {onDelete && (
           <div

@@ -60,9 +60,6 @@ export const DetailsPage = () => {
         content={
           <p>
             ¿Estás seguro de que deseas eliminar a <strong>{pet.name}</strong>?
-            <br />
-            <br />
-            ⚠️ <strong>ADVERTENCIA:</strong> Esto también eliminará todos los registros relacionados.
           </p>
         }
         variant="confirm"
