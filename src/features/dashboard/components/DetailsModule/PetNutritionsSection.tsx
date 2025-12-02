@@ -99,7 +99,7 @@ export const PetNutritionSection: React.FC<PetNutritionSectionProps> = ({
 
         {/* Formulario recordatorios */}
         <div
-          className={`nutrition-form-wrapper ${showReminderForm ? 'open' : ''}`}
+          className={`nutrition-form-wrapper reminder-wrapper ${showReminderForm ? 'open' : ''}`}
         >
           {showReminderForm && (
             <PetRegisterReminderForm
