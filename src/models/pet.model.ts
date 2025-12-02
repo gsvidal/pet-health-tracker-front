@@ -5,11 +5,23 @@ export interface Pet {
   breed?: string | null;
   birthDate?: string | null;
   ageYears?: number | null;
-  weightKg?: string | null;
+  weightKg?: number | string | null;
+  sex?: string | null;
+  healthStatus?: string | null;
+  photoUrl?: string | null;
+  notes?: string | null;
+  ownerId?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+export interface createPet {
+  name: string;
+  species: string;
+  breed?: string | null;
+  birthDate?: string | null;
+  ageYears?: number | null;
+  weightKg?: number | null;
   sex?: string | null;
   photoUrl?: string | null;
   notes?: string | null;
-  ownerId: string;
-  createdAt: string;
-  updatedAt: string;
 }

@@ -2,6 +2,7 @@ import './DashboardPetCard.scss';
 import { AlertCircle, Syringe, Calendar, Bell } from 'lucide-react';
 import type { Pet } from '../../../../models/pet.model';
 import { Button } from '../../../../components/Button/Button';
+import { useNavigate } from 'react-router-dom';
 
 interface DashboardPetCardProps {
   pet: Pet;
@@ -15,13 +16,14 @@ interface DashboardPetCardProps {
 
 export const DashboardPetCard = ({
   pet,
-  onViewDetails,
   healthStatus = 'Saludable',
   nextVaccineLabel = 'Próximamente',
   lastVisitLabel = 'Próximamente',
   activeAlertsCount = 0,
   upcomingEventsCount = 0,
 }: DashboardPetCardProps) => {
+  const navigate = useNavigate();
+
   return (
     <div className="dashboard-pet-card">
       <div className="dashboard-pet-card__header">
@@ -60,7 +62,7 @@ export const DashboardPetCard = ({
 
       <div className="dashboard-pet-card__events">
         <div className="dashboard-pet-card__event">
-          <Syringe size={16} color='#8200db' />
+          <Syringe size={16} color="#8200db" />
           <div className="dashboard-pet-card__event-content">
             <span className="dashboard-pet-card__event-label">
               Próxima Vacuna
@@ -107,9 +109,8 @@ export const DashboardPetCard = ({
       <Button
         variant="primary"
         size="lg"
-        // className="dashboard-pet-card__button"
         style={{ marginTop: '2rem' }}
-        onClick={() => onViewDetails?.(pet.id)}
+        onClick={() => navigate(`/pets/${pet.id}`)}
       >
         Ver Detalles
       </Button>

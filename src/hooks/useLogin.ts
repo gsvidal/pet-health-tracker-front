@@ -12,7 +12,8 @@ export const useLogin = () => {
     formState: { errors },
   } = useForm<LoginRequest>();
 
-  const mockLoginUser = useAuthStore((state) => state.mockLogin);
+  const loginUser = useAuthStore((state) => state.login);
+  // const mockLoginUser = useAuthStore((state) => state.mockLogin);
   const loading = useAuthStore((state) => state.loading);
   const error = useAuthStore((state) => state.error);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
@@ -21,15 +22,14 @@ export const useLogin = () => {
     if (isAuthenticated) {
       navigate(PRIVATE_ROUTES.DASHBOARD);
     }
-  });
-  const onSubmit = async () => {
-    {
-      /*await loginUser({
+  }, [isAuthenticated]);
+
+  const onSubmit = async (data: LoginRequest) => {
+    await loginUser({
       email: data.email,
       password: data.password,
-    });*/
-    }
-    mockLoginUser();
+    });
+    // mockLoginUser();
   };
 
   return {

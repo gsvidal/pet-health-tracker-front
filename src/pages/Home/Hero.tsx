@@ -1,39 +1,47 @@
-import { Button } from "../../components/Button/Button";
-import "./Home.scss";
+import { useNavigate } from 'react-router-dom';
+import { Button } from '../../components/Button/Button';
+import './Home.scss';
 //import "./Hero.scss";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight } from 'lucide-react';
+import { PUBLIC_ROUTES } from '../../config/routes';
 
 export function Hero() {
+  const navigate = useNavigate();
   const imgUrl =
-    "https://images.unsplash.com/photo-1728661631084-5f44797184e3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080";
+    'https://images.unsplash.com/photo-1728661631084-5f44797184e3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080';
 
-  const fallbackImg =
-    "https://placehold.co/600x600?text=Imagen+no+disponible";
+  const fallbackImg = 'https://placehold.co/600x600?text=Imagen+no+disponible';
 
   return (
     <section id="inicio" className="hero">
       <div className="grid">
-
         {/* Texto */}
         <div className="content">
           <div className="badge">
             Plataforma digital de gestión de salud para mascotas
           </div>
 
-          <h1>Gestiona la salud y bienestar de tus mascotas desde un solo lugar</h1>
+          <h1>
+            Gestiona la salud y bienestar de tus mascotas desde un solo lugar
+          </h1>
 
           <p>
-            Crea perfiles completos, registra vacunaciones y visitas veterinarias,
-            controla su alimentación y recibe recordatorios automáticos para nunca
-            olvidar un evento médico o nutricional importante.
+            Crea perfiles completos, registra vacunaciones y visitas
+            veterinarias, controla su alimentación y recibe recordatorios
+            automáticos para nunca olvidar un evento médico o nutricional
+            importante.
           </p>
 
           <div className="actions">
-            <Button size="lg" variant="primary">
+            <Button
+              size="lg"
+              variant="primary"
+              onClick={() => navigate(PUBLIC_ROUTES.REGISTER)}
+            >
               Registrarse Gratis
               <ArrowRight style={{ marginLeft: 8, width: 20, height: 20 }} />
             </Button>
-            <Button size="lg" variant="outline">Ver Prototipo Demo</Button>
+            {/* <Button size="lg" variant="outline">Ver Prototipo Demo</Button> */}
           </div>
 
           <div className="stats">
@@ -66,7 +74,6 @@ export function Hero() {
           <div className="decor-circle one"></div>
           <div className="decor-circle two"></div>
         </div>
-
       </div>
     </section>
   );

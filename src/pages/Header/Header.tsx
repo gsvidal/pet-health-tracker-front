@@ -1,23 +1,35 @@
 import { useState } from 'react';
 import { Button } from '../../components/Button/Button';
-import { Heart } from 'lucide-react';
-//import "./Home.scss";
+import { Heart, ArrowLeft } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/auth.store';
 import { PUBLIC_ROUTES } from '../../config/routes';
-// interface HeaderProps {
-//   path?: 'home' | 'dashboard';
-// }
+import './Header.scss';
 
 export const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { logout } = useAuthStore();
+
   console.log('pathname: ', pathname);
+
+  const showBackButton = pathname.startsWith('/pets/:id');
+
   return (
     <header className="sticky-header">
       <div className="container">
+        {/* Botón Volver */}
+        {showBackButton && (
+          <button
+            className="header-back-btn"
+            onClick={() => navigate('/dashboard')}
+            aria-label="Volver"
+          >
+            <ArrowLeft size={24} />
+          </button>
+        )}
+
         {/* Logo */}
         <div className="logo">
           <div className="logo-icon">
@@ -54,7 +66,8 @@ export const Header = () => {
                 Contacto
               </a>
             </>
-          )}{' '}
+          )}
+
           <div className="btn-wrapper">
             {pathname === '/dashboard' ? (
               <Button
@@ -69,17 +82,20 @@ export const Header = () => {
                 Logout
               </Button>
             ) : (
-              <Button
-                size="lg"
-                variant="primary"
-                onClick={() => {
-                  setMenuOpen(false);
-                  navigate(PUBLIC_ROUTES.REGISTER);
-                }}
-              >
-                Registrarse
-              </Button>
+              pathname === '/' && (
+                <Button
+                  size="lg"
+                  variant="primary"
+                  onClick={() => {
+                    setMenuOpen(false);
+                    navigate(PUBLIC_ROUTES.REGISTER);
+                  }}
+                >
+                  Registrarse
+                </Button>
+              )
             )}
+            {/* TODO: agregar volver a pagina pet */}
           </div>
         </nav>
       </div>
