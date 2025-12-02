@@ -3,8 +3,16 @@ import { useRecoverPassword } from '../../hooks/useReqPasswordReset';
 import './RecoverPasswordForm.scss';
 
 export const RecoverPasswordForm = () => {
-  const { register, handleSubmit, errors, loading, onSubmit } =
-    useRecoverPassword();
+  const {
+    register,
+    handleSubmit,
+    errors,
+    loading,
+    onSubmit,
+    success,
+    serverError,
+  } = useRecoverPassword();
+
   return (
     <div className="recover-container">
       <div className={`recover-card ${loading ? 'loading' : ''}`}>
@@ -30,13 +38,12 @@ export const RecoverPasswordForm = () => {
               {errors.email?.message}
             </p>
           </div>
-          {/*serverError && <p className="error server">{serverError}</p>*/}
-          {/*success && (
-            <p className="success-message">
-              ✔ Revisa tu correo: te enviamos un enlace para restablecer tu
-              contraseña.
-            </p>
-          )*/}
+          {/* error del servidor */}
+          {serverError && <p className="error server">{serverError}</p>}
+          {/* mensaje éxito */}
+          {success && (
+            <p className="success-message">✔ ¡Listo! Revisa tu correo.</p>
+          )}
           <button type="submit" className="btn-recover" disabled={loading}>
             {loading ? (
               <>

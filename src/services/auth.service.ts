@@ -5,6 +5,7 @@ import type {
   LoginRequest,
   LoginResponse,
   ReqPassResetResponse,
+  TokenResponse,
 } from '../types/auth.type';
 
 const AUTH_ENDPOINT = '/auth';
@@ -59,8 +60,8 @@ export const logout = async (): Promise<void> => {
 export const requestPasswordReset = async (
   email: string,
 ): Promise<ReqPassResetResponse> => {
-  const response = await axios.post<ReqPassResetResponse>(
-    `${API_URL}/request-password-reset`,
+  const response = await apiClient.post<ReqPassResetResponse>(
+    `${AUTH_ENDPOINT}/request-password-reset`,
     { email },
   );
   return response.data;

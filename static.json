@@ -1,0 +1,5 @@
+{
+  "root": "dist",
+  "clean_urls": true,
+  "redirects": [{ "source": "/**", "destination": "/", "type": 200 }]
+}
