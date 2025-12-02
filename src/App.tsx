@@ -16,6 +16,7 @@ import { ModalText } from './components/Modal/ModalText';
 import { useModalStore } from './store/modal.store';
 import { VerifyEmailPage } from './features/dashboard/pages/VerifyEmail/VerifyEmailPage';
 import { CreatePetForm } from './features/dashboard/pages/PetForm/PetFormPage';
+import ResetPasswordPage from './features/dashboard/pages/Reset/ResetPage';
 import { DetailsPage } from './features/dashboard/pages/Details/DetailsPage';
 
 function App() {
@@ -39,6 +40,10 @@ function App() {
             <Route path={PUBLIC_ROUTES.HOME} element={<Home />} />
           </Route>
           <Route path={PUBLIC_ROUTES.LOGIN} element={<LoginPage />} />
+          <Route
+            path={PUBLIC_ROUTES.RESET_PASSWORD}
+            element={<ResetPasswordPage />}
+          />
           <Route path={PUBLIC_ROUTES.EXAMPLE} element={<ExamplePage />} />
           <Route element={<FullLayout />}>
             <Route path={PUBLIC_ROUTES.REGISTER} element={<RegisterPage />} />

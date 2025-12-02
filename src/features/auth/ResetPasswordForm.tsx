@@ -1,5 +1,7 @@
 import React from 'react';
 import { useResetPassword } from '../../hooks/useResetPassword';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
   token: string;
@@ -14,6 +16,17 @@ const ResetPasswordForm: React.FC<Props> = ({ token }) => {
     success,
     onSubmit,
   } = useResetPassword(token);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (success) {
+      const timer = setTimeout(() => {
+        navigate('/login');
+      }, 1800);
+
+      return () => clearTimeout(timer);
+    }
+  }, [success, navigate]);
   return (
     <div className="reset-container">
       <h2 className="title">Restablecer contraseña</h2>
