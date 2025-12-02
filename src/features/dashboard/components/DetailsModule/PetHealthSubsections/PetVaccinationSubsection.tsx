@@ -108,9 +108,7 @@ export const PetVaccinationSubsection: React.FC<
       <div className="vaccination-section-card pet-section-card pet-section-card--vaccination">
         <div className="vaccination-subsection__header">
           <div className="vaccination-subsection__title">
-            <h3>
-              {editingVaccine ? 'Editar Vacuna' : 'Registrar Nueva Vacuna'}
-            </h3>
+            <h3>Registro de Vacunación</h3>
             <p>Gestiona el historial de vacunas de {pet.name}</p>
           </div>
           {!showForm && (
@@ -126,6 +124,9 @@ export const PetVaccinationSubsection: React.FC<
 
         {showForm && (
           <div className="vaccination-subsection__form-section">
+            <h4>
+              {editingVaccine ? 'Editar Vacuna' : 'Registrar Nueva Vacuna'}
+            </h4>
             <form
               onSubmit={handleSubmit(onSubmit)}
               className="vaccination-subsection__form"
