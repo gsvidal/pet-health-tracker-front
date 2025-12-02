@@ -25,3 +25,4 @@ dist-ssr
 
 pendientes.py
 .env*
+.api.doc

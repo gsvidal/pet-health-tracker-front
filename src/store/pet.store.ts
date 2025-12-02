@@ -118,8 +118,8 @@ export const usePetStore = create<PetState>((set, get) => ({
 
   mockPets: () => {
     const mockPet1: Pet = {
-      id: 'mock-pet-1',
-      name: 'Max',
+      id: '6f985ea4-4616-42f2-afa2-a3081b44e0b5',
+      name: 'La wuf mock',
       species: 'Perro',
       breed: 'Golden Retriever',
       birthDate: '2021-03-15T00:00:00Z',

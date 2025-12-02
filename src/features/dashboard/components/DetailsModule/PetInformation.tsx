@@ -5,6 +5,8 @@ import type { Pet } from '../../../../models/pet.model';
 import './PetInformation.scss';
 import { PetNutritionSection } from './PetNutritionsSection';
 import { PetHealthSection } from './PetHealthSection';
+import { FaSyringe, FaInfoCircle } from 'react-icons/fa';
+import { PiForkKnifeFill } from 'react-icons/pi';
 
 interface PetInformationProps {
   pet: Pet;
@@ -21,18 +23,20 @@ export const PetInformation = ({ pet }: PetInformationProps) => {
           className={tab === 'info' ? 'active' : ''}
           onClick={() => setTab('info')}
         >
-          Información
+          <FaInfoCircle className="icon icon--pet-section" /> Información
         </button>
         <button
           className={tab === 'health' ? 'active' : ''}
           onClick={() => setTab('health')}
         >
+          <FaSyringe className="icon icon--pet-section" />
           Salud
         </button>
         <button
           className={tab === 'nutrition' ? 'active' : ''}
           onClick={() => setTab('nutrition')}
         >
+          <PiForkKnifeFill className="icon icon--pet-section" />
           Nutrición
         </button>
       </div>
