@@ -2,20 +2,27 @@ import type { Pet } from '../../../../models/pet.model';
 import './PetNutritionSection.scss';
 import { FaPlus } from 'react-icons/fa6';
 import { PetRegisterFoodForm } from './PetRegisterFoodForm';
+import { PetRegisterReminderForm } from './PetRegisterReminderForm';
 import { useState } from 'react';
 import { useMeals } from '../../../../hooks/useMeal';
+import { useReminders } from '../../../../hooks/useReminders';
 import { LuUtensilsCrossed } from 'react-icons/lu';
 import { MdDeleteForever } from 'react-icons/md';
 
 interface PetNutritionSectionProps {
   pet: Pet;
 }
+
 export const PetNutritionSection: React.FC<PetNutritionSectionProps> = ({
   pet,
 }) => {
   const [showForm, setShowForm] = useState(false);
+  const [showReminderForm, setShowReminderForm] = useState(false);
+
   const { meals, loading, addMeal, removeMeal } = useMeals(pet.id);
-  // Agrupa las comidas por fecha (YYYY-MM-DD)
+  const { reminders, removeReminder, addReminder } = useReminders(pet.id);
+
+  // Agrupar comidas
   const mealsByDay = meals.reduce(
     (acc, meal) => {
       const day = new Date(meal.mealTime).toLocaleDateString('es-AR', {
@@ -42,17 +49,20 @@ export const PetNutritionSection: React.FC<PetNutritionSectionProps> = ({
             <p>Controla la alimentación y dieta de {pet.name}</p>
           </div>
 
-          <div className="register-food-btn">
-            <button id="primary-reg-btn" onClick={() => setShowForm(!showForm)}>
-              <p id="register-food-title">
-                <FaPlus className="icon-reg-food" size={15} />
-                Registrar Comida
-              </p>
-            </button>
-          </div>
+          {/* Botón Registrar Comida */}
+          {!showForm && (
+            <div className="register-food-btn">
+              <button id="primary-reg-btn" onClick={() => setShowForm(true)}>
+                <p id="register-food-title">
+                  <FaPlus className="icon-reg-food" size={15} />
+                  Registrar Comida
+                </p>
+              </button>
+            </div>
+          )}
         </div>
 
-        {/* --- Formulario Registro Comida --- */}
+        {/* Formulario registro comida */}
         <div className={`nutrition-form-wrapper ${showForm ? 'open' : ''}`}>
           {showForm && (
             <PetRegisterFoodForm
@@ -70,47 +80,74 @@ export const PetNutritionSection: React.FC<PetNutritionSectionProps> = ({
       {/* ---- Recordatorios ---- */}
       <div className="nutrition-card">
         <div className="section-title">
-          <h4>Recordatorios de Alimentación</h4>
-          <button className="secondary-btn">+ Nuevo Recordatorio</button>
+          <div>
+            <h4>Recordatorios de Alimentación</h4>
+          </div>
+
+          {!showReminderForm && (
+            <button
+              className="secondary-btn"
+              onClick={() => setShowReminderForm(true)}
+            >
+              <p id="new-reminder-title">
+                <FaPlus className="icon-reg-reminder" size={15} /> Nuevo
+                Recordatorio
+              </p>
+            </button>
+          )}
         </div>
 
+        {/* Formulario recordatorios */}
+        <div
+          className={`nutrition-form-wrapper ${showReminderForm ? 'open' : ''}`}
+        >
+          {showReminderForm && (
+            <PetRegisterReminderForm
+              petId={pet.id}
+              onCancel={() => setShowReminderForm(false)}
+              onSubmit={async (data) => {
+                await addReminder(data);
+                setShowReminderForm(false);
+              }}
+            />
+          )}
+        </div>
+
+        {/* Lista real desde backend */}
         <div className="reminder-list">
-          {/* Ejemplo hardcodeado (luego lo conectamos al back) */}
-          <div className="reminder-item">
-            <div className="reminder-time">08:00</div>
-            <div className="reminder-info">
-              <span className="reminder-label">Desayuno</span>
-              <p>Croquetas Premium - 200g</p>
-            </div>
-            <button className="delete-btn">✕</button>
-          </div>
+          {reminders.length === 0 && (
+            <p className="empty">No hay recordatorios todavía.</p>
+          )}
 
-          <div className="reminder-item">
-            <div className="reminder-time">14:00</div>
-            <div className="reminder-info">
-              <span className="reminder-label">Almuerzo</span>
-              <p>Croquetas Premium - 200g</p>
-            </div>
-            <button className="delete-btn">✕</button>
-          </div>
+          {reminders.map((r) => (
+            <div className="reminder-item" key={r.id}>
+              <div className="reminder-time">
+                {new Date(r.eventTime).toLocaleTimeString('es-AR', {
+                  hour: '2-digit',
+                  minute: '2-digit',
+                })}
+              </div>
 
-          <div className="reminder-item">
-            <div className="reminder-time">20:00</div>
-            <div className="reminder-info">
-              <span className="reminder-label">Cena</span>
-              <p>Croquetas Premium - 220g</p>
+              <div className="reminder-info">
+                <span className="reminder-label">{r.title}</span>
+                <p>{r.description}</p>
+              </div>
+
+              <button
+                className="delete-btn"
+                onClick={() => removeReminder(r.id)}
+              >
+                ✕
+              </button>
             </div>
-            <button className="delete-btn">✕</button>
-          </div>
+          ))}
         </div>
       </div>
 
-      {/* ---- Historial ---- */}
+      {/* ---- Historial Comidas ---- */}
       <div className="nutrition-card">
         <div className="section-title">
-          <div>
-            <h4>Historial de Comidas</h4>
-          </div>
+          <h4>Historial de Comidas</h4>
         </div>
 
         {loading && <p>Cargando...</p>}
@@ -121,19 +158,19 @@ export const PetNutritionSection: React.FC<PetNutritionSectionProps> = ({
           ) : (
             Object.entries(mealsByDay).map(([dayLabel, dayMeals]) => (
               <div key={dayLabel} className="history-day">
-                {/* Encabezado del día */}
                 <p>Registro completo ingresado</p>
+
                 <div className="day-header">
                   <span className="day-title">{dayLabel}</span>
                   <span className="day-count">{dayMeals.length} comida(s)</span>
                 </div>
 
-                {/* Items del día */}
                 {dayMeals.map((meal) => (
                   <div key={meal.id} className="history-item real">
                     <div className="history-avatar">
-                      <LuUtensilsCrossed className="icon-tabs" size={15} />{' '}
+                      <LuUtensilsCrossed size={15} />
                     </div>
+
                     <div className="history-info">
                       <div className="row">
                         <span className="time">
@@ -142,6 +179,7 @@ export const PetNutritionSection: React.FC<PetNutritionSectionProps> = ({
                             minute: '2-digit',
                           })}
                         </span>
+
                         <span className="meal-tag">{meal.description}</span>
                       </div>
 

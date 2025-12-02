@@ -1,4 +1,9 @@
-export type ReminderFrequency = 'once' | 'daily' | 'weekly' | 'monthly' | 'yearly';
+export type ReminderFrequency =
+  | 'once'
+  | 'daily'
+  | 'weekly'
+  | 'monthly'
+  | 'yearly';
 
 export interface Reminder {
   id: string;
@@ -17,3 +22,14 @@ export interface Reminder {
   updatedAt: string;
 }
 
+export interface CreateReminderInput {
+  petId: string;
+  title: string;
+  description?: string | null;
+  eventTime: string;
+  frequency: 'once' | 'daily' | 'weekly' | 'monthly' | 'yearly';
+  timezone?: string | null;
+  notifyByEmail: boolean;
+  notifyInApp: boolean;
+  isActive: boolean;
+}

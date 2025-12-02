@@ -16,7 +16,7 @@ export const PetRegisterFoodForm: React.FC<PetRegisterFoodFormProps> = ({
   onClose,
   onFoodAdded,
 }) => {
-  console.log('🐶 pet recibido en formulario:', pet); // <--- ACÁ
+  console.log('🐶 pet recibido en formulario:', pet);
 
   const today = new Date().toISOString().split('T')[0];
   const [formData, setFormData] = useState({

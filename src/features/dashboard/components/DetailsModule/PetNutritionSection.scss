@@ -12,7 +12,6 @@
 .nutrition-header {
   background: white;
   padding: 22px 28px;
-
   margin: 5px auto;
   border: 1px solid #e5e5e5;
   background: white;
@@ -93,14 +92,14 @@
 .nutrition-card {
   margin-top: 20px;
   background: white;
-  border-radius: 14px;
+  border-radius: var(--radius-md, 8px);
   padding: 24px;
   border: 1px solid #e6e6e6;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
 
   .section-title {
     display: flex;
-    justify-content: start;
+    justify-content: space-between;
     align-items: center;
 
     h4 {
@@ -117,21 +116,34 @@
 }
 
 .secondary-btn {
-  background: #f0f0ff;
-  color: #7b3bff;
-  border: 1px solid #d9c7ff;
-  padding: 7px 14px;
-  border-radius: 8px;
+  font-family: var(--font-heading);
+  border-radius: 6px;
+  border: none;
+  color: white;
+  background: linear-gradient(
+    90deg,
+    var(--color-gradient-start),
+    var(--color-gradient-end)
+  );
+  padding: 1rem 2.3rem;
   cursor: pointer;
-
   &:hover {
-    background: #e9e4ff;
+    background-color: var(--color-primary-bg);
+    opacity: 0.9;
   }
 }
-
+#new-reminder-title {
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  .icon-reg-reminder {
+    margin-right: 4px;
+  }
+}
 /* --- REMINDERS --- */
 .reminder-list {
-  margin-top: 20px;
   display: flex;
   flex-direction: column;
   gap: 14px;
