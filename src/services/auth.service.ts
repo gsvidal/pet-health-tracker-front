@@ -30,7 +30,6 @@ export const register = async (
  * Inicia sesión
  */
 export const login = async (data: LoginRequest): Promise<LoginResponse> => {
-  console.log('login data auth service: ', data);
   const response = await apiClient.post<LoginResponse>(
     `${AUTH_ENDPOINT}/login`,
     data,

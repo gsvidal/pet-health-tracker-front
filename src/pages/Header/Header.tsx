@@ -12,7 +12,7 @@ export const Header = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { isAuthenticated, logout } = useAuthStore();
-  console.log('pathname: ', pathname);
+
   const showBackButton = pathname.startsWith('/pets/:id');
 
   return (

@@ -151,7 +151,12 @@ export const RemindersSection: React.FC<RemindersSectionProps> = ({
             {filteredReminders.length > 0 && (
               <Button
                 variant="secondary"
-                style={{ marginTop: '20px' }}
+                style={{
+                  marginTop: '20px',
+                  backgroundColor: showAllReminders
+                    ? '#6b728052'
+                    : 'transparent',
+                }}
                 onClick={() =>
                   setShowAllReminders((prevState: boolean) => !prevState)
                 }
