@@ -4,8 +4,8 @@ import type { Deworming } from '../../../../../models/deworming.model';
 import { useDewormingForm } from '../../../../../hooks/useDewormingForm';
 import { useDewormingCrud } from '../../../../../hooks/useDewormingCrud';
 import { Button } from '../../../../../components/Button/Button';
-import { openConfirmModal } from '../../../../../components/Modal/utils/openConfirmModal';
 import { RemindersSection } from '../RemindersSection/RemindersSection';
+import { useModalStore } from '../../../../../store/modal.store';
 import {
   FaBug,
   FaCalendarAlt,
@@ -28,6 +28,7 @@ export const PetDewormingSubsection: React.FC<PetDewormingSubsectionProps> = ({
   const [editingDeworming, setEditingDeworming] = useState<Deworming | null>(
     null,
   );
+  const { openModal } = useModalStore();
 
   const {
     dewormings,
@@ -75,14 +76,15 @@ export const PetDewormingSubsection: React.FC<PetDewormingSubsectionProps> = ({
 
   const handleDeleteClick = (deworming: Deworming) => {
     const medicationName = deworming.medication || 'esta desparasitación';
-    openConfirmModal({
-      title: 'Eliminar Desparasitación',
-      message: `¿Estás seguro de que deseas eliminar la desparasitación "${medicationName}"?`,
-      confirmLabel: 'Eliminar',
-      cancelLabel: 'Cancelar',
+    openModal({
+      title: `¿Estás seguro que quieres eliminar "${medicationName}"?`,
+      content: 'Esta acción no se puede deshacer',
+      variant: 'confirm',
       onConfirm: () => {
         deleteDeworming(deworming.id);
       },
+      confirmLabel: 'Eliminar',
+      cancelLabel: 'Cancelar',
     });
   };
 
@@ -156,7 +158,7 @@ export const PetDewormingSubsection: React.FC<PetDewormingSubsectionProps> = ({
                             'El nombre del producto no puede exceder 200 caracteres',
                         },
                       })}
-                      className={errors.medication ? 'error' : ''}
+                      className={errors.medication ? 'input-error' : ''}
                     />
                     {errors.medication && (
                       <span className="error-message">
@@ -177,7 +179,7 @@ export const PetDewormingSubsection: React.FC<PetDewormingSubsectionProps> = ({
                         {...register('dateAdministered', {
                           required: 'La fecha de aplicación es obligatoria',
                         })}
-                        className={errors.dateAdministered ? 'error' : ''}
+                        className={errors.dateAdministered ? 'input-error' : ''}
                       />
                     </div>
                     {errors.dateAdministered && (
@@ -206,7 +208,7 @@ export const PetDewormingSubsection: React.FC<PetDewormingSubsectionProps> = ({
                             return true;
                           },
                         })}
-                        className={errors.nextDue ? 'error' : ''}
+                        className={errors.nextDue ? 'input-error' : ''}
                       />
                     </div>
                     {errors.nextDue && (
@@ -234,7 +236,7 @@ export const PetDewormingSubsection: React.FC<PetDewormingSubsectionProps> = ({
                               'El veterinario no puede exceder 200 caracteres',
                           },
                         })}
-                        className={errors.veterinarian ? 'error' : ''}
+                        className={errors.veterinarian ? 'input-error' : ''}
                       />
                     </div>
                     {errors.veterinarian && (

@@ -31,7 +31,7 @@ export const Header = () => {
         )}
 
         {/* Logo */}
-        <div className="logo">
+        <div className="logo" onClick={() => navigate(PUBLIC_ROUTES.HOME)}>
           <div className="logo-icon">
             <Heart className="h-6 w-6 text-white" fill="white" />
           </div>

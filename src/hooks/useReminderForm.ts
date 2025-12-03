@@ -78,7 +78,10 @@ export const useReminderForm = ({
       title: data.title,
       description: data.description || null,
       eventTime: eventDateTime,
-      timezone: data.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC',
+      timezone:
+        data.timezone ||
+        Intl.DateTimeFormat().resolvedOptions().timeZone ||
+        'UTC',
       frequency: data.frequency,
       isActive: data.isActive,
       notifyByEmail: data.notifyByEmail,
@@ -112,4 +115,3 @@ export const useReminderForm = ({
     setValue,
   };
 };
-

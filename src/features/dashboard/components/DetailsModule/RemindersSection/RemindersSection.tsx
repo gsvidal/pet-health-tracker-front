@@ -3,7 +3,6 @@ import type { Reminder } from '../../../../../models/reminder.model';
 import { useReminderForm } from '../../../../../hooks/useReminderForm';
 import { useReminderCrud } from '../../../../../hooks/useReminderCrud';
 import { Button } from '../../../../../components/Button/Button';
-import { openConfirmModal } from '../../../../../components/Modal/utils/openConfirmModal';
 import {
   FaBell,
   FaCalendarAlt,
@@ -13,6 +12,7 @@ import {
   FaPlus,
 } from 'react-icons/fa';
 import './RemindersSection.scss';
+import { useModalStore } from '../../../../../store/modal.store';
 
 interface RemindersSectionProps {
   petId?: string | null;
@@ -32,6 +32,7 @@ export const RemindersSection: React.FC<RemindersSectionProps> = ({
   const [showForm, setShowForm] = useState(false);
   const [showAllReminders, setShowAllReminders] = useState<boolean>(false);
   const [editingReminder, setEditingReminder] = useState<Reminder | null>(null);
+  const { openModal } = useModalStore();
 
   const {
     reminders,
@@ -91,14 +92,15 @@ export const RemindersSection: React.FC<RemindersSectionProps> = ({
   };
 
   const handleDeleteClick = (reminder: Reminder) => {
-    openConfirmModal({
-      title: 'Eliminar Recordatorio',
-      message: `¿Estás seguro de que deseas eliminar el recordatorio "${reminder.title}"?`,
-      confirmLabel: 'Eliminar',
-      cancelLabel: 'Cancelar',
+    openModal({
+      title: `¿Estás seguro que quieres eliminar "${reminder.title}"?`,
+      content: 'Esta acción no se puede deshacer',
+      variant: 'confirm',
       onConfirm: () => {
         deleteReminder(reminder.id);
       },
+      confirmLabel: 'Eliminar',
+      cancelLabel: 'Cancelar',
     });
   };
 
@@ -195,7 +197,7 @@ export const RemindersSection: React.FC<RemindersSectionProps> = ({
                           message: 'El título no puede exceder 200 caracteres',
                         },
                       })}
-                      className={errors.title ? 'error' : ''}
+                      className={errors.title ? 'input-error' : ''}
                     />
                     {errors.title && (
                       <span className="error-message">
@@ -226,7 +228,7 @@ export const RemindersSection: React.FC<RemindersSectionProps> = ({
                         {...register('eventDate', {
                           required: 'La fecha es obligatoria',
                         })}
-                        className={errors.eventDate ? 'error' : ''}
+                        className={errors.eventDate ? 'input-error' : ''}
                       />
                     </div>
                     {errors.eventDate && (
@@ -248,7 +250,7 @@ export const RemindersSection: React.FC<RemindersSectionProps> = ({
                         {...register('eventHour', {
                           required: 'La hora es obligatoria',
                         })}
-                        className={errors.eventHour ? 'error' : ''}
+                        className={errors.eventHour ? 'input-error' : ''}
                       />
                     </div>
                     {errors.eventHour && (
@@ -266,7 +268,7 @@ export const RemindersSection: React.FC<RemindersSectionProps> = ({
                     <select
                       id="frequency"
                       {...register('frequency')}
-                      className={errors.frequency ? 'error' : ''}
+                      className={errors.frequency ? 'input-error' : ''}
                     >
                       <option value="once">Una vez</option>
                       <option value="daily">Diario</option>

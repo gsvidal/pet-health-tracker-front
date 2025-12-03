@@ -4,7 +4,6 @@ import type { Vaccine } from '../../../../../models/vaccine.model';
 import { useVaccineForm } from '../../../../../hooks/useVaccineForm';
 import { useVaccineCrud } from '../../../../../hooks/useVaccineCrud';
 import { Button } from '../../../../../components/Button/Button';
-import { openConfirmModal } from '../../../../../components/Modal/utils/openConfirmModal';
 import { RemindersSection } from '../RemindersSection/RemindersSection';
 import {
   FaSyringe,
@@ -27,7 +26,7 @@ export const PetVaccinationSubsection: React.FC<
 > = ({ pet }) => {
   const [showForm, setShowForm] = useState(false);
   const [editingVaccine, setEditingVaccine] = useState<Vaccine | null>(null);
-  const {openModal} = useModalStore();
+  const { openModal } = useModalStore();
 
   const {
     vaccines,
@@ -74,23 +73,14 @@ export const PetVaccinationSubsection: React.FC<
   };
 
   const handleDeleteClick = (vaccine: Vaccine) => {
-    // openConfirmModal({
-    //   title: 'Eliminar Vacuna',
-    //   message: `¿Estás seguro de que deseas eliminar la vacuna "${vaccine.vaccineName}"?`,
-    //   confirmLabel: 'Eliminar',
-    //   cancelLabel: 'Cancelar',
-    //   onConfirm: () => {
-    //     deleteVaccine(vaccine.id);
-    //   },
-    // });
- openModal({
-      title: '¿Estás seguro?',
+    openModal({
+      title: `¿Estás seguro que quieres eliminar "${vaccine.vaccineName}"?`,
       content: 'Esta acción no se puede deshacer',
       variant: 'confirm',
       onConfirm: () => {
-        console.log('Confirmado');
+        deleteVaccine(vaccine.id);
       },
-      confirmLabel: 'Confirmar',
+      confirmLabel: 'Eliminar',
       cancelLabel: 'Cancelar',
     });
   };
@@ -166,7 +156,7 @@ export const PetVaccinationSubsection: React.FC<
                           message: 'El nombre no puede exceder 200 caracteres',
                         },
                       })}
-                      className={errors.vaccineName ? 'error' : ''}
+                      className={errors.vaccineName ? 'input-error' : ''}
                     />
                     {errors.vaccineName && (
                       <span className="error-message">
@@ -187,7 +177,7 @@ export const PetVaccinationSubsection: React.FC<
                         {...register('dateAdministered', {
                           required: 'La fecha de aplicación es obligatoria',
                         })}
-                        className={errors.dateAdministered ? 'error' : ''}
+                        className={errors.dateAdministered ? 'input-error' : ''}
                       />
                     </div>
                     {errors.dateAdministered && (
@@ -214,7 +204,7 @@ export const PetVaccinationSubsection: React.FC<
                             return true;
                           },
                         })}
-                        className={errors.nextDue ? 'error' : ''}
+                        className={errors.nextDue ? 'input-error' : ''}
                       />
                     </div>
                     {errors.nextDue && (
@@ -239,7 +229,7 @@ export const PetVaccinationSubsection: React.FC<
                               'El veterinario no puede exceder 200 caracteres',
                           },
                         })}
-                        className={errors.veterinarian ? 'error' : ''}
+                        className={errors.veterinarian ? 'input-error' : ''}
                       />
                     </div>
                     {errors.veterinarian && (
@@ -265,7 +255,7 @@ export const PetVaccinationSubsection: React.FC<
                             'El fabricante no puede exceder 200 caracteres',
                         },
                       })}
-                      className={errors.manufacturer ? 'error' : ''}
+                      className={errors.manufacturer ? 'input-error' : ''}
                     />
                     {errors.manufacturer && (
                       <span className="error-message">
@@ -287,7 +277,7 @@ export const PetVaccinationSubsection: React.FC<
                             'El número de lote no puede exceder 100 caracteres',
                         },
                       })}
-                      className={errors.lotNumber ? 'error' : ''}
+                      className={errors.lotNumber ? 'input-error' : ''}
                     />
                     {errors.lotNumber && (
                       <span className="error-message">
