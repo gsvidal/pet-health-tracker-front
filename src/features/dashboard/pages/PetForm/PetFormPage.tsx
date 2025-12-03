@@ -18,7 +18,7 @@ export function CreatePetForm() {
     sex: '',
     birthDate: '',
     ageYears: '',
-    weightKg: '',
+    weightKg: '0.0',
     photoUrl: '',
     notes: '',
   });
