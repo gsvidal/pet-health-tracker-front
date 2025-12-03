@@ -5,6 +5,7 @@ import { useDewormingForm } from '../../../../../hooks/useDewormingForm';
 import { useDewormingCrud } from '../../../../../hooks/useDewormingCrud';
 import { Button } from '../../../../../components/Button/Button';
 import { openConfirmModal } from '../../../../../components/Modal/utils/openConfirmModal';
+import { RemindersSection } from '../RemindersSection/RemindersSection';
 import {
   FaBug,
   FaCalendarAlt,
@@ -117,7 +118,11 @@ export const PetDewormingSubsection: React.FC<PetDewormingSubsectionProps> = ({
             <p>Gestiona el historial de desparasitaciones de {pet.name}</p>
           </div>
           {!showForm && (
-            <Button variant="primary" onClick={handleAddClick} style={{fontSize: '1.2rem'}}>
+            <Button
+              variant="primary"
+              onClick={handleAddClick}
+              style={{ fontSize: '1.2rem' }}
+            >
               <FaPlus style={{ position: 'relative', left: '-4px' }} /> Agregar
               Desparasitación
             </Button>
@@ -283,7 +288,15 @@ export const PetDewormingSubsection: React.FC<PetDewormingSubsectionProps> = ({
         )}
       </div>
 
-      {/* Sección 2: Historial de Desparasitación */}
+      {/* Sección 2: Recordatorios */}
+      <RemindersSection
+        petId={pet.id || null}
+        context="deworming"
+        defaultTitle={`Próxima desparasitación - ${pet.name}`}
+        defaultDescription="Recordatorio para aplicar desparasitación"
+      />
+
+      {/* Sección 3: Historial de Desparasitación */}
       <div className="pet-section-card pet-section-card--deworming-history">
         <div className="deworming-subsection__history-header">
           <div>

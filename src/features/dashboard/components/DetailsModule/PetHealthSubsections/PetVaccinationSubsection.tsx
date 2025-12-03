@@ -5,6 +5,7 @@ import { useVaccineForm } from '../../../../../hooks/useVaccineForm';
 import { useVaccineCrud } from '../../../../../hooks/useVaccineCrud';
 import { Button } from '../../../../../components/Button/Button';
 import { openConfirmModal } from '../../../../../components/Modal/utils/openConfirmModal';
+import { RemindersSection } from '../RemindersSection/RemindersSection';
 import {
   FaSyringe,
   FaCalendarAlt,
@@ -15,6 +16,7 @@ import {
   FaPlus,
 } from 'react-icons/fa';
 import './PetVaccinationSubsection.scss';
+import { useModalStore } from '../../../../../store/modal.store';
 
 interface PetVaccinationSubsectionProps {
   pet: Pet;
@@ -25,6 +27,7 @@ export const PetVaccinationSubsection: React.FC<
 > = ({ pet }) => {
   const [showForm, setShowForm] = useState(false);
   const [editingVaccine, setEditingVaccine] = useState<Vaccine | null>(null);
+  const {openModal} = useModalStore();
 
   const {
     vaccines,
@@ -71,14 +74,24 @@ export const PetVaccinationSubsection: React.FC<
   };
 
   const handleDeleteClick = (vaccine: Vaccine) => {
-    openConfirmModal({
-      title: 'Eliminar Vacuna',
-      message: `¿Estás seguro de que deseas eliminar la vacuna "${vaccine.vaccineName}"?`,
-      confirmLabel: 'Eliminar',
-      cancelLabel: 'Cancelar',
+    // openConfirmModal({
+    //   title: 'Eliminar Vacuna',
+    //   message: `¿Estás seguro de que deseas eliminar la vacuna "${vaccine.vaccineName}"?`,
+    //   confirmLabel: 'Eliminar',
+    //   cancelLabel: 'Cancelar',
+    //   onConfirm: () => {
+    //     deleteVaccine(vaccine.id);
+    //   },
+    // });
+ openModal({
+      title: '¿Estás seguro?',
+      content: 'Esta acción no se puede deshacer',
+      variant: 'confirm',
       onConfirm: () => {
-        deleteVaccine(vaccine.id);
+        console.log('Confirmado');
       },
+      confirmLabel: 'Confirmar',
+      cancelLabel: 'Cancelar',
     });
   };
 
@@ -325,7 +338,15 @@ export const PetVaccinationSubsection: React.FC<
         )}
       </div>
 
-      {/* Sección 2: Historial de Vacunación */}
+      {/* Sección 2: Recordatorios */}
+      <RemindersSection
+        petId={pet.id || null}
+        context="vaccination"
+        defaultTitle={`Próxima vacuna - ${pet.name}`}
+        defaultDescription="Recordatorio para aplicar vacuna"
+      />
+
+      {/* Sección 3: Historial de Vacunación */}
       <div className="pet-section-card pet-section-card--vaccination-history">
         <div className="vaccination-subsection__history-header">
           <div>

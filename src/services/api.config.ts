@@ -23,7 +23,7 @@ apiClient.interceptors.request.use(
   (error) => Promise.reject(error),
 );
 
-// Interceptor para manejar errores globales
+// TODO: Interceptor para manejar errores globales
 // apiClient.interceptors.response.use(
 //   (response) => response,
 //   async (error) => {
