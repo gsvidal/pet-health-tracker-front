@@ -50,10 +50,17 @@ export const useReminderForm = ({
   useEffect(() => {
     if (editingReminder) {
       const eventDate = new Date(editingReminder.eventTime);
+      // Extraer fecha y hora en zona horaria local (no UTC)
+      const year = eventDate.getFullYear();
+      const month = String(eventDate.getMonth() + 1).padStart(2, '0');
+      const day = String(eventDate.getDate()).padStart(2, '0');
+      const hours = String(eventDate.getHours()).padStart(2, '0');
+      const minutes = String(eventDate.getMinutes()).padStart(2, '0');
+      
       setValue('title', editingReminder.title);
       setValue('description', editingReminder.description || '');
-      setValue('eventDate', eventDate.toISOString().split('T')[0]);
-      setValue('eventHour', eventDate.toTimeString().slice(0, 5));
+      setValue('eventDate', `${year}-${month}-${day}`);
+      setValue('eventHour', `${hours}:${minutes}`);
       setValue('timezone', editingReminder.timezone || 'UTC');
       setValue('frequency', editingReminder.frequency);
       setValue('isActive', editingReminder.isActive);
@@ -61,8 +68,15 @@ export const useReminderForm = ({
       setValue('notifyInApp', editingReminder.notifyInApp);
     } else if (suggestedEventTime) {
       const suggestedDate = new Date(suggestedEventTime);
-      setValue('eventDate', suggestedDate.toISOString().split('T')[0]);
-      setValue('eventHour', suggestedDate.toTimeString().slice(0, 5));
+      // Extraer fecha y hora en zona horaria local (no UTC)
+      const year = suggestedDate.getFullYear();
+      const month = String(suggestedDate.getMonth() + 1).padStart(2, '0');
+      const day = String(suggestedDate.getDate()).padStart(2, '0');
+      const hours = String(suggestedDate.getHours()).padStart(2, '0');
+      const minutes = String(suggestedDate.getMinutes()).padStart(2, '0');
+      
+      setValue('eventDate', `${year}-${month}-${day}`);
+      setValue('eventHour', `${hours}:${minutes}`);
     } else {
       reset();
     }

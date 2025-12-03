@@ -79,7 +79,7 @@ function App() {
         confirmLabel={confirmLabel}
         cancelLabel={cancelLabel}
       />
-      <Toaster position="top-center" toastOptions={{ duration: 5000 }} />
+      <Toaster position="top-center" toastOptions={{ duration: 8000, style: {backgroundColor: '#ede9fe'} }} />
     </>
   );
 }

@@ -6,6 +6,7 @@ import { useDewormingCrud } from '../../../../../hooks/useDewormingCrud';
 import { Button } from '../../../../../components/Button/Button';
 import { RemindersSection } from '../RemindersSection/RemindersSection';
 import { useModalStore } from '../../../../../store/modal.store';
+import { formatDateLocal } from '../../../../../utils/dateUtils';
 import {
   FaBug,
   FaCalendarAlt,
@@ -99,14 +100,6 @@ export const PetDewormingSubsection: React.FC<PetDewormingSubsectionProps> = ({
     return new Date(nextDue) < new Date();
   };
 
-  const formatDate = (dateString: string): string => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('es-ES', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
-  };
 
   const dateAdministeredValue = watch('dateAdministered');
 
@@ -363,7 +356,7 @@ export const PetDewormingSubsection: React.FC<PetDewormingSubsectionProps> = ({
                     <FaCalendarAlt className="detail-icon" />
                     <div>
                       <label>Fecha de Aplicación</label>
-                      <p>{formatDate(deworming.dateAdministered)}</p>
+                      <p>{formatDateLocal(deworming.dateAdministered)}</p>
                     </div>
                   </div>
 
@@ -372,7 +365,7 @@ export const PetDewormingSubsection: React.FC<PetDewormingSubsectionProps> = ({
                       <FaCalendarAlt className="detail-icon" />
                       <div>
                         <label>Próxima Aplicación</label>
-                        <p>{formatDate(deworming.nextDue)}</p>
+                        <p>{formatDateLocal(deworming.nextDue)}</p>
                       </div>
                     </div>
                   )}

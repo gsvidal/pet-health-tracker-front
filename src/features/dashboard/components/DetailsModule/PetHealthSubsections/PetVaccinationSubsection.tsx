@@ -5,6 +5,7 @@ import { useVaccineForm } from '../../../../../hooks/useVaccineForm';
 import { useVaccineCrud } from '../../../../../hooks/useVaccineCrud';
 import { Button } from '../../../../../components/Button/Button';
 import { RemindersSection } from '../RemindersSection/RemindersSection';
+import { formatDateLocal } from '../../../../../utils/dateUtils';
 import {
   FaSyringe,
   FaCalendarAlt,
@@ -96,14 +97,7 @@ export const PetVaccinationSubsection: React.FC<
     return new Date(nextDue) < new Date();
   };
 
-  const formatDate = (dateString: string): string => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('es-ES', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
-  };
+// import { formatDateLocal } from '../../../../../utils/dateUtils';
 
   return (
     <div className="vaccination-subsection">
@@ -399,7 +393,7 @@ export const PetVaccinationSubsection: React.FC<
                     <FaCalendarAlt className="detail-icon" />
                     <div>
                       <label>Fecha de Aplicación</label>
-                      <p>{formatDate(vaccine.dateAdministered)}</p>
+                      <p>{formatDateLocal(vaccine.dateAdministered)}</p>
                     </div>
                   </div>
 
@@ -408,7 +402,7 @@ export const PetVaccinationSubsection: React.FC<
                       <FaCalendarAlt className="detail-icon" />
                       <div>
                         <label>Próxima Dosis</label>
-                        <p>{formatDate(vaccine.nextDue)}</p>
+                        <p>{formatDateLocal(vaccine.nextDue)}</p>
                       </div>
                     </div>
                   )}
