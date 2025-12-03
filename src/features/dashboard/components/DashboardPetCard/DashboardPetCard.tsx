@@ -36,7 +36,7 @@ export const DashboardPetCard = ({
           </p>
         </div>
         <div className="dashboard-pet-card__alert">
-          <BellRing color="#f5e213ff" />
+          <BellRing color="#e1b400" size={15} />
         </div>
         {onDelete && (
           <div
@@ -44,7 +44,7 @@ export const DashboardPetCard = ({
             onClick={() => onDelete(pet)}
             style={{ cursor: 'pointer' }}
           >
-            <Trash2 />
+            <Trash2 size={15} />
           </div>
         )}
       </div>
