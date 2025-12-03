@@ -54,8 +54,8 @@ export const RemindersSection: React.FC<RemindersSectionProps> = ({
     isValid,
     onSubmit,
     handleCancel,
-    watch,
-    setValue,
+    // watch,
+    // setValue,
   } = useReminderForm({
     editingReminder,
     onSave: async (data) => {

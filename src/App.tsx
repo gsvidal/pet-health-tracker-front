@@ -1,7 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 import './App.scss';
 import { RegisterPage } from './features/dashboard/pages/Register/RegisterPage';
-import { MainLayout } from './layouts/MainLayout';
 import { FullLayout } from './layouts/FullLayout';
 import { RecoverPasswordPage } from './features/dashboard/pages/RecoverPassword/RecoverPasswordPage';
 import { Home } from './pages/Home/Home';
@@ -35,9 +34,7 @@ function App() {
     <>
       <main>
         <Routes>
-          <Route element={<MainLayout />}>
-            <Route path={PUBLIC_ROUTES.HOME} element={<Home />} />
-          </Route>
+          <Route path={PUBLIC_ROUTES.HOME} element={<Home />} />
           <Route path={PUBLIC_ROUTES.LOGIN} element={<LoginPage />} />
           <Route path={PUBLIC_ROUTES.EXAMPLE} element={<ExamplePage />} />
           <Route element={<FullLayout />}>
@@ -53,13 +50,11 @@ function App() {
           </Route>
 
           <Route element={<PrivateGuard />}>
-            <Route element={<MainLayout />}>
-              <Route path={PRIVATE_ROUTES.DASHBOARD} element={<Dashboard />} />
-              <Route
-                path={PRIVATE_ROUTES.CREATE_PET}
-                element={<CreatePetForm />}
-              />
-            </Route>
+            <Route path={PRIVATE_ROUTES.DASHBOARD} element={<Dashboard />} />
+            <Route
+              path={PRIVATE_ROUTES.CREATE_PET}
+              element={<CreatePetForm />}
+            />
           </Route>
           <Route element={<PrivateGuard />}>
             <Route element={<FullLayout />}>

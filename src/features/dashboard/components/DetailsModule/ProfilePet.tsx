@@ -62,7 +62,7 @@ export const ProfilePet = ({ pet }: ProfilePetProps) => {
           {pet.photoUrl ? (
             <img src={photoUrl} alt={pet.name} className="pet-profile-photo" />
           ) : (
-            <div className="avatar-initial">{pet.name?.[0] ?? '?'}</div>
+            <div className="avatar-initial">{pet.name?.[0].toLocaleUpperCase() ?? '?'}</div>
           )}
         </div>
         <button

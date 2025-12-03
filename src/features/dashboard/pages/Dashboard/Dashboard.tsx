@@ -49,7 +49,8 @@ export const Dashboard = () => {
         title="¿Estás seguro?"
         content={
           <p>
-            ¿Estas seguro de eliminar esta mascota? <strong>{petToDelete?.name}</strong>?
+            ¿Estas seguro de eliminar esta mascota?{' '}
+            <strong>{petToDelete?.name}</strong>?
             <br />
             <br />
           </p>

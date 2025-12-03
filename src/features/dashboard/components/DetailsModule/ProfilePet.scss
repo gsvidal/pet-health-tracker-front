@@ -26,7 +26,7 @@
     align-items: center;
     justify-content: center;
     background: linear-gradient(135deg, #d94df7, #6e40ff);
-    outline: 2px solid var(--color-primary-opac50);
+    outline: 2px solid var(--color-gradient-start-opac50);
 
     .avatar-initial {
       font-size: 32px;
@@ -48,7 +48,7 @@
     width: 28px;
     height: 28px;
     border-radius: 50%;
-    background: var(--color-primary);
+    background: var(--color-gradient-start);
     border: 2px solid white;
     color: white;
     display: flex;
@@ -62,7 +62,7 @@
     z-index: 10;
 
     &:hover:not(:disabled) {
-      background: var(--color-primary-hover);
+      background: var(--color-gradient-start-hover);
     }
 
     &:disabled {
@@ -91,6 +91,9 @@
     h2 {
       font-size: 22px;
       margin: 0;
+      &::first-letter {
+        text-transform: capitalize;
+      }
     }
 
     p {
