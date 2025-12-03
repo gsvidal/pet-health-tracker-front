@@ -1,19 +1,18 @@
 import { useState } from 'react';
 import { Button } from '../../components/Button/Button';
 import { Heart, ArrowLeft } from 'lucide-react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/auth.store';
-import { PUBLIC_ROUTES } from '../../config/routes';
+import { PRIVATE_ROUTES, PUBLIC_ROUTES } from '../../config/routes';
 import './Header.scss';
+import { IoMdReturnLeft } from 'react-icons/io';
 
 export const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const { logout } = useAuthStore();
-
+  const { isAuthenticated, logout } = useAuthStore();
   console.log('pathname: ', pathname);
-
   const showBackButton = pathname.startsWith('/pets/:id');
 
   return (
@@ -23,7 +22,7 @@ export const Header = () => {
         {showBackButton && (
           <button
             className="header-back-btn"
-            onClick={() => navigate('/dashboard')}
+            onClick={() => navigate(PRIVATE_ROUTES.DASHBOARD)}
             aria-label="Volver"
           >
             <ArrowLeft size={24} />
@@ -68,8 +67,14 @@ export const Header = () => {
             </>
           )}
 
+          {pathname === PUBLIC_ROUTES.HOME && isAuthenticated && (
+            <Link to={PRIVATE_ROUTES.DASHBOARD} className="link--dashboard">
+              Dashboard
+            </Link>
+          )}
           <div className="btn-wrapper">
-            {pathname === '/dashboard' ? (
+            {pathname === PRIVATE_ROUTES.DASHBOARD ||
+            (pathname === PUBLIC_ROUTES.HOME && isAuthenticated) ? (
               <Button
                 size="lg"
                 variant="primary"
@@ -96,6 +101,19 @@ export const Header = () => {
               )
             )}
             {/* TODO: agregar volver a pagina pet */}
+            {pathname.includes('/pets/') && (
+              <Button
+                size="lg"
+                variant="outline"
+                onClick={() => {
+                  setMenuOpen(false);
+                  navigate(PRIVATE_ROUTES.DASHBOARD);
+                }}
+              >
+                <IoMdReturnLeft style={{marginRight: '6px'}}/>
+                Volver
+              </Button>
+            )}
           </div>
         </nav>
       </div>

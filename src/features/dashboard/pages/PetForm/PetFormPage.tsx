@@ -179,7 +179,7 @@ export function CreatePetForm() {
             <label>URL de Foto</label>
             <div className="input-group">
               <input
-                type="text"
+                type="file"
                 name="photoUrl"
                 placeholder="https://ejemplo.com/foto.jpg"
                 value={formData.photoUrl}

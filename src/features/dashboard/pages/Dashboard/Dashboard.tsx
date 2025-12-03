@@ -64,7 +64,7 @@ export const Dashboard = () => {
       <section className="section section--dashboard">
         <div className="container container--dashboard">
           <h1 className="example__title">Dashboard</h1>
-          <p>Bienvenid@ de vuelta, {user?.fullName}</p>
+          <p>Bienvenid@ de vuelta, {user?.fullName || user?.username}</p>
 
           <DashboardUserCard user={user} />
 

@@ -5,7 +5,6 @@ import { Header } from '../../../../pages/Header/Header';
 import { ProfilePet } from '../../../dashboard/components/DetailsModule/ProfilePet';
 import { PetInformation } from '../../../dashboard/components/DetailsModule/PetInformation';
 
-
 import './DetailsPage.scss';
 
 export const DetailsPage = () => {
@@ -23,6 +22,7 @@ export const DetailsPage = () => {
 
   // Buscar mascota por id
   const pet = getPetById(id!);
+  console.log('pet: ', pet);
 
   if (!pet) {
     return <p>Cargando mascota...</p>;
@@ -33,7 +33,6 @@ export const DetailsPage = () => {
       <Header />
       <ProfilePet pet={pet} />
       <PetInformation pet={pet} />
-      
     </div>
   );
 };
