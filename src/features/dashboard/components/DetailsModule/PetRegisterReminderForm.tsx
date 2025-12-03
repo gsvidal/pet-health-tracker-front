@@ -123,9 +123,6 @@ export function PetRegisterReminderForm({ petId, onCancel, onSubmit }: Props) {
             <p id="error-reminder-msg">{errors.frequency}</p>
           )}
         </div>
-        <div className="error-container">
-          {errors.days && <p id="error-reminder-msg">{errors.days}</p>}
-        </div>
       </div>
       {frequency === 'weekly' && (
         <div className="form-group">
@@ -144,7 +141,7 @@ export function PetRegisterReminderForm({ petId, onCancel, onSubmit }: Props) {
         </div>
       )}
       <div className="form-group">
-        <label>Descripción</label>
+        <label id="description-reminder-title">Descripción</label>
         <textarea
           id="note-reminder-container"
           value={description}

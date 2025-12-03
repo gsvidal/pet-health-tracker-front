@@ -27,7 +27,7 @@ export interface CreateReminderInput {
   title: string;
   description?: string | null;
   eventTime: string;
-  frequency: 'once' | 'daily' | 'weekly' | 'monthly' | 'yearly';
+  frequency: ReminderFrequency;
   timezone?: string | null;
   notifyByEmail: boolean;
   notifyInApp: boolean;

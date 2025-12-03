@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import type { Reminder } from '../models/reminder.model';
+import type { Reminder, CreateReminderInput } from '../models/reminder.model';
 import { ReminderService } from '../services/reminder.service';
 
 export function useReminders(petId: string) {
@@ -26,7 +26,7 @@ export function useReminders(petId: string) {
     };
   }, [petId]);
 
-  async function addReminder(input: Partial<Reminder>) {
+  async function addReminder(input: CreateReminderInput) {
     const r = await ReminderService.createReminder(input);
     setReminders((prev) => [...prev, r]);
   }

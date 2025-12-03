@@ -106,6 +106,8 @@ export const PetNutritionSection: React.FC<PetNutritionSectionProps> = ({
               petId={pet.id}
               onCancel={() => setShowReminderForm(false)}
               onSubmit={async (data) => {
+                console.log('DATA SUBMIT', data);
+                console.log('PET ID EN SUBMIT', data.petId);
                 await addReminder(data);
                 setShowReminderForm(false);
               }}
