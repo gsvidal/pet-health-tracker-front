@@ -10,8 +10,9 @@ import './DetailsPage.scss';
 export const DetailsPage = () => {
   const { id } = useParams<{ id: string }>();
 
-  const { pets, getPetById, fetchPets } = usePetStore();
-
+  const pets = usePetStore((state) => state.pets);
+  const getPetById = usePetStore((state) => state.getPetById);
+  const fetchPets = usePetStore((state) => state.fetchPets);
 
   // Si no hay mascotas cargadas → cargamos desde la API
   useEffect(() => {
@@ -20,9 +21,8 @@ export const DetailsPage = () => {
     }
   }, [pets.length, fetchPets]);
 
-  // Buscar mascota por id
+  // Buscar mascota por id (se recalcula cuando pets cambia)
   const pet = getPetById(id!);
-  console.log('pet: ', pet);
 
   if (!pet) {
     return <p>Cargando mascota...</p>;

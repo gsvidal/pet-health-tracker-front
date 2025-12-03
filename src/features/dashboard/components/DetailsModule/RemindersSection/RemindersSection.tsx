@@ -147,15 +147,18 @@ export const RemindersSection: React.FC<RemindersSectionProps> = ({
           <div>
             <h3>Recordatorios</h3>
             <p>Configura recordatorios para eventos médicos</p>
-            <Button
-              variant="secondary"
-              style={{ marginTop: '20px' }}
-              onClick={() =>
-                setShowAllReminders((prevState: boolean) => !prevState)
-              }
-            >
-              {showAllReminders ? 'Ocultar' : 'Mostrar'} todos los recordatorios
-            </Button>
+            {filteredReminders.length > 0 && (
+              <Button
+                variant="secondary"
+                style={{ marginTop: '20px' }}
+                onClick={() =>
+                  setShowAllReminders((prevState: boolean) => !prevState)
+                }
+              >
+                {showAllReminders ? 'Ocultar' : 'Mostrar'} todos los
+                recordatorios
+              </Button>
+            )}
           </div>
           {!showForm && (
             <Button variant="outline" onClick={handleAddClick}>

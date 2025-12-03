@@ -2,7 +2,8 @@
   /* COLORS */
   /* ===== Core Palette ===== */
   --color-primary: #8200db;
-  --color-primary-hover: #7619ce;
+  --color-primary-opac50: #9b3edd84;
+  --color-primary-hover: #610eaf;
   --color-primary-bg: #ede9fe;
   --color-primary-bg-hover: #c9c1eb;
   --color-secondary: #be185d;
@@ -29,11 +30,11 @@
   --space-xl: 32px;
 
   /* BREAKPOINTS (mobile-first) */
-//  480px; /* small phones */
-//  768px; /* tablets */
-//  1024px; /* laptops */
-//  1280px; /* large desktops */
-//  1536px; /* extrua large screens */
+  //  480px; /* small phones */
+  //  768px; /* tablets */
+  //  1024px; /* laptops */
+  //  1280px; /* large desktops */
+  //  1536px; /* extrua large screens */
 
   /* CONTAINERS (max-widths) */
   --container-xs: 540px; /* small mobile layouts */

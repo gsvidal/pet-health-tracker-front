@@ -11,6 +11,12 @@
   border: 1px solid #e5e5e5;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
 
+  .profile-avatar-wrapper {
+    position: relative;
+    width: 80px;
+    height: 80px;
+  }
+
   .profile-avatar {
     width: 80px;
     height: 80px;
@@ -20,6 +26,7 @@
     align-items: center;
     justify-content: center;
     background: linear-gradient(135deg, #d94df7, #6e40ff);
+    outline: 2px solid var(--color-primary-opac50);
 
     .avatar-initial {
       font-size: 32px;
@@ -31,6 +38,49 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+    }
+  }
+
+  .profile-avatar__edit-btn {
+    position: absolute;
+    bottom: -4px;
+    right: -4px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    border: 2px solid white;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 12px;
+    padding: 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+
+    &:hover:not(:disabled) {
+      background: var(--color-primary-hover);
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .spinner {
+      animation: spin 1s linear infinite;
+    }
+  }
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
     }
   }
 
