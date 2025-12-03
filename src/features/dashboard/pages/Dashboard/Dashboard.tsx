@@ -5,6 +5,7 @@ import { usePetStore } from '../../../../store/pet.store';
 import { DashboardUserCard } from '../../components/DashboardUserCard/DashboardUserCard';
 import { DashboardPetCard } from '../../components/DashboardPetCard/DashboardPetCard';
 import { Button } from '../../../../components/Button/Button';
+import { Loader } from '../../../../components/Loader/Loader';
 import { Plus } from 'lucide-react';
 import { Header } from '../../../../pages/Header/Header';
 import { Modal } from '../../../../components/Modal/Modal';
@@ -73,7 +74,7 @@ export const Dashboard = () => {
             <h2 className="dashboard__pets-title">Mis Mascotas</h2>
 
             {loading ? (
-              <p className="dashboard__pets-loading">Cargando mascotas...</p>
+              <Loader text="Cargando mascotas..." size="large" />
             ) : pets.length === 0 ? (
               <p className="dashboard__pets-empty">
                 No tienes mascotas registradas aún.

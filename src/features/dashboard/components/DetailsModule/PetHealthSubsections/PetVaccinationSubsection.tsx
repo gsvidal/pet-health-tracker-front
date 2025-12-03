@@ -5,6 +5,7 @@ import { useVaccineForm } from '../../../../../hooks/useVaccineForm';
 import { useVaccineCrud } from '../../../../../hooks/useVaccineCrud';
 import { Button } from '../../../../../components/Button/Button';
 import { RemindersSection } from '../RemindersSection/RemindersSection';
+import { Loader } from '../../../../../components/Loader/Loader';
 import { formatDateLocal } from '../../../../../utils/dateUtils';
 import {
   FaSyringe,
@@ -97,7 +98,7 @@ export const PetVaccinationSubsection: React.FC<
     return new Date(nextDue) < new Date();
   };
 
-// import { formatDateLocal } from '../../../../../utils/dateUtils';
+  // import { formatDateLocal } from '../../../../../utils/dateUtils';
 
   return (
     <div className="vaccination-subsection">
@@ -347,7 +348,7 @@ export const PetVaccinationSubsection: React.FC<
         )}
 
         {loading && vaccines.length === 0 ? (
-          <p className="vaccination-subsection__loading">Cargando vacunas...</p>
+          <Loader text="Cargando vacunas..." />
         ) : vaccines.length === 0 ? (
           <p className="vaccination-subsection__empty">
             No hay vacunas registradas aún

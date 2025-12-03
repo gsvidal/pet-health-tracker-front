@@ -6,6 +6,7 @@ import { useDewormingCrud } from '../../../../../hooks/useDewormingCrud';
 import { Button } from '../../../../../components/Button/Button';
 import { RemindersSection } from '../RemindersSection/RemindersSection';
 import { useModalStore } from '../../../../../store/modal.store';
+import { Loader } from '../../../../../components/Loader/Loader';
 import { formatDateLocal } from '../../../../../utils/dateUtils';
 import {
   FaBug,
@@ -99,7 +100,6 @@ export const PetDewormingSubsection: React.FC<PetDewormingSubsectionProps> = ({
     if (!nextDue) return false;
     return new Date(nextDue) < new Date();
   };
-
 
   const dateAdministeredValue = watch('dateAdministered');
 
@@ -308,9 +308,7 @@ export const PetDewormingSubsection: React.FC<PetDewormingSubsectionProps> = ({
         )}
 
         {loading && dewormings.length === 0 ? (
-          <p className="deworming-subsection__loading">
-            Cargando desparasitaciones...
-          </p>
+          <Loader text="Cargando desparasitaciones..." />
         ) : dewormings.length === 0 ? (
           <p className="deworming-subsection__empty">
             No hay desparasitaciones registradas aún

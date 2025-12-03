@@ -4,6 +4,7 @@ import { usePetStore } from '../../../../store/pet.store';
 import { Header } from '../../../../pages/Header/Header';
 import { ProfilePet } from '../../../dashboard/components/DetailsModule/ProfilePet';
 import { PetInformation } from '../../../dashboard/components/DetailsModule/PetInformation';
+import { Loader } from '../../../../components/Loader/Loader';
 
 import './DetailsPage.scss';
 
@@ -25,7 +26,12 @@ export const DetailsPage = () => {
   const pet = getPetById(id!);
 
   if (!pet) {
-    return <p>Cargando mascota...</p>;
+    return (
+      <div className="details-page">
+        <Header />
+        <Loader text="Cargando mascota..." size="large" />
+      </div>
+    );
   }
 
   return (

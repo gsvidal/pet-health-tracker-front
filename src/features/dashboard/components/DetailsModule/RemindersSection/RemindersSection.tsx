@@ -3,6 +3,7 @@ import type { Reminder } from '../../../../../models/reminder.model';
 import { useReminderForm } from '../../../../../hooks/useReminderForm';
 import { useReminderCrud } from '../../../../../hooks/useReminderCrud';
 import { Button } from '../../../../../components/Button/Button';
+import { Loader } from '../../../../../components/Loader/Loader';
 import {
   FaCalendarAlt,
   FaClock,
@@ -355,9 +356,7 @@ export const RemindersSection: React.FC<RemindersSectionProps> = ({
             )}
 
             {loading && filteredReminders.length === 0 ? (
-              <p className="reminders-section__loading">
-                Cargando recordatorios...
-              </p>
+              <Loader text="Cargando recordatorios..." />
             ) : (
               filteredReminders.length === 0 && (
                 <p className="reminders-section__empty">

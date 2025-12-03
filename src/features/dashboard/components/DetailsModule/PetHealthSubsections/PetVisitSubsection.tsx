@@ -6,7 +6,8 @@ import { useVetVisitCrud } from '../../../../../hooks/useVetVisitCrud';
 import { Button } from '../../../../../components/Button/Button';
 import { RemindersSection } from '../RemindersSection/RemindersSection';
 import { useModalStore } from '../../../../../store/modal.store';
-import { formatDateLocal, formatDateTimeLocal } from '../../../../../utils/dateUtils';
+import { Loader } from '../../../../../components/Loader/Loader';
+import { formatDateTimeLocal } from '../../../../../utils/dateUtils';
 import {
   FaStethoscope,
   FaCalendarAlt,
@@ -27,9 +28,7 @@ export const PetVisitSubsection: React.FC<PetVisitSubsectionProps> = ({
   pet,
 }) => {
   const [showForm, setShowForm] = useState(false);
-  const [editingVetVisit, setEditingVetVisit] = useState<VetVisit | null>(
-    null,
-  );
+  const [editingVetVisit, setEditingVetVisit] = useState<VetVisit | null>(null);
   const { openModal } = useModalStore();
 
   const {
@@ -300,9 +299,7 @@ export const PetVisitSubsection: React.FC<PetVisitSubsectionProps> = ({
                   disabled={loading || !isValid}
                   variant="primary"
                 >
-                  {editingVetVisit
-                    ? 'Actualizar Registro'
-                    : 'Guardar Registro'}
+                  {editingVetVisit ? 'Actualizar Registro' : 'Guardar Registro'}
                 </Button>
                 <Button
                   type="button"
@@ -342,9 +339,7 @@ export const PetVisitSubsection: React.FC<PetVisitSubsectionProps> = ({
         )}
 
         {loading && vetVisits.length === 0 ? (
-          <p className="visit-subsection__loading">
-            Cargando visitas veterinarias...
-          </p>
+          <Loader text="Cargando visitas veterinarias..." />
         ) : vetVisits.length === 0 ? (
           <p className="visit-subsection__empty">
             No hay visitas veterinarias registradas aún
@@ -352,10 +347,7 @@ export const PetVisitSubsection: React.FC<PetVisitSubsectionProps> = ({
         ) : (
           <div className="visit-subsection__visits-list">
             {vetVisits.map((vetVisit) => (
-              <div
-                key={vetVisit.id}
-                className="visit-subsection__visit-card"
-              >
+              <div key={vetVisit.id} className="visit-subsection__visit-card">
                 <div className="visit-card__header">
                   <div className="visit-card__title">
                     <FaStethoscope className="visit-icon" />
