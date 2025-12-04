@@ -25,6 +25,7 @@ interface AuthState {
   mockLogin: () => void;
   verifyEmail: (token: string) => Promise<void>;
   setAuth: (data: Partial<AuthState>) => void;
+  clearAuth: () => void;
   getUserData: () => Promise<void>;
 }
 
@@ -165,19 +166,29 @@ export const useAuthStore = create<AuthState>()(
       logout: async () => {
         set({ loading: true, error: null });
         const accessToken = get().accessToken;
-        if (accessToken) {
-          try {
-            await callApi(() => authService.logout());
-          } catch (err) {
-            // Ignorar errores en logout (puede que el token ya sea inválido)
-            console.warn('Error al cerrar sesión en el servidor:', err);
-          }
-        }
+        
+        // Limpiar estado primero para evitar loops
         set({
           user: null,
           accessToken: null,
           refreshToken: null,
           isAuthenticated: false,
+        });
+        
+        // Limpiar localStorage
+        localStorage.removeItem('auth-storage');
+        
+        // Intentar logout en el servidor solo si hay token (puede fallar si ya expiró)
+        if (accessToken) {
+          try {
+            await callApi(() => authService.logout());
+          } catch (err) {
+            // Ignorar errores en logout (puede que el token ya sea inválido)
+            console.warn('Error al cerrar sesión en el servidor (ignorado):', err);
+          }
+        }
+        
+        set({
           loading: false,
           error: null,
         });
@@ -189,6 +200,17 @@ export const useAuthStore = create<AuthState>()(
           ...state,
           ...authData,
         })),
+
+      clearAuth: () => {
+        set({
+          user: null,
+          accessToken: null,
+          refreshToken: null,
+          isAuthenticated: false,
+          loading: false,
+          error: null,
+        });
+      },
 
       getUserData: async () => {
         set({ loading: true, error: null });

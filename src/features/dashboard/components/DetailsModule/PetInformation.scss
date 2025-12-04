@@ -36,10 +36,10 @@
       &.active {
         background: linear-gradient(
           90deg,
-          var(--color-gradient-start),
-          var(--color-gradient-end)
+          var(--color-gradient-start-opac50),
+          var(--color-gradient-end-opac50)
         );
-        color: white;
+        color: var(--color-text);
         border-radius: 20px;
         margin: 3px;
         #menu-title {

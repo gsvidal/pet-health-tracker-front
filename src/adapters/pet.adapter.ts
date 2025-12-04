@@ -55,10 +55,11 @@ export interface PetFormState {
 /**
  * Schema para crear/actualizar mascota en el backend (snake_case)
  * No incluye campos generados por el backend (id, owner_id, created_at, updated_at)
+ * Para UPDATE: todos los campos son opcionales según la API
  */
 export interface PetRequest {
-  name: string;
-  species: string;
+  name?: string | null;
+  species?: string | null;
   breed?: string | null;
   birth_date?: string | null;
   age_years?: number | null;
@@ -93,17 +94,52 @@ export function adaptPetResponseToPet(petResponse: PetResponse): Pet {
 /**
  * Adapta datos del frontend (camelCase) a PetRequest del backend (snake_case)
  * Para crear o actualizar una mascota
+ * Convierte strings vacíos a null y solo incluye campos con valor
  */
 export function adaptPetToPetRequest(pet: PetFormData): PetRequest {
-  return {
-    name: pet.name,
-    species: pet.species,
-    breed: pet.breed ?? null,
-    birth_date: pet.birthDate ?? null,
-    age_years: pet.ageYears ?? null,
-    weight_kg: pet.weightKg ?? null,
-    sex: pet.sex ?? null,
-    photo_url: pet.photoUrl ?? null,
-    notes: pet.notes ?? null,
-  };
+  const request: PetRequest = {};
+
+  // Solo incluir campos que tienen valor (no vacíos o null)
+  // Para update, todos son opcionales según la API
+  if (pet.name !== undefined && pet.name !== null && pet.name.trim() !== '') {
+    request.name = pet.name;
+  } else if (pet.name !== undefined) {
+    request.name = null;
+  }
+
+  if (pet.species !== undefined && pet.species !== null && pet.species.trim() !== '') {
+    request.species = pet.species;
+  } else if (pet.species !== undefined) {
+    request.species = null;
+  }
+
+  if (pet.breed !== undefined) {
+    request.breed = pet.breed && pet.breed.trim() !== '' ? pet.breed : null;
+  }
+
+  if (pet.birthDate !== undefined) {
+    request.birth_date = pet.birthDate && pet.birthDate.trim() !== '' ? pet.birthDate : null;
+  }
+
+  if (pet.ageYears !== undefined) {
+    request.age_years = pet.ageYears !== null ? pet.ageYears : null;
+  }
+
+  if (pet.weightKg !== undefined) {
+    request.weight_kg = pet.weightKg && pet.weightKg.trim() !== '' ? pet.weightKg : null;
+  }
+
+  if (pet.sex !== undefined) {
+    request.sex = pet.sex && pet.sex.trim() !== '' ? pet.sex : null;
+  }
+
+  if (pet.photoUrl !== undefined) {
+    request.photo_url = pet.photoUrl && pet.photoUrl.trim() !== '' ? pet.photoUrl : null;
+  }
+
+  if (pet.notes !== undefined) {
+    request.notes = pet.notes && pet.notes.trim() !== '' ? pet.notes : null;
+  }
+
+  return request;
 }

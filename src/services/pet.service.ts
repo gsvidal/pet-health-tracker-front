@@ -42,6 +42,6 @@ export const deletePet = async (id: string): Promise<void> => {
 export const updatePetService = async (id: string, petData: PetFormData) => {
   const requestData = adaptPetToPetRequest(petData);
 
-  const response = await apiClient.patch(`${PETS_ENDPOINT}/${id}`, requestData);
+  const response = await apiClient.put(`${PETS_ENDPOINT}/${id}`, requestData);
   return response.data;
 }

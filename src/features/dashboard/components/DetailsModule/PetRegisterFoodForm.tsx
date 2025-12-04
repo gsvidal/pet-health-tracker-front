@@ -1,186 +1,180 @@
-import React, { useState } from 'react';
-import './PetRegisterFoodForm.scss';
+import React from 'react';
 import type { Pet } from '../../../../models/pet.model';
-import { FaCheck } from 'react-icons/fa';
-import { IoCloseOutline } from 'react-icons/io5';
-import type { MealInput } from '../../../../models/meal.model';
+import { useMealForm } from '../../../../hooks/useMealForm';
+import { Button } from '../../../../components/Button/Button';
+import { FaCalendarAlt, FaClock, FaUtensils, FaFileAlt } from 'react-icons/fa';
+
+import type { Meal } from '../../../../models/meal.model';
 
 interface PetRegisterFoodFormProps {
   pet: Pet;
+  editingMeal?: Meal | null;
   onClose: () => void;
-  onFoodAdded: (meal: MealInput) => void;
+  onFoodAdded: (data: any) => Promise<void>;
 }
 
 export const PetRegisterFoodForm: React.FC<PetRegisterFoodFormProps> = ({
   pet,
+  editingMeal,
   onClose,
   onFoodAdded,
 }) => {
-  console.log('🐶 pet recibido en formulario:', pet);
-
-  const today = new Date().toISOString().split('T')[0];
-  const [formData, setFormData] = useState({
-    date: today,
-    time: '',
-    type: '',
-    food: '',
-    quantity: '',
-    notes: '',
+  const {
+    register,
+    handleSubmit,
+    errors,
+    isValid,
+    onSubmit,
+    handleCancel,
+    setValue,
+  } = useMealForm({
+    petId: pet.id || '',
+    editingMeal,
+    onSave: async (data) => {
+      await onFoodAdded(data);
+    },
+    onSuccess: () => {
+      onClose();
+    },
   });
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const validate = () => {
-    const newErrors: Record<string, string> = {};
-    if (!formData.date) newErrors.date = '* La fecha es obligatoria';
-    if (!formData.time) newErrors.time = '* La hora es obligatoria';
-    if (!formData.type) newErrors.type = '* El tipo de comida es obligatorio';
-    if (!formData.food) newErrors.food = '* El alimento es obligatorio';
-    if (!formData.quantity) newErrors.quantity = '* La cantidad es obligatoria';
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-  const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >,
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-  const handleSubmit = () => {
-    if (!validate()) return;
-    if (!pet?.id) {
-      console.error('❌ ERROR: pet.id es undefined');
-      return;
-    }
-    const meal: MealInput = {
-      petId: pet.id,
-      date: formData.date,
-      time: formData.time,
-      type: formData.type,
-      food: formData.food,
-      quantity: formData.quantity,
-      notes: formData.notes,
-    };
 
-    console.log('🚀 MealInput enviado:', meal);
-
-    onFoodAdded(meal);
+  const handleCancelForm = () => {
+    handleCancel();
+    onClose();
   };
 
   return (
-    <div className="register-food-card">
-      <h3>Registrar Nueva Comida</h3>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="nutrition-subsection__form"
+    >
+        <div className="nutrition-subsection__form-grid">
+          {/* Columna Izquierda */}
+          <div className="nutrition-subsection__form-column">
+            <div className="nutrition-subsection__field">
+              <label htmlFor="date">
+                Fecha <span className="required">*</span>
+              </label>
+              <div className="input-with-icon">
+                <FaCalendarAlt className="input-icon" />
+                <input
+                  id="date"
+                  type="date"
+                  {...register('date', {
+                    required: 'La fecha es obligatoria',
+                  })}
+                  className={errors.date ? 'input-error' : ''}
+                />
+              </div>
+              {errors.date && (
+                <span className="error-message">{errors.date.message}</span>
+              )}
+            </div>
 
-      {/* FECHA & HORA */}
-      <div className="row-two">
-        <div className="field">
-          <label>Fecha</label>
-          <input
-            type="date"
-            name="date"
-            value={formData.date}
-            onChange={handleChange}
-            className={errors.date ? 'input-error' : ''}
-          />
-          <div className="error-container">
-            {errors.date && <p id="error-msg">{errors.date}</p>}
+            <div className="nutrition-subsection__field">
+              <label htmlFor="time">
+                Hora <span className="required">*</span>
+              </label>
+              <div className="input-with-icon">
+                <FaClock className="input-icon" />
+                <input
+                  id="time"
+                  type="time"
+                  {...register('time', {
+                    required: 'La hora es obligatoria',
+                  })}
+                  className={errors.time ? 'input-error' : ''}
+                />
+              </div>
+              {errors.time && (
+                <span className="error-message">{errors.time.message}</span>
+              )}
+            </div>
+
+            <div className="nutrition-subsection__field">
+              <label htmlFor="type">Tipo de Comida</label>
+              <select id="type" {...register('type')}>
+                <option value="">Selecciona el tipo de comida</option>
+                <option value="Desayuno">Desayuno</option>
+                <option value="Almuerzo">Almuerzo</option>
+                <option value="Cena">Cena</option>
+                <option value="Snack">Snack</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Columna Derecha */}
+          <div className="nutrition-subsection__form-column">
+            <div className="nutrition-subsection__field">
+              <label htmlFor="food">Alimento</label>
+              <div className="input-with-icon">
+                <FaUtensils className="input-icon" />
+                <input
+                  id="food"
+                  type="text"
+                  placeholder="Ej: Croquetas Premium, Pavo, Carne..."
+                  {...register('food', {
+                    maxLength: {
+                      value: 200,
+                      message: 'El alimento no puede exceder 200 caracteres',
+                    },
+                  })}
+                  className={errors.food ? 'input-error' : ''}
+                />
+              </div>
+              {errors.food && (
+                <span className="error-message">{errors.food.message}</span>
+              )}
+            </div>
+
+            <div className="nutrition-subsection__field">
+              <label htmlFor="quantity">Cantidad</label>
+              <input
+                id="quantity"
+                type="text"
+                placeholder="Ej: 200g, 1 taza..."
+                {...register('quantity', {
+                  maxLength: {
+                    value: 100,
+                    message: 'La cantidad no puede exceder 100 caracteres',
+                  },
+                })}
+                className={errors.quantity ? 'input-error' : ''}
+              />
+              {errors.quantity && (
+                <span className="error-message">
+                  {errors.quantity.message}
+                </span>
+              )}
+            </div>
+
+            <div className="nutrition-subsection__field">
+              <label htmlFor="notes">Notas (opcional)</label>
+              <div className="input-with-icon">
+                <FaFileAlt className="input-icon" />
+                <textarea
+                  id="notes"
+                  rows={4}
+                  placeholder="Observaciones sobre esta comida..."
+                  {...register('notes')}
+                />
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className="field">
-          <label>Hora</label>
-          <input
-            type="time"
-            name="time"
-            value={formData.time}
-            onChange={handleChange}
-            className={errors.time ? 'input-error' : ''}
-          />
-          <div className="error-container">
-            {errors.time && <p id="error-msg">{errors.time}</p>}
-          </div>
-        </div>
-      </div>
-
-      {/* TIPO */}
-      <div className="field">
-        <label>Tipo de Comida</label>
-        <select
-          name="type"
-          value={formData.type}
-          onChange={handleChange}
-          className={errors.type ? 'input-error' : ''}
-        >
-          <option value="">Selecciona el tipo de comida</option>
-          <option value="Desayuno">Desayuno</option>
-          <option value="Almuerzo">Almuerzo</option>
-          <option value="Cena">Cena</option>
-          <option value="Snack">Snack</option>
-        </select>
-        <div className="error-container">
-          {errors.type && <p id="error-msg">{errors.type}</p>}
-        </div>
-      </div>
-
-      {/* ALIMENTO */}
-      <div className="field">
-        <label>Alimento</label>
-        <input
-          type="text"
-          name="food"
-          placeholder="Ej: Croquetas Premium, Pavo, Carne..."
-          value={formData.food}
-          onChange={handleChange}
-          className={errors.food ? 'input-error' : ''}
-        />
-        <div className="error-container">
-          {errors.food && <p id="error-msg">{errors.food}</p>}
-        </div>
-      </div>
-
-      {/* CANTIDAD */}
-      <div className="field">
-        <label>Cantidad</label>
-        <input
-          type="text"
-          name="quantity"
-          placeholder="Ej: 200g, 1 taza..."
-          value={formData.quantity}
-          onChange={handleChange}
-          className={errors.quantity ? 'input-error' : ''}
-        />
-        <div className="error-container">
-          {errors.quantity && <p id="error-msg">{errors.quantity}</p>}
-        </div>
-      </div>
-
-      {/* NOTAS */}
-      <div className="field">
-        <label>Notas (opcional)</label>
-        <textarea
-          id="note-container"
-          name="notes"
-          placeholder="Observaciones sobre esta comida..."
-          value={formData.notes}
-          onChange={handleChange}
-        />
-      </div>
-
-      {/* BOTONES */}
-      <div className="buttons-row">
-        <button id="primary-food-btn" onClick={handleSubmit}>
-          <p id="save-food-title">
-            <FaCheck className="icon-save-food" size={12} />
-            Guardar Comida
-          </p>
-        </button>
-        <button id="cancel-food-btn" onClick={onClose}>
-          <p id="cancel-food-title">
-            <IoCloseOutline className="icon-cancel-food" size={15} />
+        <div className="nutrition-subsection__form-actions">
+          <Button type="submit" disabled={!isValid} variant="primary">
+            {editingMeal ? 'Actualizar Registro' : 'Guardar Registro'}
+          </Button>
+          <Button
+            type="button"
+            onClick={handleCancelForm}
+            variant="outline"
+          >
             Cancelar
-          </p>
-        </button>
-      </div>
-    </div>
+          </Button>
+        </div>
+      </form>
   );
 };
