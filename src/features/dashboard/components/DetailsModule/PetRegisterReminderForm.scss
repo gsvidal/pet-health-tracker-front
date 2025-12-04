@@ -1,0 +1,202 @@
+.reminder-form {
+  background: #ffffff;
+  padding: 22px;
+  border-radius: 14px;
+  border: 1px solid #ececec;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  animation: slideDown 0.3s ease-out;
+  .form-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #414141;
+    margin-bottom: 4px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #111827;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      padding: 0.625rem 0.75rem;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      background: #f9fafb;
+      color: #111827;
+      outline: none;
+      transition: all 0.15s;
+      font-family: inherit;
+
+      &:focus {
+        border-color: #a47cff;
+        background: #fff;
+        box-shadow: 0 0 0 2px rgba(164, 124, 255, 0.25);
+      }
+    }
+
+    textarea {
+      min-height: 70px;
+      resize: vertical;
+    }
+    input::placeholder,
+    textarea::placeholder {
+      color: #9ca3af;
+    }
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: #a855f7;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.1);
+    }
+  }
+  #note-reminder-container {
+    resize: none;
+  }
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-bottom: 1px;
+    margin-top: 5px;
+  }
+
+  .weekday-selector {
+    display: flex;
+    gap: 7px;
+
+    .day {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #f0f0f0;
+      border: 1px solid #cccccc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-weight: 600;
+      color: #4a4a4a;
+      transition: 0.2s;
+
+      &.selected {
+        background: #a47cff;
+        border-color: #a47cff;
+        color: white;
+      }
+
+      &:hover {
+        background: #e6d6ff;
+      }
+    }
+  }
+
+  .form-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 10px;
+
+    .cancel-reminder-btn {
+      font-size: 1.1rem;
+      flex: 1;
+      padding: 0.9rem 3.9rem;
+      border-radius: 10px;
+      background: #f3f3f3;
+      color: #333;
+      border: none;
+      cursor: pointer;
+      background: none;
+      border: 1px solid var(--color-border);
+      &:hover {
+        background-color: var(--color-primary-bg);
+      }
+
+      #cancel-reminder-title {
+        color: black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        .icon-cancel-food {
+          margin-right: 4px;
+        }
+      }
+    }
+
+    .save-reminder-btn {
+      font-size: 1.1rem;
+      flex: 1;
+      font-weight: 500;
+      font-family: var(--font-heading);
+      border-radius: 6px;
+      cursor: pointer;
+      border: none;
+      color: white;
+      background: linear-gradient(
+        90deg,
+        var(--color-gradient-start),
+        var(--color-gradient-end)
+      );
+      padding: 0;
+      cursor: pointer;
+      &:hover {
+        background-color: var(--color-primary-bg);
+        opacity: 0.9;
+      }
+    }
+    #save-reminder-title {
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+      .icon-cancel-reminder,
+      .icon-save-reminder {
+        margin-right: 4px;
+      }
+    }
+  }
+}
+@keyframes slideDown {
+  from {
+    transform: translateY(-15px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+.input-error {
+  border-color: #ff6961 !important;
+  background: #fff6f6 !important;
+}
+
+#error-reminder-msg {
+  position: relative;
+  color: var(--color-error);
+  font-size: 0.9rem;
+  margin: 0;
+  line-height: 1;
+}
+
+.error-container {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  min-height: 16px;
+}
+#description-reminder-title {
+  margin-top: 5px;
+}

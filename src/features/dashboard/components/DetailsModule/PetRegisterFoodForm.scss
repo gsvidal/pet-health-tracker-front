@@ -1,0 +1,128 @@
+.register-food-card {
+  width: 100%;
+  background: #fff;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e5e5e5;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.08);
+  animation: slideDown 0.3s ease-out;
+}
+@keyframes slideDown {
+  from {
+    transform: translateY(-15px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+h3 {
+  margin-bottom: 20px;
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 7px;
+}
+label {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+input,
+select,
+textarea {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #dedede;
+  background: #f7f7f7;
+  font-size: 24px;
+}
+textarea {
+  min-height: 80px;
+}
+#note-container {
+  resize: none;
+}
+.input-error {
+  border: 1px solid #ff3b3b !important;
+}
+#error-msg {
+  color: var(--color-error);
+  font-size: 0.9rem;
+}
+.error-container {
+  min-height: 16px;
+}
+.error-msg {
+  color: var(--color-error);
+  font-size: 0.9rem;
+  margin: 0;
+  line-height: 1;
+}
+.row-two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-bottom: -12px;
+}
+.buttons-row {
+  margin-top: 20px;
+  display: flex;
+  gap: 12px;
+}
+#primary-food-btn {
+  flex: 1;
+  font-weight: 600;
+  font-family: var(--font-heading);
+  border-radius: 6px;
+  cursor: pointer;
+  border: none;
+  color: white;
+  background: linear-gradient(
+    90deg,
+    var(--color-gradient-start),
+    var(--color-gradient-end)
+  );
+  padding: 0;
+  cursor: pointer;
+  &:hover {
+    background-color: var(--color-primary-bg);
+    opacity: 0.9;
+  }
+}
+#save-food-title {
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  .icon-cancel-food,
+  .icon-save-food {
+    margin-right: 4px;
+  }
+}
+#cancel-food-btn {
+  flex: 1;
+  padding: 0.9rem 3.9rem;
+  border-radius: 10px;
+  background: #f3f3f3;
+  color: #333;
+  border: none;
+  cursor: pointer;
+  background: none;
+  border: 1px solid var(--color-border);
+  &:hover {
+    background-color: var(--color-primary-bg);
+  }
+
+  #cancel-food-title {
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    .icon-cancel-food {
+      margin-right: 4px;
+    }
+  }
+}

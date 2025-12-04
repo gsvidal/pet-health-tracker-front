@@ -7,6 +7,7 @@ import {
   getPetById,
   createPet as createPetService,
   deletePet as deletePetService,
+  updatePetService,
 } from '../services/pet.service';
 import { uploadPetProfilePhoto } from '../services/petPhoto.service';
 import { adaptPetResponseToPet } from '../adapters/pet.adapter';
@@ -17,6 +18,7 @@ interface PetState {
   selectedPet: Pet | null;
   loading: boolean;
   error: string | null;
+  mockMode: boolean;
 
   // Acciones
   fetchPets: () => Promise<void>;
@@ -27,6 +29,9 @@ interface PetState {
   // mockPets: () => void;
   deletePet: (id: string) => Promise<void>;
   uploadPetPhoto: (petId: string, file: File) => Promise<void>;
+  // mockPets: () => void;
+  updatePet: (id: string, petData: PetFormData) => Promise<void>;
+  // setMockMode: (value: boolean) => void;
 }
 
 export const usePetStore = create<PetState>((set, get) => ({
@@ -34,19 +39,18 @@ export const usePetStore = create<PetState>((set, get) => ({
   selectedPet: null,
   loading: false,
   error: null,
+  mockMode: false,
+  // setMockMode: (value) => set({ mockMode: value }),
 
   fetchPets: async () => {
-    set({ loading: true, error: null });
+    set({ loading: true, error: null, mockMode: false });
 
     const { data: petsResponse, error } = await callApi(() => getPets());
 
     if (error || !petsResponse) {
       const message = error || 'Error al obtener mascotas';
       toast.error(message);
-      set({
-        error: message,
-        loading: false,
-      });
+      set({ error: message, loading: false });
       return;
     }
 
@@ -67,10 +71,7 @@ export const usePetStore = create<PetState>((set, get) => ({
     if (error || !petResponse) {
       const message = error || 'Error al obtener la mascota';
       toast.error(message);
-      set({
-        error: message,
-        loading: false,
-      });
+      set({ error: message, loading: false });
       return;
     }
 
@@ -97,7 +98,7 @@ export const usePetStore = create<PetState>((set, get) => ({
         error: message,
         loading: false,
       });
-      return false;
+      throw new Error(message);
     }
 
     const newPet = adaptPetResponseToPet(petResponse);
@@ -138,7 +139,7 @@ export const usePetStore = create<PetState>((set, get) => ({
   //     createdAt: '2021-03-15T00:00:00Z',
   //     updatedAt: '2024-01-10T00:00:00Z',
   //   };
-
+  
   //   const mockPet2: Pet = {
   //     id: 'mock-pet-2',
   //     name: 'Iggy',
@@ -228,5 +229,42 @@ export const usePetStore = create<PetState>((set, get) => ({
     });
 
     toast.success('Foto de perfil actualizada correctamente 📸');
+  },
+
+  updatePet: async (id, petData) => {
+    if (id.startsWith('mock-')) {
+      console.warn('Mascota mock detectada. No se enviará update al backend.');
+
+      // Simula actualización local
+      const updatedPet = {
+        ...get().selectedPet,
+        ...petData,
+        id: id,
+      };
+      set((state) => ({
+        pets: state.pets.map((p) => (p.id === id ? updatedPet : p)),
+        selectedPet: updatedPet,
+      }));
+      toast.success('Mascota mock actualizada localmente ✔️');
+      return;
+    }
+    set({ loading: true, error: null });
+    const { data: petResponse, error } = await callApi(() =>
+      updatePetService(id, petData),
+    );
+    if (error || !petResponse) {
+      const message = error || 'Error al actualizar la mascota';
+      toast.error(message);
+      set({ error: message, loading: false });
+      return;
+    }
+    const updatedPet = adaptPetResponseToPet(petResponse);
+    set((state) => ({
+      pets: state.pets.map((p) => (p.id === id ? updatedPet : p)),
+      selectedPet: updatedPet,
+      loading: false,
+      error: null,
+    }));
+    toast.success('Mascota actualizada correctamente ✔️');
   },
 }));

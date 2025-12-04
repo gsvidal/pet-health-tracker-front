@@ -1,70 +1,261 @@
 .pet-section-card--info {
   width: 100%;
-
+  border: 1px solid #e5e5e5;
+  background: white;
+  border-radius: var(--radius-md, 8px);
+  box-shadow: var(--shadow-md, 0 2px 6px rgba(0, 0, 0, 0.1));
+  padding: 2.5rem;
   h3 {
     margin: 0;
-    font-size: 18px;
+    font-size: 1.2rem;
     font-weight: 600;
+    color: var(--color-text, #1e1e1e);
   }
-
   > p {
-    color: #777;
-    margin-bottom: 25px;
-    font-size: 14px;
+    border-bottom: 1px solid #e5e5e5;
+    font-size: 1.1rem;
+    color: var(--color-text-secondary, #6b7280);
+    padding-bottom: 10px;
   }
 
   .info-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 25px;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
 
+    margin-top: 15px;
     label {
-      color: #888;
-      font-size: 12px;
-      margin-bottom: 3px;
+      color: var(--color-text-secondary, #6b7280);
+      font-size: 1.1rem;
       display: block;
     }
 
     p {
-      font-size: 14px;
-      font-weight: 500;
+      color: var(--color-text, #1e1e1e);
+      font-size: 1.2rem;
+      font-weight: 400;
       margin: 0;
+    }
+    select,
+    input {
+      width: 100%;
+      padding: 0.7rem 0.8rem;
+      border: 1px solid #eee;
+      border-radius: 6px;
+      background-color: #f8f8f8;
+      font-size: 1.1rem;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+    input:focus {
+      border-color: #a855f7;
+      background: #fff;
+      box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.15);
     }
   }
 
   .notes {
-    margin-top: 25px;
-
+    width: 200%;
+    border-top: 1px solid #e5e5e5;
+    padding-top: 5px;
     label {
-      color: #888;
-      font-size: 12px;
       display: block;
       margin-bottom: 4px;
+      color: var(--color-text-secondary, #6b7280);
+      font-size: 1rem;
     }
 
     p {
+      color: var(--color-text, #1e1e1e);
+      font-size: 1.2rem;
+      font-weight: 400;
       margin: 0;
-      font-size: 14px;
+    }
+    textarea {
+      width: 100%;
+      padding: 1rem 0.8rem;
+      border: 1px solid #eee;
+      border-radius: 6px;
+      background-color: #f8f8f8;
+      font-size: 1.1rem;
+      outline: none;
+      transition: all 0.2s ease;
+      resize: none;
+    }
+    textarea:focus {
+      border-color: #a855f7;
+      background: #fff;
+      box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.15);
     }
   }
 
   .edit-btn {
     display: flex;
     justify-content: center;
-    margin-top: 30px;
-
     button {
-      background: #7b3bff;
-      color: white;
+      flex: 1;
       border: none;
-      padding: 10px 28px;
-      border-radius: 10px;
-      font-size: 14px;
+      font-size: 1.1rem;
+      margin-top: 12px;
+      background: none;
+      border: 1px solid var(--color-border);
+      font-family: var(--font-heading);
+      border-radius: 6px;
+      padding: 1rem 3.9rem;
       cursor: pointer;
-
+      transition: background var(--transition);
+      #cancel-title,
+      #save-title,
+      #general-title {
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        .icon-general {
+          margin-right: 4px;
+        }
+      }
+      #general-title,
+      #cancel-title {
+        color: black;
+      }
       &:hover {
-        background: #6a2de0;
+        background-color: var(--color-primary-bg);
+        opacity: 0.9;
+      }
+    }
+    #cancel-button,
+    #save-button {
+      flex: 2;
+      padding: 1rem 3.3rem;
+      margin-top: 2rem;
+      margin-right: 1rem;
+    }
+    #save-button {
+      color: white;
+      background: linear-gradient(
+        90deg,
+        var(--color-gradient-start),
+        var(--color-gradient-end)
+      );
+    }
+    #cancel-button {
+      background: none;
+      border: 1px solid var(--color-border);
+      &:hover {
+        background-color: var(--color-primary-bg);
       }
     }
   }
+
+  .information-header {
+    background: white;
+    display: flex;
+    align-items: center;
+    padding-bottom: 15px;
+    background: white;
+    .general-information {
+      display: block;
+      justify-content: center;
+      align-items: center;
+      p {
+        margin: 0;
+      }
+    }
+  }
+}
+#error-details {
+  position: absolute;
+  color: var(--color-error);
+  font-size: 0.9rem;
+}
+.input-error {
+  border: 1px solid #e63946 !important;
+}
+#optional-text {
+  margin-top: 3px;
+  font-size: 0.85rem;
+  color: var(--color-text-secondary, #6b7280);
+}
+#optional-text-notes {
+  margin-top: 1px;
+  font-size: 0.85rem;
+}
+.pet-section-card--info.editing .info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(7, auto);
+  grid-row-gap: 16px;
+  grid-column-gap: 24px;
+  animation: slideDown 0.3s ease-out;
+}
+@keyframes slideDown {
+  from {
+    transform: translateY(-15px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+.pet-section-card--info.editing .name-container {
+  grid-area: 1 / 1 / 2 / 3;
+}
+.pet-section-card--info.editing .species-container {
+  grid-area: 2 / 1 / 3 / 2;
+}
+.pet-section-card--info.editing .race-container {
+  grid-area: 2 / 2 / 3 / 3;
+}
+.pet-section-card--info.editing .sex-container {
+  grid-area: 3 / 1 / 4 / 3;
+}
+.pet-section-card--info.editing .date-container {
+  grid-area: 4 / 1 / 5 / 2;
+}
+.pet-section-card--info.editing .birth-container {
+  grid-area: 4 / 2 / 5 / 3;
+}
+.pet-section-card--info.editing .weight-container {
+  grid-area: 5 / 1 / 6 / 2;
+}
+.pet-section-card--info.editing .photo-container {
+  grid-area: 6 / 1 / 7 / 3;
+}
+.pet-section-card--info.editing .notes {
+  grid-area: 7 / 1 / 8 / 3;
+  width: 100%;
+}
+.pet-section-card--info.editing .edit-btn {
+  grid-area: 8 / 1 / 9 / 3;
+  width: 100%;
+}
+.photo-container ::placeholder {
+  font-style: oblique;
+  font-size: 1rem;
+}
+#text-fisics {
+  position: relative;
+  top: 7px;
+  margin-top: 10px;
+  padding-bottom: 7px;
+  border-bottom: 1px solid #e5e5e5;
+}
+#text-basics {
+  font-size: 1.2rem;
+  color: black;
+  position: relative;
+  top: 3px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e5e5e5;
+}
+#text-aditional {
+  position: relative;
+  top: 1px;
+  margin-top: 1px;
+  padding-bottom: 7px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #e5e5e5;
 }

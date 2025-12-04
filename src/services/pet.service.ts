@@ -32,9 +32,16 @@ export const createPet = async (petData: PetFormData): Promise<PetResponse> => {
   return response.data;
 };
 
-/**
- * Elimina una mascota
- */
+//  Elimina una mascota
+
 export const deletePet = async (id: string): Promise<void> => {
   await apiClient.delete(`${PETS_ENDPOINT}/${id}`);
-};
+}
+
+//  Actualiza una mascota por ID
+export const updatePetService = async (id: string, petData: PetFormData) => {
+  const requestData = adaptPetToPetRequest(petData);
+
+  const response = await apiClient.patch(`${PETS_ENDPOINT}/${id}`, requestData);
+  return response.data;
+}

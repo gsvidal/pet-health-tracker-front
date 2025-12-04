@@ -1,0 +1,302 @@
+.nutrition-container {
+  margin: 20px auto;
+  align-items: center;
+  border: 1px solid #e5e5e5;
+  background: white;
+  border-radius: var(--radius-md, 8px);
+  box-shadow: var(--shadow-md, 0 2px 6px rgba(0, 0, 0, 0.1));
+  padding: 1.5rem;
+}
+
+/* --- HEADER PRINCIPAL --- */
+.nutrition-header {
+  background: white;
+  padding: 22px 28px;
+  margin: 5px auto;
+  border: 1px solid #e5e5e5;
+  background: white;
+  border-radius: var(--radius-md, 8px);
+  margin-bottom: 25px;
+
+  h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+
+  p {
+    font-size: 1.1rem;
+    font-weight: 400;
+    margin: 2px 0 0;
+
+    color: var(--color-text-secondary, #6b7280);
+  }
+  .register-food-btn {
+    display: flex;
+    justify-content: center;
+    button {
+      border: 1px solid var(--color-border);
+      font-family: var(--font-heading);
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    #primary-reg-btn {
+      border: none;
+      color: white;
+      background: linear-gradient(
+        90deg,
+        var(--color-gradient-start),
+        var(--color-gradient-end)
+      );
+      padding: 1rem 2.3rem;
+      cursor: pointer;
+      &:hover {
+        background-color: var(--color-primary-bg);
+        opacity: 0.9;
+      }
+      #register-food-title {
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        .icon-reg-food {
+          margin-right: 4px;
+        }
+      }
+    }
+  }
+}
+/* Header normal (título + botón) */
+.nutrition-header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+/* Wrapper animado */
+.nutrition-form-wrapper {
+  max-height: 0;
+  overflow: hidden;
+  transition:
+    max-height 0.35s ease,
+    opacity 0.25s ease;
+  opacity: 0;
+}
+/* Se despliega */
+.nutrition-form-wrapper.open {
+  max-height: 1000px;
+  opacity: 1;
+  margin-top: 15px;
+}
+/* --- TARJETAS --- */
+.nutrition-card {
+  margin-top: 20px;
+  background: white;
+  border-radius: var(--radius-md, 8px);
+  padding: 24px;
+  border: 1px solid #e6e6e6;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+
+  .section-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h4 {
+      margin: 0;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+    p {
+      font-size: 1.1rem;
+      font-weight: 400;
+      margin: 2px 0 0;
+    }
+  }
+}
+
+.secondary-btn {
+  font-family: var(--font-heading);
+  border-radius: 6px;
+  border: none;
+  color: white;
+  background: linear-gradient(
+    90deg,
+    var(--color-gradient-start),
+    var(--color-gradient-end)
+  );
+  padding: 1rem 2.3rem;
+  cursor: pointer;
+  &:hover {
+    background-color: var(--color-primary-bg);
+    opacity: 0.9;
+  }
+}
+#new-reminder-title {
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  .icon-reg-reminder {
+    margin-right: 4px;
+  }
+}
+/* --- REMINDERS --- */
+.reminder-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.reminder-item {
+  display: flex;
+  align-items: center;
+  padding: 14px;
+  border: 1px solid #ececec;
+  border-radius: 12px;
+
+  .reminder-time {
+    font-size: 16px;
+    font-weight: 600;
+    width: 60px;
+  }
+
+  .reminder-info {
+    flex: 1;
+
+    .reminder-label {
+      background: #e0d2ff;
+      color: #6e40ff;
+      padding: 3px 9px;
+      border-radius: 6px;
+      font-size: 12px;
+      margin-right: 6px;
+    }
+
+    p {
+      margin: 4px 0 0;
+      font-size: 14px;
+    }
+  }
+}
+
+/* --- HISTORIAL --- */
+.history-day {
+  margin-top: 3px;
+  p {
+    font-size: 1.1rem;
+    font-weight: 400;
+  }
+  .day-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+
+    .day-title {
+      margin: 0;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    .day-count {
+      font-size: 1.1rem;
+      background: #f5f5f5;
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+  }
+  .day-label {
+    font-size: 12px;
+    color: #555;
+    background: #f7f7f7;
+    padding: 4px 10px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    display: inline-block;
+  }
+}
+
+.history-item {
+  display: flex;
+  gap: 14px;
+  padding: 14px;
+  margin-top: 12px;
+  border: 1px solid #ececec;
+  border-radius: 12px;
+
+  .history-avatar {
+    width: 38px;
+    height: 38px;
+    background: linear-gradient(
+      90deg,
+      var(--color-gradient-start),
+      var(--color-gradient-end)
+    );
+    border-radius: 50%;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    margin-top: 0.5rem;
+  }
+
+  .history-info {
+    flex: 1;
+
+    .row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+
+      .time {
+        font-size: 1.2rem;
+        font-weight: 600;
+      }
+
+      .meal-tag {
+        background: #e0d2ff;
+        color: #6e40ff;
+        padding: 3px 8px;
+        border-radius: 6px;
+        font-size: 11px;
+
+        &.light {
+          background: #f3f0ff;
+          color: #7b3bff;
+        }
+      }
+    }
+
+    .food {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: rgba(0, 0, 0, 0.815);
+      margin: 4px 0;
+    }
+
+    .details,
+    .note {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin: 2px 0;
+      color: #666;
+    }
+    .details {
+      font-size: 1.1rem;
+    }
+  }
+}
+#delete-btn {
+  background-color: transparent;
+  border: none;
+  font-size: 2.3rem;
+  cursor: pointer;
+  color: #cc4b4b;
+
+  &:hover {
+    color: #a62828;
+  }
+}

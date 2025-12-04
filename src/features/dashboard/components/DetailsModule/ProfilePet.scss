@@ -1,15 +1,10 @@
 .profile-pet-card {
-  width: 95%;
   max-width: 1100px;
   margin: 20px auto;
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 24px;
   display: flex;
   gap: 20px;
   align-items: center;
   border: 1px solid #e5e5e5;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
 
   .profile-avatar-wrapper {
     position: relative;
@@ -31,7 +26,7 @@
     .avatar-initial {
       font-size: 32px;
       color: white;
-      font-weight: bold;
+      font-weight: 400;
     }
 
     .pet-profile-photo {
@@ -89,7 +84,9 @@
     flex-direction: column;
 
     h2 {
-      font-size: 22px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--color-text, #1e1e1e);
       margin: 0;
       &::first-letter {
         text-transform: capitalize;
@@ -97,28 +94,31 @@
     }
 
     p {
-      margin: 2px 0 10px;
-      color: #666;
-      font-size: 14px;
+      margin: 2px 0;
+      font-size: 1.1rem;
+      color: var(--color-text-secondary, #6b7280);
     }
 
     .profile-stats {
       display: flex;
       flex-wrap: wrap;
-      gap: 25px;
+      gap: 23rem;
       margin-top: 10px;
       font-size: 14px;
 
       strong {
-        font-weight: 600;
+        color: var(--color-text, #1e1e1e);
+
+        display: flex;
+        font-size: 1.1rem;
+        font-weight: 700;
       }
 
       .health-badge {
-        margin-left: 6px;
         background: #d8f8df;
-        color: #2a9d4a;
+        color: var(--color-success-text);
         padding: 3px 10px;
-        border-radius: 8px;
+        border-radius: var(--radius-md, 8px);
         font-size: 12px;
       }
     }
