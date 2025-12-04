@@ -1,69 +1,201 @@
-.pet-section-card--info {
-  width: 100%;
-
-  h3 {
-    margin: 0;
-    font-size: 18px;
-    font-weight: 600;
-  }
-
-  > p {
-    color: #777;
-    margin-bottom: 25px;
-    font-size: 14px;
-  }
-
-  .info-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 25px;
-
-    label {
-      color: #888;
-      font-size: 12px;
-      margin-bottom: 3px;
-      display: block;
-    }
-
-    p {
-      font-size: 14px;
-      font-weight: 500;
-      margin: 0;
-    }
-  }
-
-  .notes {
-    margin-top: 25px;
-
-    label {
-      color: #888;
-      font-size: 12px;
-      display: block;
-      margin-bottom: 4px;
-    }
-
-    p {
-      margin: 0;
-      font-size: 14px;
-    }
-  }
-
-  .edit-btn {
+.pet-info-subsection {
+  &__header {
     display: flex;
-    justify-content: center;
-    margin-top: 30px;
+    flex-direction: column;
+    gap: 2rem;
+    margin-bottom: 2rem;
 
-    button {
-      background: #7b3bff;
-      color: white;
-      border: none;
-      padding: 10px 28px;
-      border-radius: 10px;
-      font-size: 14px;
+    @media (min-width: 768px) {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    h3 {
+      margin: 0 0 0.5rem 0;
+      color: #333;
+      font-size: 1.5rem;
+    }
+
+    p {
+      margin: 0;
+      color: #666;
+      font-size: 1.1rem;
+    }
+  }
+
+  &__title {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  &__form-section {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid #eaeaea;
+
+    h4 {
+      margin: 0 0 1.5rem 0;
+      color: #333;
+      font-size: 1.2rem;
+    }
+  }
+
+  &__form {
+    .required {
+      color: #dc3545;
+    }
+  }
+
+  &__form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__form-column {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    label {
+      font-weight: 600;
+      color: #333;
+      font-size: 0.9rem;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+      font-family: inherit;
+
+      &:focus {
+        outline: none;
+        border-color: #7b3bff;
+      }
+
+      &.input-error {
+        border-color: #dc3545;
+      }
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    select {
       cursor: pointer;
+      background-color: white;
+    }
 
-      &:hover {
-        background: #6a2de0;
+    .error-message {
+      color: #dc3545;
+      font-size: 0.85rem;
+      margin-top: -0.25rem;
+    }
+
+    small {
+      display: block;
+      margin-top: 0.25rem;
+    }
+  }
+
+  .input-with-icon {
+    position: relative;
+
+    .input-icon {
+      position: absolute;
+      left: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #666;
+      font-size: 1rem;
+    }
+
+    input,
+    textarea {
+      padding-left: 2.5rem;
+    }
+  }
+
+  &__form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #eaeaea;
+  }
+
+  .server-error {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  // Vista de solo lectura
+  &__info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+
+    .info-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      label {
+        font-weight: 600;
+        color: #666;
+        font-size: 0.85rem;
+      }
+
+      p {
+        margin: 0;
+        color: #333;
+        font-size: 1.1rem;
+      }
+
+      a {
+        color: #7b3bff;
+        text-decoration: underline;
+
+        &:hover {
+          color: #6b2ee6;
+        }
+      }
+
+      &--full {
+        grid-column: 1 / -1;
       }
     }
   }

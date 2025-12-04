@@ -18,7 +18,7 @@ export function CreatePetForm() {
     sex: '',
     birthDate: '',
     ageYears: '',
-    weightKg: '',
+    weightKg: '0.0',
     photoUrl: '',
     notes: '',
   });
@@ -179,7 +179,7 @@ export function CreatePetForm() {
             <label>URL de Foto</label>
             <div className="input-group">
               <input
-                type="text"
+                type="file"
                 name="photoUrl"
                 placeholder="https://ejemplo.com/foto.jpg"
                 value={formData.photoUrl}

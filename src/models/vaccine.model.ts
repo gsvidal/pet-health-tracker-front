@@ -12,4 +12,3 @@ export interface Vaccine {
   createdAt: string;
   updatedAt: string;
 }
-

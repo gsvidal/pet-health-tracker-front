@@ -1,5 +1,4 @@
 .page-wrapper {
-  display: flex;
-  justify-content: center;
-  padding: 40px;
+  background: linear-gradient(135deg, var(--color-gradient-start-opac50), var(--color-gradient-end-opac50));
+  height: 100vh;
 }

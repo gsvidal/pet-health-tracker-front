@@ -39,12 +39,11 @@
   }
 
   &--secondary {
-    background-color: var(--color-secondary);
-    color: var(--color-bg);
-    border: 1.5px solid var(--color-border);
+    background-color: transparent;
+    color: var(--color-text);
+    border: 1.5px solid var(--color-text);
     &:hover:not(:disabled) {
-      background-color: var(--color-secondary-hover);
-      border-color: var(--color-border);
+      background-color: transparent;
     }
   }
   &--outline {
@@ -53,6 +52,14 @@
     border: 1.5px solid var(--color-border);
     &:hover:not(:disabled) {
       background-color: var(--color-primary-bg-hover);
+    }
+  }
+  &--danger {
+    background-color: var(--color-error);
+    color: white;
+    border: 1.5px solid var(--color-border);
+    &:hover:not(:disabled) {
+      background-color: var(--color-error-text);
     }
   }
 

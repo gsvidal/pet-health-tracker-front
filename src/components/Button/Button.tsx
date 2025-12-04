@@ -1,6 +1,6 @@
 import './Button.scss';
 
-type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'danger';
+type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'danger' ;
 type ButtonSize = 'sm' | 'md' | 'lg';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {

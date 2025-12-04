@@ -13,6 +13,7 @@ export const useResetPassword = (token: string) => {
     handleSubmit,
     formState: { errors },
     reset,
+    watch,
   } = useForm<ResetPasswordForm>();
   const [loading, setLoading] = useState(false);
   const [serverError, setServerError] = useState('');
@@ -42,6 +43,7 @@ export const useResetPassword = (token: string) => {
     register,
     handleSubmit,
     errors,
+    watch,
     loading,
     serverError,
     success,
