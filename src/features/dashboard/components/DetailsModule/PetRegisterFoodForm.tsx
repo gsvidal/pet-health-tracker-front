@@ -26,7 +26,6 @@ export const PetRegisterFoodForm: React.FC<PetRegisterFoodFormProps> = ({
     isValid,
     onSubmit,
     handleCancel,
-    setValue,
   } = useMealForm({
     petId: pet.id || '',
     editingMeal,

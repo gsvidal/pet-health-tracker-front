@@ -36,7 +36,6 @@ export const ExampleForm = () => {
     error: crudError,
     updateSubmission,
     deleteSubmission,
-    handleSelectSubmission,
   } = useExampleCrud();
 
   const loading = formLoading || crudLoading;

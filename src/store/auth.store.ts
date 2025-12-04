@@ -47,7 +47,7 @@ export const useAuthStore = create<AuthState>()(
         );
 
         // TEMPORAL: Ver qué envía el backend
-        console.log('Respuesta del backend:', response);
+        // console.log('Respuesta del backend:', response);
 
         if (error || !response) {
           const message = error || 'Error al registrar usuario';
@@ -69,8 +69,8 @@ export const useAuthStore = create<AuthState>()(
         const { data: response, error } = await callApi(() =>
           authService.login(data),
         );
-        console.log('response: ', response);
-        console.log('error: ', error);
+        // console.log('response: ', response);
+        // console.log('error: ', error);
 
         if (error || !response) {
           const message = error || 'Credenciales incorrectas';

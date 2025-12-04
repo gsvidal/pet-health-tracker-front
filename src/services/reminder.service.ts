@@ -11,10 +11,6 @@ import {
 
 const REMINDERS_ENDPOINT = '/reminders';
 
-// ============================================
-// VERSIÓN HEAD (SALUD) - Funciones exportadas
-// Usado por: reminder.store.ts, useReminderCrud, RemindersSection
-// ============================================
 /**
  * Obtiene todos los recordatorios del usuario
  */

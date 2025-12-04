@@ -58,8 +58,14 @@ export const usePetForm = ({
         'birthDate',
         editingPet.birthDate ? editingPet.birthDate.split('T')[0] : '',
       );
-      setValue('ageYears', editingPet.ageYears ? String(editingPet.ageYears) : '');
-      setValue('weightKg', editingPet.weightKg ? String(editingPet.weightKg) : '');
+      setValue(
+        'ageYears',
+        editingPet.ageYears ? String(editingPet.ageYears) : '',
+      );
+      setValue(
+        'weightKg',
+        editingPet.weightKg ? String(editingPet.weightKg) : '',
+      );
       setValue('sex', editingPet.sex || '');
       setValue('photoUrl', editingPet.photoUrl || '');
       setValue('notes', editingPet.notes || '');
@@ -70,8 +76,8 @@ export const usePetForm = ({
 
   const onSubmit = async (data: PetFormState) => {
     const formData: PetFormData = {
-      name: data.name.trim() || undefined,
-      species: data.species.trim() || undefined,
+      name: data.name.trim(),
+      species: data.species.trim(),
       breed: data.breed.trim() || null,
       birthDate: data.birthDate.trim() || null,
       ageYears: data.ageYears.trim() ? Number(data.ageYears) : null,
@@ -80,7 +86,6 @@ export const usePetForm = ({
       photoUrl: data.photoUrl.trim() || null,
       notes: data.notes.trim() || null,
     };
-
     try {
       await onSave(formData);
       reset();
@@ -105,4 +110,3 @@ export const usePetForm = ({
     watch,
   };
 };
-
