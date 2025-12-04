@@ -37,7 +37,7 @@
   border-top-color: var(--color-primary);
   border-right-color: var(--color-primary);
   border-radius: 50%;
-  animation: spin 0.8s linear infinite;
+  animation: spin 0.8s ease-in infinite;
 }
 
 .loader__text {

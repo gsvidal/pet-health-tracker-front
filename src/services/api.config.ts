@@ -23,22 +23,29 @@ apiClient.interceptors.request.use(
   (error) => Promise.reject(error),
 );
 
-// TODO: Interceptor para manejar errores globales
-// apiClient.interceptors.response.use(
-//   (response) => response,
-//   async (error) => {
-//     if (error.response?.status === 401) {
-//       const { accessToken, isAuthenticated } = useAuthStore.getState();
+// Interceptor para manejar errores globales (tokens vencidos)
+apiClient.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    // Detectar token vencido o inválido (401 Unauthorized)
+    if (error.response?.status === 401) {
+      const { accessToken, isAuthenticated, logout } = useAuthStore.getState();
 
-//       // Solo hacer logout si hay un token almacenado (token expirado)
-//       // Si no hay token, es un error de credenciales en login/register (no hacer logout)
-//       if (accessToken && isAuthenticated) {
-//         // Token expirado o inválido - hacer logout
-//         useAuthStore.getState().logout();
-//       }
-//       // Si no hay token, es un error de credenciales, no hacer nada
-//       // (el error se manejará en el componente/hook correspondiente)
-//     }
-//     return Promise.reject(error);
-//   }
-// );
+      // Solo hacer logout si hay un token almacenado (token expirado)
+      // Si no hay token, es un error de credenciales en login/register (no hacer logout)
+      if (accessToken && isAuthenticated) {
+        // Token expirado o inválido - hacer logout forzado
+        console.log('token expirado, loging out');
+        await logout();
+
+        // Redirigir al home después de un breve delay para que el logout se complete
+        setTimeout(() => {
+          window.location.href = '/';
+        }, 100);
+      }
+      // Si no hay token, es un error de credenciales, no hacer nada
+      // (el error se manejará en el componente/hook correspondiente)
+    }
+    return Promise.reject(error);
+  },
+);
