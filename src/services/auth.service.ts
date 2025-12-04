@@ -10,6 +10,7 @@ import type {
 } from '../types/auth.type';
 import type { User } from '../models/user.model';
 import { adaptUserProfileToUser } from '../adapters/user.adapter';
+import { adaptResetPswtoResetPswRequest } from '../adapters/auth.adapter';
 
 const AUTH_ENDPOINT = '/auth';
 
@@ -77,7 +78,8 @@ export const resetPassword = async (data: {
   token: string;
   password: string;
 }): Promise<void> => {
-  await apiClient.post(`${AUTH_ENDPOINT}/reset-password`, data);
+  const requestData = adaptResetPswtoResetPswRequest(data);
+  await apiClient.post(`${AUTH_ENDPOINT}/reset-password`, requestData);
 };
 
 /**

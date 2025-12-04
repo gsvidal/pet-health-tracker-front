@@ -16,6 +16,7 @@ import { useModalStore } from './store/modal.store';
 import { VerifyEmailPage } from './features/dashboard/pages/VerifyEmail/VerifyEmailPage';
 import { CreatePetForm } from './features/dashboard/pages/PetForm/PetFormPage';
 import { DetailsPage } from './features/dashboard/pages/Details/DetailsPage';
+import ResetPasswordPage from './features/dashboard/pages/Reset/ResetPage';
 
 function App() {
   const {
@@ -42,6 +43,10 @@ function App() {
             <Route
               path={PUBLIC_ROUTES.RECOVER_PSW}
               element={<RecoverPasswordPage />}
+            />
+                <Route
+              path={PUBLIC_ROUTES.RESET_PSW}
+              element={<ResetPasswordPage />}
             />
             <Route
               path={PUBLIC_ROUTES.VERIFY_EMAIL}

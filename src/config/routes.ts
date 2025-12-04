@@ -4,6 +4,7 @@ export const PUBLIC_ROUTES = {
   LOGIN: '/login',
   EXAMPLE: '/example',
   RECOVER_PSW: '/request-password-reset',
+  RESET_PSW: '/reset-password',
   VERIFY_EMAIL: '/verify-email',
 } as const;
 
