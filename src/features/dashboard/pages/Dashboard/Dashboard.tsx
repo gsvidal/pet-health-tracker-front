@@ -7,7 +7,6 @@ import { DashboardPetCard } from '../../components/DashboardPetCard/DashboardPet
 import { Button } from '../../../../components/Button/Button';
 import { Loader } from '../../../../components/Loader/Loader';
 import { Plus } from 'lucide-react';
-import { Header } from '../../../../pages/Header/Header';
 import { Modal } from '../../../../components/Modal/Modal';
 import { ModalText } from '../../../../components/Modal/ModalText';
 import { CreatePetForm } from '../PetForm/PetFormPage';
@@ -62,7 +61,6 @@ export const Dashboard = () => {
         onConfirm={confirmDelete}
       />
 
-      <Header />
       <section className="section section--dashboard">
         <div className="container container--dashboard">
           <h1 className="example__title">Dashboard</h1>

@@ -17,6 +17,8 @@ import { VerifyEmailPage } from './features/dashboard/pages/VerifyEmail/VerifyEm
 import { CreatePetForm } from './features/dashboard/pages/PetForm/PetFormPage';
 import { DetailsPage } from './features/dashboard/pages/Details/DetailsPage';
 import ResetPasswordPage from './features/dashboard/pages/Reset/ResetPage';
+import { ActivityLogs } from './features/audit-logs/pages/ActivityLogs/ActivityLogs';
+import { Header } from './pages/Header/Header';
 
 function App() {
   const {
@@ -44,7 +46,7 @@ function App() {
               path={PUBLIC_ROUTES.RECOVER_PSW}
               element={<RecoverPasswordPage />}
             />
-                <Route
+            <Route
               path={PUBLIC_ROUTES.RESET_PSW}
               element={<ResetPasswordPage />}
             />
@@ -60,14 +62,11 @@ function App() {
               path={PRIVATE_ROUTES.CREATE_PET}
               element={<CreatePetForm />}
             />
-          </Route>
-          <Route element={<PrivateGuard />}>
-            <Route element={<FullLayout />}>
-              <Route
-                path={PRIVATE_ROUTES.PET_DETAIL}
-                element={<DetailsPage />}
-              />
-            </Route>
+            <Route path={PRIVATE_ROUTES.PET_DETAIL} element={<DetailsPage />} />
+            <Route
+              path={PRIVATE_ROUTES.ACTIVITY_LOGS}
+              element={<ActivityLogs />}
+            />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
@@ -84,7 +83,10 @@ function App() {
         confirmLabel={confirmLabel}
         cancelLabel={cancelLabel}
       />
-      <Toaster position="top-center" toastOptions={{ duration: 8000, style: {backgroundColor: '#ede9fe'} }} />
+      <Toaster
+        position="top-center"
+        toastOptions={{ duration: 8000, style: { backgroundColor: '#ede9fe' } }}
+      />
     </>
   );
 }

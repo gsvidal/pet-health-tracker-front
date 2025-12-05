@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useAuthStore } from '../store/auth.store';
+import toast from 'react-hot-toast';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -55,6 +56,8 @@ apiClient.interceptors.response.use(
 
           // Limpiar localStorage manualmente
           localStorage.removeItem('auth-storage');
+
+          toast.success('Tu sesión expiró, ingresa de nuevo por favor')
 
           // Redirigir al home
           setTimeout(() => {

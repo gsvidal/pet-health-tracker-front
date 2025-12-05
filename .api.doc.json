@@ -2175,11 +2175,25 @@
         }
       }
     },
+    "/reminders/process-due": {
+      "post": {
+        "tags": ["Recordatorios"],
+        "summary": "Process Due Reminders",
+        "description": "Procesa recordatorios vencidos: crea notificaciones y envía correos.\nEste endpoint debe ser llamado periódicamente (por ejemplo, cada minuto o cada 5 minutos)\npor un sistema de tareas programadas (cron job) o servicio de background tasks.",
+        "operationId": "process_due_reminders_reminders_process_due_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          }
+        }
+      }
+    },
     "/notifications/": {
       "get": {
         "tags": ["Notificaciones"],
         "summary": "Get All Notifications",
-        "description": "Obtiene todas las notificaciones del usuario",
+        "description": "Obtiene todas las notificaciones del usuario.\nLas notificaciones se crean automáticamente cuando se procesan recordatorios vencidos.",
         "operationId": "get_all_notifications_notifications__get",
         "security": [{ "HTTPBearer": [] }],
         "parameters": [
@@ -2231,48 +2245,13 @@
             }
           }
         }
-      },
-      "post": {
-        "tags": ["Notificaciones"],
-        "summary": "Create Notification",
-        "description": "Crea una nueva notificación",
-        "operationId": "create_notification_notifications__post",
-        "security": [{ "HTTPBearer": [] }],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": { "$ref": "#/components/schemas/NotificationCreate" }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NotificationResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
-              }
-            }
-          }
-        }
       }
     },
     "/notifications/{notification_id}": {
       "get": {
         "tags": ["Notificaciones"],
         "summary": "Get Notification By Id",
-        "description": "Obtiene una notificación específica",
+        "description": "Obtiene una notificación específica del usuario.\nLas notificaciones se crean automáticamente cuando se procesan recordatorios vencidos.",
         "operationId": "get_notification_by_id_notifications__notification_id__get",
         "security": [{ "HTTPBearer": [] }],
         "parameters": [
@@ -2304,53 +2283,10 @@
           }
         }
       },
-      "put": {
-        "tags": ["Notificaciones"],
-        "summary": "Update Notification",
-        "description": "Actualiza una notificación existente",
-        "operationId": "update_notification_notifications__notification_id__put",
-        "security": [{ "HTTPBearer": [] }],
-        "parameters": [
-          {
-            "name": "notification_id",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "string", "title": "Notification Id" }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": { "$ref": "#/components/schemas/NotificationUpdate" }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NotificationResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
-              }
-            }
-          }
-        }
-      },
       "delete": {
         "tags": ["Notificaciones"],
         "summary": "Delete Notification",
-        "description": "Elimina una notificación",
+        "description": "Elimina una notificación (solo admin).\nLas notificaciones se crean automáticamente cuando se procesan recordatorios vencidos.",
         "operationId": "delete_notification_notifications__notification_id__delete",
         "security": [{ "HTTPBearer": [] }],
         "parameters": [
@@ -4196,39 +4132,6 @@
         "type": "object",
         "title": "MealUpdate"
       },
-      "NotificationCreate": {
-        "properties": {
-          "reminder_id": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Reminder Id"
-          },
-          "pet_id": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Pet Id"
-          },
-          "sent_at": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Sent At"
-          },
-          "method": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Method"
-          },
-          "status": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Status"
-          },
-          "provider_response": {
-            "anyOf": [{}, { "type": "null" }],
-            "title": "Provider Response"
-          },
-          "owner_id": { "type": "string", "title": "Owner Id" }
-        },
-        "type": "object",
-        "required": ["sent_at", "owner_id"],
-        "title": "NotificationCreate"
-      },
       "NotificationResponse": {
         "properties": {
           "reminder_id": {
@@ -4272,24 +4175,6 @@
         "type": "object",
         "required": ["sent_at", "id", "owner_id", "created_at", "updated_at"],
         "title": "NotificationResponse"
-      },
-      "NotificationUpdate": {
-        "properties": {
-          "method": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Method"
-          },
-          "status": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Status"
-          },
-          "provider_response": {
-            "anyOf": [{}, { "type": "null" }],
-            "title": "Provider Response"
-          }
-        },
-        "type": "object",
-        "title": "NotificationUpdate"
       },
       "NutritionPlanCreate": {
         "properties": {

@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { usePetStore } from '../../../../store/pet.store';
-import { Header } from '../../../../pages/Header/Header';
 import { ProfilePet } from '../../../dashboard/components/DetailsModule/ProfilePet';
 import { PetInformation } from '../../../dashboard/components/DetailsModule/PetInformation';
 import { Loader } from '../../../../components/Loader/Loader';
@@ -28,7 +27,6 @@ export const DetailsPage = () => {
   if (!pet) {
     return (
       <div className="details-page">
-        <Header />
         <Loader text="Cargando mascota..." size="large" />
       </div>
     );
@@ -36,7 +34,6 @@ export const DetailsPage = () => {
 
   return (
     <div className="details-page">
-      <Header />
       <ProfilePet pet={pet} />
       <PetInformation pet={pet} />
     </div>

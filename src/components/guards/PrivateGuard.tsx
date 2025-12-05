@@ -2,6 +2,7 @@ import { Navigate, Outlet } from 'react-router-dom';
 import { useAuthStore } from '../../store/auth.store';
 import { PUBLIC_ROUTES } from '../../config/routes';
 import { Loader } from '../Loader/Loader';
+import { Header } from '../../pages/Header/Header';
 
 // En PrivateGuard.tsx
 export const PrivateGuard = () => {
@@ -21,5 +22,10 @@ export const PrivateGuard = () => {
     return <Navigate to={PUBLIC_ROUTES.LOGIN} replace />;
   }
 
-  return <Outlet />;
+  return (
+    <>
+      <Header />
+      <Outlet />
+    </>
+  );
 };
