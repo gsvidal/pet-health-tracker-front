@@ -3,6 +3,8 @@ import { AlertCircle, Syringe, Calendar, Bell } from 'lucide-react';
 import type { Pet } from '../../../../models/pet.model';
 import { Button } from '../../../../components/Button/Button';
 import { useNavigate } from 'react-router-dom';
+import { useGalleryModalStore } from '../../../../store/gallery.store';
+import { getPetGallery } from '../../../../services/pet.service';
 
 interface DashboardPetCardProps {
   pet: Pet;
@@ -23,6 +25,8 @@ export const DashboardPetCard = ({
   upcomingEventsCount = 0,
 }: DashboardPetCardProps) => {
   const navigate = useNavigate();
+  const openUpload = useGalleryModalStore((s) => s.openUpload);
+  const openView = useGalleryModalStore((s) => s.openView);
 
   return (
     <div className="dashboard-pet-card">
@@ -106,14 +110,29 @@ export const DashboardPetCard = ({
         </div>
       </div>
 
-      <Button
-        variant="primary"
-        size="lg"
-        style={{ marginTop: '2rem' }}
-        onClick={() => navigate(`/pets/${pet.id}`)}
-      >
-        Ver Detalles
-      </Button>
+      <div className="dashboard-pet-card__actions">
+        <Button
+          variant="primary"
+          size="lg"
+          onClick={() => navigate(`/pets/${pet.id}`)}
+        >
+          Ver Detalles
+        </Button>
+
+        <Button variant="secondary" onClick={() => openUpload(pet.id)}>
+          Subir imágenes
+        </Button>
+
+        <Button
+          variant="secondary"
+          onClick={async () => {
+            const images = await getPetGallery(pet.id);
+            openView(pet.id, images);
+          }}
+        >
+          Ver galería
+        </Button>
+      </div>
     </div>
   );
 };

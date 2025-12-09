@@ -17,6 +17,7 @@ import { useModalStore } from './store/modal.store';
 import { VerifyEmailPage } from './features/dashboard/pages/VerifyEmail/VerifyEmailPage';
 import { CreatePetForm } from './features/dashboard/pages/PetForm/PetFormPage';
 import { DetailsPage } from './features/dashboard/pages/Details/DetailsPage';
+import { GalleryModal } from './features/dashboard/pages/Gallery/GalleryModal';
 
 function App() {
   const {
@@ -84,6 +85,8 @@ function App() {
         confirmLabel={confirmLabel}
         cancelLabel={cancelLabel}
       />
+      <GalleryModal />
+
       <Toaster position="top-center" toastOptions={{ duration: 5000 }} />
     </>
   );

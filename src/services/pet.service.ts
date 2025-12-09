@@ -42,3 +42,29 @@ export const updatePetService = async (id: string, petData: PetFormData) => {
   const response = await apiClient.patch(`${PETS_ENDPOINT}/${id}`, requestData);
   return response.data;
 };
+
+/**
+ * Subir imagenes de mascota por ID
+ */
+export const uploadPetImages = async (petId: string, files: File[]) => {
+  const formData = new FormData();
+  files.forEach((file) => formData.append('images', file));
+  const response = await apiClient.post(
+    `${PETS_ENDPOINT}/${petId}/gallery`,
+    formData,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    },
+  );
+  return response.data;
+};
+
+/**
+ * Obtener galeria mascota por ID
+ */
+export const getPetGallery = async (petId: string): Promise<string[]> => {
+  const response = await apiClient.get(`${PETS_ENDPOINT}/${petId}/gallery`);
+  return response.data.images || [];
+};
