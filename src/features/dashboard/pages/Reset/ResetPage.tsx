@@ -1,10 +1,12 @@
 import React from 'react';
 import { useSearchParams } from 'react-router-dom';
 import ResetPasswordForm from '../../../auth/ResetPasswordForm';
+import './ResetPage.scss'
 
 const ResetPasswordPage: React.FC = () => {
   const [params] = useSearchParams();
   const token = params.get('token');
+  console.log('token: ', token);
   if (!token) {
     return (
       <div className="reset-container">
@@ -17,7 +19,7 @@ const ResetPasswordPage: React.FC = () => {
     );
   }
   return (
-    <div className="page-wrapper">
+    <div className="page-wrapper flex-center">
       <ResetPasswordForm token={token} />
     </div>
   );

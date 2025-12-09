@@ -4,19 +4,16 @@ import type { Pet } from '../../../../models/pet.model';
 
 import './PetInformation.scss';
 import { PetNutritionSection } from './PetNutritionsSection';
-import { PetVisitSection } from './PetVisitSection';
-import { PetVaccineSection } from './PetVaccineSection';
-import { CiCircleInfo } from 'react-icons/ci';
-import { TbVaccine } from 'react-icons/tb';
-import { LuUtensilsCrossed } from 'react-icons/lu';
-import { FaRegCalendar } from 'react-icons/fa';
+import { PetHealthSection } from './PetHealthSection';
+import { FaSyringe, FaInfoCircle } from 'react-icons/fa';
+import { PiForkKnifeFill } from 'react-icons/pi';
 
 interface PetInformationProps {
   pet: Pet;
 }
 
 export const PetInformation = ({ pet }: PetInformationProps) => {
-  const [tab, setTab] = useState<'info' | 'vaccines' | 'nutrition' | 'visits'>(
+  const [tab, setTab] = useState<'info' | 'health' | 'nutrition' | 'visit'>(
     'info',
   );
   return (
@@ -26,44 +23,27 @@ export const PetInformation = ({ pet }: PetInformationProps) => {
           className={tab === 'info' ? 'active' : ''}
           onClick={() => setTab('info')}
         >
-          <p id="menu-title">
-            <CiCircleInfo className="icon-tabs" size={15} />
-            Información
-          </p>
+          <FaInfoCircle className="icon icon--pet-section" /> Información
         </button>
         <button
-          className={tab === 'vaccines' ? 'active' : ''}
-          onClick={() => setTab('vaccines')}
+          className={tab === 'health' ? 'active' : ''}
+          onClick={() => setTab('health')}
         >
-          <p id="menu-title">
-            <TbVaccine className="icon-tabs" size={15} />
-            Vacunas
-          </p>
+          <FaSyringe className="icon icon--pet-section" />
+          Salud
         </button>
         <button
           className={tab === 'nutrition' ? 'active' : ''}
           onClick={() => setTab('nutrition')}
         >
-          <p id="menu-title">
-            <LuUtensilsCrossed className="icon-tabs" size={15} />
-            Nutrición
-          </p>
-        </button>
-        <button
-          className={tab === 'visits' ? 'active' : ''}
-          onClick={() => setTab('visits')}
-        >
-          <p id="menu-title">
-            <FaRegCalendar className="icon-tabs" size={15} />
-            Visitas
-          </p>
+          <PiForkKnifeFill className="icon icon--pet-section" />
+          Nutrición
         </button>
       </div>
 
       {tab === 'info' && <PetInfoSection pet={pet} />}
-      {tab === 'vaccines' && <PetVaccineSection pet={pet} />}
+      {tab === 'health' && <PetHealthSection pet={pet} />}
       {tab === 'nutrition' && <PetNutritionSection pet={pet} />}
-      {tab === 'visits' && <PetVisitSection pet={pet} />}
     </div>
   );
 };

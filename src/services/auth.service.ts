@@ -10,6 +10,7 @@ import type {
 } from '../types/auth.type';
 import type { User } from '../models/user.model';
 import { adaptUserProfileToUser } from '../adapters/user.adapter';
+import { adaptResetPswtoResetPswRequest } from '../adapters/auth.adapter';
 
 const AUTH_ENDPOINT = '/auth';
 
@@ -30,7 +31,6 @@ export const register = async (
  * Inicia sesión
  */
 export const login = async (data: LoginRequest): Promise<LoginResponse> => {
-  console.log('login data auth service: ', data);
   const response = await apiClient.post<LoginResponse>(
     `${AUTH_ENDPOINT}/login`,
     data,
@@ -78,7 +78,8 @@ export const resetPassword = async (data: {
   token: string;
   password: string;
 }): Promise<void> => {
-  await apiClient.post(`${AUTH_ENDPOINT}/reset-password`, data);
+  const requestData = adaptResetPswtoResetPswRequest(data);
+  await apiClient.post(`${AUTH_ENDPOINT}/reset-password`, requestData);
 };
 
 /**

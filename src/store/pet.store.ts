@@ -6,8 +6,10 @@ import {
   getPets,
   getPetById,
   createPet as createPetService,
+  deletePet as deletePetService,
   updatePetService,
 } from '../services/pet.service';
+import { uploadPetProfilePhoto } from '../services/petPhoto.service';
 import { adaptPetResponseToPet } from '../adapters/pet.adapter';
 import { callApi } from '../utils/apiHelper';
 
@@ -21,12 +23,15 @@ interface PetState {
   // Acciones
   fetchPets: () => Promise<void>;
   fetchPetById: (id: string) => Promise<void>;
-  createPet: (petData: PetFormData) => Promise<void>;
+  createPet: (petData: PetFormData) => Promise<boolean>;
   getPetById: (id: string) => Pet | undefined;
   clearError: () => void;
-  mockPets: () => void;
+  // mockPets: () => void;
+  deletePet: (id: string) => Promise<void>;
+  uploadPetPhoto: (petId: string, file: File) => Promise<void>;
+  // mockPets: () => void;
   updatePet: (id: string, petData: PetFormData) => Promise<void>;
-  setMockMode: (value: boolean) => void;
+  // setMockMode: (value: boolean) => void;
 }
 
 export const usePetStore = create<PetState>((set, get) => ({
@@ -35,7 +40,7 @@ export const usePetStore = create<PetState>((set, get) => ({
   loading: false,
   error: null,
   mockMode: false,
-  setMockMode: (value) => set({ mockMode: value }),
+  // setMockMode: (value) => set({ mockMode: value }),
 
   fetchPets: async () => {
     set({ loading: true, error: null, mockMode: false });
@@ -89,8 +94,11 @@ export const usePetStore = create<PetState>((set, get) => ({
     if (error || !petResponse) {
       const message = error || 'Error al crear la mascota';
       toast.error(message);
-      set({ error: message, loading: false });
-      return;
+      set({
+        error: message,
+        loading: false,
+      });
+      throw new Error(message);
     }
 
     const newPet = adaptPetResponseToPet(petResponse);
@@ -103,56 +111,124 @@ export const usePetStore = create<PetState>((set, get) => ({
     }));
 
     toast.success('Mascota creada correctamente ✔️');
+    return true;
   },
 
   getPetById: (id: string) => {
     return get().pets.find((pet) => pet.id === id);
   },
 
-  clearError: () => set({ error: null }),
-  mockPets: () => {
-    const mockPet1: Pet = {
-      id: 'mock-pet-1',
-      name: 'Max',
-      species: 'Perro',
-      breed: 'Golden Retriever',
-      birthDate: '2021-03-15T00:00:00Z',
-      ageYears: 3,
-      weightKg: '28',
-      sex: 'Macho',
-      photoUrl: null,
-      notes: 'Mascota de prueba para UI',
-      healthStatus: 'Saludable',
-      ownerId: 'mock-owner',
-      createdAt: '2021-03-15T00:00:00Z',
-      updatedAt: '2024-01-10T00:00:00Z',
-    };
+  clearError: () => {
+    set({ error: null });
+  },
 
-    const mockPet2: Pet = {
-      id: 'mock-pet-2',
-      name: 'Iggy',
-      species: 'Iguana',
-      breed: 'Iguana Verde',
-      birthDate: '2022-06-10T00:00:00Z',
-      ageYears: 2,
-      weightKg: '1.5',
-      sex: 'Hembra',
-      photoUrl: null,
-      notes: 'Iguana muy tranquila y amigable',
-      healthStatus: 'Saludable',
-      ownerId: 'mock-owner',
-      createdAt: '2022-06-10T00:00:00Z',
-      updatedAt: '2024-01-15T00:00:00Z',
-    };
+  // mockPets: () => {
+  //   const mockPet1: Pet = {
+  //     id: '6f985ea4-4616-42f2-afa2-a3081b44e0b5',
+  //     name: 'La wuf mock',
+  //     species: 'Perro',
+  //     breed: 'Golden Retriever',
+  //     birthDate: '2021-03-15T00:00:00Z',
+  //     ageYears: 3,
+  //     weightKg: '28',
+  //     sex: 'Macho',
+  //     photoUrl: null,
+  //     notes: 'Mascota de prueba para UI',
+  //     healthStatus: 'Saludable',
+  //     ownerId: 'mock-owner',
+  //     createdAt: '2021-03-15T00:00:00Z',
+  //     updatedAt: '2024-01-10T00:00:00Z',
+  //   };
+  
+  //   const mockPet2: Pet = {
+  //     id: 'mock-pet-2',
+  //     name: 'Iggy',
+  //     species: 'Iguana',
+  //     breed: 'Iguana Verde',
+  //     birthDate: '2022-06-10T00:00:00Z',
+  //     ageYears: 2,
+  //     weightKg: '1.5',
+  //     sex: 'Hembra',
+  //     photoUrl: null,
+  //     notes: 'Iguana muy tranquila y amigable',
+  //     healthStatus: 'Saludable',
+  //     ownerId: 'mock-owner',
+  //     createdAt: '2022-06-10T00:00:00Z',
+  //     updatedAt: '2024-01-15T00:00:00Z',
+  //   };
 
-    set({
-      pets: [mockPet1, mockPet2],
+  //   set({
+  //     pets: [mockPet1, mockPet2],
+  //     loading: false,
+  //     error: null,
+  //   });
+
+  //   toast.success('Mascotas mock cargadas correctamente ✔️');
+  // },
+
+  deletePet: async (id: string) => {
+    set({ loading: true, error: null });
+
+    const { error } = await callApi(() => deletePetService(id));
+
+    if (error) {
+      const message = error || 'Error al eliminar la mascota';
+      toast.error(message);
+      set({
+        error: message,
+        loading: false,
+      });
+      return;
+    }
+
+    set((state) => ({
+      pets: state.pets.filter((pet) => pet.id !== id),
       loading: false,
       error: null,
-      mockMode: true,
+    }));
+
+    toast.success('Mascota eliminada correctamente 🗑️');
+  },
+
+  uploadPetPhoto: async (petId: string, file: File) => {
+    set({ loading: true, error: null });
+
+    const { data: uploadResponse, error } = await callApi(() =>
+      uploadPetProfilePhoto(petId, file),
+    );
+
+    if (error || !uploadResponse) {
+      const message = error || 'Error al subir la foto';
+      toast.error(message);
+      set({
+        error: message,
+        loading: false,
+      });
+      return;
+    }
+
+    // Actualizar el pet en el estado con la nueva photoUrl
+    set((state) => {
+      const updatedPets = state.pets.map((pet) =>
+        pet.id === petId
+          ? { ...pet, photoUrl: uploadResponse.url }
+          : pet,
+      );
+
+      const updatedSelectedPet =
+        state.selectedPet?.id === petId
+          ? { ...state.selectedPet, photoUrl: uploadResponse.url }
+          : state.selectedPet;
+
+      return {
+        pets: updatedPets,
+        selectedPet: updatedSelectedPet,
+        loading: false,
+        error: null,
+      };
     });
 
-    toast.success('Mascotas mock cargadas correctamente ✔️');
+    toast.success('Foto de perfil actualizada correctamente 📸');
   },
 
   updatePet: async (id, petData) => {

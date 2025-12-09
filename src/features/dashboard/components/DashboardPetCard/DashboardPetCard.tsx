@@ -1,5 +1,5 @@
 import './DashboardPetCard.scss';
-import { AlertCircle, Syringe, Calendar, Bell } from 'lucide-react';
+import { Syringe, Calendar, Bell, Trash2, BellRing } from 'lucide-react';
 import type { Pet } from '../../../../models/pet.model';
 import { Button } from '../../../../components/Button/Button';
 import { useNavigate } from 'react-router-dom';
@@ -9,6 +9,7 @@ import { getPetGallery } from '../../../../services/pet.service';
 interface DashboardPetCardProps {
   pet: Pet;
   onViewDetails?: (petId: string) => void;
+  onDelete?: (pet: Pet) => void;
   healthStatus?: string;
   nextVaccineLabel?: string;
   lastVisitLabel?: string;
@@ -18,6 +19,7 @@ interface DashboardPetCardProps {
 
 export const DashboardPetCard = ({
   pet,
+  onDelete,
   healthStatus = 'Saludable',
   nextVaccineLabel = 'Próximamente',
   lastVisitLabel = 'Próximamente',
@@ -38,8 +40,17 @@ export const DashboardPetCard = ({
           </p>
         </div>
         <div className="dashboard-pet-card__alert">
-          <AlertCircle size={20} />
+          <BellRing color="#e1b400" size={15} />
         </div>
+        {onDelete && (
+          <div
+            className="dashboard-pet-card__delete"
+            onClick={() => onDelete(pet)}
+            style={{ cursor: 'pointer' }}
+          >
+            <Trash2 size={15} />
+          </div>
+        )}
       </div>
 
       <div className="dashboard-pet-card__info">

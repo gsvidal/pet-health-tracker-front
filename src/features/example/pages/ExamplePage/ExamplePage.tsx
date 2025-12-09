@@ -5,6 +5,7 @@ import { Button } from '../../../../components/Button/Button';
 import { useModalStore } from '../../../../store/modal.store';
 import { PRIVATE_ROUTES } from '../../../../config/routes';
 import { useNavigate } from 'react-router-dom';
+import { ExampleForm } from '../../components/Example/ExampleForm';
 
 export const ExamplePage = () => {
   const {
@@ -130,6 +131,9 @@ export const ExamplePage = () => {
           </div>
         </div>
       </section>
+
+      {/* Formulario de ejemplo con React Hook Form */}
+      <ExampleForm />
     </>
   );
 };

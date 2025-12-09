@@ -44,12 +44,29 @@
     width: 32px;
     height: 32px;
     border-radius: 50%;
+    background: var(--color-warning-alert);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-error-text);
+    flex-shrink: 0;
+  }
+
+  &__delete {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
     background: var(--color-error-light);
     display: flex;
     align-items: center;
     justify-content: center;
     color: var(--color-error-text);
     flex-shrink: 0;
+    cursor: pointer;
+    &:hover {
+
+    background: var(--color-error-hover);
+    }
   }
 
   &__info {

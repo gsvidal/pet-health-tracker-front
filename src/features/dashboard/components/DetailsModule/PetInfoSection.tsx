@@ -1,370 +1,345 @@
 import { useState } from 'react';
 import type { Pet } from '../../../../models/pet.model';
 import { usePetStore } from '../../../../store/pet.store';
+import { usePetForm } from '../../../../hooks/usePetForm';
+import { Button } from '../../../../components/Button/Button';
+import { FaRegEdit, FaCalendarAlt, FaFileAlt } from 'react-icons/fa';
 import './PetInfoSection.scss';
-import { FaRegEdit, FaCheck } from 'react-icons/fa';
-import { IoCloseOutline } from 'react-icons/io5';
 
 interface PetInfoSectionProps {
   pet: Pet;
 }
-interface ErrorState {
-  name: string;
-  species: string;
-  birthDate: string;
-  weightKg: string;
-  sex: string;
-  breed: string;
-  ageYears: string;
-  healthStatus: string;
-  photoUrl: string;
-  notes: string;
-}
 
 export default function PetInfoSection({ pet }: PetInfoSectionProps) {
   const [isEditing, setIsEditing] = useState(false);
-
   const updatePet = usePetStore((s) => s.updatePet);
-  const [errors, setErrors] = useState<ErrorState>({
-    name: '',
-    species: '',
-    birthDate: '',
-    weightKg: '',
-    sex: '',
-    breed: '',
-    ageYears: '',
-    healthStatus: '',
-    photoUrl: '',
-    notes: '',
-  });
+  const { loading, error } = usePetStore();
 
-  const validate = () => {
-    const newErrors: Partial<ErrorState> = {};
-    if (!formData.name.trim()) {
-      newErrors.name = '* Debe ingresar nombre';
-    }
-    if (!formData.species.trim()) {
-      newErrors.species = '* Debe ingresar especie';
-    }
-    if (!formData.birthDate.trim()) {
-      newErrors.birthDate = '* Debe ingresar fecha de nacimiento';
-    } else if (isNaN(Date.parse(formData.birthDate))) {
-      newErrors.birthDate = 'La fecha no es válida';
-    }
-    if (!formData.weightKg.trim()) {
-      newErrors.weightKg = '* Debe ingresar peso';
-    } else if (isNaN(Number(formData.weightKg))) {
-      newErrors.weightKg = 'El peso debe ser un número';
-    }
-    if (!formData.sex) {
-      newErrors.sex = 'Debe seleccionar un sexo';
-    }
-    if (!formData.breed.trim()) {
-      newErrors.breed = '* Debe ingresar raza';
-    }
-    if (!formData.ageYears.trim()) {
-      newErrors.ageYears = '* Debe ingresar edad';
-    } else if (isNaN(Number(formData.ageYears))) {
-      newErrors.ageYears = 'La edad debe ser un número';
-    }
-    if (!formData.healthStatus.trim()) {
-      newErrors.healthStatus = '* Debe ingresar salud';
-    }
-    if (!formData.notes.trim()) {
-      newErrors.notes = '* Debe ingresar nota';
-    }
-    setErrors((prev) => ({
-      ...prev,
-      ...newErrors,
-    }));
+  const { register, handleSubmit, errors, isValid, onSubmit, handleCancel } =
+    usePetForm({
+      editingPet: isEditing ? pet : null,
+      onSave: async (data) => {
+        await updatePet(pet.id, data);
+      },
+      onSuccess: () => {
+        setIsEditing(false);
+      },
+    });
 
-    return Object.keys(newErrors).length === 0;
+  const handleEditClick = () => {
+    setIsEditing(true);
   };
 
-  const [formData, setFormData] = useState({
-    name: pet.name,
-    species: pet.species,
-    breed: pet.breed ?? '',
-    birthDate: pet.birthDate ? pet.birthDate.split('T')[0] : '',
-    ageYears: pet.ageYears ? String(pet.ageYears) : '',
-    weightKg: String(pet.weightKg ?? ''),
-    sex: pet.sex ?? '',
-    healthStatus: pet.healthStatus ?? '',
-    photoUrl: pet.photoUrl ?? '',
-    notes: pet.notes ?? '',
-  });
-
-  const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >,
-  ) => {
-    const { name, value } = e.target;
-
-    setFormData({
-      ...formData,
-      [name]: name === 'weightKg' ? String(value) : value,
-    });
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
-  const handleSave = async () => {
-    if (!validate()) return;
-    await updatePet(pet.id, {
-      ...formData,
-      ageYears: Number(formData.ageYears),
-    });
-
-    setIsEditing(false);
-  };
-
-  const handleCancel = () => {
-    setFormData({
-      name: pet.name,
-      species: pet.species,
-      breed: pet.breed ?? '',
-      birthDate: pet.birthDate ? pet.birthDate.split('T')[0] : '',
-      ageYears: pet.ageYears ? String(pet.ageYears) : '',
-      weightKg: String(pet.weightKg ?? ''),
-      sex: pet.sex ?? '',
-      healthStatus: pet.healthStatus ?? '',
-      photoUrl: pet.photoUrl ?? '',
-      notes: pet.notes ?? '',
-    });
-
-    setErrors({
-      name: '',
-      species: '',
-      birthDate: '',
-      weightKg: '',
-      sex: '',
-      breed: '',
-      ageYears: '',
-      healthStatus: '',
-      photoUrl: '',
-      notes: '',
-    });
-
+  const handleCancelForm = () => {
+    handleCancel();
     setIsEditing(false);
   };
 
   return (
-    <div
-      className={`pet-section-card pet-section-card--info ${isEditing ? 'editing' : ''}`}
-    >
-      <div className="information-header">
-        <div className="general-information">
-          <h3>Información General</h3>
-          <p>Detalles completos de tu mascota</p>
-        </div>
-      </div>
-      {isEditing && <p id="text-basics">Informacion Básica</p>}
-      <div className="info-grid">
-        <div className="name-container">
-          <label>Nombre</label>
-          {isEditing ? (
-            <>
-              <input
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                className={errors.name ? 'input-error' : ''}
-              />
-              {errors.name && <p id="error-details">{errors.name}</p>}
-            </>
-          ) : (
-            <p>{pet.name}</p>
-          )}
-        </div>
-
-        <div className="species-container">
-          <label>Especie</label>
-          {isEditing ? (
-            <>
-              <input
-                name="species"
-                value={formData.species}
-                onChange={handleChange}
-                className={errors.species ? 'input-error' : ''}
-              />
-              {errors.species && <p id="error-details">{errors.species}</p>}
-            </>
-          ) : (
-            <p>{pet.species}</p>
-          )}
-        </div>
-
-        <div className="race-container">
-          <label>Raza</label>
-          {isEditing ? (
-            <>
-              <input
-                name="breed"
-                value={formData.breed}
-                onChange={handleChange}
-                className={errors.breed ? 'input-error' : ''}
-              />
-              {errors.breed && <p id="error-details">{errors.breed}</p>}
-            </>
-          ) : (
-            <p>{pet.breed}</p>
-          )}
-        </div>
-
-        <div className="date-container">
-          <label>Fecha de nacimiento</label>
-          {isEditing ? (
-            <>
-              <input
-                type="date"
-                name="birthDate"
-                value={formData.birthDate}
-                onChange={handleChange}
-                className={errors.birthDate ? 'input-error' : ''}
-              />
-              {errors.birthDate && <p id="error-details">{errors.birthDate}</p>}
-            </>
-          ) : (
-            <p>{pet.birthDate}</p>
-          )}
-        </div>
-
-        <div className="birth-container">
-          <label>Edad</label>
-          {isEditing ? (
-            <>
-              <input
-                type="number"
-                name="ageYears"
-                value={formData.ageYears}
-                onChange={handleChange}
-                className={errors.ageYears ? 'input-error' : ''}
-              />
-              {errors.ageYears && <p id="error-details">{errors.ageYears}</p>}
-            </>
-          ) : (
-            <p>{pet.ageYears}</p>
-          )}
-        </div>
-
-        <div className="weight-container">
-          <label>Peso</label>
-          {isEditing ? (
-            <>
-              <input
-                type="number"
-                name="weightKg"
-                value={formData.weightKg}
-                onChange={handleChange}
-                className={errors.weightKg ? 'input-error' : ''}
-              />
-              {errors.weightKg && <p id="error-details">{errors.weightKg}</p>}
-            </>
-          ) : (
-            <p>{pet.weightKg}</p>
-          )}
-        </div>
-
-        <div className="sex-container">
-          <label>Sexo</label>
-          {isEditing ? (
-            <>
-              <select
-                name="sex"
-                value={formData.sex || ''}
-                onChange={handleChange}
-                className={errors.sex ? 'input-error' : ''}
-              >
-                <option value="">Seleccione...</option>
-                <option value="Macho">Macho</option>
-                <option value="Hembra">Hembra</option>
-              </select>
-              {errors.sex && <p id="error-details">{errors.sex}</p>}
-              <p id="text-fisics">Detalles Físicos</p>
-            </>
-          ) : (
-            <p>{pet.sex || '—'}</p>
-          )}
-        </div>
-
-        <div className="health-container">
-          <label>Estado de Salud</label>
-          {isEditing ? (
-            <>
-              <input
-                name="healthStatus"
-                value={formData.healthStatus}
-                onChange={handleChange}
-                className={errors.healthStatus ? 'input-error' : ''}
-              />
-              {errors.healthStatus && (
-                <p id="error-details">{errors.healthStatus}</p>
-              )}
-            </>
-          ) : (
-            <p>{pet.healthStatus}</p>
+    <div className="pet-info-subsection">
+      <div className="pet-section-card pet-section-card--info">
+        <div className="pet-info-subsection__header">
+          <div className="pet-info-subsection__title">
+            <h3>Información General</h3>
+            <p>Detalles completos de tu mascota</p>
+          </div>
+          {!isEditing && (
+            <Button variant="primary" onClick={handleEditClick}>
+              <FaRegEdit style={{ marginRight: '4px' }} size={12} />{' '}
+              <span style={{ fontSize: '1.2rem' }}>Editar Información</span>
+            </Button>
           )}
         </div>
 
         {isEditing && (
-          <div className="photo-container">
-            <p id="text-aditional">Informacion Adicional</p>
-            <label>URL de Foto</label>
-            <input
-              placeholder="https://ejemplo.com/foto-mascota.jpg"
-              name="photoUrl"
-              value={formData.photoUrl}
-              onChange={handleChange}
-              className={errors.photoUrl ? 'input-error' : ''}
-            />
-            <p id="optional-text">* Opcional: Agrega foto de tu mascota</p>
-            {errors.photoUrl && <p id="error-details">{errors.photoUrl}</p>}
+          <div className="pet-info-subsection__form-section">
+            <h4>Editar Información de la Mascota</h4>
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="pet-info-subsection__form"
+            >
+              <div className="pet-info-subsection__form-grid">
+                {/* Columna Izquierda */}
+                <div className="pet-info-subsection__form-column">
+                  <div className="pet-info-subsection__field">
+                    <label htmlFor="name">Nombre</label>
+                    <input
+                      id="name"
+                      type="text"
+                      placeholder="Ej: Max, Luna..."
+                      {...register('name', {
+                        maxLength: {
+                          value: 100,
+                          message: 'El nombre no puede exceder 100 caracteres',
+                        },
+                      })}
+                      className={errors.name ? 'input-error' : ''}
+                    />
+                    {errors.name && (
+                      <span className="error-message">
+                        {errors.name.message}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="pet-info-subsection__field">
+                    <label htmlFor="species">Especie</label>
+                    <input
+                      id="species"
+                      type="text"
+                      placeholder="Ej: Perro, Gato..."
+                      {...register('species', {
+                        maxLength: {
+                          value: 50,
+                          message: 'La especie no puede exceder 50 caracteres',
+                        },
+                      })}
+                      className={errors.species ? 'input-error' : ''}
+                    />
+                    {errors.species && (
+                      <span className="error-message">
+                        {errors.species.message}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="pet-info-subsection__field">
+                    <label htmlFor="breed">Raza</label>
+                    <input
+                      id="breed"
+                      type="text"
+                      placeholder="Ej: Labrador, Persa..."
+                      {...register('breed', {
+                        maxLength: {
+                          value: 100,
+                          message: 'La raza no puede exceder 100 caracteres',
+                        },
+                      })}
+                      className={errors.breed ? 'input-error' : ''}
+                    />
+                    {errors.breed && (
+                      <span className="error-message">
+                        {errors.breed.message}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="pet-info-subsection__field">
+                    <label htmlFor="birthDate">Fecha de Nacimiento</label>
+                    <div className="input-with-icon">
+                      <FaCalendarAlt className="input-icon" />
+                      <input
+                        id="birthDate"
+                        type="date"
+                        {...register('birthDate', {
+                          validate: (value) => {
+                            if (!value) return true; // Opcional
+                            if (isNaN(Date.parse(value))) {
+                              return 'La fecha no es válida';
+                            }
+                            return true;
+                          },
+                        })}
+                        className={errors.birthDate ? 'input-error' : ''}
+                      />
+                    </div>
+                    {errors.birthDate && (
+                      <span className="error-message">
+                        {errors.birthDate.message}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="pet-info-subsection__field">
+                    <label htmlFor="ageYears">Edad (años)</label>
+                    <input
+                      id="ageYears"
+                      type="number"
+                      min="0"
+                      placeholder="Ej: 3"
+                      {...register('ageYears', {
+                        validate: (value) => {
+                          if (!value) return true; // Opcional
+                          const num = Number(value);
+                          if (isNaN(num) || num < 0) {
+                            return 'La edad debe ser un número válido';
+                          }
+                          return true;
+                        },
+                      })}
+                      className={errors.ageYears ? 'input-error' : ''}
+                    />
+                    {errors.ageYears && (
+                      <span className="error-message">
+                        {errors.ageYears.message}
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                {/* Columna Derecha */}
+                <div className="pet-info-subsection__form-column">
+                  <div className="pet-info-subsection__field">
+                    <label htmlFor="weightKg">Peso (kg)</label>
+                    <input
+                      id="weightKg"
+                      type="number"
+                      min="0"
+                      step="0.01"
+                      placeholder="Ej: 15.5"
+                      {...register('weightKg', {
+                        validate: (value) => {
+                          if (!value) return true; // Opcional
+                          const num = Number(value);
+                          if (isNaN(num) || num < 0 || num > 999.99) {
+                            return 'El peso debe ser un número entre 0 y 999.99';
+                          }
+                          return true;
+                        },
+                      })}
+                      className={errors.weightKg ? 'input-error' : ''}
+                    />
+                    {errors.weightKg && (
+                      <span className="error-message">
+                        {errors.weightKg.message}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="pet-info-subsection__field">
+                    <label htmlFor="sex">Sexo</label>
+                    <select
+                      id="sex"
+                      {...register('sex', {
+                        maxLength: {
+                          value: 20,
+                          message: 'El sexo no puede exceder 20 caracteres',
+                        },
+                      })}
+                      className={errors.sex ? 'input-error' : ''}
+                    >
+                      <option value="">Seleccione...</option>
+                      <option value="Macho">Macho</option>
+                      <option value="Hembra">Hembra</option>
+                    </select>
+                    {errors.sex && (
+                      <span className="error-message">
+                        {errors.sex.message}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="pet-info-subsection__field">
+                    <label htmlFor="photoUrl">URL de Foto</label>
+                    <input
+                      id="photoUrl"
+                      type="url"
+                      placeholder="https://ejemplo.com/foto-mascota.jpg"
+                      {...register('photoUrl')}
+                      className={errors.photoUrl ? 'input-error' : ''}
+                    />
+                    {errors.photoUrl && (
+                      <span className="error-message">
+                        {errors.photoUrl.message}
+                      </span>
+                    )}
+                    <small style={{ color: '#666', fontSize: '0.85rem' }}>
+                      Opcional: Agrega foto de tu mascota
+                    </small>
+                  </div>
+
+                  <div className="pet-info-subsection__field">
+                    <label htmlFor="notes">Notas</label>
+                    <div className="input-with-icon">
+                      <FaFileAlt className="input-icon" />
+                      <textarea
+                        id="notes"
+                        rows={4}
+                        placeholder="Observaciones adicionales..."
+                        {...register('notes')}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {error && (
+                <div className="server-error">
+                  <p>Error: {error}</p>
+                </div>
+              )}
+
+              <div className="pet-info-subsection__form-actions">
+                <Button
+                  type="submit"
+                  disabled={loading || !isValid}
+                  variant="primary"
+                >
+                  Actualizar Registro
+                </Button>
+                <Button
+                  type="button"
+                  onClick={handleCancelForm}
+                  variant="outline"
+                >
+                  Cancelar
+                </Button>
+              </div>
+            </form>
           </div>
         )}
 
-        <div className="notes">
-          <label>Nota</label>
-          {isEditing ? (
-            <>
-              <textarea
-                name="notes"
-                value={formData.notes}
-                onChange={handleChange}
-                className={errors.notes ? 'input-error' : ''}
-              />
-              {errors.notes && <p id="error-details">{errors.notes}</p>}
-            </>
-          ) : (
-            <p>{pet.notes}</p>
-          )}
-        </div>
-      </div>
-      <div className="edit-btn">
-        {!isEditing ? (
-          <button onClick={() => setIsEditing(true)}>
-            <p id="general-title">
-              <FaRegEdit className="icon-general" size={15} />
-              Editar Informacion
-            </p>
-          </button>
-        ) : (
-          <>
-            <button id="save-button" onClick={handleSave}>
-              <p id="save-title">
-                <FaCheck className="icon-general" size={12} />
-                Guardar
-              </p>
-            </button>
-            <button id="cancel-button" onClick={handleCancel}>
-              <p id="cancel-title">
-                <IoCloseOutline className="icon-general" size={15} />
-                Cancelar
-              </p>
-            </button>
-          </>
+        {!isEditing && (
+          <div className="pet-info-subsection__info-grid">
+            <div className="info-item">
+              <label>Nombre</label>
+              <p>{pet.name}</p>
+            </div>
+            <div className="info-item">
+              <label>Especie</label>
+              <p>{pet.species}</p>
+            </div>
+            <div className="info-item">
+              <label>Raza</label>
+              <p>{pet.breed || '—'}</p>
+            </div>
+            <div className="info-item">
+              <label>Fecha de Nacimiento</label>
+              <p>{pet.birthDate ? pet.birthDate.split('T')[0] : '—'}</p>
+            </div>
+            <div className="info-item">
+              <label>Edad</label>
+              <p>{pet.ageYears ? `${pet.ageYears} años` : '—'}</p>
+            </div>
+            <div className="info-item">
+              <label>Peso</label>
+              <p>{pet.weightKg ? `${pet.weightKg} kg` : '—'}</p>
+            </div>
+            <div className="info-item">
+              <label>Sexo</label>
+              <p>{pet.sex || '—'}</p>
+            </div>
+            {pet.photoUrl && (
+              <div className="info-item">
+                <label>Foto</label>
+                <p>
+                  <a
+                    href={pet.photoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Ver foto
+                  </a>
+                </p>
+              </div>
+            )}
+            {pet.notes && (
+              <div className="info-item info-item--full">
+                <label>Notas</label>
+                <p>{pet.notes}</p>
+              </div>
+            )}
+          </div>
         )}
       </div>
     </div>

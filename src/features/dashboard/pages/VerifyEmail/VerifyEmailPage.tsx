@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useVerifyEmail } from '../../../../hooks/useVerifyEmail';
+import { Loader } from '../../../../components/Loader/Loader';
 import toast from 'react-hot-toast';
 import { PUBLIC_ROUTES } from '../../../../config/routes';
 
@@ -35,10 +36,10 @@ export const VerifyEmailPage = () => {
   return (
     <div style={{ padding: 20 }}>
       <h2>Verificando email...</h2>
-      {loading && <p>Procesando…</p>}
+      {loading && <Loader text="Procesando…" />}
       {/* {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
       {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>} */}
-      <p>Redireccionando...</p>
+      {!loading && <p>Redireccionando...</p>}
     </div>
   );
 };

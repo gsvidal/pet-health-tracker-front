@@ -1,6 +1,7 @@
 import { Navigate, Outlet } from 'react-router-dom';
 import { useAuthStore } from '../../store/auth.store';
 import { PUBLIC_ROUTES } from '../../config/routes';
+import { Loader } from '../Loader/Loader';
 
 // En PrivateGuard.tsx
 export const PrivateGuard = () => {
@@ -11,7 +12,7 @@ export const PrivateGuard = () => {
   if (loading && !accessToken) {
     return (
       <div className="guard-loading">
-        <p>Validando sesión...</p>
+        <Loader text="Validando sesión..." size="large" />
       </div>
     );
   }

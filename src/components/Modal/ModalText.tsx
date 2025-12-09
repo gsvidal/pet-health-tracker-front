@@ -1,7 +1,7 @@
 import { X } from 'lucide-react';
 import { Button } from '../Button/Button';
 import './ModalText.scss';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 type ModalTextVariant = 'default' | 'confirm';
 
@@ -28,6 +28,45 @@ export const ModalText = ({
   confirmLabel = 'Confirmar',
   cancelLabel = 'Cancelar',
 }: ModalTextProps) => {
+  // Guardar el overflow original del body para restaurarlo correctamente
+  const originalOverflowRef = useRef<string>('');
+
+  // Manejo del overflow del body (bloquear scroll al abrir modal y restaurar al cerrar)
+  useEffect(() => {
+    if (isOpen) {
+      // Guardar valor actual solo la primera vez que abrimos
+      if (!originalOverflowRef.current) {
+        originalOverflowRef.current = document.body.style.overflow || '';
+      }
+      document.body.style.overflow = 'hidden';
+    } else {
+      // Restaurar cuando el modal se cierra
+      document.body.style.overflow = originalOverflowRef.current || '';
+    }
+
+    // Cleanup por si el componente se desmonta
+    return () => {
+      document.body.style.overflow = originalOverflowRef.current || '';
+    };
+  }, [isOpen]);
+
+  // Cerrar con ESC
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    document.addEventListener('keydown', handleEscape);
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   const handleConfirm = () => {
@@ -39,25 +78,6 @@ export const ModalText = ({
     onCancel?.();
     onClose();
   };
-
-  // Cerrar con ESC
-  useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isOpen) {
-        onClose();
-      }
-    };
-
-    if (isOpen) {
-      document.addEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'hidden';
-    }
-
-    return () => {
-      document.removeEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'unset';
-    };
-  }, [isOpen, onClose]);
 
   return (
     <div

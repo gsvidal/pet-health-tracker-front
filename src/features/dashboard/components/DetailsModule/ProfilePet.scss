@@ -1,28 +1,38 @@
 .profile-pet-card {
-  max-width: 1100px;
-  margin: 20px auto;
   display: flex;
-  gap: 20px;
+  flex-direction: column;
   align-items: center;
-  border: 1px solid #e5e5e5;
+  max-width: 1100px;
+  padding: 0 2rem;
+  margin: 40px auto;
+  gap: 2rem;
 
-  background: white;
-  border-radius: var(--radius-md, 8px);
-  box-shadow: var(--shadow-md, 0 2px 6px rgba(0, 0, 0, 0.1));
-  padding: 2.5rem;
+  @media (min-width: 768px) {
+    flex-direction: row;
+    gap: 4rem;
+    padding: 0 3rem;
+  }
+
+  @media (min-width: 1130px) {
+    padding: 0;
+  }
+
+  .profile-avatar-wrapper {
+    position: relative;
+    width: 110px;
+    height: 110px;
+  }
+
   .profile-avatar {
-    width: 80px;
-    height: 80px;
+    width: 110px;
+    height: 110px;
     border-radius: 50%;
     overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(
-      90deg,
-      var(--color-gradient-start),
-      var(--color-gradient-end)
-    );
+    background: linear-gradient(135deg, #d94df7, #6e40ff);
+    outline: 2px solid var(--color-gradient-start-opac50);
 
     .avatar-initial {
       font-size: 32px;
@@ -37,15 +47,65 @@
     }
   }
 
+  .profile-avatar__edit-btn {
+    position: absolute;
+    bottom: 1px;
+    right: 1px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--color-gradient-start);
+    border: 2px solid white;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 12px;
+    padding: 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+
+    &:hover:not(:disabled) {
+      background: var(--color-gradient-start-hover);
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .spinner {
+      animation: spin 1s linear infinite;
+    }
+  }
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
   .profile-info {
     display: flex;
     flex-direction: column;
+    align-items: center;
 
+    @media (min-width: 768px) {
+      align-items: flex-start;
+    }
     h2 {
       font-size: 1.2rem;
       font-weight: 600;
       color: var(--color-text, #1e1e1e);
       margin: 0;
+      &::first-letter {
+        text-transform: capitalize;
+      }
     }
 
     p {
@@ -57,16 +117,22 @@
     .profile-stats {
       display: flex;
       flex-wrap: wrap;
-      gap: 23rem;
+      gap: 2rem;
       margin-top: 10px;
       font-size: 14px;
 
-      strong {
-        color: var(--color-text, #1e1e1e);
+      @media (min-width: 420px) {
+        gap: 4rem;
+      }
+      @media (min-width: 768px) {
+        gap: 8rem;
+      }
 
+      strong {
         display: flex;
         font-size: 1.1rem;
         font-weight: 700;
+        color: var(--color-text, #1e1e1e);
       }
 
       .health-badge {

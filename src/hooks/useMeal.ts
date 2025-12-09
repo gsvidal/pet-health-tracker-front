@@ -1,8 +1,37 @@
 // useMeal.ts
 import { useEffect, useState } from 'react';
 import type { Meal, MealInput } from '../models/meal.model';
-import { getMeals, createMeal, deleteMeal } from '../services/meal.service';
+import { getMeals, createMeal, updateMeal, deleteMeal } from '../services/meal.service';
 import { usePetStore } from '../store/pet.store';
+
+// Helper para formatear descripción de comida
+function formatMealDescription(input: MealInput): string {
+  const parts: string[] = [];
+  
+  if (input.type) {
+    parts.push(input.type);
+  }
+  
+  if (input.food) {
+    if (parts.length > 0) {
+      parts.push(`- ${input.food}`);
+    } else {
+      parts.push(input.food);
+    }
+  }
+  
+  if (input.quantity) {
+    parts.push(`(${input.quantity})`);
+  }
+  
+  let description = parts.join(' ');
+  
+  if (input.notes) {
+    description += ` | ${input.notes}`;
+  }
+  
+  return description || '';
+}
 
 const MOCK_MEALS: Meal[] = [
   {
@@ -44,7 +73,7 @@ export function useMeals(petId: string) {
         id: crypto.randomUUID(),
         petId: mealInput.petId,
         mealTime: `${mealInput.date}T${mealInput.time}:00`,
-        description: `${mealInput.type} - ${mealInput.food} (${mealInput.quantity})${mealInput.notes ? ` | ${mealInput.notes}` : ''}`,
+        description: formatMealDescription(mealInput) || null,
         calories: null,
         planId: null,
         createdAt: new Date().toISOString(),
@@ -56,6 +85,29 @@ export function useMeals(petId: string) {
     const newMeal = await createMeal(mealInput);
     setMeals((prev) => [newMeal, ...prev]);
   }
+  async function updateMealData(mealId: string, mealInput: MealInput) {
+    if (mockMode) {
+      const updatedMockMeal: Meal = {
+        id: mealId,
+        petId: mealInput.petId,
+        mealTime: `${mealInput.date}T${mealInput.time}:00`,
+        description: formatMealDescription(mealInput) || null,
+        calories: null,
+        planId: null,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+      setMeals((prev) =>
+        prev.map((m) => (m.id === mealId ? updatedMockMeal : m)),
+      );
+      return;
+    }
+    const updatedMeal = await updateMeal(mealId, mealInput);
+    setMeals((prev) =>
+      prev.map((m) => (m.id === mealId ? updatedMeal : m)),
+    );
+  }
+
   async function removeMeal(mealId: string) {
     if (mockMode) {
       setMeals((prev) => prev.filter((m) => m.id !== mealId));
@@ -64,5 +116,5 @@ export function useMeals(petId: string) {
     await deleteMeal(mealId);
     setMeals((prev) => prev.filter((m) => m.id !== mealId));
   }
-  return { meals, loading, addMeal, removeMeal };
+  return { meals, loading, addMeal, updateMeal: updateMealData, removeMeal };
 }
