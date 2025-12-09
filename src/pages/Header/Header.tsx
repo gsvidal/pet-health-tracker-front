@@ -4,6 +4,7 @@ import { Heart, ArrowLeft } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/auth.store';
 import { PRIVATE_ROUTES, PUBLIC_ROUTES } from '../../config/routes';
+import { ThemeToggle } from '../../components/ThemeToggle/ThemeToggle';
 import './Header.scss';
 import { IoMdReturnLeft } from 'react-icons/io';
 
@@ -14,6 +15,11 @@ export const Header = () => {
   const { isAuthenticated, logout } = useAuthStore();
 
   const showBackButton = pathname.startsWith('/pets/:id');
+
+  const needToGoBackToDashboard =
+    pathname.includes('/pets') ||
+    pathname.includes('/notifications') ||
+    pathname.includes('/activity-logs');
 
   return (
     <header className="sticky-header">
@@ -32,14 +38,17 @@ export const Header = () => {
         {/* Logo */}
         <div className="logo" onClick={() => navigate(PUBLIC_ROUTES.HOME)}>
           <div className="logo-icon">
-            <Heart className="h-6 w-6 text-white" fill="white" />
+            <Heart fill="white" />
           </div>
           <span className="logo-text">Pet Health Tracker</span>
 
           {/* Botón Hamburguesa */}
           <button
             className={`menu-toggle ${menuOpen ? 'open' : ''}`}
-            onClick={() => setMenuOpen(!menuOpen)}
+            onClick={(e) => {
+              e.stopPropagation(); // Prevenir que el click se propague al div logo
+              setMenuOpen(!menuOpen);
+            }}
             aria-label="Abrir menú"
           >
             <span></span>
@@ -72,6 +81,7 @@ export const Header = () => {
               Dashboard
             </Link>
           )}
+          <ThemeToggle onToggle={() => setMenuOpen(false)} />
           <div className="btn-wrapper">
             {pathname === PRIVATE_ROUTES.DASHBOARD ||
             (pathname === PUBLIC_ROUTES.HOME && isAuthenticated) ? (
@@ -101,7 +111,7 @@ export const Header = () => {
               )
             )}
             {/* TODO: agregar volver a pagina pet */}
-            {pathname.includes('/pets/') && (
+            {needToGoBackToDashboard && (
               <Button
                 size="lg"
                 variant="outline"
@@ -110,8 +120,8 @@ export const Header = () => {
                   navigate(PRIVATE_ROUTES.DASHBOARD);
                 }}
               >
-                <IoMdReturnLeft style={{marginRight: '6px'}}/>
-                Volver
+                <IoMdReturnLeft style={{ marginRight: '6px' }} />
+                Volver al Dashboard
               </Button>
             )}
           </div>

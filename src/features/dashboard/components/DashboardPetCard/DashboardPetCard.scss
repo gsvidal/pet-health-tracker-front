@@ -1,5 +1,5 @@
 .dashboard-pet-card {
-  background: white;
+  background: var(--color-absolute);
   border-radius: var(--radius-md, 8px);
   box-shadow: var(--shadow-md, 0 2px 6px rgba(0, 0, 0, 0.1));
   padding: 1.5rem;
@@ -26,12 +26,13 @@
     flex: 1;
   }
 
-  &__name {
+  .dashboard-pet-card__name {
     margin: 0;
     font-size: 1.5rem;
     font-weight: 700;
-    color: var(--color-text, #1e1e1e);
+    color: var(--color-text);
     margin-bottom: 0.25rem;
+    border: none;
   }
 
   &__species {
@@ -64,8 +65,7 @@
     flex-shrink: 0;
     cursor: pointer;
     &:hover {
-
-    background: var(--color-error-hover);
+      background: var(--color-error-hover);
     }
   }
 
@@ -111,7 +111,7 @@
     padding: 0.375rem 0.75rem;
     border-radius: 9999px;
     background: var(--color-success);
-    color: var(--color-success-text);;
+    color: var(--color-success-text);
     font-size: 0.875rem;
     font-weight: 600;
   }

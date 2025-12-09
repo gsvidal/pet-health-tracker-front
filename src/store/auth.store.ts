@@ -166,33 +166,47 @@ export const useAuthStore = create<AuthState>()(
       logout: async () => {
         set({ loading: true, error: null });
         const accessToken = get().accessToken;
-        
-        // Limpiar estado primero para evitar loops
+        let logoutSuccess = false;
+
+        // Intentar logout en el servidor PRIMERO (antes de limpiar el estado)
+        // para que el interceptor pueda agregar el token a la request
+        if (accessToken) {
+          try {
+            await callApi(() => authService.logout());
+            logoutSuccess = true;
+          } catch (err) {
+            // Ignorar errores en logout (puede que el token ya sea inválido)
+            console.warn(
+              'Error al cerrar sesión en el servidor (ignorado):',
+              err,
+            );
+            logoutSuccess = false;
+          }
+        } else {
+          // Si no hay token, considerar logout exitoso (ya estaba deslogueado)
+          logoutSuccess = true;
+        }
+
+        // Limpiar estado después de intentar logout en el servidor
         set({
           user: null,
           accessToken: null,
           refreshToken: null,
           isAuthenticated: false,
         });
-        
+
         // Limpiar localStorage
         localStorage.removeItem('auth-storage');
-        
-        // Intentar logout en el servidor solo si hay token (puede fallar si ya expiró)
-        if (accessToken) {
-          try {
-            await callApi(() => authService.logout());
-          } catch (err) {
-            // Ignorar errores en logout (puede que el token ya sea inválido)
-            console.warn('Error al cerrar sesión en el servidor (ignorado):', err);
-          }
-        }
-        
+
         set({
           loading: false,
           error: null,
         });
-        toast.success('Sesión cerrada correctamente 👋');
+
+        // Solo mostrar toast de éxito si el logout fue exitoso
+        if (logoutSuccess) {
+          toast.success('Sesión cerrada correctamente 👋');
+        }
       },
 
       setAuth: (authData: Partial<AuthState>) =>

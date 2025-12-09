@@ -15,16 +15,23 @@ export default function PetInfoSection({ pet }: PetInfoSectionProps) {
   const updatePet = usePetStore((s) => s.updatePet);
   const { loading, error } = usePetStore();
 
-  const { register, handleSubmit, errors, isValid, onSubmit, handleCancel } =
-    usePetForm({
-      editingPet: isEditing ? pet : null,
-      onSave: async (data) => {
-        await updatePet(pet.id, data);
-      },
-      onSuccess: () => {
-        setIsEditing(false);
-      },
-    });
+  const {
+    register,
+    handleSubmit,
+    errors,
+    isValid,
+    isDirty,
+    onSubmit,
+    handleCancel,
+  } = usePetForm({
+    editingPet: isEditing ? pet : null,
+    onSave: async (data) => {
+      await updatePet(pet.id, data);
+    },
+    onSuccess: () => {
+      setIsEditing(false);
+    },
+  });
 
   const handleEditClick = () => {
     setIsEditing(true);
@@ -272,7 +279,7 @@ export default function PetInfoSection({ pet }: PetInfoSectionProps) {
               <div className="pet-info-subsection__form-actions">
                 <Button
                   type="submit"
-                  disabled={loading || !isValid}
+                  disabled={loading || !isValid || !isDirty}
                   variant="primary"
                 >
                   Actualizar Registro

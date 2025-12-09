@@ -1,4 +1,8 @@
-.nutrition-subsection {
+// Estilos compartidos para todas las subsecciones de salud
+// (Vacunación, Desparasitación, Visitas Veterinarias)
+
+// Mixin con estilos compartidos
+@mixin health-subsection-shared {
   &__header {
     display: flex;
     flex-direction: column;
@@ -23,9 +27,9 @@
     }
   }
 
-  &__title {
+  &__add-btn {
     display: flex;
-    flex-direction: column;
+    align-items: center;
     gap: 0.5rem;
   }
 
@@ -104,18 +108,18 @@
       }
     }
 
-    select {
-      cursor: pointer;
-      background-color: var(--color-bg);
-      
-      &:focus {
-        background-color: var(--color-absolute);
-      }
-    }
-
     textarea {
       resize: vertical;
       min-height: 100px;
+    }
+
+    select {
+      cursor: pointer;
+      background-color: var(--color-bg);
+
+      &:focus {
+        background-color: var(--color-absolute);
+      }
     }
 
     .error-message {
@@ -163,176 +167,124 @@
     }
   }
 
-  // Historial de Comidas
+  // Historial
   &__history-header {
     margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
 
-    > div:first-child {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      margin-bottom: 0.5rem;
-
-      .history-icon {
-        color: var(--color-primary);
-        font-size: 1.5rem;
-      }
-
-      h3 {
-        margin: 0;
-        color: var(--color-text);
-        font-size: 1.5rem;
-      }
-    }
-
-    > p {
+    h4 {
       margin: 0;
-      color: var(--color-text-secondary);
-      font-size: 1.1rem;
+      color: var(--color-text);
+      font-size: 1.2rem;
     }
   }
 
-  &__loading,
   &__empty {
     text-align: center;
     padding: 3rem;
     color: var(--color-text-secondary);
-    font-size: 1.2rem;
+    font-size: 1.1rem;
+    background: var(--color-absolute);
+    border-radius: var(--radius-md);
+    // border: 1px solid var(--color-border);
   }
 
-  &__meals-list {
+  &__list {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1rem;
   }
 
-  &__day-group {
-    .day-group__header {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin-bottom: 1rem;
-      padding-bottom: 0.75rem;
-      border-bottom: 1px solid var(--color-border);
-
-      .day-group__title {
-        font-size: 1.2rem;
-        font-weight: 600;
-        color: var(--color-text);
-      }
-
-      .day-group__count {
-        font-size: 0.9rem;
-        background: var(--color-bg);
-        padding: 0.25rem 0.75rem;
-        border-radius: var(--radius-sm);
-        color: var(--color-text-secondary);
-      }
-    }
-
-    .day-group__meals {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-  }
-
-  &__meal-card {
+  &__item {
     background: var(--color-absolute);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
     padding: 1.5rem;
-    position: relative;
+    transition: all var(--transition);
 
-    .meal-card__header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 1rem;
+    &:hover {
+      box-shadow: var(--shadow-sm);
+      transform: translateY(-1px);
     }
 
-    .meal-card__title {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-
-      .meal-icon {
-        color: var(--color-primary);
-        font-size: 1.25rem;
-      }
-
-      h4 {
-        margin: 0;
-        color: var(--color-text);
-        font-size: 1.1rem;
-      }
-    }
-
-    .meal-card__actions {
-      display: flex;
-      gap: 0.5rem;
-    }
-
-    .meal-card__action-btn {
-      background: transparent;
-      border: none;
-      cursor: pointer;
-      padding: 0.5rem;
-      border-radius: var(--radius-md);
-      color: var(--color-text-secondary);
-      transition: all var(--transition);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      &:hover {
-        background: var(--color-bg);
-        color: var(--color-primary);
-      }
-
-      &--delete {
-        &:hover {
-          background: var(--color-error-light);
-          color: var(--color-error-text);
-        }
-      }
-    }
-
-    .meal-card__details {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .meal-card__detail-item {
-      display: flex;
-      gap: 0.75rem;
-      align-items: flex-start;
-
-      .detail-icon {
-        color: var(--color-primary);
-        margin-top: 0.25rem;
-        flex-shrink: 0;
-      }
-
-      label {
-        display: block;
-        font-weight: 600;
-        color: var(--color-text-secondary);
-        font-size: 0.85rem;
-        margin-bottom: 0.25rem;
-      }
-
-      p {
-        margin: 0;
-        color: var(--color-text);
-        font-size: 1.1rem;
-      }
-
-      &:not(:has(.detail-icon)) {
-        flex-direction: column;
-        gap: 0.25rem;
-      }
+    &--expired {
+      border-left: 4px solid var(--color-error);
     }
   }
+
+  &__item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    gap: 1rem;
+  }
+
+  &__item-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--color-text);
+    margin: 0;
+  }
+
+  &__item-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-shrink: 0;
+  }
+
+  &__item-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__item-detail {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+
+    svg {
+      color: var(--color-primary);
+      flex-shrink: 0;
+    }
+  }
+
+  &__item-notes {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-border);
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  &__expired-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    background: var(--color-error-light);
+    color: var(--color-error-text);
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-top: 0.5rem;
+  }
+}
+
+// Aplicar estilos compartidos a las tres subsecciones
+.vaccination-subsection,
+.deworming-subsection,
+.visit-subsection {
+  @include health-subsection-shared;
 }

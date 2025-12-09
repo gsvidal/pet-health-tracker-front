@@ -6,6 +6,7 @@ import type {
   PetFormData,
   PetFormState,
 } from '../../../../adapters/pet.adapter';
+import { Button } from '../../../../components/Button/Button';
 
 export function CreatePetForm() {
   const { createPet, loading } = usePetStore();
@@ -173,9 +174,9 @@ export function CreatePetForm() {
 
         {/* Información adicional */}
         <div className="section">
-          <h3>Información Adicional</h3>
+          {/* <h3>Información Adicional</h3> */}
 
-          <div className="field">
+          {/* <div className="field">
             <label>URL de Foto</label>
             <div className="input-group">
               <input
@@ -190,7 +191,7 @@ export function CreatePetForm() {
               </button>
             </div>
           </div>
-
+ */}
           <div className="field">
             <label>Notas</label>
             <textarea
@@ -205,11 +206,10 @@ export function CreatePetForm() {
 
         {/* Botones */}
         <div className="actions">
-          <button type="submit" className="btn-submit" disabled={loading}>
+          <Button type="submit" disabled={loading}>
             <Heart size={18} fill="white" />
             {loading ? 'Creando...' : 'Crear Mascota'}
-          </button>
-
+          </Button>
         </div>
       </div>
     </form>

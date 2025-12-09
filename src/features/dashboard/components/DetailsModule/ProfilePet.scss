@@ -136,7 +136,7 @@
       }
 
       .health-badge {
-        background: #d8f8df;
+        background: var(--color-success);
         color: var(--color-success-text);
         padding: 3px 10px;
         border-radius: var(--radius-md, 8px);

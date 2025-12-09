@@ -12,13 +12,13 @@
 
     h3 {
       margin: 0 0 0.5rem 0;
-      color: #333;
+      color: var(--color-text);
       font-size: 1.5rem;
     }
 
     p {
       margin: 0;
-      color: #666;
+      color: var(--color-text-secondary);
       font-size: 1.1rem;
     }
   }
@@ -32,18 +32,18 @@
   &__form-section {
     margin-top: 2rem;
     padding-top: 2rem;
-    border-top: 1px solid #eaeaea;
+    border-top: 1px solid var(--color-border);
 
     h4 {
       margin: 0 0 1.5rem 0;
-      color: #333;
+      color: var(--color-text);
       font-size: 1.2rem;
     }
   }
 
   &__form {
     .required {
-      color: #dc3545;
+      color: var(--color-error);
     }
   }
 
@@ -71,7 +71,7 @@
 
     label {
       font-weight: 600;
-      color: #333;
+      color: var(--color-text);
       font-size: 0.9rem;
     }
 
@@ -80,19 +80,27 @@
     select {
       width: 100%;
       padding: 0.75rem;
-      border: 2px solid #ddd;
-      border-radius: 8px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
       font-size: 1rem;
-      transition: border-color 0.3s;
+      background: var(--color-bg);
+      color: var(--color-text);
+      transition: all var(--transition);
       font-family: inherit;
+
+      &::placeholder {
+        color: var(--color-text-secondary);
+      }
 
       &:focus {
         outline: none;
-        border-color: #7b3bff;
+        border-color: var(--color-primary);
+        background: var(--color-absolute);
+        box-shadow: 0 0 0 3px var(--color-primary-opac50);
       }
 
       &.input-error {
-        border-color: #dc3545;
+        border-color: var(--color-error);
       }
     }
 
@@ -103,11 +111,15 @@
 
     select {
       cursor: pointer;
-      background-color: white;
+      background-color: var(--color-bg);
+      
+      &:focus {
+        background-color: var(--color-absolute);
+      }
     }
 
     .error-message {
-      color: #dc3545;
+      color: var(--color-error);
       font-size: 0.85rem;
       margin-top: -0.25rem;
     }
@@ -134,7 +146,7 @@
       left: 0.75rem;
       top: 50%;
       transform: translateY(-50%);
-      color: #666;
+      color: var(--color-text-secondary);
       font-size: 1rem;
     }
 
@@ -148,14 +160,14 @@
     gap: 1rem;
     margin-top: 2rem;
     padding-top: 1.5rem;
-    border-top: 1px solid #eaeaea;
+    border-top: 1px solid var(--color-border);
   }
 
   .server-error {
-    background: #f8d7da;
-    color: #721c24;
+    background: var(--color-error-light);
+    color: var(--color-error-text);
     padding: 1rem;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     margin-bottom: 1rem;
 
     p {
@@ -167,7 +179,7 @@
   &__empty {
     text-align: center;
     padding: 3rem;
-    color: #666;
+    color: var(--color-text-secondary);
     font-size: 1.2rem;
   }
 
@@ -179,14 +191,14 @@
   }
 
   &__reminder-card {
-    background: #f8f9fa;
-    border: 1px solid #eaeaea;
-    border-radius: 12px;
+    background: var(--color-absolute);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
     padding: 1.5rem;
-    transition: all 0.3s;
+    transition: all var(--transition);
 
     &:hover {
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      box-shadow: var(--shadow-sm);
     }
 
     .reminder-card__content {
@@ -218,7 +230,7 @@
         height: 0;
 
         &:checked + .toggle-slider {
-          background-color: #7b3bff;
+          background-color: var(--color-primary);
         }
 
         &:checked + .toggle-slider:before {
@@ -233,8 +245,8 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background-color: #ccc;
-        transition: 0.3s;
+        background-color: var(--color-border);
+        transition: var(--transition);
         border-radius: 26px;
 
         &:before {
@@ -244,8 +256,8 @@
           width: 20px;
           left: 3px;
           bottom: 3px;
-          background-color: white;
-          transition: 0.3s;
+          background-color: var(--color-absolute);
+          transition: var(--transition);
           border-radius: 50%;
         }
       }
@@ -259,26 +271,26 @@
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      color: #666;
+      color: var(--color-text-secondary);
       font-size: 0.9rem;
       margin-bottom: 0.5rem;
 
       .datetime-icon {
-        color: #7b3bff;
+        color: var(--color-primary);
         font-size: 0.9rem;
       }
     }
 
     .reminder-card__title {
       margin: 0 0 0.5rem 0;
-      color: #333;
+      color: var(--color-text);
       font-size: 1.1rem;
       font-weight: 600;
     }
 
     .reminder-card__description {
       margin: 0 0 0.75rem 0;
-      color: #666;
+      color: var(--color-text-secondary);
       font-size: 0.9rem;
     }
 
@@ -291,9 +303,9 @@
     .reminder-card__frequency {
       display: inline-block;
       padding: 0.25rem 0.75rem;
-      background: #e9ecef;
-      color: #495057;
-      border-radius: 12px;
+      background: var(--color-bg);
+      color: var(--color-text-secondary);
+      border-radius: var(--radius-sm);
       font-size: 0.75rem;
       font-weight: 600;
     }
@@ -301,9 +313,9 @@
     .reminder-card__badge {
       display: inline-block;
       padding: 0.25rem 0.75rem;
-      background: #e7d5ff;
-      color: #7b3bff;
-      border-radius: 12px;
+      background: var(--color-primary-bg);
+      color: var(--color-primary);
+      border-radius: var(--radius-sm);
       font-size: 0.75rem;
       font-weight: 600;
     }
@@ -319,22 +331,22 @@
       border: none;
       cursor: pointer;
       padding: 0.5rem;
-      border-radius: 6px;
-      color: #666;
-      transition: all 0.3s;
+      border-radius: var(--radius-md);
+      color: var(--color-text-secondary);
+      transition: all var(--transition);
       display: flex;
       align-items: center;
       justify-content: center;
 
       &:hover {
-        background: #f0f0f0;
-        color: #8200db;
+        background: var(--color-bg);
+        color: var(--color-primary);
       }
 
       &--delete {
         &:hover {
-          background: #fee;
-          color: #dc3545;
+          background: var(--color-error-light);
+          color: var(--color-error-text);
         }
       }
     }

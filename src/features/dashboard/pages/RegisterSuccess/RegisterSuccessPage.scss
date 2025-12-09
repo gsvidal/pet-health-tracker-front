@@ -1,4 +1,4 @@
-.verify-email-container {
+.register-success-container {
   background: var(--color-bg);
   font-family: var(--font-base);
   color: var(--color-text);
@@ -9,7 +9,7 @@
   padding: 2rem;
 }
 
-.verify-email-card {
+.register-success-card {
   width: 100%;
   max-width: 500px;
   background: var(--color-absolute);
@@ -20,14 +20,14 @@
   border: 1px solid var(--color-border-opac25);
 }
 
-.verify-email-icon {
+.register-success-icon {
   display: flex;
   justify-content: center;
   margin-bottom: 1.5rem;
   color: var(--color-primary);
 }
 
-.verify-email-card h2 {
+.register-success-card h2 {
   font-size: 1.8rem;
   font-weight: 600;
   margin-bottom: 1rem;
@@ -35,24 +35,44 @@
   color: var(--color-text);
 }
 
-.verify-email-message {
-  color: var(--color-text);
+.register-success-message {
+  color: var(--color-text-secondary);
   font-size: 1.1rem;
   margin-bottom: 1rem;
   line-height: 1.6;
+
+  strong {
+    color: var(--color-text);
+    font-weight: 600;
+  }
 }
 
-.verify-email-error {
-  color: var(--color-error);
-  font-size: 1rem;
-  margin-bottom: 1rem;
-  line-height: 1.6;
-}
-
-.verify-email-loading {
-  color: var(--color-text-secondary);
+.register-success-instruction {
+  color: var(--color-text);
   font-size: 1.05rem;
   margin-bottom: 2rem;
   line-height: 1.6;
+  font-weight: 500;
+}
+
+.register-success-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.register-success-link {
+  display: inline-flex;
+  align-items: center;
+  color: var(--color-primary);
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all var(--transition);
+
+  &:hover {
+    color: var(--color-primary-hover);
+    text-decoration: underline;
+  }
 }
 

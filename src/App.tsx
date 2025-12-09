@@ -1,4 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
+import { useEffect } from 'react';
 import './App.scss';
 import { RegisterPage } from './features/dashboard/pages/Register/RegisterPage';
 import { FullLayout } from './layouts/FullLayout';
@@ -9,6 +10,7 @@ import { ExamplePage } from './features/example/pages/ExamplePage/ExamplePage';
 import { PRIVATE_ROUTES, PUBLIC_ROUTES } from './config/routes';
 import { PrivateGuard } from './components/guards/PrivateGuard';
 import { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 import { LoginPage } from './features/dashboard/pages/Login/LoginPage';
 import { NotFound } from './components/NotFound/NotFound';
 import { ModalText } from './components/Modal/ModalText';
@@ -18,9 +20,35 @@ import { CreatePetForm } from './features/dashboard/pages/PetForm/PetFormPage';
 import { DetailsPage } from './features/dashboard/pages/Details/DetailsPage';
 import ResetPasswordPage from './features/dashboard/pages/Reset/ResetPage';
 import { ActivityLogs } from './features/audit-logs/pages/ActivityLogs/ActivityLogs';
-import { Header } from './pages/Header/Header';
+import { useThemeStore } from './store/theme.store';
+import { CheckEmailPage } from './features/dashboard/pages/CheckEmail/CheckEmailPage';
+import { RegisterSuccessPage } from './features/dashboard/pages/RegisterSuccess/RegisterSuccessPage';
 
 function App() {
+  const { theme } = useThemeStore();
+
+  // Verificar si hay un mensaje de sesión expirada al cargar
+  useEffect(() => {
+    const expiredMessage = sessionStorage.getItem('session-expired-message');
+    if (expiredMessage) {
+      toast.error(expiredMessage, {
+        duration: 4000,
+      });
+      // Limpiar el mensaje después de mostrarlo
+      sessionStorage.removeItem('session-expired-message');
+    }
+  }, []);
+
+  // Aplicar el tema al cargar la aplicación (solo una vez)
+  useEffect(() => {
+    // El tema ya se aplica automáticamente desde el store al rehidratar
+    // Este useEffect solo asegura que se aplique si hay algún problema
+    if (theme === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+    }
+  }, []); // Solo se ejecuta una vez al montar
   const {
     isOpen,
     title,
@@ -54,6 +82,14 @@ function App() {
               path={PUBLIC_ROUTES.VERIFY_EMAIL}
               element={<VerifyEmailPage />}
             />
+            <Route
+              path={PUBLIC_ROUTES.CHECK_EMAIL_RESET_PASSWORD}
+              element={<CheckEmailPage />}
+            />
+            <Route
+              path={PUBLIC_ROUTES.CHECK_EMAIL_VERIFY}
+              element={<RegisterSuccessPage />}
+            />
           </Route>
 
           <Route element={<PrivateGuard />}>
@@ -85,7 +121,10 @@ function App() {
       />
       <Toaster
         position="top-center"
-        toastOptions={{ duration: 8000, style: { backgroundColor: '#ede9fe' } }}
+        toastOptions={{
+          duration: 8000,
+          style: { backgroundColor: theme === 'dark' ? 'grey' : '#ede9fe' },
+        }}
       />
     </>
   );

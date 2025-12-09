@@ -15,6 +15,8 @@
   --color-text-secondary-opac50: #6b728052;
   --color-bg: #f9fafb;
   --color-border: #e5e7eb;
+  --color-border-opac25: #cfcfcf3b;
+  --color-absolute: white;
 
   --color-gradient-start: #ec4899; /* Pink */
   --color-gradient-start-opac50: #ec489a85;
@@ -71,8 +73,42 @@
 }
 
 [data-theme='dark'] {
-  --color-secondary: #1e1e1e;
-  --color-text: #f2f2f2;
-  --color-bg: #121212;
-  --color-border: #444;
+  /* Core Palette - Dark Mode */
+  --color-primary: #a855f7; /* Lighter purple for better contrast */
+  --color-primary-opac50: #a855f750;
+  --color-primary-hover: #9333ea; /* Slightly lighter hover */
+  --color-primary-bg: #47208b59; /* Dark purple background */
+  --color-primary-bg-hover: #3f166db6; /* Slightly lighter */
+  --color-secondary: #ec4899; /* Lighter pink for contrast */
+  --color-secondary-bg: #4a1e3a; /* Dark pink background */
+  --color-secondary-bg2: #5a2545; /* Slightly lighter */
+  --color-secondary-hover: #f472b6; /* Lighter hover */
+  --color-text: #f2f2f2; /* Light text */
+  --color-text-secondary: #b1b1b9; /* Lighter gray for secondary text */
+  --color-text-secondary-opac50: #a1a1aa52;
+  --color-bg: #0d0d0d; /* Very dark background */
+  --color-border: #3f3f46; /* Darker border */
+  --color-absolute: #1f1f23; /* Dark card background */
+
+  /* Gradients - Dark Mode */
+  --color-gradient-start: #90436b; /* Lighter pink */
+  --color-gradient-start-opac50: #95215d85;
+  --color-gradient-start-hover: #961e5a; /* Slightly darker */
+  --color-gradient-end: #60219b; /* Lighter purple */
+  --color-gradient-end-opac50: #5c219383;
+  --color-gradient-end-hover: #4a0f82; /* Lighter purple */
+  --color-border-opac25: #e5e7eb3b;
+
+  /* Feedback Colors - Dark Mode */
+  --color-success: #01752c; /* Brighter green */
+  --color-success-text: #86efac; /* Light green text */
+  --color-warning: #fbbf24; /* Brighter yellow */
+  --color-warning-text: #fde047; /* Light yellow text */
+  --color-error-light: #6b0505; /* Brighter red */
+  --color-error-hover: #820101; /* Darker red hover */
+  --color-error: #f87171; /* Lighter red */
+  --color-error-text: #fca5a5; /* Light red text */
+  --color-info: #60a5fa; /* Brighter blue */
+  --color-info-text: #93c5fd; /* Light blue text */
+  --color-warning-alert: #7f5c04; /* Dark amber background */
 }

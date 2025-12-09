@@ -92,3 +92,41 @@ export const combineDateAndTimeToISO = (
   // Convertir a ISO string (UTC)
   return localDate.toISOString();
 };
+
+/**
+ * Formatea una fecha a tiempo relativo en español
+ * @param dateString - Fecha en formato ISO string
+ * @returns String formateado (ej: "Hace 5 minutos", "Hace 2 horas", "Hace 3 días")
+ */
+export const formatRelativeTime = (dateString: string): string => {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+
+  if (diffInSeconds < 60) {
+    return 'Hace unos momentos';
+  }
+
+  const diffInMinutes = Math.floor(diffInSeconds / 60);
+  if (diffInMinutes < 60) {
+    return `Hace ${diffInMinutes} ${diffInMinutes === 1 ? 'minuto' : 'minutos'}`;
+  }
+
+  const diffInHours = Math.floor(diffInMinutes / 60);
+  if (diffInHours < 24) {
+    return `Hace ${diffInHours} ${diffInHours === 1 ? 'hora' : 'horas'}`;
+  }
+
+  const diffInDays = Math.floor(diffInHours / 24);
+  if (diffInDays < 30) {
+    return `Hace ${diffInDays} ${diffInDays === 1 ? 'día' : 'días'}`;
+  }
+
+  const diffInMonths = Math.floor(diffInDays / 30);
+  if (diffInMonths < 12) {
+    return `Hace ${diffInMonths} ${diffInMonths === 1 ? 'mes' : 'meses'}`;
+  }
+
+  // Si es muy antiguo, mostrar fecha completa
+  return formatDateTimeLocal(dateString);
+};

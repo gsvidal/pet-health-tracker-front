@@ -2,8 +2,8 @@
   margin-top: 3rem;
   .subsections-tabs {
     display: flex;
-    background: white;
-    border: 1px solid #e5e5e5;
+    background: var(--color-absolute);
+    border: 1px solid var(--color-border-opac25);
     border-radius: 14px;
     overflow: hidden;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
@@ -12,21 +12,21 @@
     button {
       flex: 1;
       padding: 8px 0;
-      background: white;
+      background-color: inherit;
       border: none;
       cursor: pointer;
       font-weight: 500;
-      color: #555;
+      color: var(--color-text);
       font-size: 11px;
       transition: 0.25s ease;
 
-      &:hover {
-        background: #f9f9f9;
-      }
+      // &:hover {
+      //   background-color: opacity(0.1);
+      // }
 
       &.active {
-        background: #f3e9ff;
-        color: #7b3bff;
+        background: var(--purple-bg);
+        color: var(--purple-text);
         font-weight: 600;
       }
     }

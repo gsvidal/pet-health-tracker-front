@@ -1,13 +1,16 @@
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { requestPasswordReset } from '../services/auth.service';
 import type { AxiosError } from 'axios';
+import { PUBLIC_ROUTES } from '../config/routes';
 
 type RecoverPasswordForm = {
   email: string;
 };
 export const useRecoverPassword = () => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -27,6 +30,10 @@ export const useRecoverPassword = () => {
       toast.success('¡Revisa tu correo, enviamos un link!');
       setSuccess(true);
       reset();
+      // Redirigir a la página de confirmación
+      navigate(PUBLIC_ROUTES.CHECK_EMAIL_RESET_PASSWORD, {
+        state: { email: data.email },
+      });
     } catch (err) {
       const error = err as AxiosError<{ message?: string; detail?: string }>;
       const msg =

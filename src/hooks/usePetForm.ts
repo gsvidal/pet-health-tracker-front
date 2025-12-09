@@ -29,10 +29,9 @@ export const usePetForm = ({
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isDirty },
     reset,
     watch,
-    setValue,
   } = useForm<PetFormState>({
     mode: 'onChange',
     defaultValues: {
@@ -51,28 +50,24 @@ export const usePetForm = ({
   // Cargar datos de mascota en modo edición
   useEffect(() => {
     if (editingPet) {
-      setValue('name', editingPet.name || '');
-      setValue('species', editingPet.species || '');
-      setValue('breed', editingPet.breed || '');
-      setValue(
-        'birthDate',
-        editingPet.birthDate ? editingPet.birthDate.split('T')[0] : '',
-      );
-      setValue(
-        'ageYears',
-        editingPet.ageYears ? String(editingPet.ageYears) : '',
-      );
-      setValue(
-        'weightKg',
-        editingPet.weightKg ? String(editingPet.weightKg) : '',
-      );
-      setValue('sex', editingPet.sex || '');
-      setValue('photoUrl', editingPet.photoUrl || '');
-      setValue('notes', editingPet.notes || '');
+      // Usar reset en lugar de setValue para que no marque el formulario como dirty
+      reset({
+        name: editingPet.name || '',
+        species: editingPet.species || '',
+        breed: editingPet.breed || '',
+        birthDate: editingPet.birthDate
+          ? editingPet.birthDate.split('T')[0]
+          : '',
+        ageYears: editingPet.ageYears ? String(editingPet.ageYears) : '',
+        weightKg: editingPet.weightKg ? String(editingPet.weightKg) : '',
+        sex: editingPet.sex || '',
+        photoUrl: editingPet.photoUrl || '',
+        notes: editingPet.notes || '',
+      });
     } else {
       reset();
     }
-  }, [editingPet, setValue, reset]);
+  }, [editingPet, reset]);
 
   const onSubmit = async (data: PetFormState) => {
     const formData: PetFormData = {
@@ -105,6 +100,7 @@ export const usePetForm = ({
     handleSubmit,
     errors,
     isValid,
+    isDirty,
     onSubmit,
     handleCancel,
     watch,

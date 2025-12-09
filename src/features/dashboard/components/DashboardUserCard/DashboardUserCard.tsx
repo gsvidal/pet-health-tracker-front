@@ -26,6 +26,7 @@ export const DashboardUserCard = ({ user }: DashboardUserCardProps) => {
           <Button
             variant="outline"
             onClick={() => navigate(PRIVATE_ROUTES.ACTIVITY_LOGS)}
+            style={{marginTop: '1.5rem'}}
           >
             Ver actividad
           </Button>

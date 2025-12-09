@@ -6,6 +6,8 @@ export const PUBLIC_ROUTES = {
   RECOVER_PSW: '/request-password-reset',
   RESET_PSW: '/reset-password',
   VERIFY_EMAIL: '/verify-email',
+  CHECK_EMAIL_RESET_PASSWORD: '/check-email-reset-password',
+  CHECK_EMAIL_VERIFY: '/check-email-verify',
 } as const;
 
 export const PRIVATE_ROUTES = {

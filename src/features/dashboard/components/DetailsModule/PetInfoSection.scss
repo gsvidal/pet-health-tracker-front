@@ -1,4 +1,5 @@
 .pet-info-subsection {
+  color: var(--color-text-secondary);
   &__header {
     display: flex;
     flex-direction: column;
@@ -13,13 +14,12 @@
 
     h3 {
       margin: 0 0 0.5rem 0;
-      color: #333;
       font-size: 1.5rem;
     }
 
     p {
       margin: 0;
-      color: #666;
+      color: var(--color-text-secondary);
       font-size: 1.1rem;
     }
   }
@@ -33,7 +33,7 @@
   &__form-section {
     margin-top: 2rem;
     padding-top: 2rem;
-    border-top: 1px solid #eaeaea;
+    border-top: 1px solid var(--color-border);
 
     h4 {
       margin: 0 0 1.5rem 0;
@@ -72,7 +72,7 @@
 
     label {
       font-weight: 600;
-      color: #333;
+      color: var(--color-text);
       font-size: 0.9rem;
     }
 
@@ -81,19 +81,27 @@
     select {
       width: 100%;
       padding: 0.75rem;
-      border: 2px solid #ddd;
-      border-radius: 8px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
       font-size: 1rem;
-      transition: border-color 0.3s;
+      background: var(--color-bg);
+      color: var(--color-text);
+      transition: all var(--transition);
       font-family: inherit;
+
+      &::placeholder {
+        color: var(--color-text-secondary);
+      }
 
       &:focus {
         outline: none;
-        border-color: #7b3bff;
+        border-color: var(--color-primary);
+        background: var(--color-absolute);
+        box-shadow: 0 0 0 3px var(--color-primary-opac50);
       }
 
       &.input-error {
-        border-color: #dc3545;
+        border-color: var(--color-error);
       }
     }
 
@@ -104,7 +112,11 @@
 
     select {
       cursor: pointer;
-      background-color: white;
+      background-color: var(--color-bg);
+      
+      &:focus {
+        background-color: var(--color-absolute);
+      }
     }
 
     .error-message {
@@ -142,7 +154,7 @@
     gap: 1rem;
     margin-top: 2rem;
     padding-top: 1.5rem;
-    border-top: 1px solid #eaeaea;
+    border-top: 1px solid var(--color-border);
   }
 
   .server-error {
@@ -175,13 +187,13 @@
 
       label {
         font-weight: 600;
-        color: #666;
+        color: var(--color-text);
         font-size: 0.85rem;
       }
 
       p {
         margin: 0;
-        color: #333;
+        color: var(--color-text-secondary);
         font-size: 1.1rem;
       }
 

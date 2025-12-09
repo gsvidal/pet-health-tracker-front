@@ -92,7 +92,7 @@ export const HomeUs = () => {
               {/* <Button>Explorar Demo</Button> */}
             </div>
             <div className="avatars">
-              <span className="avatar"></span>
+              <span className="avatar avatar--1"></span>
               <span className="avatar avatar--2"></span>
               <span className="avatar avatar--3"></span>
               <span className="avatar avatar--4"></span>

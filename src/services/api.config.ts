@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { useAuthStore } from '../store/auth.store';
-import toast from 'react-hot-toast';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -57,12 +56,14 @@ apiClient.interceptors.response.use(
           // Limpiar localStorage manualmente
           localStorage.removeItem('auth-storage');
 
-          toast.success('Tu sesión expiró, ingresa de nuevo por favor')
+          // Guardar mensaje en sessionStorage para mostrarlo después de redirigir
+          sessionStorage.setItem(
+            'session-expired-message',
+            'Tu sesión expiró, ingresa de nuevo por favor',
+          );
 
-          // Redirigir al home
-          setTimeout(() => {
-            window.location.href = '/';
-          }, 100);
+          // Redirigir al home inmediatamente
+          window.location.href = '/';
         } catch (err) {
           console.error('Error en logout automático:', err);
         } finally {
