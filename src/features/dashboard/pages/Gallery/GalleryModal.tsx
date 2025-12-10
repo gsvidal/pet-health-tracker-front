@@ -6,9 +6,10 @@ import {
   deletePetPhoto,
 } from '../../../../services/pet.service';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { Button } from '../../../../components/Button/Button';
+import { Loader } from '../../../../components/Loader/Loader';
 
 export const GalleryModal = () => {
   const { isOpen, close, mode, photos, current, petId } =
@@ -19,6 +20,14 @@ export const GalleryModal = () => {
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [imageLoading, setImageLoading] = useState(true);
+
+  // Resetear el estado de carga solo cuando se abre el modal o cambia el petId
+  useEffect(() => {
+    if (mode === 'view' && isOpen) {
+      setImageLoading(true);
+    }
+  }, [isOpen, petId, mode]);
 
   if (!isOpen) return null;
 
@@ -85,6 +94,12 @@ export const GalleryModal = () => {
   const goNext = () => {
     useGalleryModalStore.setState({
       current: current === photos.length - 1 ? 0 : current + 1,
+    });
+  };
+
+  const goToSlide = (index: number) => {
+    useGalleryModalStore.setState({
+      current: index,
     });
   };
 
@@ -198,6 +213,11 @@ export const GalleryModal = () => {
             ) : (
               <>
                 <div className="gallery-container">
+                  {imageLoading && (
+                    <div className="gallery-loader">
+                      <Loader size="large" text="Cargando imagen..." />
+                    </div>
+                  )}
                   <button className="gallery-arrow left" onClick={goPrev}>
                     <ChevronLeft size={32} />
                   </button>
@@ -206,16 +226,39 @@ export const GalleryModal = () => {
                     src={photos[current]?.url}
                     className="gallery-main-image"
                     alt="pet"
+                    width="560"
+                    height="460"
+                    onLoad={() => setImageLoading(false)}
+                    onError={() => setImageLoading(false)}
+                    style={{ display: imageLoading ? 'none' : 'block' }}
                   />
 
                   <button className="gallery-arrow right" onClick={goNext}>
                     <ChevronRight size={32} />
                   </button>
+
+                  {/* Indicadores de posición */}
+                  {!imageLoading && (
+                    <div className="gallery-indicators">
+                      {photos.map((_, index) => (
+                        <button
+                          key={index}
+                          className={`gallery-indicator ${
+                            index === current ? 'active' : ''
+                          }`}
+                          onClick={() => goToSlide(index)}
+                          aria-label={`Ir a foto ${index + 1}`}
+                        />
+                      ))}
+                    </div>
+                  )}
                 </div>
 
-                <button className="delete-btn" onClick={handleDelete}>
-                  Eliminar foto
-                </button>
+                <div className="button-delete-container">
+                  <Button variant="danger" onClick={handleDelete}>
+                    Eliminar foto
+                  </Button>
+                </div>
               </>
             )}
           </>

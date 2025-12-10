@@ -49,7 +49,7 @@
   text-align: center;
   font-size: 1.8rem;
   font-weight: 600;
-  color: var(--color-text)
+  color: var(--color-text);
 }
 
 /* INPUT WRAPPER */
@@ -105,6 +105,15 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  min-height: 460px;
+}
+
+.gallery-loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
 }
 
 .gallery-main-image {
@@ -144,22 +153,40 @@
   right: -20px;
 }
 
-/* DELETE BUTTON */
-.delete-btn {
-  margin-top: 1.5rem;
-  background: var(--color-error-text);
-  border: none;
-  color: #fff;
-  padding: 0.7rem 1.4rem;
-  width: 100%;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: 0.2s ease;
+/* Indicadores de posición */
+.gallery-indicators {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 10;
 }
 
-.delete-btn:hover {
-  background: #dc2626;
+.gallery-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.8);
+    transform: scale(1.2);
+  }
+
+  &.active {
+    background: rgba(255, 255, 255, 1);
+    width: 24px;
+    border-radius: 4px;
+  }
+}
+.button-delete-container {
+  margin: 0 auto;
 }
 
 @keyframes fadeIn {

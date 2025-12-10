@@ -2,6 +2,7 @@ import './ProfilePet.scss';
 import type { Pet } from '../../../../models/pet.model';
 import { useRef, useState } from 'react';
 import { FaEdit, FaSpinner } from 'react-icons/fa';
+import { Upload, Images } from 'lucide-react';
 import { usePetStore } from '../../../../store/pet.store';
 import { usePetHealthStatus } from '../../../../hooks/usePetHealthStatus';
 import type { HealthStatusData } from '../../../../utils/healthStatus';
@@ -113,13 +114,19 @@ export const ProfilePet = ({
           aria-label="Seleccionar foto de perfil"
         />
       </div>
-      <div className="dashboard-pet-card__actions">
-        <Button variant="secondary" onClick={() => openUpload(pet.id)}>
-          Subir imágenes
+      <div className="profile-pet-card__actions">
+        <Button
+          variant="outline"
+          // className="profile-action-btn profile-action-btn--upload"
+          onClick={() => openUpload(pet.id)}
+        >
+          <Upload size={18} style={{ marginRight: '1rem' }} />
+          <span>Subir imágenes</span>
         </Button>
 
         <Button
-          variant="secondary"
+          // className="profile-action-btn profile-action-btn--gallery"
+          variant="outline"
           onClick={async () => {
             const photos = await getPetPhotos(pet.id);
             if (!photos || photos.length === 0) {
@@ -129,7 +136,8 @@ export const ProfilePet = ({
             openView(pet.id, photos);
           }}
         >
-          Ver galería
+          <Images size={18} style={{ marginRight: '1rem' }} />
+          <span>Ver galería</span>
         </Button>
       </div>
       <div className="profile-info">
