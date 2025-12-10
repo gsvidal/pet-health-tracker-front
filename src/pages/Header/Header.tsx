@@ -7,6 +7,7 @@ import { PRIVATE_ROUTES, PUBLIC_ROUTES } from '../../config/routes';
 import { ThemeToggle } from '../../components/ThemeToggle/ThemeToggle';
 import './Header.scss';
 import { IoMdReturnLeft } from 'react-icons/io';
+import { NotificationDropdown } from './NotificationDropdown';
 
 export const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -84,7 +85,22 @@ export const Header = () => {
           <ThemeToggle onToggle={() => setMenuOpen(false)} />
           <div className="btn-wrapper">
             {pathname === PRIVATE_ROUTES.DASHBOARD ||
-            (pathname === PUBLIC_ROUTES.HOME && isAuthenticated) ? (
+            pathname === PRIVATE_ROUTES.NOTIFICATIONS ? (
+              <>
+                <NotificationDropdown />
+                <Button
+                  size="lg"
+                  variant="primary"
+                  onClick={() => {
+                    setMenuOpen(false);
+                    navigate(PUBLIC_ROUTES.HOME);
+                    logout();
+                  }}
+                >
+                  Logout
+                </Button>
+              </>
+            ) : (pathname === PUBLIC_ROUTES.HOME && isAuthenticated) ? (
               <Button
                 size="lg"
                 variant="primary"

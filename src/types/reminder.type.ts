@@ -48,3 +48,21 @@ export interface UpdateReminderRequest {
   petId?: string | null; // opcional
 }
 
+// ---------- Respuesta de la API ----------
+export interface ReminderResponse {
+  id: string;
+  owner_id: string;
+  pet_id: string;
+  title: string;
+  description: string;
+  event_time: string;
+  timezone: string;
+  frequency: ReminderFrequency;
+  rrule: string;
+  is_active: boolean;
+  notify_by_email: boolean;
+  notify_in_app: boolean;
+  created_at: string;
+  updated_at: string;
+}
+

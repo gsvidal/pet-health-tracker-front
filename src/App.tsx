@@ -23,6 +23,8 @@ import { ActivityLogs } from './features/audit-logs/pages/ActivityLogs/ActivityL
 import { useThemeStore } from './store/theme.store';
 import { CheckEmailPage } from './features/dashboard/pages/CheckEmail/CheckEmailPage';
 import { RegisterSuccessPage } from './features/dashboard/pages/RegisterSuccess/RegisterSuccessPage';
+import { NotificationsView } from './features/dashboard/pages/Notifications/NotificationsView';
+import { CalendarView } from './features/dashboard/pages/Calendar/CalendarView';
 
 function App() {
   const { theme } = useThemeStore();
@@ -102,6 +104,22 @@ function App() {
               path={PRIVATE_ROUTES.ACTIVITY_LOGS}
               element={<ActivityLogs />}
             />
+            <Route
+              path={PRIVATE_ROUTES.NOTIFICATIONS}
+              element={<NotificationsView />}
+            />
+            <Route
+              path={PRIVATE_ROUTES.CALENDAR}
+              element={<CalendarView />}
+            />
+          </Route>
+          <Route element={<PrivateGuard />}>
+            <Route element={<FullLayout />}>
+              <Route
+                path={PRIVATE_ROUTES.PET_DETAIL}
+                element={<DetailsPage />}
+              />
+            </Route>
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
