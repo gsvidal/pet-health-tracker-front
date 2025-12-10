@@ -5,6 +5,7 @@ import { Button } from '../../../../components/Button/Button';
 import { useNavigate } from 'react-router-dom';
 import { useGalleryModalStore } from '../../../../store/gallery.store';
 import { getPetPhotos } from '../../../../services/pet.service';
+import toast from 'react-hot-toast';
 
 interface DashboardPetCardProps {
   pet: Pet;
@@ -138,6 +139,10 @@ export const DashboardPetCard = ({
           variant="secondary"
           onClick={async () => {
             const photos = await getPetPhotos(pet.id);
+            if (!photos || photos.length === 0) {
+              toast.error('No hay fotos en la galería 📁');
+              return;
+            }
             openView(pet.id, photos);
           }}
         >
