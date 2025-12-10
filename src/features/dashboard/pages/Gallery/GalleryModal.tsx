@@ -1,11 +1,14 @@
 import './GalleryModal.scss';
 import { useGalleryModalStore } from '../../../../store/gallery.store';
-import { uploadPetImages } from '../../../../services/pet.service';
+import {
+  uploadPetGalleryPhotos,
+  deletePetPhoto,
+} from '../../../../services/pet.service';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
 
 export const GalleryModal = () => {
-  const { isOpen, close, mode, images, current, petId } =
+  const { isOpen, close, mode, photos, current, petId } =
     useGalleryModalStore();
 
   const [files, setFiles] = useState<File[]>([]);
@@ -16,8 +19,28 @@ export const GalleryModal = () => {
   const handleUpload = async () => {
     if (!petId) return;
     setLoading(true);
-    await uploadPetImages(petId, files);
+
+    await uploadPetGalleryPhotos(petId, files);
+
     setLoading(false);
+    close();
+  };
+
+  const goPrev = () => {
+    useGalleryModalStore.setState({
+      current: current === 0 ? photos.length - 1 : current - 1,
+    });
+  };
+
+  const goNext = () => {
+    useGalleryModalStore.setState({
+      current: current === photos.length - 1 ? 0 : current + 1,
+    });
+  };
+
+  const handleDelete = async () => {
+    if (!petId) return;
+    await deletePetPhoto(petId, photos[current].photo_id);
     close();
   };
 
@@ -52,31 +75,27 @@ export const GalleryModal = () => {
 
         {/* VIEW MODE */}
         {mode === 'view' && (
-          <div className="gallery-container">
-            <button
-              className="gallery-arrow left"
-              onClick={() =>
-                useGalleryModalStore.setState({
-                  current: current === 0 ? images.length - 1 : current - 1,
-                })
-              }
-            >
-              <ChevronLeft size={32} />
-            </button>
+          <>
+            <div className="gallery-container">
+              <button className="gallery-arrow left" onClick={goPrev}>
+                <ChevronLeft size={32} />
+              </button>
 
-            <img src={images[current]} className="gallery-main-image" />
+              <img
+                src={photos[current].url}
+                className="gallery-main-image"
+                alt="pet"
+              />
 
-            <button
-              className="gallery-arrow right"
-              onClick={() =>
-                useGalleryModalStore.setState({
-                  current: current === images.length - 1 ? 0 : current + 1,
-                })
-              }
-            >
-              <ChevronRight size={32} />
+              <button className="gallery-arrow right" onClick={goNext}>
+                <ChevronRight size={32} />
+              </button>
+            </div>
+
+            <button className="delete-btn" onClick={handleDelete}>
+              Eliminar foto
             </button>
-          </div>
+          </>
         )}
       </div>
     </div>

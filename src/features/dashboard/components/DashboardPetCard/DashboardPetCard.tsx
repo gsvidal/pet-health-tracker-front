@@ -4,7 +4,7 @@ import type { Pet } from '../../../../models/pet.model';
 import { Button } from '../../../../components/Button/Button';
 import { useNavigate } from 'react-router-dom';
 import { useGalleryModalStore } from '../../../../store/gallery.store';
-import { getPetGallery } from '../../../../services/pet.service';
+import { getPetPhotos } from '../../../../services/pet.service';
 
 interface DashboardPetCardProps {
   pet: Pet;
@@ -137,8 +137,8 @@ export const DashboardPetCard = ({
         <Button
           variant="secondary"
           onClick={async () => {
-            const images = await getPetGallery(pet.id);
-            openView(pet.id, images);
+            const photos = await getPetPhotos(pet.id);
+            openView(pet.id, photos);
           }}
         >
           Ver galería

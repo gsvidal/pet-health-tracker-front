@@ -36,7 +36,7 @@ export const createPet = async (petData: PetFormData): Promise<PetResponse> => {
 
 export const deletePet = async (id: string): Promise<void> => {
   await apiClient.delete(`${PETS_ENDPOINT}/${id}`);
-}
+};
 
 //  Actualiza una mascota por ID
 export const updatePetService = async (id: string, petData: PetFormData) => {
@@ -47,27 +47,67 @@ export const updatePetService = async (id: string, petData: PetFormData) => {
 };
 
 /**
- * Subir imagenes de mascota por ID
+ * SUBIR FOTO DE PERFIL
  */
-export const uploadPetImages = async (petId: string, files: File[]) => {
+export const uploadPetProfilePhoto = async (petId: string, file: File) => {
   const formData = new FormData();
-  files.forEach((file) => formData.append('images', file));
+  formData.append('file', file);
+
   const response = await apiClient.post(
-    `${PETS_ENDPOINT}/${petId}/gallery`,
+    `${PETS_ENDPOINT}/${petId}/profile`,
     formData,
     {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
+      headers: { 'Content-Type': 'multipart/form-data' },
     },
   );
+
   return response.data;
 };
 
 /**
- * Obtener galeria mascota por ID
+ * SUBIR FOTOS DE GALERÍA (hasta 5)
  */
-export const getPetGallery = async (petId: string): Promise<string[]> => {
-  const response = await apiClient.get(`${PETS_ENDPOINT}/${petId}/gallery`);
-  return response.data.images || [];
+export const uploadPetGalleryPhotos = async (petId: string, files: File[]) => {
+  const formData = new FormData();
+  files.forEach((file) => formData.append('files', file));
+
+  const response = await apiClient.post(
+    `${PETS_ENDPOINT}/${petId}/gallery`,
+    formData,
+    {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    },
+  );
+
+  return response.data;
+};
+
+/**
+ * OBTENER TODAS LAS FOTOS DE UNA MASCOTA
+ */
+export const getPetPhotos = async (
+  petId: string,
+): Promise<
+  Array<{
+    photo_id: string;
+    type: 'profile' | 'gallery';
+    url: string;
+  }>
+> => {
+  const response = await apiClient.get(`${PETS_ENDPOINT}/${petId}`);
+  return response.data;
+};
+
+/**
+ * ELIMINAR UNA FOTO
+ */
+export const deletePetPhoto = async (petId: string, photoId: string) => {
+  await apiClient.delete(`${PETS_ENDPOINT}/${petId}/photos/${photoId}`);
+};
+
+/**
+ * ELIMINAR TODAS LAS FOTOS
+ */
+export const deleteAllPetPhotos = async (petId: string) => {
+  await apiClient.delete(`${PETS_ENDPOINT}/${petId}/photos`);
 };
