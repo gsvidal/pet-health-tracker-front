@@ -17,6 +17,8 @@ import { VerifyEmailPage } from './features/dashboard/pages/VerifyEmail/VerifyEm
 import { CreatePetForm } from './features/dashboard/pages/PetForm/PetFormPage';
 import { DetailsPage } from './features/dashboard/pages/Details/DetailsPage';
 import ResetPasswordPage from './features/dashboard/pages/Reset/ResetPage';
+import { NotificationsView } from './features/dashboard/pages/Notifications/NotificationsView';
+import { CalendarView } from './features/dashboard/pages/Calendar/CalendarView';
 
 function App() {
   const {
@@ -59,6 +61,14 @@ function App() {
             <Route
               path={PRIVATE_ROUTES.CREATE_PET}
               element={<CreatePetForm />}
+            />
+            <Route
+              path={PRIVATE_ROUTES.NOTIFICATIONS}
+              element={<NotificationsView />}
+            />
+            <Route
+              path={PRIVATE_ROUTES.CALENDAR}
+              element={<CalendarView />}
             />
           </Route>
           <Route element={<PrivateGuard />}>

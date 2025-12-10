@@ -1,0 +1,67 @@
+.quick-access {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin: 2rem 0;
+
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+    }
+
+    &__card {
+        background: linear-gradient(90deg, #fff1f2 0%, #fdf4ff 100%);
+        border: 1px solid #fce7f3;
+        border-radius: 16px;
+        padding: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1.25rem;
+        cursor: pointer;
+        transition: all 0.2s;
+
+        &:hover {
+            border-color: #f472b6;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(236, 72, 153, 0.1);
+        }
+
+        &-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+            &--calendar {
+                background: linear-gradient(135deg, #ec4899 0%, #a855f7 100%);
+                color: white;
+            }
+
+            &--notifications {
+                background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
+                color: white;
+            }
+        }
+
+        &-content {
+            flex: 1;
+
+            h3 {
+                font-size: 1.1rem;
+                font-weight: 600;
+                color: #374151;
+                margin: 0 0 0.25rem 0;
+            }
+
+            p {
+                font-size: 0.9rem;
+                color: #6b7280;
+                margin: 0;
+                line-height: 1.4;
+            }
+        }
+    }
+}

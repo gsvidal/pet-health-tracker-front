@@ -34,11 +34,9 @@
       align-items: center;
       justify-content: center;
       border-radius: 50%;
-      background: linear-gradient(
-        to bottom right,
-        var(--color-gradient-start),
-        var(--color-gradient-end)
-      );
+      background: linear-gradient(to bottom right,
+          var(--color-gradient-start),
+          var(--color-gradient-end));
     }
 
     .logo-text {
@@ -101,17 +99,19 @@
         color: var(--color-text);
       }
     }
+
     .link--dashboard {
       color: var(--color-primary);
+
       &:hover {
         color: var(--color-primary-hover);
       }
     }
 
     .btn-wrapper {
-      // display: flex;
-      // align-items: center;
-      // gap: var(--space-md);
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
       margin-left: var(--space-sm);
     }
   }
