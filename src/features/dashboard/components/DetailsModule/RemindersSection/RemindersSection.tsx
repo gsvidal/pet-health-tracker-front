@@ -38,6 +38,7 @@ export const RemindersSection: React.FC<RemindersSectionProps> = ({
     reminders,
     loading: crudLoading,
     error: crudError,
+    isCreating,
     createReminder,
     updateReminder,
     deleteReminder,
@@ -55,6 +56,7 @@ export const RemindersSection: React.FC<RemindersSectionProps> = ({
     isValid,
     onSubmit,
     handleCancel,
+    isSubmitting,
     // watch,
     // setValue,
   } = useReminderForm({
@@ -335,10 +337,14 @@ export const RemindersSection: React.FC<RemindersSectionProps> = ({
               <div className="reminders-section__form-actions">
                 <Button
                   type="submit"
-                  disabled={loading || !isValid}
+                  disabled={loading || !isValid || isSubmitting || isCreating}
                   variant="primary"
                 >
-                  {editingReminder ? 'Actualizar' : 'Guardar'}
+                  {isSubmitting
+                    ? 'Guardando...'
+                    : editingReminder
+                      ? 'Actualizar'
+                      : 'Guardar'}
                 </Button>
                 <Button
                   type="button"

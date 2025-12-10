@@ -16,9 +16,9 @@ export const NotificationDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
-  const { notifications, getUnreadCount, fetchNotifications } = useNotificationStore();
+  const { notifications, fetchNotifications } = useNotificationStore();
 
-  const unreadCount = getUnreadCount();
+  // const unreadCount = getUnreadCount();
   const recentNotifications = notifications.slice(0, 3);
 
   // Fetch notifications on mount
@@ -58,14 +58,14 @@ export const NotificationDropdown = () => {
         aria-label="Notificaciones"
       >
         <Bell size={24} />
-        {unreadCount > 0 && <span className="notification-dropdown__badge" />}
+        {/* {unreadCount > 0 && <span className="notification-dropdown__badge" />} */}
       </button>
 
       {isOpen && (
         <div className="notification-dropdown__menu">
           <div className="notification-dropdown__menu-header">
             <h3>Notificaciones</h3>
-            <span>{unreadCount} nuevas</span>
+            {/* <span>{unreadCount} nuevas</span> */}
           </div>
 
           <div className="notification-dropdown__menu-body">
@@ -86,9 +86,9 @@ export const NotificationDropdown = () => {
                     <div className="notification-dropdown__item-content">
                       <h4>
                         {notification.title}
-                        {!notification.isRead && (
+                        {/* {!notification.isRead && (
                           <span className="notification-dropdown__item-dot" />
-                        )}
+                        )} */}
                       </h4>
                       <p>{notification.description}</p>
                       <span>

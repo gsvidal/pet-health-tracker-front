@@ -14,12 +14,16 @@ interface ReminderState {
   selectedReminder: Reminder | null;
   loading: boolean;
   error: string | null;
+  isCreating: boolean; // Prevenir múltiples creaciones simultáneas
 
   // CREATE
   createReminder: (data: ReminderFormRequest) => Promise<void>;
 
   // READ
-  fetchReminders: (petId?: string | null, isActive?: boolean | null) => Promise<void>;
+  fetchReminders: (
+    petId?: string | null,
+    isActive?: boolean | null,
+  ) => Promise<void>;
   fetchReminderById: (id: string) => Promise<void>;
 
   // UPDATE
@@ -39,32 +43,62 @@ export const useReminderStore = create<ReminderState>((set, get) => ({
   selectedReminder: null,
   loading: false,
   error: null,
+  isCreating: false,
 
   // CREATE
   createReminder: async (data: ReminderFormRequest) => {
-    set({ loading: true, error: null });
-
-    const { data: response, error } = await callApi(() =>
-      reminderService.createReminder(data),
-    );
-
-    if (error || !response) {
-      const message = error || 'Error al crear el recordatorio';
-      toast.error(message);
-      set({ loading: false, error: message });
-      throw new Error(message);
+    // Prevenir múltiples llamadas simultáneas
+    if (get().isCreating) {
+      console.warn('Ya hay una creación de recordatorio en proceso');
+      return;
     }
 
-    const newReminder = adaptReminderResponseToReminder(response);
+    set({ loading: true, error: null, isCreating: true });
 
-    // Agregar el nuevo recordatorio al estado
-    set((state) => ({
-      reminders: [...state.reminders, newReminder],
-      loading: false,
-      error: null,
-    }));
+    try {
+      const { data: response, error } = await callApi(() =>
+        reminderService.createReminder(data),
+      );
 
-    toast.success('Recordatorio creado correctamente ✔️');
+      if (error || !response) {
+        const message = error || 'Error al crear el recordatorio';
+        toast.error(message);
+        set({ loading: false, error: message, isCreating: false });
+        throw new Error(message);
+      }
+
+      const newReminder = adaptReminderResponseToReminder(response);
+
+      // Verificar si ya existe un recordatorio con el mismo título y fecha
+      const existingReminder = get().reminders.find(
+        (r) =>
+          r.title === newReminder.title &&
+          r.eventTime === newReminder.eventTime &&
+          r.petId === newReminder.petId,
+      );
+
+      if (existingReminder) {
+        console.warn(
+          'Recordatorio duplicado detectado, no se agregará al estado',
+        );
+        set({ loading: false, error: null, isCreating: false });
+        toast.success('Recordatorio creado correctamente ✔️');
+        return;
+      }
+
+      // Agregar el nuevo recordatorio al estado
+      set((state) => ({
+        reminders: [...state.reminders, newReminder],
+        loading: false,
+        error: null,
+        isCreating: false,
+      }));
+
+      toast.success('Recordatorio creado correctamente ✔️');
+    } catch (err) {
+      set({ loading: false, isCreating: false });
+      throw err;
+    }
   },
 
   // READ
@@ -182,4 +216,3 @@ export const useReminderStore = create<ReminderState>((set, get) => ({
     return get().reminders.find((r) => r.id === id);
   },
 }));
-

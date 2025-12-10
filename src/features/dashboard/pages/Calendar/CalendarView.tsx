@@ -1,14 +1,38 @@
 import { useState, useEffect } from 'react';
-import { ArrowLeft, ChevronLeft, ChevronRight, Calendar as CalendarIcon, Filter, Syringe, Pill, Stethoscope, Utensils } from 'lucide-react';
+import {
+  ArrowLeft,
+  ChevronLeft,
+  ChevronRight,
+  Calendar as CalendarIcon,
+  Filter,
+  Syringe,
+  Pill,
+  Stethoscope,
+  Utensils,
+} from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { useCalendarStore, type EventType } from '../../../../store/calendar.store';
+import {
+  useCalendarStore,
+  type EventType,
+} from '../../../../store/calendar.store';
+import { usePetStore } from '../../../../store/pet.store';
 import { PRIVATE_ROUTES } from '../../../../config/routes';
 import './CalendarView.scss';
 
 const DAYS_OF_WEEK = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
 const MONTHS = [
-  'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-  'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+  'Enero',
+  'Febrero',
+  'Marzo',
+  'Abril',
+  'Mayo',
+  'Junio',
+  'Julio',
+  'Agosto',
+  'Septiembre',
+  'Octubre',
+  'Noviembre',
+  'Diciembre',
 ];
 
 const eventIcons: Record<EventType, any> = {
@@ -28,15 +52,23 @@ const eventLabels: Record<EventType, string> = {
 export const CalendarView = () => {
   const navigate = useNavigate();
   const { events, fetchEvents } = useCalendarStore();
+  const { pets, fetchPets } = usePetStore();
   const [currentDate, setCurrentDate] = useState(new Date(2025, 11, 1)); // Diciembre 2025
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [filterType, setFilterType] = useState<string>('all');
   const [filterPet, setFilterPet] = useState<string>('all');
 
-  // Fetch events from API on mount
+  // Fetch events and pets from API on mount
   useEffect(() => {
     fetchEvents();
-  }, [fetchEvents]);
+    fetchPets();
+  }, [fetchEvents, fetchPets]);
+
+  // Crear un mapa de nombre -> id para el filtrado
+  const petNameToIdMap = new Map<string, string>();
+  pets.forEach((pet) => {
+    petNameToIdMap.set(pet.name, pet.id);
+  });
 
   const getDaysInMonth = (date: Date) => {
     const year = date.getFullYear();
@@ -57,22 +89,42 @@ export const CalendarView = () => {
         event.date.getFullYear() === date.getFullYear();
 
       const typeMatch = filterType === 'all' || event.type === filterType;
-      const petMatch = filterPet === 'all' || event.petName === filterPet;
+
+      // Filtrar por petId en lugar de petName para mayor precisión
+      let petMatch = true;
+      if (filterPet !== 'all') {
+        const selectedPetId = petNameToIdMap.get(filterPet);
+        // Si el evento tiene petId, comparar por ID; si no, comparar por nombre
+        if (event.petId) {
+          petMatch = event.petId === selectedPetId;
+        } else {
+          // Para eventos sin petId, comparar por nombre
+          petMatch = event.petName === filterPet;
+        }
+      }
 
       return sameDate && typeMatch && petMatch;
     });
   };
 
   const handlePreviousMonth = () => {
-    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
+    setCurrentDate(
+      new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1),
+    );
   };
 
   const handleNextMonth = () => {
-    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
+    setCurrentDate(
+      new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1),
+    );
   };
 
   const handleDateClick = (day: number) => {
-    const clickedDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
+    const clickedDate = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      day,
+    );
     setSelectedDate(clickedDate);
   };
 
@@ -81,7 +133,8 @@ export const CalendarView = () => {
   const emptyDays = Array.from({ length: startingDayOfWeek }, (_, i) => i);
 
   const selectedDateEvents = selectedDate ? getEventsForDate(selectedDate) : [];
-  const uniquePets = Array.from(new Set(events.map((e) => e.petName)));
+  // Usar todas las mascotas del usuario, no solo las que tienen eventos
+  const availablePets = pets.map((pet) => pet.name).sort();
 
   return (
     <div className="calendar-view">
@@ -118,7 +171,10 @@ export const CalendarView = () => {
               <Filter size={16} />
               Filtrar por tipo de evento
             </label>
-            <select value={filterType} onChange={(e) => setFilterType(e.target.value)}>
+            <select
+              value={filterType}
+              onChange={(e) => setFilterType(e.target.value)}
+            >
               <option value="all">Todos los eventos</option>
               <option value="vaccine">Vacunaciones</option>
               <option value="deworming">Desparasitación</option>
@@ -132,11 +188,14 @@ export const CalendarView = () => {
               <Filter size={16} />
               Filtrar por mascota
             </label>
-            <select value={filterPet} onChange={(e) => setFilterPet(e.target.value)}>
+            <select
+              value={filterPet}
+              onChange={(e) => setFilterPet(e.target.value)}
+            >
               <option value="all">Todas las mascotas</option>
-              {uniquePets.map((pet) => (
-                <option key={pet} value={pet}>
-                  {pet}
+              {availablePets.map((petName) => (
+                <option key={petName} value={petName}>
+                  {petName}
                 </option>
               ))}
             </select>
@@ -171,7 +230,11 @@ export const CalendarView = () => {
                 <div key={`empty-${i}`} />
               ))}
               {calendarDays.map((day) => {
-                const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
+                const date = new Date(
+                  currentDate.getFullYear(),
+                  currentDate.getMonth(),
+                  day,
+                );
                 const dayEvents = getEventsForDate(date);
                 const isSelected =
                   selectedDate?.getDate() === day &&
@@ -189,8 +252,8 @@ export const CalendarView = () => {
                       isSelected
                         ? 'calendar-view__day--selected'
                         : isToday
-                        ? 'calendar-view__day--today'
-                        : ''
+                          ? 'calendar-view__day--today'
+                          : ''
                     }`}
                   >
                     <div className="calendar-view__day-number">{day}</div>
@@ -202,7 +265,9 @@ export const CalendarView = () => {
                         />
                       ))}
                       {dayEvents.length > 3 && (
-                        <span style={{ fontSize: '0.625rem', color: '#6b7280' }}>
+                        <span
+                          style={{ fontSize: '0.625rem', color: '#6b7280' }}
+                        >
                           +{dayEvents.length - 3}
                         </span>
                       )}
@@ -234,10 +299,14 @@ export const CalendarView = () => {
                       <div className="calendar-view__event-card-header">
                         <Icon size={16} />
                         <div style={{ flex: 1 }}>
-                          <h4 className="calendar-view__event-card-title">{event.title}</h4>
+                          <h4 className="calendar-view__event-card-title">
+                            {event.title}
+                          </h4>
                         </div>
                       </div>
-                      <p className="calendar-view__event-card-description">{event.description}</p>
+                      <p className="calendar-view__event-card-description">
+                        {event.description}
+                      </p>
                       <div className="calendar-view__event-card-footer">
                         <span>{event.petName}</span>
                         {event.time && <span>{event.time}</span>}

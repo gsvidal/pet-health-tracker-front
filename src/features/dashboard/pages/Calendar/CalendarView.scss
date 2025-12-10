@@ -163,8 +163,8 @@
         }
 
         &--today {
-            border-color: var(--color-gradient-start);
-            background-color: #fce7f3;
+            border-color: var(--color-text-secondary);
+            // background-color: var(--color-border);
         }
 
         &-number {
@@ -231,7 +231,7 @@
     }
 
     &__event-card {
-        padding: 0.5rem;
+        padding: 1rem;
         border-radius: 8px;
         border: 1px solid;
 
