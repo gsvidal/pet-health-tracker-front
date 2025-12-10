@@ -57,7 +57,7 @@ export const NotificationDropdown = () => {
         onClick={() => setIsOpen(!isOpen)}
         aria-label="Notificaciones"
       >
-        <Bell size={24} />
+        <Bell size={20} />
         {/* {unreadCount > 0 && <span className="notification-dropdown__badge" />} */}
       </button>
 

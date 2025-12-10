@@ -137,212 +137,188 @@ export const CalendarView = () => {
   const availablePets = pets.map((pet) => pet.name).sort();
 
   return (
-    <div className="calendar-view">
-      {/* Header */}
-      <header className="calendar-view__header">
-        <div className="calendar-view__header-content">
-          <button
-            onClick={() => navigate(PRIVATE_ROUTES.DASHBOARD)}
-            style={{
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              padding: '0.5rem',
-              display: 'flex',
-              alignItems: 'center',
-              color: '#64748b',
-            }}
-          >
-            <ArrowLeft size={24} />
-          </button>
-          <div>
-            <h1>Calendario de Eventos</h1>
-            <p>Eventos de salud y nutrición próximos</p>
-          </div>
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="calendar-view__main">
-        {/* Filtros */}
-        <div className="calendar-view__filters">
-          <div className="calendar-view__filter-group">
-            <label>
-              <Filter size={16} />
-              Filtrar por tipo de evento
-            </label>
-            <select
-              value={filterType}
-              onChange={(e) => setFilterType(e.target.value)}
-            >
-              <option value="all">Todos los eventos</option>
-              <option value="vaccine">Vacunaciones</option>
-              <option value="deworming">Desparasitación</option>
-              <option value="vet_visit">Visitas Veterinarias</option>
-              <option value="nutrition">Nutrición</option>
-            </select>
-          </div>
-
-          <div className="calendar-view__filter-group">
-            <label>
-              <Filter size={16} />
-              Filtrar por mascota
-            </label>
-            <select
-              value={filterPet}
-              onChange={(e) => setFilterPet(e.target.value)}
-            >
-              <option value="all">Todas las mascotas</option>
-              {availablePets.map((petName) => (
-                <option key={petName} value={petName}>
-                  {petName}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        <div className="calendar-view__grid">
-          {/* Calendario */}
-          <div className="calendar-view__calendar-card">
-            <div className="calendar-view__calendar-header">
-              <button onClick={handlePreviousMonth}>
-                <ChevronLeft size={20} />
-              </button>
-              <h2>
-                {MONTHS[currentDate.getMonth()]} {currentDate.getFullYear()}
-              </h2>
-              <button onClick={handleNextMonth}>
-                <ChevronRight size={20} />
-              </button>
+    <section className="section section--calendar">
+      <div className="container container--calendar">
+        <div className="calendar-view">
+          <h1>Calendario de eventos</h1>
+          {/* Filtros */}
+          <div className="calendar-view__filters">
+            <div className="calendar-view__filter-group">
+              <label>
+                <Filter size={16} />
+                Filtrar por tipo de evento
+              </label>
+              <select
+                value={filterType}
+                onChange={(e) => setFilterType(e.target.value)}
+              >
+                <option value="all">Todos los eventos</option>
+                <option value="vaccine">Vacunaciones</option>
+                <option value="deworming">Desparasitación</option>
+                <option value="vet_visit">Visitas Veterinarias</option>
+                <option value="nutrition">Nutrición</option>
+              </select>
             </div>
 
-            {/* Días de la semana */}
-            <div className="calendar-view__weekdays">
-              {DAYS_OF_WEEK.map((day) => (
-                <span key={day}>{day}</span>
-              ))}
-            </div>
-
-            {/* Días del mes */}
-            <div className="calendar-view__days">
-              {emptyDays.map((i) => (
-                <div key={`empty-${i}`} />
-              ))}
-              {calendarDays.map((day) => {
-                const date = new Date(
-                  currentDate.getFullYear(),
-                  currentDate.getMonth(),
-                  day,
-                );
-                const dayEvents = getEventsForDate(date);
-                const isSelected =
-                  selectedDate?.getDate() === day &&
-                  selectedDate?.getMonth() === currentDate.getMonth();
-                const isToday =
-                  new Date().getDate() === day &&
-                  new Date().getMonth() === currentDate.getMonth() &&
-                  new Date().getFullYear() === currentDate.getFullYear();
-
-                return (
-                  <button
-                    key={day}
-                    onClick={() => handleDateClick(day)}
-                    className={`calendar-view__day ${
-                      isSelected
-                        ? 'calendar-view__day--selected'
-                        : isToday
-                          ? 'calendar-view__day--today'
-                          : ''
-                    }`}
-                  >
-                    <div className="calendar-view__day-number">{day}</div>
-                    <div className="calendar-view__day-dots">
-                      {dayEvents.slice(0, 3).map((event) => (
-                        <div
-                          key={event.id}
-                          className={`calendar-view__day-dot calendar-view__day-dot--${event.type}`}
-                        />
-                      ))}
-                      {dayEvents.length > 3 && (
-                        <span
-                          style={{ fontSize: '0.625rem', color: '#6b7280' }}
-                        >
-                          +{dayEvents.length - 3}
-                        </span>
-                      )}
-                    </div>
-                  </button>
-                );
-              })}
+            <div className="calendar-view__filter-group">
+              <label>
+                <Filter size={16} />
+                Filtrar por mascota
+              </label>
+              <select
+                value={filterPet}
+                onChange={(e) => setFilterPet(e.target.value)}
+              >
+                <option value="all">Todas las mascotas</option>
+                {availablePets.map((petName) => (
+                  <option key={petName} value={petName}>
+                    {petName}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
 
-          {/* Panel de eventos del día seleccionado */}
-          <div className="calendar-view__events-panel">
-            <h3>
-              <CalendarIcon size={20} />
-              {selectedDate
-                ? `${selectedDate.getDate()} de ${MONTHS[selectedDate.getMonth()]}`
-                : 'Selecciona un día'}
-            </h3>
+          <div className="calendar-view__grid">
+            {/* Calendario */}
+            <div className="calendar-view__calendar-card">
+              <div className="calendar-view__calendar-header">
+                <button onClick={handlePreviousMonth}>
+                  <ChevronLeft size={20} />
+                </button>
+                <h2>
+                  {MONTHS[currentDate.getMonth()]} {currentDate.getFullYear()}
+                </h2>
+                <button onClick={handleNextMonth}>
+                  <ChevronRight size={20} />
+                </button>
+              </div>
 
-            {selectedDateEvents.length > 0 ? (
-              <div className="calendar-view__events-list">
-                {selectedDateEvents.map((event) => {
-                  const Icon = eventIcons[event.type];
+              {/* Días de la semana */}
+              <div className="calendar-view__weekdays">
+                {DAYS_OF_WEEK.map((day) => (
+                  <span key={day}>{day}</span>
+                ))}
+              </div>
+
+              {/* Días del mes */}
+              <div className="calendar-view__days">
+                {emptyDays.map((i) => (
+                  <div key={`empty-${i}`} />
+                ))}
+                {calendarDays.map((day) => {
+                  const date = new Date(
+                    currentDate.getFullYear(),
+                    currentDate.getMonth(),
+                    day,
+                  );
+                  const dayEvents = getEventsForDate(date);
+                  const isSelected =
+                    selectedDate?.getDate() === day &&
+                    selectedDate?.getMonth() === currentDate.getMonth();
+                  const isToday =
+                    new Date().getDate() === day &&
+                    new Date().getMonth() === currentDate.getMonth() &&
+                    new Date().getFullYear() === currentDate.getFullYear();
+
                   return (
-                    <div
-                      key={event.id}
-                      className={`calendar-view__event-card calendar-view__event-card--${event.type}`}
+                    <button
+                      key={day}
+                      onClick={() => handleDateClick(day)}
+                      className={`calendar-view__day ${
+                        isSelected
+                          ? 'calendar-view__day--selected'
+                          : isToday
+                            ? 'calendar-view__day--today'
+                            : ''
+                      }`}
                     >
-                      <div className="calendar-view__event-card-header">
-                        <Icon size={16} />
-                        <div style={{ flex: 1 }}>
-                          <h4 className="calendar-view__event-card-title">
-                            {event.title}
-                          </h4>
-                        </div>
+                      <div className="calendar-view__day-number">{day}</div>
+                      <div className="calendar-view__day-dots">
+                        {dayEvents.slice(0, 3).map((event) => (
+                          <div
+                            key={event.id}
+                            className={`calendar-view__day-dot calendar-view__day-dot--${event.type}`}
+                          />
+                        ))}
+                        {dayEvents.length > 3 && (
+                          <span className="calendar-view__day-count">
+                            +{dayEvents.length - 3}
+                          </span>
+                        )}
                       </div>
-                      <p className="calendar-view__event-card-description">
-                        {event.description}
-                      </p>
-                      <div className="calendar-view__event-card-footer">
-                        <span>{event.petName}</span>
-                        {event.time && <span>{event.time}</span>}
-                      </div>
-                    </div>
+                    </button>
                   );
                 })}
               </div>
-            ) : (
-              <div className="calendar-view__empty-state">
-                <CalendarIcon />
-                <p>
-                  {selectedDate
-                    ? 'No hay eventos programados para este día'
-                    : 'Selecciona un día en el calendario para ver los eventos'}
-                </p>
-              </div>
-            )}
-          </div>
-        </div>
+            </div>
 
-        {/* Leyenda */}
-        <div className="calendar-view__legend">
-          <h3>Leyenda de Eventos</h3>
-          <div className="calendar-view__legend-grid">
-            {Object.entries(eventLabels).map(([type, label]) => (
-              <div key={type} className="calendar-view__legend-item">
-                <div
-                  className={`calendar-view__legend-item-dot calendar-view__legend-item-dot--${type}`}
-                />
-                <span>{label}</span>
-              </div>
-            ))}
+            {/* Panel de eventos del día seleccionado */}
+            <div className="calendar-view__events-panel">
+              <h3>
+                <CalendarIcon size={20} />
+                {selectedDate
+                  ? `${selectedDate.getDate()} de ${MONTHS[selectedDate.getMonth()]}`
+                  : 'Selecciona un día'}
+              </h3>
+
+              {selectedDateEvents.length > 0 ? (
+                <div className="calendar-view__events-list">
+                  {selectedDateEvents.map((event) => {
+                    const Icon = eventIcons[event.type];
+                    return (
+                      <div
+                        key={event.id}
+                        className={`calendar-view__event-card calendar-view__event-card--${event.type}`}
+                      >
+                        <div className="calendar-view__event-card-header">
+                          <Icon size={16} />
+                          <div style={{ flex: 1 }}>
+                            <h4 className="calendar-view__event-card-title">
+                              {event.title}
+                            </h4>
+                          </div>
+                        </div>
+                        <p className="calendar-view__event-card-description">
+                          {event.description}
+                        </p>
+                        <div className="calendar-view__event-card-footer">
+                          <span>{event.petName}</span>
+                          {event.time && <span>{event.time}</span>}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                <div className="calendar-view__empty-state">
+                  <CalendarIcon />
+                  <p>
+                    {selectedDate
+                      ? 'No hay eventos programados para este día'
+                      : 'Selecciona un día en el calendario para ver los eventos'}
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Leyenda */}
+          <div className="calendar-view__legend">
+            <h3>Leyenda de Eventos</h3>
+            <div className="calendar-view__legend-grid">
+              {Object.entries(eventLabels).map(([type, label]) => (
+                <div key={type} className="calendar-view__legend-item">
+                  <div
+                    className={`calendar-view__legend-item-dot calendar-view__legend-item-dot--${type}`}
+                  />
+                  <span>{label}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-      </main>
-    </div>
+      </div>
+    </section>
   );
 };

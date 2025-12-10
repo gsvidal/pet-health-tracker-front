@@ -18,10 +18,7 @@ import type {
 } from '../../../../utils/healthStatus';
 import type { PetHealthSummary } from '../../../../adapters/pet.adapter';
 import { QuickAccessCards } from '../../components/QuickAccessCards/QuickAccessCards';
-import {
-  useCalendarStore,
-  type CalendarEvent,
-} from '../../../../store/calendar.store';
+import { useCalendarStore } from '../../../../store/calendar.store';
 
 interface PetHealthData extends HealthStatusData {
   loading: boolean;
@@ -32,8 +29,8 @@ export const Dashboard = () => {
   const { user, getUserData } = useAuthStore();
   const { pets, loading, fetchPets, deletePet, getPetHealthStatus } =
     usePetStore();
-  // Fetch events from calendar store to display counts
-  const { events, fetchEvents } = useCalendarStore();
+  // Fetch events from calendar store (for QuickAccessCards or other components)
+  const { fetchEvents } = useCalendarStore();
 
   const [openPetForm, setOpenPetForm] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -180,96 +177,96 @@ export const Dashboard = () => {
     setSelectedAlerts(null);
   };
 
-    return (
-      <>
-        {/* Modal de Login */}
-        <Modal isOpen={openPetForm} onClose={() => setOpenPetForm(false)}>
-          <CreatePetForm />
-        </Modal>
+  return (
+    <>
+      {/* Modal de Login */}
+      <Modal isOpen={openPetForm} onClose={() => setOpenPetForm(false)}>
+        <CreatePetForm />
+      </Modal>
 
-        <ModalText
-          isOpen={isDeleteModalOpen}
-          onClose={() => setIsDeleteModalOpen(false)}
-          title="¿Estás seguro?"
-          content={
-            <p>
-              ¿Estas seguro de eliminar esta mascota?{' '}
-              <strong>({petToDelete?.name})</strong>
-              <br />
-              <br />
-            </p>
-          }
-          variant="confirm"
-          confirmLabel="Confirmar"
-          cancelLabel="Cancelar"
-          onConfirm={confirmDelete}
-        />
+      <ModalText
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        title="¿Estás seguro?"
+        content={
+          <p>
+            ¿Estas seguro de eliminar esta mascota?{' '}
+            <strong>({petToDelete?.name})</strong>
+            <br />
+            <br />
+          </p>
+        }
+        variant="confirm"
+        confirmLabel="Confirmar"
+        cancelLabel="Cancelar"
+        onConfirm={confirmDelete}
+      />
 
-        <section className="section section--dashboard">
-          <div className="container container--dashboard">
-            <h1 className="example__title">Dashboard</h1>
-            <p>Bienvenid@ de vuelta, {user?.fullName || user?.username}</p>
+      <section className="section section--dashboard">
+        <div className="container container--dashboard">
+          <h1 className="example__title">Dashboard</h1>
+          <p>Bienvenid@ de vuelta, {user?.fullName || user?.username}</p>
 
-            <DashboardUserCard user={user} />
+          <DashboardUserCard user={user} />
 
-            <QuickAccessCards />
+          <QuickAccessCards />
 
-            <div className="dashboard__pets-section">
-              <div className="dashboard__pets-header">
-                <h2 className="dashboard__pets-title">Mis Mascotas</h2>
+          <div className="dashboard__pets-section">
+            <div className="dashboard__pets-header">
+              <h2 className="dashboard__pets-title">Mis Mascotas</h2>
 
-                {/* Filters */}
-                {!loading && pets.length > 0 && (
-                  <PetFilters
-                    pets={pets}
-                    filteredCount={filteredPets.length}
-                    selectedSpecies={selectedSpecies}
-                    selectedHealthStatus={selectedHealthStatus}
-                    selectedAlerts={selectedAlerts}
-                    onSpeciesChange={setSelectedSpecies}
-                    onHealthStatusChange={setSelectedHealthStatus}
-                    onAlertsChange={setSelectedAlerts}
-                    onClearFilters={clearFilters}
-                  />
-                )}
-              </div>
-
-              {loading ? (
-                <Loader text="Cargando mascotas..." size="large" />
-              ) : pets.length === 0 ? (
-                <p className="dashboard__pets-empty">
-                  No tienes mascotas registradas aún.
-                </p>
-              ) : filteredPets.length === 0 ? (
-                <p className="dashboard__pets-empty">
-                  No se encontraron mascotas con los filtros seleccionados.
-                </p>
-              ) : (
-                <div className="dashboard__pets-grid">
-                  {filteredPets.map((pet) => (
-                    <DashboardPetCard
-                      key={pet.id}
-                      pet={pet}
-                      onDelete={handleDeleteClick}
-                      healthStatusData={petHealthData[pet.id]}
-                    />
-                  ))}
-                </div>
+              {/* Filters */}
+              {!loading && pets.length > 0 && (
+                <PetFilters
+                  pets={pets}
+                  filteredCount={filteredPets.length}
+                  selectedSpecies={selectedSpecies}
+                  selectedHealthStatus={selectedHealthStatus}
+                  selectedAlerts={selectedAlerts}
+                  onSpeciesChange={setSelectedSpecies}
+                  onHealthStatusChange={setSelectedHealthStatus}
+                  onAlertsChange={setSelectedAlerts}
+                  onClearFilters={clearFilters}
+                />
               )}
             </div>
-            {/* <div className='button'> */}
-            <Button
-              variant="outline"
-              size="lg"
-              style={{ width: '100%', marginTop: '29px' }}
-              onClick={() => setOpenPetForm(true)}
-            >
-              <Plus className="h-5 w-5 mr-2" />
-              Agregar Mascota
-            </Button>
-            {/* </div> */}
+
+            {loading ? (
+              <Loader text="Cargando mascotas..." size="large" />
+            ) : pets.length === 0 ? (
+              <p className="dashboard__pets-empty">
+                No tienes mascotas registradas aún.
+              </p>
+            ) : filteredPets.length === 0 ? (
+              <p className="dashboard__pets-empty">
+                No se encontraron mascotas con los filtros seleccionados.
+              </p>
+            ) : (
+              <div className="dashboard__pets-grid">
+                {filteredPets.map((pet) => (
+                  <DashboardPetCard
+                    key={pet.id}
+                    pet={pet}
+                    onDelete={handleDeleteClick}
+                    healthStatusData={petHealthData[pet.id]}
+                  />
+                ))}
+              </div>
+            )}
           </div>
-        </section>
-      </>
-    );
+          {/* <div className='button'> */}
+          <Button
+            variant="outline"
+            size="lg"
+            style={{ width: '100%', marginTop: '29px' }}
+            onClick={() => setOpenPetForm(true)}
+          >
+            <Plus className="h-5 w-5 mr-2" />
+            Agregar Mascota
+          </Button>
+          {/* </div> */}
+        </div>
+      </section>
+    </>
+  );
 };

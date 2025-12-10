@@ -72,6 +72,24 @@
   --color-info-text: #103775;
   --color-warning-alert: rgb(255, 250, 197);
   --color-select-active: #8200db;
+
+  /* ===== Pet Section Colors ===== */
+  --pink-bg: #fce7f3;
+  --pink-text: #be185d;
+  --orange-bg: #ffe3c2;
+  --orange-text: #c2410c;
+  --purple-bg: #ede9fe;
+  --purple-text: #5b21b6;
+  --blue-bg: #dbeafe;
+  --blue-text: #1e40af;
+  --yellow-bg: #fef3c7;
+  --yellow-text: #847502;
+  --gray-bg: #f3f4f6;
+  --gray-text: #374151;
+  --green-bg: #d1fae5;
+  --green-text: #065f46;
+  --turquoise-bg: #b7ffff;
+  --turquoise-text: #0e8383;
 }
 
 [data-theme='dark'] {
@@ -114,4 +132,22 @@
   --color-info-text: #93c5fd; /* Light blue text */
   --color-warning-alert: #7f5c04; /* Dark amber background */
   --color-select-active: #ca7cff;
+
+  /* ===== Pet Section Colors - Dark Mode ===== */
+  --pink-bg: #4a1e3a;
+  --pink-text: #f472b6;
+  --orange-bg: #5a2a1a;
+  --orange-text: #fb923c;
+  --purple-bg: #3b1f5a;
+  --purple-text: #a855f7;
+  --blue-bg: #1e3a5f;
+  --blue-text: #60a5fa;
+  --yellow-bg: #5a4a1a;
+  --yellow-text: #fbbf24;
+  --gray-bg: #2a2a2f;
+  --gray-text: #a1a1aa;
+  --green-bg: #1a3a2a;
+  --green-text: #4ade80;
+  --turquoise-bg: #026363;
+  --turquoise-text: #6ce7e7;
 }

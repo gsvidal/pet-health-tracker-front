@@ -20,7 +20,9 @@ export const Header = () => {
   const needToGoBackToDashboard =
     pathname.includes('/pets') ||
     pathname.includes('/notifications') ||
-    pathname.includes('/activity-logs');
+    pathname.includes('/activity-logs') ||
+    pathname.includes('/notifications') ||
+    pathname.includes('/calendar');
 
   return (
     <header className="sticky-header">
@@ -83,64 +85,47 @@ export const Header = () => {
             </Link>
           )}
           <ThemeToggle onToggle={() => setMenuOpen(false)} />
-          <div className="btn-wrapper">
-            {pathname === PRIVATE_ROUTES.DASHBOARD ||
-            pathname === PRIVATE_ROUTES.NOTIFICATIONS ? (
-              <>
-                <NotificationDropdown />
-                <Button
-                  size="lg"
-                  variant="primary"
-                  onClick={() => {
-                    setMenuOpen(false);
-                    navigate(PUBLIC_ROUTES.HOME);
-                    logout();
-                  }}
-                >
-                  Logout
-                </Button>
-              </>
-            ) : (pathname === PUBLIC_ROUTES.HOME && isAuthenticated) ? (
+          {pathname !== PRIVATE_ROUTES.NOTIFICATIONS && (<NotificationDropdown />)}
+          {pathname === PUBLIC_ROUTES.HOME && isAuthenticated ? (
+            <Button
+              size="lg"
+              variant="primary"
+              onClick={() => {
+                setMenuOpen(false);
+                navigate(PUBLIC_ROUTES.HOME);
+                logout();
+              }}
+            >
+              Logout
+            </Button>
+          ) : (
+            pathname === '/' && (
               <Button
                 size="lg"
                 variant="primary"
                 onClick={() => {
                   setMenuOpen(false);
-                  navigate(PUBLIC_ROUTES.HOME);
-                  logout();
+                  navigate(PUBLIC_ROUTES.REGISTER);
                 }}
               >
-                Logout
+                Registrarse
               </Button>
-            ) : (
-              pathname === '/' && (
-                <Button
-                  size="lg"
-                  variant="primary"
-                  onClick={() => {
-                    setMenuOpen(false);
-                    navigate(PUBLIC_ROUTES.REGISTER);
-                  }}
-                >
-                  Registrarse
-                </Button>
-              )
-            )}
-            {/* TODO: agregar volver a pagina pet */}
-            {needToGoBackToDashboard && (
-              <Button
-                size="lg"
-                variant="outline"
-                onClick={() => {
-                  setMenuOpen(false);
-                  navigate(PRIVATE_ROUTES.DASHBOARD);
-                }}
-              >
-                <IoMdReturnLeft style={{ marginRight: '6px' }} />
-                Volver al Dashboard
-              </Button>
-            )}
-          </div>
+            )
+          )}
+          {/* TODO: agregar volver a pagina pet */}
+          {needToGoBackToDashboard && (
+            <Button
+              size="lg"
+              variant="outline"
+              onClick={() => {
+                setMenuOpen(false);
+                navigate(PRIVATE_ROUTES.DASHBOARD);
+              }}
+            >
+              <IoMdReturnLeft style={{ marginRight: '6px' }} />
+              Volver al Dashboard
+            </Button>
+          )}
         </nav>
       </div>
     </header>
