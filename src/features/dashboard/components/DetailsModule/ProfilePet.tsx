@@ -3,16 +3,33 @@ import type { Pet } from '../../../../models/pet.model';
 import { useRef, useState } from 'react';
 import { FaEdit, FaSpinner } from 'react-icons/fa';
 import { usePetStore } from '../../../../store/pet.store';
+import { usePetHealthStatus } from '../../../../hooks/usePetHealthStatus';
+import type { HealthStatusData } from '../../../../utils/healthStatus';
+import type { PetHealthSummary } from '../../../../adapters/pet.adapter';
 
 interface ProfilePetProps {
   pet: Pet;
+  healthStatusData?: HealthStatusData & {
+    loading: boolean;
+    summary: PetHealthSummary | null;
+  };
 }
 
-export const ProfilePet = ({ pet }: ProfilePetProps) => {
+export const ProfilePet = ({
+  pet,
+  healthStatusData: propHealthStatusData,
+}: ProfilePetProps) => {
   const photoUrl = pet.photoUrl || '/default-pet.png';
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
   const { uploadPetPhoto, loading } = usePetStore();
+  const hookHealthStatus = usePetHealthStatus({
+    petId: pet.id,
+  });
+
+  // Usar el prop si está disponible, sino usar el hook
+  const { status, loading: healthLoading } =
+    propHealthStatusData || hookHealthStatus;
 
   const handleEditClick = () => {
     fileInputRef.current?.click();
@@ -62,7 +79,9 @@ export const ProfilePet = ({ pet }: ProfilePetProps) => {
           {pet.photoUrl ? (
             <img src={photoUrl} alt={pet.name} className="pet-profile-photo" />
           ) : (
-            <div className="avatar-initial">{pet.name?.[0].toLocaleUpperCase() ?? '?'}</div>
+            <div className="avatar-initial">
+              {pet.name?.[0].toLocaleUpperCase() ?? '?'}
+            </div>
           )}
         </div>
         <button
@@ -104,7 +123,19 @@ export const ProfilePet = ({ pet }: ProfilePetProps) => {
           </div>
           <div>
             <strong>Estado:</strong>
-            <span className="health-badge">Saludable</span>
+            <span
+              className={`health-badge health-badge--${
+                healthLoading
+                  ? 'loading'
+                  : status === 'Saludable'
+                    ? 'saludable'
+                    : status === 'Atención Requerida'
+                      ? 'atencion-requerida'
+                      : 'revision-necesaria'
+              }`}
+            >
+              {healthLoading ? 'Cargando...' : status}
+            </span>
           </div>
         </div>
       </div>

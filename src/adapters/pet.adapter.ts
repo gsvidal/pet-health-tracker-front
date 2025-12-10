@@ -107,7 +107,11 @@ export function adaptPetToPetRequest(pet: PetFormData): PetRequest {
     request.name = null;
   }
 
-  if (pet.species !== undefined && pet.species !== null && pet.species.trim() !== '') {
+  if (
+    pet.species !== undefined &&
+    pet.species !== null &&
+    pet.species.trim() !== ''
+  ) {
     request.species = pet.species;
   } else if (pet.species !== undefined) {
     request.species = null;
@@ -118,7 +122,8 @@ export function adaptPetToPetRequest(pet: PetFormData): PetRequest {
   }
 
   if (pet.birthDate !== undefined) {
-    request.birth_date = pet.birthDate && pet.birthDate.trim() !== '' ? pet.birthDate : null;
+    request.birth_date =
+      pet.birthDate && pet.birthDate.trim() !== '' ? pet.birthDate : null;
   }
 
   if (pet.ageYears !== undefined) {
@@ -126,7 +131,8 @@ export function adaptPetToPetRequest(pet: PetFormData): PetRequest {
   }
 
   if (pet.weightKg !== undefined) {
-    request.weight_kg = pet.weightKg && pet.weightKg.trim() !== '' ? pet.weightKg : null;
+    request.weight_kg =
+      pet.weightKg && pet.weightKg.trim() !== '' ? pet.weightKg : null;
   }
 
   if (pet.sex !== undefined) {
@@ -134,7 +140,8 @@ export function adaptPetToPetRequest(pet: PetFormData): PetRequest {
   }
 
   if (pet.photoUrl !== undefined) {
-    request.photo_url = pet.photoUrl && pet.photoUrl.trim() !== '' ? pet.photoUrl : null;
+    request.photo_url =
+      pet.photoUrl && pet.photoUrl.trim() !== '' ? pet.photoUrl : null;
   }
 
   if (pet.notes !== undefined) {
@@ -142,4 +149,29 @@ export function adaptPetToPetRequest(pet: PetFormData): PetRequest {
   }
 
   return request;
+}
+
+/**
+ * Interfaz para el health summary del backend
+ */
+export interface PetHealthSummary {
+  pet_id: string;
+  pet_name: string;
+  last_vaccination: {
+    vaccine_name: string;
+    date: string;
+  } | null;
+  next_vaccination_due: {
+    vaccine_name: string;
+    due_date: string;
+  } | null;
+  last_deworming: {
+    medication: string;
+    date: string;
+  } | null;
+  last_vet_visit: {
+    date: string;
+    reason: string | null;
+  } | null;
+  upcoming_reminders: any[];
 }

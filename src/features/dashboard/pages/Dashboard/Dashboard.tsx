@@ -83,11 +83,6 @@ export const Dashboard = () => {
                   <DashboardPetCard
                     key={pet.id}
                     pet={pet}
-                    healthStatus="Saludable"
-                    nextVaccineLabel="Próximamente"
-                    lastVisitLabel="Próximamente"
-                    activeAlertsCount={1}
-                    upcomingEventsCount={0}
                     onDelete={handleDeleteClick}
                   />
                 ))}

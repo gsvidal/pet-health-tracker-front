@@ -1,5 +1,9 @@
 import { apiClient } from './api.config';
-import type { PetResponse, PetFormData } from '../adapters/pet.adapter';
+import type {
+  PetResponse,
+  PetFormData,
+  PetHealthSummary,
+} from '../adapters/pet.adapter';
 import { adaptPetToPetRequest } from '../adapters/pet.adapter';
 
 const PETS_ENDPOINT = '/pets';
@@ -36,7 +40,7 @@ export const createPet = async (petData: PetFormData): Promise<PetResponse> => {
 
 export const deletePet = async (id: string): Promise<void> => {
   await apiClient.delete(`${PETS_ENDPOINT}/${id}`);
-}
+};
 
 //  Actualiza una mascota por ID
 export const updatePetService = async (id: string, petData: PetFormData) => {
@@ -44,4 +48,16 @@ export const updatePetService = async (id: string, petData: PetFormData) => {
 
   const response = await apiClient.put(`${PETS_ENDPOINT}/${id}`, requestData);
   return response.data;
-}
+};
+
+/**
+ * Obtiene el resumen de salud de una mascota
+ */
+export const getPetHealthSummary = async (
+  petId: string,
+): Promise<PetHealthSummary> => {
+  const response = await apiClient.get<PetHealthSummary>(
+    `${PETS_ENDPOINT}/${petId}/health-summary/`,
+  );
+  return response.data;
+};

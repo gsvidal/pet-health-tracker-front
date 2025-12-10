@@ -141,6 +141,22 @@
         padding: 3px 10px;
         border-radius: var(--radius-md, 8px);
         font-size: 12px;
+        font-weight: 600;
+
+        &--loading {
+          background: var(--color-text-secondary, #6b7280);
+          color: var(--color-absolute, #ffffff);
+        }
+
+        &--atencion-requerida {
+          background: var(--color-error-light);
+          color: var(--color-error-text);
+        }
+
+        &--revision-necesaria {
+          background: var(--color-warning-alert);
+          color: var(--color-warning-text);
+        }
       }
     }
   }

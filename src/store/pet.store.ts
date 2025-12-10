@@ -8,7 +8,9 @@ import {
   createPet as createPetService,
   deletePet as deletePetService,
   updatePetService,
+  getPetHealthSummary,
 } from '../services/pet.service';
+import type { PetHealthSummary } from '../adapters/pet.adapter';
 import { uploadPetProfilePhoto } from '../services/petPhoto.service';
 import { adaptPetResponseToPet } from '../adapters/pet.adapter';
 import { callApi } from '../utils/apiHelper';
@@ -31,6 +33,7 @@ interface PetState {
   uploadPetPhoto: (petId: string, file: File) => Promise<void>;
   // mockPets: () => void;
   updatePet: (id: string, petData: PetFormData) => Promise<void>;
+  getPetHealthStatus: (petId: string) => Promise<PetHealthSummary | null>;
   // setMockMode: (value: boolean) => void;
 }
 
@@ -139,7 +142,7 @@ export const usePetStore = create<PetState>((set, get) => ({
   //     createdAt: '2021-03-15T00:00:00Z',
   //     updatedAt: '2024-01-10T00:00:00Z',
   //   };
-  
+
   //   const mockPet2: Pet = {
   //     id: 'mock-pet-2',
   //     name: 'Iggy',
@@ -210,9 +213,7 @@ export const usePetStore = create<PetState>((set, get) => ({
     // Actualizar el pet en el estado con la nueva photoUrl
     set((state) => {
       const updatedPets = state.pets.map((pet) =>
-        pet.id === petId
-          ? { ...pet, photoUrl: uploadResponse.url }
-          : pet,
+        pet.id === petId ? { ...pet, photoUrl: uploadResponse.url } : pet,
       );
 
       const updatedSelectedPet =
@@ -266,5 +267,18 @@ export const usePetStore = create<PetState>((set, get) => ({
       error: null,
     }));
     toast.success('Mascota actualizada correctamente ✔️');
+  },
+
+  getPetHealthStatus: async (petId: string) => {
+    const { data: healthSummary, error } = await callApi(() =>
+      getPetHealthSummary(petId),
+    );
+
+    if (error || !healthSummary) {
+      // No mostrar error, solo retornar null para que el hook maneje el fallback
+      return null;
+    }
+
+    return healthSummary;
   },
 }));
