@@ -71,6 +71,7 @@
   --color-info: #72a6fb;
   --color-info-text: #103775;
   --color-warning-alert: rgb(255, 250, 197);
+  --color-select-active: #8200db;
 }
 
 [data-theme='dark'] {
@@ -112,4 +113,5 @@
   --color-info: #60a5fa; /* Brighter blue */
   --color-info-text: #93c5fd; /* Light blue text */
   --color-warning-alert: #7f5c04; /* Dark amber background */
+  --color-select-active: #ca7cff;
 }
