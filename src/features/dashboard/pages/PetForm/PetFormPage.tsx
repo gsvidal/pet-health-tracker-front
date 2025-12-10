@@ -1,6 +1,6 @@
 import './PetFormPage.scss';
 import React, { useState } from 'react';
-import { Heart, Upload } from 'lucide-react';
+import { Heart } from 'lucide-react';
 import { usePetStore } from '../../../../store/pet.store';
 import type {
   PetFormData,

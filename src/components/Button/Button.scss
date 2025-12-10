@@ -34,7 +34,12 @@
     color: white;
     box-shadow: var(--shadow-sm);
     &:hover:not(:disabled) {
-      filter: brightness(0.9);
+      // filter: brightness(0.85);
+      background: linear-gradient(
+        90deg,
+        var(--color-gradient-start-hover) 0%,
+        var(--color-gradient-end-hover) 100%
+      );
       box-shadow: var(--shadow-md);
     }
   }

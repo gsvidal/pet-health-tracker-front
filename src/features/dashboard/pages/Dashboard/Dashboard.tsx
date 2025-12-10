@@ -50,7 +50,7 @@ export const Dashboard = () => {
         content={
           <p>
             ¿Estas seguro de eliminar esta mascota?{' '}
-            <strong>{petToDelete?.name}</strong>?
+            <strong>({petToDelete?.name})</strong>
             <br />
             <br />
           </p>

@@ -3,7 +3,7 @@ import { User as UserIcon } from 'lucide-react';
 import type { User } from '../../../../models/user.model';
 import { formatDateToSpanishMonthYear } from '../../../../utils/dateUtils';
 import { Button } from '../../../../components/Button/Button';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { PRIVATE_ROUTES } from '../../../../config/routes';
 
 interface DashboardUserCardProps {

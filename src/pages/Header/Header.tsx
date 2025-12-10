@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button } from '../../components/Button/Button';
-import { Heart, ArrowLeft } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/auth.store';
 import { PRIVATE_ROUTES, PUBLIC_ROUTES } from '../../config/routes';
@@ -38,7 +38,7 @@ export const Header = () => {
         {/* Logo */}
         <div className="logo" onClick={() => navigate(PUBLIC_ROUTES.HOME)}>
           <div className="logo-icon">
-            <Heart fill="white" />
+            <img src="/paw.svg" alt="Pet Health Tracker" />
           </div>
           <span className="logo-text">Pet Health Tracker</span>
 

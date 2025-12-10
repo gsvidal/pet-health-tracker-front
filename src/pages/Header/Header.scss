@@ -7,16 +7,13 @@
   border-bottom: 1px solid var(--color-border);
   background-color: var(--color-absolute);
   backdrop-filter: blur(8px);
-  // transition: background-color var(--transition);
 
   .container {
-    max-width: var(--container-lg);
     margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
     height: 64px;
-    padding: 0 var(--space-md);
     position: relative;
   }
 
@@ -39,6 +36,13 @@
         var(--color-gradient-start),
         var(--color-gradient-end)
       );
+
+      img {
+        width: 24px;
+        height: 24px;
+        object-fit: contain;
+        filter: brightness(0) invert(1); // Convierte el SVG negro a blanco
+      }
     }
 
     .logo-text {

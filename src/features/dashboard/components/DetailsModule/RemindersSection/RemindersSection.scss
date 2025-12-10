@@ -112,7 +112,7 @@
     select {
       cursor: pointer;
       background-color: var(--color-bg);
-      
+
       &:focus {
         background-color: var(--color-absolute);
       }
@@ -148,10 +148,29 @@
       transform: translateY(-50%);
       color: var(--color-text-secondary);
       font-size: 1rem;
+      z-index: 1;
+      pointer-events: none;
     }
 
     input {
       padding-left: 2.5rem;
+    }
+
+    // Estilos específicos para campos de fecha y hora
+    input[type='date'],
+    input[type='time'] {
+      cursor: pointer;
+
+      // Ocultar el icono nativo del navegador
+      &::-webkit-calendar-picker-indicator {
+        opacity: 0;
+        position: absolute;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+        z-index: 2;
+      }
     }
   }
 

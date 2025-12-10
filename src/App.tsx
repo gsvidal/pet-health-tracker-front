@@ -6,7 +6,7 @@ import { FullLayout } from './layouts/FullLayout';
 import { RecoverPasswordPage } from './features/dashboard/pages/RecoverPassword/RecoverPasswordPage';
 import { Home } from './pages/Home/Home';
 import { Dashboard } from './features/dashboard/pages/Dashboard/Dashboard';
-import { ExamplePage } from './features/example/pages/ExamplePage/ExamplePage';
+// import { ExamplePage } from './features/example/pages/ExamplePage/ExamplePage';
 import { PRIVATE_ROUTES, PUBLIC_ROUTES } from './config/routes';
 import { PrivateGuard } from './components/guards/PrivateGuard';
 import { Toaster } from 'react-hot-toast';
@@ -67,7 +67,6 @@ function App() {
         <Routes>
           <Route path={PUBLIC_ROUTES.HOME} element={<Home />} />
           <Route path={PUBLIC_ROUTES.LOGIN} element={<LoginPage />} />
-          <Route path={PUBLIC_ROUTES.EXAMPLE} element={<ExamplePage />} />
           <Route element={<FullLayout />}>
             <Route path={PUBLIC_ROUTES.REGISTER} element={<RegisterPage />} />
             <Route
@@ -123,7 +122,8 @@ function App() {
         position="top-center"
         toastOptions={{
           duration: 8000,
-          style: { backgroundColor: theme === 'dark' ? 'grey' : '#ede9fe' },
+          style: { backgroundColor: theme === 'dark' ? '#a0a0a0' : '#ede9fe', fontSize: '1.5rem' },
+          
         }}
       />
     </>

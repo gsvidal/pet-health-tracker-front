@@ -1,8 +1,5 @@
 //hero
 .hero {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 5rem 1rem;
   padding-top: 9rem;
 
   .grid {
@@ -73,37 +70,128 @@
   .visual {
     position: relative;
 
-    .image-wrapper {
+    .carousel-container {
+      position: relative;
       aspect-ratio: 1;
       border-radius: 1.5rem;
       overflow: hidden;
       box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .image-wrapper {
+      position: relative;
+      width: 100%;
+      height: 100%;
 
       img {
+        position: absolute;
+        top: 0;
+        left: 0;
         width: 100%;
         height: 100%;
         object-fit: cover;
+        opacity: 0;
+        transition: opacity 0.8s ease-in-out;
+
+        &.active {
+          opacity: 1;
+        }
+      }
+    }
+
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.9);
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 10;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+
+      &:hover {
+        background: rgba(255, 255, 255, 1);
+        transform: translateY(-50%) scale(1.1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      }
+
+      &:active {
+        transform: translateY(-50%) scale(0.95);
+      }
+
+      &--prev {
+        left: 12px;
+      }
+
+      &--next {
+        right: 12px;
+      }
+
+      svg {
+        color: var(--color-text);
+      }
+    }
+
+    .carousel-indicators {
+      position: absolute;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+      z-index: 10;
+    }
+
+    .indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255, 255, 255, 0.5);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      padding: 0;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.8);
+        transform: scale(1.2);
+      }
+
+      &.active {
+        background: rgba(255, 255, 255, 1);
+        width: 24px;
+        border-radius: 4px;
       }
     }
 
     .decor-circle {
       position: absolute;
-      height: 8rem;
-      width: 8rem;
+      width: 15rem;
+      height: 15rem;
       border-radius: 50%;
-      opacity: 0.2;
-      filter: blur(30px);
+      opacity: 0.4;
+      filter: blur(20px);
+      z-index: -1;
 
       &.one {
+        width: 8rem;
+        height: 8rem;
         background: linear-gradient(to bottom right, #f472b6, #a855f7);
-        bottom: -24px;
-        right: -24px;
+        bottom: -31px;
+        right: -8px;
       }
 
       &.two {
         background: linear-gradient(to bottom right, #a855f7, #f472b6);
-        top: -24px;
-        left: -24px;
+        top: -42px;
+        left: -53px;
       }
     }
   }
@@ -124,12 +212,6 @@
 .home-features {
   background: var(--color-absolute);
   padding: 80px 0;
-
-  .container {
-    width: 90%;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
 
   .header {
     text-align: center;
@@ -222,25 +304,36 @@ section {
   @media (min-width: 1024px) {
     flex-direction: row;
   }
-  padding: 10px;
+  // padding: 10px;
   margin: 40px 0px;
+}
+
+.container--homeus {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  @media (min-width: 768px) {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 4rem;
+  }
 }
 
 .image-container {
   display: flex;
   justify-content: center;
+  margin-bottom: 40px;
   img {
     width: 100%;
-    max-width: 768px;
     object-fit: cover;
     border-radius: var(--radius-md);
   }
-  @media (min-width: 1024px) {
-    margin: 20px;
+  @media (min-width: 768px) {
+    // margin: 20px;
   }
 }
+
 .content {
-  max-width: 768px;
   margin: 0 auto;
   font-size: 14px;
 }
@@ -291,16 +384,15 @@ section {
   @media (max-width: 1023px) {
     max-width: 768px;
   }
-  padding: 40px 20px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
+  gap: 4rem;
   color: #f2f2f2;
   @media (min-width: 1024px) {
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    padding: 40px;
   }
 }
 .content-2 h2,
@@ -319,14 +411,15 @@ section {
 .image-container-2 {
   display: none;
   @media (min-width: 1024px) {
-    display: block;
-    margin-left: 20px;
+    display: flex;
+    justify-content: center;
+    // margin-left: 20px;
   }
   width: 100%;
   height: 500px;
 
   img {
-    max-width: 100%;
+    width: 100%;
     height: 100%;
     border-radius: var(--radius-md);
     object-fit: cover;
@@ -385,18 +478,19 @@ img {
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 2rem;
-  padding: 3rem 1.5rem;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
   background: var(--color-bg);
   color: var(--color-text);
-  max-width: 1400px;
-  margin: 0 auto;
+  // max-width: 1400px;
+  // margin: 0 auto;
 
   @media (min-width: 1024px) {
     flex-direction: row;
     justify-content: space-between;
     align-items: flex-start;
     gap: 4rem;
-    padding: 4rem 2rem;
+    // padding: 4rem 2rem;
   }
 }
 
@@ -408,26 +502,34 @@ img {
     display: flex;
     align-items: center;
     margin-bottom: 1rem;
+  }
 
-    &-icon {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: linear-gradient(
-        135deg,
-        var(--color-gradient-start),
-        var(--color-gradient-end)
-      );
-      margin-right: 0.5rem;
-    }
+  .logo-icon {
+    display: flex;
+    height: 40px;
+    width: 40px;
+    margin-right: 10px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: linear-gradient(
+      to bottom right,
+      var(--color-gradient-start),
+      var(--color-gradient-end)
+    );
 
-    &-text {
-      font-size: 20px;
-      font-weight: 400;
+    img {
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+      filter: brightness(0) invert(1); // Convierte el SVG negro a blanco
     }
+  }
+  .logo-text {
+    font-size: 2rem;
+    color: var(--color-text);
+    font-family: var(--font-heading);
+    font-weight: 600;
   }
 
   p {
