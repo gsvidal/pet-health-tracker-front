@@ -18,6 +18,7 @@ import { useModalStore } from './store/modal.store';
 import { VerifyEmailPage } from './features/dashboard/pages/VerifyEmail/VerifyEmailPage';
 import { CreatePetForm } from './features/dashboard/pages/PetForm/PetFormPage';
 import { DetailsPage } from './features/dashboard/pages/Details/DetailsPage';
+import { GalleryModal } from './features/dashboard/pages/Gallery/GalleryModal';
 import ResetPasswordPage from './features/dashboard/pages/Reset/ResetPage';
 import { ActivityLogs } from './features/audit-logs/pages/ActivityLogs/ActivityLogs';
 import { useThemeStore } from './store/theme.store';
@@ -140,10 +141,11 @@ function App() {
         position="top-center"
         toastOptions={{
           duration: 8000,
-          style: { backgroundColor: theme === 'dark' ? '#a0a0a0' : '#ede9fe', fontSize: '1.5rem' },
+          style: { backgroundColor: theme === 'dark' ? '#a0a0a0' : '#ede9fe', fontSize: '1.4rem' },
           
         }}
       />
+      <GalleryModal />
     </>
   );
 }

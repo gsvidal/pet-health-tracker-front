@@ -6,6 +6,10 @@ import { usePetStore } from '../../../../store/pet.store';
 import { usePetHealthStatus } from '../../../../hooks/usePetHealthStatus';
 import type { HealthStatusData } from '../../../../utils/healthStatus';
 import type { PetHealthSummary } from '../../../../adapters/pet.adapter';
+import { Button } from '../../../../components/Button/Button';
+import { useGalleryModalStore } from '../../../../store/gallery.store';
+import { getPetPhotos } from '../../../../services/pet.service';
+import toast from 'react-hot-toast';
 
 interface ProfilePetProps {
   pet: Pet;
@@ -72,6 +76,9 @@ export const ProfilePet = ({
     }
   };
 
+  const openUpload = useGalleryModalStore((s) => s.openUpload);
+  const openView = useGalleryModalStore((s) => s.openView);
+
   return (
     <div className="profile-pet-card">
       <div className="profile-avatar-wrapper">
@@ -105,6 +112,25 @@ export const ProfilePet = ({
           style={{ display: 'none' }}
           aria-label="Seleccionar foto de perfil"
         />
+      </div>
+      <div className="dashboard-pet-card__actions">
+        <Button variant="secondary" onClick={() => openUpload(pet.id)}>
+          Subir imágenes
+        </Button>
+
+        <Button
+          variant="secondary"
+          onClick={async () => {
+            const photos = await getPetPhotos(pet.id);
+            if (!photos || photos.length === 0) {
+              toast.error('No hay fotos en la galería 📁');
+              return;
+            }
+            openView(pet.id, photos);
+          }}
+        >
+          Ver galería
+        </Button>
       </div>
       <div className="profile-info">
         <h2>{pet.name}</h2>

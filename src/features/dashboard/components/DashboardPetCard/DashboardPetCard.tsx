@@ -9,7 +9,6 @@ import { useState } from 'react';
 import { formatDateLocal } from '../../../../utils/dateUtils';
 import type { HealthStatusData } from '../../../../utils/healthStatus';
 import type { PetHealthSummary } from '../../../../adapters/pet.adapter';
-
 interface DashboardPetCardProps {
   pet: Pet;
   onViewDetails?: (petId: string) => void;
@@ -287,6 +286,8 @@ export const DashboardPetCard = ({
           Ver Detalles
         </Button>
       </div>
+
+
     </>
   );
 };
