@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { Syringe, Utensils, Pill, Stethoscope, AlertCircle, BellRing, RefreshCw } from 'lucide-react';
+import { Syringe, Utensils, Pill, Stethoscope, AlertCircle } from 'lucide-react';
 import { useNotificationStore } from '../../../../store/notification.store';
 import { PRIVATE_ROUTES } from '../../../../config/routes';
 import { Button } from '../../../../components/Button/Button';
@@ -19,10 +19,17 @@ export const NotificationsView = () => {
   const { notifications, fetchNotifications, processDueReminders } = useNotificationStore();
   const [activeTab, setActiveTab] = useState<'all' | 'unread'>('all');
 
-  // Fetch notifications on mount
+  // Fetch notifications on mount and set up polling
   useEffect(() => {
     fetchNotifications();
-  }, [fetchNotifications]);
+
+    // Poll for due reminders every 5 minutes
+    const intervalId = setInterval(() => {
+      processDueReminders();
+    }, 5 * 60 * 1000); // 5 minutes
+
+    return () => clearInterval(intervalId);
+  }, [fetchNotifications, processDueReminders]);
 
   const filteredNotifications =
     activeTab === 'all'
@@ -47,49 +54,7 @@ export const NotificationsView = () => {
           <ArrowLeft size={24} />
         </button>
         <h1>Notificaciones</h1>
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <button
-            onClick={() => fetchNotifications()}
-            title="Refrescar lista"
-            style={{
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              padding: '0.5rem',
-              color: '#64748b',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: '50%',
-              transition: 'background-color 0.2s',
-            }}
-            onMouseOver={(e) => (e.currentTarget.style.backgroundColor = '#f1f5f9')}
-            onMouseOut={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
-          >
-            <RefreshCw size={20} />
-          </button>
-          
-          <button
-            onClick={() => processDueReminders()}
-            title="Verificar nuevas notificaciones"
-            style={{
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              padding: '0.5rem',
-              color: '#ec4899', // Pink color to stand out
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: '50%',
-              transition: 'background-color 0.2s',
-            }}
-             onMouseOver={(e) => (e.currentTarget.style.backgroundColor = '#fdf2f8')}
-             onMouseOut={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
-          >
-            <BellRing size={20} />
-          </button>
-        </div>
+
       </div>
 
       <div className="notifications-view__tabs">
