@@ -23,6 +23,7 @@ import {
   LuArrowUpDown,
 } from 'react-icons/lu';
 import { Button } from '../../../../components/Button/Button';
+import { Select } from '../../../../components/Select';
 
 export const ActivityLogs = () => {
   const { auditLogs, allAuditLogs, loading, applyFilters, getSortedLogs } =
@@ -165,28 +166,18 @@ export const ActivityLogs = () => {
 
         <div className="activity-logs-controls">
           {/* Filtro por tipo */}
-          <div className="filter-group">
-            <div className="filter-label">
-              <LuSearch className="filter-icon" />
-              <span>Filtrar por tipo de evento</span>
-            </div>
-            <select
-              className="filter-select"
-              value={selectedFilter}
-              onChange={(e) =>
-                handleFilterChange(e.target.value as AuditLogObjectType | 'all')
-              }
-            >
-              <option value="all">
-                Todos los eventos ({getEventCountByType('all')})
-              </option>
-              {OBJECT_TYPES.map((type) => (
-                <option key={type} value={type}>
-                  {OBJECT_TYPE_LABELS[type]} ({getEventCountByType(type)})
-                </option>
-              ))}
-            </select>
-          </div>
+          <Select
+            label="Filtrar por tipo de evento"
+            value={selectedFilter === 'all' ? null : selectedFilter}
+            onChange={(value) =>
+              handleFilterChange((value || 'all') as AuditLogObjectType | 'all')
+            }
+            options={OBJECT_TYPES.map((type) => ({
+              value: type,
+              label: `${OBJECT_TYPE_LABELS[type]} (${getEventCountByType(type)})`,
+            }))}
+            placeholder={`Todos los eventos (${getEventCountByType('all')})`}
+          />
 
           {/* Ordenar por fecha */}
           <div className="sort-group">

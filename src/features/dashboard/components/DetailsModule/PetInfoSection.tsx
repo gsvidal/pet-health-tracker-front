@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import { Controller } from 'react-hook-form';
 import type { Pet } from '../../../../models/pet.model';
 import { usePetStore } from '../../../../store/pet.store';
 import { usePetForm } from '../../../../hooks/usePetForm';
 import { Button } from '../../../../components/Button/Button';
+import { Select } from '../../../../components/Select';
 import { FaRegEdit, FaCalendarAlt, FaFileAlt } from 'react-icons/fa';
 import './PetInfoSection.scss';
 
@@ -23,6 +25,7 @@ export default function PetInfoSection({ pet }: PetInfoSectionProps) {
     isDirty,
     onSubmit,
     handleCancel,
+    control,
   } = usePetForm({
     editingPet: isEditing ? pet : null,
     onSave: async (data) => {
@@ -214,26 +217,35 @@ export default function PetInfoSection({ pet }: PetInfoSectionProps) {
                   </div>
 
                   <div className="pet-info-subsection__field">
-                    <label htmlFor="sex">Sexo</label>
-                    <select
-                      id="sex"
-                      {...register('sex', {
+                    <Controller
+                      name="sex"
+                      control={control}
+                      rules={{
                         maxLength: {
                           value: 20,
                           message: 'El sexo no puede exceder 20 caracteres',
                         },
-                      })}
-                      className={errors.sex ? 'input-error' : ''}
-                    >
-                      <option value="">Seleccione...</option>
-                      <option value="Macho">Macho</option>
-                      <option value="Hembra">Hembra</option>
-                    </select>
-                    {errors.sex && (
-                      <span className="error-message">
-                        {errors.sex.message}
-                      </span>
-                    )}
+                      }}
+                      render={({ field }) => (
+                        <>
+                          <Select
+                            label="Sexo"
+                            value={field.value || null}
+                            onChange={(value) => field.onChange(value || '')}
+                            options={[
+                              { value: 'Macho', label: 'Macho' },
+                              { value: 'Hembra', label: 'Hembra' },
+                            ]}
+                            placeholder="Seleccione..."
+                          />
+                          {errors.sex && (
+                            <span className="error-message">
+                              {errors.sex.message}
+                            </span>
+                          )}
+                        </>
+                      )}
+                    />
                   </div>
 
                   <div className="pet-info-subsection__field">

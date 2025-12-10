@@ -36,28 +36,6 @@
   font-size: 1.2rem;
 }
 
-.filter-select {
-  padding: 0.75rem 1rem;
-  border: 1px solid var(--color-text-secondary);
-  border-radius: 8px;
-  background: var(--color-absolute);
-  font-size: 1rem;
-  color: var(--color-text);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  min-width: 200px;
-
-  &:hover {
-    border-color: var(--color-primary);
-  }
-
-  &:focus {
-    outline: none;
-    border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.1);
-  }
-}
-
 .sort-button {
   padding: 0.75rem 1rem;
   border: 1px solid #ddd;

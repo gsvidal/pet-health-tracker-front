@@ -31,6 +31,7 @@ export const useReminderForm = ({
     reset,
     setValue,
     watch,
+    control,
   } = useForm<ReminderFormState>({
     mode: 'onChange',
     defaultValues: {
@@ -138,5 +139,6 @@ export const useReminderForm = ({
     watch,
     setValue,
     isSubmitting,
+    control,
   };
 };

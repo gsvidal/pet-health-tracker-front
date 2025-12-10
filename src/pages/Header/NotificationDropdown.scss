@@ -1,185 +1,186 @@
 .notification-dropdown {
-    position: relative;
+  position: relative;
 
-    &__trigger {
-        position: relative;
+  &__trigger {
+    position: relative;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    color: var(--color-text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s;
+
+    &:hover {
+      color: var(--color-primary);
+    }
+  }
+
+  &__badge {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 8px;
+    height: 8px;
+    background-color: var(--color-error);
+    border-radius: 50%;
+    border: 2px solid var(--color-absolute);
+  }
+
+  &__menu {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    right: 0;
+    width: 380px;
+    background: var(--color-absolute);
+    border: 1px solid var(--color-text-secondary);
+    border-radius: 12px;
+    box-shadow: var(--shadow-lg);
+    z-index: 1000;
+    overflow: hidden;
+
+    &-header {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      h3 {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--color-text);
+      }
+
+      span {
+        font-size: 0.875rem;
+        color: var(--color-text-secondary);
+      }
+    }
+
+    &-body {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    &-footer {
+      padding: 0.75rem 1.25rem;
+      border-top: 1px solid var(--color-border);
+      text-align: center;
+
+      button {
         background: none;
         border: none;
+        color: var(--color-primary);
+        font-weight: 600;
         cursor: pointer;
-        padding: 0.5rem;
-        color: #64748b;
+        font-size: 0.875rem;
+        padding: 0.25rem 0.5rem;
+        transition: opacity 0.2s;
+
+        &:hover {
+          opacity: 0.8;
+        }
+      }
+    }
+  }
+
+  &__item {
+    padding: 1rem 1.25rem;
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    border-bottom: 1px solid var(--color-border);
+    transition: background-color 0.2s;
+    cursor: pointer;
+
+    &:hover {
+      background-color: var(--color-bg);
+    }
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+
+      &--vaccine {
+        background-color: #f3e8ff;
+        color: #9333ea;
+      }
+
+      &--food {
+        background-color: #dcfce7;
+        color: #16a34a;
+      }
+
+      &--medicine {
+        background-color: #dbeafe;
+        color: #2563eb;
+      }
+
+      &--vet {
+        background-color: #fee2e2;
+        color: #dc2626;
+      }
+    }
+
+    &-content {
+      flex: 1;
+      min-width: 0;
+
+      h4 {
+        margin: 0 0 0.25rem 0;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--color-text);
         display: flex;
         align-items: center;
-        justify-content: center;
-        transition: color 0.2s;
+        gap: 0.5rem;
+      }
 
-        &:hover {
-            color: var(--color-primary);
-        }
-    }
-
-    &__badge {
-        position: absolute;
-        top: 4px;
-        right: 4px;
-        width: 8px;
-        height: 8px;
-        background-color: #ef4444;
-        border-radius: 50%;
-        border: 2px solid white;
-    }
-
-    &__menu {
-        position: absolute;
-        top: calc(100% + 0.5rem);
-        right: 0;
-        width: 380px;
-        background: white;
-        border-radius: 12px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-        z-index: 1000;
+      p {
+        margin: 0 0 0.25rem 0;
+        font-size: 0.8rem;
+        color: var(--color-text-secondary);
+        line-height: 1.4;
         overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+      }
 
-        &-header {
-            padding: 1rem 1.25rem;
-            border-bottom: 1px solid #e2e8f0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-
-            h3 {
-                margin: 0;
-                font-size: 1rem;
-                font-weight: 600;
-                color: #1e293b;
-            }
-
-            span {
-                font-size: 0.875rem;
-                color: #64748b;
-            }
-        }
-
-        &-body {
-            max-height: 400px;
-            overflow-y: auto;
-        }
-
-        &-footer {
-            padding: 0.75rem 1.25rem;
-            border-top: 1px solid #e2e8f0;
-            text-align: center;
-
-            button {
-                background: none;
-                border: none;
-                color: var(--color-primary);
-                font-weight: 600;
-                cursor: pointer;
-                font-size: 0.875rem;
-                padding: 0.25rem 0.5rem;
-                transition: opacity 0.2s;
-
-                &:hover {
-                    opacity: 0.8;
-                }
-            }
-        }
+      span {
+        font-size: 0.75rem;
+        color: var(--color-text-secondary);
+      }
     }
 
-    &__item {
-        padding: 1rem 1.25rem;
-        display: flex;
-        gap: 0.75rem;
-        align-items: flex-start;
-        border-bottom: 1px solid #f1f5f9;
-        transition: background-color 0.2s;
-        cursor: pointer;
-
-        &:hover {
-            background-color: #f8fafc;
-        }
-
-        &:last-child {
-            border-bottom: none;
-        }
-
-        &-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-
-            &--vaccine {
-                background-color: #f3e8ff;
-                color: #9333ea;
-            }
-
-            &--food {
-                background-color: #dcfce7;
-                color: #16a34a;
-            }
-
-            &--medicine {
-                background-color: #dbeafe;
-                color: #2563eb;
-            }
-
-            &--vet {
-                background-color: #fee2e2;
-                color: #dc2626;
-            }
-        }
-
-        &-content {
-            flex: 1;
-            min-width: 0;
-
-            h4 {
-                margin: 0 0 0.25rem 0;
-                font-size: 0.875rem;
-                font-weight: 600;
-                color: #1e293b;
-                display: flex;
-                align-items: center;
-                gap: 0.5rem;
-            }
-
-            p {
-                margin: 0 0 0.25rem 0;
-                font-size: 0.8rem;
-                color: #64748b;
-                line-height: 1.4;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                display: -webkit-box;
-                -webkit-line-clamp: 2;
-                line-clamp: 2;
-                -webkit-box-orient: vertical;
-            }
-
-            span {
-                font-size: 0.75rem;
-                color: #94a3b8;
-            }
-        }
-
-        &-dot {
-            width: 6px;
-            height: 6px;
-            background-color: #ef4444;
-            border-radius: 50%;
-            flex-shrink: 0;
-        }
+    &-dot {
+      width: 6px;
+      height: 6px;
+      background-color: var(--color-error);
+      border-radius: 50%;
+      flex-shrink: 0;
     }
+  }
 
-    &__empty {
-        padding: 2rem 1.25rem;
-        text-align: center;
-        color: #94a3b8;
-        font-size: 0.875rem;
-    }
+  &__empty {
+    padding: 2rem 1.25rem;
+    text-align: center;
+    color: var(--color-text-secondary);
+    font-size: 0.875rem;
+  }
 }

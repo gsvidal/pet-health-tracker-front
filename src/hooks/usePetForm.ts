@@ -32,6 +32,7 @@ export const usePetForm = ({
     formState: { errors, isValid, isDirty },
     reset,
     watch,
+    control,
   } = useForm<PetFormState>({
     mode: 'onChange',
     defaultValues: {
@@ -104,5 +105,6 @@ export const usePetForm = ({
     onSubmit,
     handleCancel,
     watch,
+    control,
   };
 };

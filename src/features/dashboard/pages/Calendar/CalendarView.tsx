@@ -17,6 +17,7 @@ import {
 } from '../../../../store/calendar.store';
 import { usePetStore } from '../../../../store/pet.store';
 import { PRIVATE_ROUTES } from '../../../../config/routes';
+import { Select } from '../../../../components/Select';
 import './CalendarView.scss';
 
 const DAYS_OF_WEEK = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
@@ -143,40 +144,33 @@ export const CalendarView = () => {
           <h1>Calendario de eventos</h1>
           {/* Filtros */}
           <div className="calendar-view__filters">
-            <div className="calendar-view__filter-group">
-              <label>
-                <Filter size={16} />
-                Filtrar por tipo de evento
-              </label>
-              <select
-                value={filterType}
-                onChange={(e) => setFilterType(e.target.value)}
-              >
-                <option value="all">Todos los eventos</option>
-                <option value="vaccine">Vacunaciones</option>
-                <option value="deworming">Desparasitación</option>
-                <option value="vet_visit">Visitas Veterinarias</option>
-                <option value="nutrition">Nutrición</option>
-              </select>
-            </div>
+            <Select
+              label="Filtrar por tipo de evento"
+              value={filterType}
+              onChange={(value) => setFilterType(value || 'all')}
+              options={[
+                { value: 'all', label: 'Todos los eventos' },
+                { value: 'vaccine', label: 'Vacunaciones' },
+                { value: 'deworming', label: 'Desparasitación' },
+                { value: 'vet_visit', label: 'Visitas Veterinarias' },
+                { value: 'nutrition', label: 'Nutrición' },
+              ]}
+              placeholder="Todos los eventos"
+            />
 
-            <div className="calendar-view__filter-group">
-              <label>
-                <Filter size={16} />
-                Filtrar por mascota
-              </label>
-              <select
-                value={filterPet}
-                onChange={(e) => setFilterPet(e.target.value)}
-              >
-                <option value="all">Todas las mascotas</option>
-                {availablePets.map((petName) => (
-                  <option key={petName} value={petName}>
-                    {petName}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <Select
+              label="Filtrar por mascota"
+              value={filterPet}
+              onChange={(value) => setFilterPet(value || 'all')}
+              options={[
+                { value: 'all', label: 'Todas las mascotas' },
+                ...availablePets.map((petName) => ({
+                  value: petName,
+                  label: petName,
+                })),
+              ]}
+              placeholder="Todas las mascotas"
+            />
           </div>
 
           <div className="calendar-view__grid">

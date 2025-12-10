@@ -20,7 +20,8 @@
     // transition: all var(--transition);
 
     &:hover {
-      border-color: var(--color-primary);
+      background-color: var(--color-primary-bg);
+      border-color: var(--color-primary-opac50);
       box-shadow: var(--shadow-md);
       // transform: translateY(-2px);
     }

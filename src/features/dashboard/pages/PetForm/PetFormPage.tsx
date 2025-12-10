@@ -7,10 +7,10 @@ import type {
   PetFormState,
 } from '../../../../adapters/pet.adapter';
 import { Button } from '../../../../components/Button/Button';
+import { Select } from '../../../../components/Select';
 
 export function CreatePetForm() {
   const { createPet, loading } = usePetStore();
-
 
   const [formData, setFormData] = useState<PetFormState>({
     name: '',
@@ -91,23 +91,22 @@ export function CreatePetForm() {
           <div className="field-row">
             {/* Especie obligatoria */}
             <div className="field">
-              <label>
-                Especie <span className="required">*</span>
-              </label>
-              <select
-                name="species"
-                value={formData.species}
-                onChange={handleChange}
-                required
-              >
-                <option value="">Selecciona una especie</option>
-                <option value="perro">Perro</option>
-                <option value="gato">Gato</option>
-                <option value="ave">Ave</option>
-                <option value="conejo">Conejo</option>
-                <option value="hamster">Hamster</option>
-                <option value="otro">Otro</option>
-              </select>
+              <Select
+                label="Especie"
+                value={formData.species || null}
+                onChange={(value) =>
+                  setFormData({ ...formData, species: value || '' })
+                }
+                options={[
+                  { value: 'perro', label: 'Perro' },
+                  { value: 'gato', label: 'Gato' },
+                  { value: 'ave', label: 'Ave' },
+                  { value: 'conejo', label: 'Conejo' },
+                  { value: 'hamster', label: 'Hamster' },
+                  { value: 'otro', label: 'Otro' },
+                ]}
+                placeholder="Selecciona una especie"
+              />
             </div>
 
             {/* Raza */}
@@ -124,12 +123,18 @@ export function CreatePetForm() {
           </div>
 
           <div className="field">
-            <label>Sexo</label>
-            <select name="sex" value={formData.sex} onChange={handleChange}>
-              <option value="">Selecciona una opción</option>
-              <option value="macho">Macho</option>
-              <option value="hembra">Hembra</option>
-            </select>
+            <Select
+              label="Sexo"
+              value={formData.sex || null}
+              onChange={(value) =>
+                setFormData({ ...formData, sex: value || '' })
+              }
+              options={[
+                { value: 'macho', label: 'Macho' },
+                { value: 'hembra', label: 'Hembra' },
+              ]}
+              placeholder="Selecciona una opción"
+            />
           </div>
         </div>
 
