@@ -9,20 +9,21 @@ import type {
 import { Button } from '../../../../components/Button/Button';
 import { Select } from '../../../../components/Select';
 
+const initialFormState: PetFormState = {
+  name: '',
+  species: '',
+  breed: '',
+  sex: '',
+  birthDate: '',
+  weightKg: '0.0',
+  photoUrl: '',
+  notes: '',
+};
+
 export function CreatePetForm() {
   const { createPet, loading } = usePetStore();
 
-  const [formData, setFormData] = useState<PetFormState>({
-    name: '',
-    species: '',
-    breed: '',
-    sex: '',
-    birthDate: '',
-    ageYears: '',
-    weightKg: '0.0',
-    photoUrl: '',
-    notes: '',
-  });
+  const [formData, setFormData] = useState<PetFormState>(initialFormState);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -41,15 +42,21 @@ export function CreatePetForm() {
       species: formData.species,
       breed: formData.breed || null,
       birthDate: formData.birthDate || null,
-      ageYears: formData.ageYears ? Number(formData.ageYears) : null,
+      ageYears: null, // El backend calcula la edad automáticamente
       weightKg: formData.weightKg,
       sex: formData.sex || null,
       photoUrl: formData.photoUrl || null,
       notes: formData.notes || null,
     };
 
-    await createPet(payload);
-    // El store maneja errores y toasts
+    try {
+      await createPet(payload);
+      // Limpiar formulario después de crear exitosamente
+      setFormData(initialFormState);
+    } catch (error) {
+      // El store ya maneja errores y toasts
+      // No limpiar el formulario si hay error
+    }
   };
 
   return (
@@ -142,27 +149,24 @@ export function CreatePetForm() {
         <div className="section">
           <h3>Detalles Físicos</h3>
 
-          <div className="field-row">
-            <div className="field">
-              <label>Fecha de Nacimiento</label>
-              <input
-                type="date"
-                name="birthDate"
-                value={formData.birthDate}
-                onChange={handleChange}
-              />
-            </div>
-
-            <div className="field">
-              <label>Edad (años)</label>
-              <input
-                type="number"
-                name="ageYears"
-                placeholder="Ej: 3"
-                value={formData.ageYears}
-                onChange={handleChange}
-              />
-            </div>
+          <div className="field">
+            <label>Fecha de Nacimiento</label>
+            <input
+              type="date"
+              name="birthDate"
+              value={formData.birthDate}
+              onChange={handleChange}
+            />
+            <small
+              style={{
+                color: '#666',
+                fontSize: '0.85rem',
+                display: 'block',
+                marginTop: '0.25rem',
+              }}
+            >
+              La edad se calculará automáticamente
+            </small>
           </div>
 
           <div className="field">

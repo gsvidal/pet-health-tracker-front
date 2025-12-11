@@ -39,6 +39,7 @@ export interface PetFormData {
 /**
  * Estado del formulario (valores como strings para inputs de React)
  * Se convierte a PetFormData antes de enviar
+ * Nota: ageYears no se incluye porque el backend lo calcula automáticamente
  */
 export interface PetFormState {
   name: string;
@@ -46,7 +47,6 @@ export interface PetFormState {
   breed: string;
   sex: string;
   birthDate: string;
-  ageYears: string;
   weightKg: string;
   photoUrl: string;
   notes: string;
@@ -126,9 +126,10 @@ export function adaptPetToPetRequest(pet: PetFormData): PetRequest {
       pet.birthDate && pet.birthDate.trim() !== '' ? pet.birthDate : null;
   }
 
-  if (pet.ageYears !== undefined) {
-    request.age_years = pet.ageYears !== null ? pet.ageYears : null;
-  }
+  // ageYears no se envía porque el backend lo calcula automáticamente desde birthDate
+  // if (pet.ageYears !== undefined) {
+  //   request.age_years = pet.ageYears !== null ? pet.ageYears : null;
+  // }
 
   if (pet.weightKg !== undefined) {
     request.weight_kg =

@@ -14,6 +14,11 @@ import type { PetHealthSummary } from '../adapters/pet.adapter';
 import { uploadPetProfilePhoto } from '../services/petPhoto.service';
 import { adaptPetResponseToPet } from '../adapters/pet.adapter';
 import { callApi } from '../utils/apiHelper';
+import {
+  uploadPetDocument as uploadPetDocumentService,
+  getPetDocuments,
+  type PetDocument,
+} from '../services/pet.service';
 
 interface PetState {
   pets: Pet[];
@@ -21,6 +26,8 @@ interface PetState {
   loading: boolean;
   error: string | null;
   mockMode: boolean;
+  documents: PetDocument[];
+  documentsLoading: boolean;
 
   // Acciones
   fetchPets: () => Promise<void>;
@@ -34,6 +41,13 @@ interface PetState {
   // mockPets: () => void;
   updatePet: (id: string, petData: PetFormData) => Promise<void>;
   getPetHealthStatus: (petId: string) => Promise<PetHealthSummary | null>;
+  uploadPetDocument: (
+    petId: string,
+    file: File,
+    documentCategory: string,
+    description?: string | null,
+  ) => Promise<void>;
+  fetchPetDocuments: (petId: string, category?: string | null) => Promise<void>;
   // setMockMode: (value: boolean) => void;
 }
 
@@ -43,6 +57,8 @@ export const usePetStore = create<PetState>((set, get) => ({
   loading: false,
   error: null,
   mockMode: false,
+  documents: [],
+  documentsLoading: false,
   // setMockMode: (value) => set({ mockMode: value }),
 
   fetchPets: async () => {
@@ -59,8 +75,15 @@ export const usePetStore = create<PetState>((set, get) => ({
 
     const pets = petsResponse.map(adaptPetResponseToPet);
 
+    // Ordenar por fecha de creación descendente (más recientes primero)
+    const sortedPets = pets.sort((a, b) => {
+      const dateA = new Date(a.createdAt).getTime();
+      const dateB = new Date(b.createdAt).getTime();
+      return dateB - dateA; // Descendente
+    });
+
     set({
-      pets,
+      pets: sortedPets,
       loading: false,
       error: null,
     });
@@ -106,9 +129,9 @@ export const usePetStore = create<PetState>((set, get) => ({
 
     const newPet = adaptPetResponseToPet(petResponse);
 
-    // Agregar la nueva mascota al estado
+    // Agregar la nueva mascota al principio del array (más reciente primero)
     set((state) => ({
-      pets: [...state.pets, newPet],
+      pets: [newPet, ...state.pets],
       loading: false,
       error: null,
     }));
@@ -280,5 +303,68 @@ export const usePetStore = create<PetState>((set, get) => ({
     }
 
     return healthSummary;
+  },
+
+  uploadPetDocument: async (
+    petId: string,
+    file: File,
+    documentCategory: string,
+    description?: string | null,
+  ) => {
+    set({ loading: true, error: null });
+
+    const { data: uploadResponse, error } = await callApi(() =>
+      uploadPetDocumentService(petId, file, documentCategory, description),
+    );
+
+    if (error || !uploadResponse) {
+      const message = error || 'Error al subir el documento';
+      toast.error(message);
+      set({
+        error: message,
+        loading: false,
+      });
+      return;
+    }
+
+    // Agregar el nuevo documento al estado
+    const newDocument: PetDocument = {
+      id: uploadResponse.photo_id || undefined,
+      photo_id: uploadResponse.photo_id || undefined,
+      url: uploadResponse.url,
+      document_category: uploadResponse.document_category || null,
+      file_type: uploadResponse.file_type,
+      file_size_bytes: uploadResponse.size,
+    };
+
+    set((state) => ({
+      documents: [...state.documents, newDocument],
+      loading: false,
+      error: null,
+    }));
+
+    toast.success('Documento subido correctamente 📄');
+  },
+
+  fetchPetDocuments: async (petId: string, category?: string | null) => {
+    set({ documentsLoading: true, error: null });
+
+    const { data: documents, error } = await callApi(() =>
+      getPetDocuments(petId, category),
+    );
+
+    if (error || !documents) {
+      const message = error || 'Error al obtener documentos';
+      // No mostrar toast para evitar spam, solo log
+      console.error(message);
+      set({ documents: [], documentsLoading: false, error: message });
+      return;
+    }
+
+    set({
+      documents,
+      documentsLoading: false,
+      error: null,
+    });
   },
 }));

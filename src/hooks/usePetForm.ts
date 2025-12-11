@@ -8,7 +8,6 @@ export interface PetFormState {
   species: string;
   breed: string;
   birthDate: string;
-  ageYears: string;
   weightKg: string;
   sex: string;
   photoUrl: string;
@@ -40,7 +39,6 @@ export const usePetForm = ({
       species: '',
       breed: '',
       birthDate: '',
-      ageYears: '',
       weightKg: '',
       sex: '',
       photoUrl: '',
@@ -59,7 +57,6 @@ export const usePetForm = ({
         birthDate: editingPet.birthDate
           ? editingPet.birthDate.split('T')[0]
           : '',
-        ageYears: editingPet.ageYears ? String(editingPet.ageYears) : '',
         weightKg: editingPet.weightKg ? String(editingPet.weightKg) : '',
         sex: editingPet.sex || '',
         photoUrl: editingPet.photoUrl || '',
@@ -76,7 +73,7 @@ export const usePetForm = ({
       species: data.species.trim(),
       breed: data.breed.trim() || null,
       birthDate: data.birthDate.trim() || null,
-      ageYears: data.ageYears.trim() ? Number(data.ageYears) : null,
+      ageYears: null, // El backend calcula la edad automáticamente
       weightKg: data.weightKg.trim() || null,
       sex: data.sex.trim() || null,
       photoUrl: data.photoUrl.trim() || null,

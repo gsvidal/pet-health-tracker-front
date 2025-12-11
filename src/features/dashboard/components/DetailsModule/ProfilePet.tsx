@@ -147,7 +147,14 @@ export const ProfilePet = ({
         </p>
         <div className="profile-stats">
           <div>
-            <strong>Edad:</strong> <p>{pet.ageYears} años</p>
+            <strong>Edad:</strong>{' '}
+            <p>
+              {pet.ageYears
+                ? pet.ageYears === 1
+                  ? '1 año'
+                  : `${pet.ageYears} años`
+                : '—'}
+            </p>
           </div>
           <div>
             <strong>Peso:</strong> <p>{pet.weightKg} kg</p>

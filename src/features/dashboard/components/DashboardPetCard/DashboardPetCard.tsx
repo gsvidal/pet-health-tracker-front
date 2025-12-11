@@ -186,7 +186,11 @@ export const DashboardPetCard = ({
           <div className="dashboard-pet-card__info-item">
             <span className="dashboard-pet-card__label">Edad</span>
             <span className="dashboard-pet-card__value">
-              {pet.ageYears ? `${pet.ageYears} años` : 'N/A'}
+              {pet.ageYears
+                ? pet.ageYears === 1
+                  ? '1 año'
+                  : `${pet.ageYears} años`
+                : 'N/A'}
             </span>
           </div>
           <div className="dashboard-pet-card__info-item">
@@ -286,8 +290,6 @@ export const DashboardPetCard = ({
           Ver Detalles
         </Button>
       </div>
-
-
     </>
   );
 };
