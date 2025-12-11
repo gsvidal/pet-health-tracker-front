@@ -20,6 +20,7 @@ import { CreatePetForm } from './features/dashboard/pages/PetForm/PetFormPage';
 import { DetailsPage } from './features/dashboard/pages/Details/DetailsPage';
 import { GalleryModal } from './features/dashboard/pages/Gallery/GalleryModal';
 import { DocumentModal } from './features/dashboard/pages/Documents/DocumentModal';
+import { AiVetAssistant } from './components/AiVetAssistant';
 import ResetPasswordPage from './features/dashboard/pages/Reset/ResetPage';
 import { ActivityLogs } from './features/audit-logs/pages/ActivityLogs/ActivityLogs';
 import { useThemeStore } from './store/theme.store';
@@ -147,6 +148,7 @@ function App() {
       />
       <GalleryModal />
       <DocumentModal />
+      <AiVetAssistant />
     </>
   );
 }

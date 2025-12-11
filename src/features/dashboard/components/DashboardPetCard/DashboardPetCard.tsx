@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { usePetHealthStatus } from '../../../../hooks/usePetHealthStatus';
 import { ModalText } from '../../../../components/Modal/ModalText';
 import { useState } from 'react';
-import { formatDateLocal } from '../../../../utils/dateUtils';
+import { formatDateLocal, formatPetAge } from '../../../../utils/dateUtils';
 import type { HealthStatusData } from '../../../../utils/healthStatus';
 import type { PetHealthSummary } from '../../../../adapters/pet.adapter';
 interface DashboardPetCardProps {
@@ -186,11 +186,7 @@ export const DashboardPetCard = ({
           <div className="dashboard-pet-card__info-item">
             <span className="dashboard-pet-card__label">Edad</span>
             <span className="dashboard-pet-card__value">
-              {pet.ageYears
-                ? pet.ageYears === 1
-                  ? '1 año'
-                  : `${pet.ageYears} años`
-                : 'N/A'}
+              {formatPetAge(pet.ageYears)}
             </span>
           </div>
           <div className="dashboard-pet-card__info-item">

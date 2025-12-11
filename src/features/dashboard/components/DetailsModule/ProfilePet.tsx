@@ -10,6 +10,7 @@ import type { PetHealthSummary } from '../../../../adapters/pet.adapter';
 import { Button } from '../../../../components/Button/Button';
 import { useGalleryModalStore } from '../../../../store/gallery.store';
 import { getPetPhotos } from '../../../../services/pet.service';
+import { formatPetAge } from '../../../../utils/dateUtils';
 import toast from 'react-hot-toast';
 
 interface ProfilePetProps {
@@ -147,14 +148,7 @@ export const ProfilePet = ({
         </p>
         <div className="profile-stats">
           <div>
-            <strong>Edad:</strong>{' '}
-            <p>
-              {pet.ageYears
-                ? pet.ageYears === 1
-                  ? '1 año'
-                  : `${pet.ageYears} años`
-                : '—'}
-            </p>
+            <strong>Edad:</strong> <p>{formatPetAge(pet.ageYears)}</p>
           </div>
           <div>
             <strong>Peso:</strong> <p>{pet.weightKg} kg</p>

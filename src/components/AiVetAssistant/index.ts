@@ -1,0 +1,1 @@
+export { AiVetAssistant } from './AiVetAssistant';

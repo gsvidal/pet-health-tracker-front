@@ -8,6 +8,7 @@ import { Select } from '../../../../components/Select';
 import { FaRegEdit, FaCalendarAlt, FaFileAlt } from 'react-icons/fa';
 import { FileText } from 'lucide-react';
 import { useDocumentModalStore } from '../../../../store/documentModal.store';
+import { formatPetAge } from '../../../../utils/dateUtils';
 import './PetInfoSection.scss';
 
 interface PetInfoSectionProps {
@@ -341,13 +342,7 @@ export default function PetInfoSection({ pet }: PetInfoSectionProps) {
             </div>
             <div className="info-item">
               <label>Edad</label>
-              <p>
-                {pet.ageYears
-                  ? pet.ageYears === 1
-                    ? '1 año'
-                    : `${pet.ageYears} años`
-                  : '—'}
-              </p>
+              <p>{formatPetAge(pet.ageYears)}</p>
             </div>
             <div className="info-item">
               <label>Peso</label>
