@@ -77,8 +77,8 @@ export const usePetStore = create<PetState>((set, get) => ({
 
     // Ordenar por fecha de creación descendente (más recientes primero)
     const sortedPets = pets.sort((a, b) => {
-      const dateA = new Date(a.createdAt).getTime();
-      const dateB = new Date(b.createdAt).getTime();
+      const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+      const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
       return dateB - dateA; // Descendente
     });
 
@@ -328,10 +328,15 @@ export const usePetStore = create<PetState>((set, get) => ({
     }
 
     // Agregar el nuevo documento al estado
+    const photoId = uploadResponse.photo_id || `temp-${Date.now()}`;
     const newDocument: PetDocument = {
-      id: uploadResponse.photo_id || undefined,
-      photo_id: uploadResponse.photo_id || undefined,
+      id: photoId,
+      pet_id: petId,
       url: uploadResponse.url,
+      key: uploadResponse.key,
+      size: uploadResponse.size,
+      last_modified: new Date().toISOString(),
+      photo_id: uploadResponse.photo_id || undefined,
       document_category: uploadResponse.document_category || null,
       file_type: uploadResponse.file_type,
       file_size_bytes: uploadResponse.size,

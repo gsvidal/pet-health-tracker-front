@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { RefreshCw } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 import {
   Syringe,
   Utensils,

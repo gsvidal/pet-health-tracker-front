@@ -1,22 +1,18 @@
 import { useState, useEffect } from 'react';
 import {
-  ArrowLeft,
   ChevronLeft,
   ChevronRight,
   Calendar as CalendarIcon,
-  Filter,
   Syringe,
   Pill,
   Stethoscope,
   Utensils,
 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 import {
   useCalendarStore,
   type EventType,
 } from '../../../../store/calendar.store';
 import { usePetStore } from '../../../../store/pet.store';
-import { PRIVATE_ROUTES } from '../../../../config/routes';
 import { Select } from '../../../../components/Select';
 import './CalendarView.scss';
 
@@ -51,7 +47,6 @@ const eventLabels: Record<EventType, string> = {
 };
 
 export const CalendarView = () => {
-  const navigate = useNavigate();
   const { events, fetchEvents } = useCalendarStore();
   const { pets, fetchPets } = usePetStore();
   const [currentDate, setCurrentDate] = useState(new Date(2025, 11, 1)); // Diciembre 2025

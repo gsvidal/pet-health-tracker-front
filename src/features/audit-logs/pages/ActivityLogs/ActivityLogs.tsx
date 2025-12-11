@@ -19,7 +19,6 @@ import {
   LuStethoscope,
   LuPill,
   LuBell,
-  LuSearch,
   LuArrowUpDown,
 } from 'react-icons/lu';
 import { Button } from '../../../../components/Button/Button';

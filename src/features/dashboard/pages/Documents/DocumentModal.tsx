@@ -1,6 +1,5 @@
 import './DocumentModal.scss';
 import { useDocumentModalStore } from '../../../../store/documentModal.store';
-import { usePetStore } from '../../../../store/pet.store';
 import {
   uploadPetDocument as uploadPetDocumentService,
   getPetDocuments,
@@ -10,12 +9,10 @@ import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { Button } from '../../../../components/Button/Button';
 import { Select, type SelectOption } from '../../../../components/Select';
-import { Loader } from '../../../../components/Loader/Loader';
 
 export const DocumentModal = () => {
   const { isOpen, close, petId, mode, documents, current } =
     useDocumentModalStore();
-  const { fetchPetDocuments } = usePetStore();
 
   const [file, setFile] = useState<File | null>(null);
   const [documentCategory, setDocumentCategory] = useState<string | null>(null);
