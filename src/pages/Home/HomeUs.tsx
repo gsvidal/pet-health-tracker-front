@@ -10,63 +10,65 @@ export const HomeUs = () => {
   return (
     <>
       <section className="section-1" id="nosotros">
-        <div className="image-container">
-          <img
-            src="https://images.unsplash.com/photo-1710322928695-c7fb49886cb1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx2ZXRlcmluYXJ5JTIwY2FyZXxlbnwxfHx8fDE3NjI4MDQwNjd8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
-            width="500"
-            alt="Un gato pardo mirando en el veterinario"
-          />
-        </div>
-        <div className="content">
-          <div className="badge">Sobre Nosotros</div>
-          <h2 className="content-title">
-            Gestiona la salud y bienestar de tus mascotas desde un solo lugar
-          </h2>
-          <p>
-            Pet Health Tracker nació para resolver la necesidad de los dueños de
-            mascotas de tener un control centralizado sobre la salud y bienestar
-            de sus compañeros. Desarrollamos una solución digital completa que
-            simplifica el registro de vacunación, alimentación, citas
-            veterinarias y recordatorios.
-          </p>
-          <p>
-            Nuestra plataforma está construida con estándares de seguridad
-            robustos, arquitectura escalable y una experiencia de usuario
-            mobile-first que prioriza la simplicidad y la eficiencia en cada
-            interacción.
-          </p>
-          <ul className="home__us-feats">
-            <li className="home__us-feat">
-              <span className="home__us-icon">
-                <CircleCheck color="#be185d" />
-              </span>
-              <strong>Estamos en todos tus dispositivos</strong>
-              <p>
-                Diseño intuito para tu smartphone, tablet, laptop o computadora
-                de escritorio
-              </p>
-            </li>
-            <li className="home__us-feat">
-              <span className="home__us-icon">
-                <CircleCheck color="#be185d" />
-              </span>
-              <strong>Performance Superior</strong>
-              <p>
-                Respuesta ágil incluso con múltiples registros y perfiles de
-                mascotas
-              </p>
-            </li>
-            <li className="home__us-feat">
-              <span className="home__us-icon">
-                <CircleCheck color="#be185d" />
-              </span>
-              <strong>Escalabilidad Garantizada</strong>
-              <p>
-                Preparado para integrar wearables y seguimiento de actividad
-                física
-              </p>
-            </li>
-          </ul>
+        <div className="container container--homeus">
+          <div className="image-container">
+            <img
+              src="https://images.unsplash.com/photo-1710322928695-c7fb49886cb1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx2ZXRlcmluYXJ5JTIwY2FyZXxlbnwxfHx8fDE3NjI4MDQwNjd8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+              width="500"
+              alt="Un gato pardo mirando en el veterinario"
+            />
+          </div>
+          <div className="content">
+            <div className="badge">Sobre Nosotros</div>
+            <h2 className="content-title">
+              Gestiona la salud y bienestar de tus mascotas desde un solo lugar
+            </h2>
+            <p>
+              Pet Health Tracker nació para resolver la necesidad de los dueños
+              de mascotas de tener un control centralizado sobre la salud y
+              bienestar de sus compañeros. Desarrollamos una solución digital
+              completa que simplifica el registro de vacunación, alimentación,
+              citas veterinarias y recordatorios.
+            </p>
+            <p>
+              Nuestra plataforma está construida con estándares de seguridad
+              robustos, arquitectura escalable y una experiencia de usuario
+              mobile-first que prioriza la simplicidad y la eficiencia en cada
+              interacción.
+            </p>
+            <ul className="home__us-feats">
+              <li className="home__us-feat">
+                <span className="home__us-icon">
+                  <CircleCheck color="#be185d" />
+                </span>
+                <strong>Estamos en todos tus dispositivos</strong>
+                <p>
+                  Diseño intuito para tu smartphone, tablet, laptop o
+                  computadora de escritorio
+                </p>
+              </li>
+              <li className="home__us-feat">
+                <span className="home__us-icon">
+                  <CircleCheck color="#be185d" />
+                </span>
+                <strong>Performance Superior</strong>
+                <p>
+                  Respuesta ágil incluso con múltiples registros y perfiles de
+                  mascotas
+                </p>
+              </li>
+              <li className="home__us-feat">
+                <span className="home__us-icon">
+                  <CircleCheck color="#be185d" />
+                </span>
+                <strong>Escalabilidad Garantizada</strong>
+                <p>
+                  Preparado para integrar wearables y seguimiento de actividad
+                  física
+                </p>
+              </li>
+            </ul>
+          </div>
         </div>
       </section>
       <section className="section-2">
@@ -83,7 +85,7 @@ export const HomeUs = () => {
             </p>
             <div className="buttons-container">
               <Button
-                variant="outline"
+                variant="secondary"
                 onClick={() => navigate(PUBLIC_ROUTES.REGISTER)}
               >
                 Crear Cuenta Gratuita
@@ -92,7 +94,7 @@ export const HomeUs = () => {
               {/* <Button>Explorar Demo</Button> */}
             </div>
             <div className="avatars">
-              <span className="avatar"></span>
+              <span className="avatar avatar--1"></span>
               <span className="avatar avatar--2"></span>
               <span className="avatar avatar--3"></span>
               <span className="avatar avatar--4"></span>

@@ -1,0 +1,67 @@
+.theme-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  transition: all var(--transition);
+  outline: none;
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+    border-radius: var(--radius-md);
+  }
+
+  .theme-toggle-track {
+    position: relative;
+    width: 40px;
+    height: 24px;
+    background: var(--color-primary-bg);
+    border-radius: 12px;
+    transition: background-color var(--transition);
+    display: flex;
+    align-items: center;
+    padding: 3px;
+
+    &.dark {
+      background: var(--color-primary);
+    }
+  }
+
+  .theme-toggle-thumb {
+    position: absolute;
+    // left: -6px;
+    width: 19px;
+    height: 19px;
+    background: var(--color-absolute);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text);
+    box-shadow: var(--shadow-sm);
+    transition:
+      transform var(--transition),
+      background-color var(--transition);
+    transform: translateX(0);
+
+    svg {
+      transition: color var(--transition);
+    }
+  }
+
+  .theme-toggle-track.dark .theme-toggle-thumb {
+    transform: translateX(15px);
+    color: var(--color-primary);
+  }
+
+  &:hover .theme-toggle-track {
+    background: var(--color-primary-bg-hover);
+  }
+
+  &:hover .theme-toggle-track.dark {
+    background: var(--color-primary-hover);
+  }
+}

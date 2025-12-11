@@ -105,7 +105,7 @@ export const PetVaccinationSubsection: React.FC<
       {/* Sección 1: Registro de Vacunación */}
       <div className="vaccination-section-card pet-section-card pet-section-card--vaccination">
         <div className="vaccination-subsection__header">
-          <div className="vaccination-subsection__title">
+         <div className="vaccination-subsection__title">
             <h3>Registro de Vacunación</h3>
             <p>Gestiona el historial de vacunas de {pet.name}</p>
           </div>

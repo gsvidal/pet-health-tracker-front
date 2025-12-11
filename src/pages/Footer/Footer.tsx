@@ -1,15 +1,13 @@
-import { Heart } from 'lucide-react';
 import { LuFacebook, LuInstagram, LuLinkedin, LuTwitter } from 'react-icons/lu';
-//import "./Home.scss";
 
 export const Footer = () => {
   return (
     <>
-      <div id="contacto" className="footer">
+      <div id="contacto" className="container footer">
         <div className="footer__left">
           <div className="logo">
             <div className="logo-icon">
-              <Heart className="h-6 w-6 text-white" fill="white" />
+              <img src="/paw.svg" alt="Pet Health Tracker" />
             </div>
             <span className="logo-text">Pet Health Tracker</span>
           </div>

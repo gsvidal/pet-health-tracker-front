@@ -5,18 +5,15 @@
   z-index: 50;
   min-width: 100%;
   border-bottom: 1px solid var(--color-border);
-  background-color: rgba(255, 255, 255, 0.95);
+  background-color: var(--color-absolute);
   backdrop-filter: blur(8px);
-  transition: background-color var(--transition);
 
   .container {
-    max-width: var(--container-lg);
     margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
     height: 64px;
-    padding: 0 var(--space-md);
     position: relative;
   }
 
@@ -39,7 +36,18 @@
         var(--color-gradient-start),
         var(--color-gradient-end)
       );
+
+      img {
+        width: 24px;
+        height: 24px;
+        object-fit: contain;
+        filter: brightness(0) invert(1); // Convierte el SVG negro a blanco
+      }
+    //   background: linear-gradient(to bottom right,
+    //       var(--color-gradient-start),
+    //       var(--color-gradient-end));
     }
+
 
     .logo-text {
       font-size: 2rem;
@@ -101,17 +109,19 @@
         color: var(--color-text);
       }
     }
+
     .link--dashboard {
       color: var(--color-primary);
+
       &:hover {
         color: var(--color-primary-hover);
       }
     }
 
     .btn-wrapper {
-      // display: flex;
-      // align-items: center;
-      // gap: var(--space-md);
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
       margin-left: var(--space-sm);
     }
   }
@@ -119,7 +129,7 @@
   /* ========================
      RESPONSIVE (Mobile)
   =========================*/
-  @media (max-width: 768px) {
+  @media (max-width: 850px) {
     .logo {
       width: 100%;
       justify-content: space-between;
@@ -149,6 +159,7 @@
         display: flex;
         opacity: 1;
         transform: translateY(0);
+        border-bottom: 1px solid var(--color-border);
       }
 
       a {

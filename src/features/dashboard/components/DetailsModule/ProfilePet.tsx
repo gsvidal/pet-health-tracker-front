@@ -2,17 +2,40 @@ import './ProfilePet.scss';
 import type { Pet } from '../../../../models/pet.model';
 import { useRef, useState } from 'react';
 import { FaEdit, FaSpinner } from 'react-icons/fa';
+import { Upload, Images } from 'lucide-react';
 import { usePetStore } from '../../../../store/pet.store';
+import { usePetHealthStatus } from '../../../../hooks/usePetHealthStatus';
+import type { HealthStatusData } from '../../../../utils/healthStatus';
+import type { PetHealthSummary } from '../../../../adapters/pet.adapter';
+import { Button } from '../../../../components/Button/Button';
+import { useGalleryModalStore } from '../../../../store/gallery.store';
+import { getPetPhotos } from '../../../../services/pet.service';
+import { formatPetAge } from '../../../../utils/dateUtils';
+import toast from 'react-hot-toast';
 
 interface ProfilePetProps {
   pet: Pet;
+  healthStatusData?: HealthStatusData & {
+    loading: boolean;
+    summary: PetHealthSummary | null;
+  };
 }
 
-export const ProfilePet = ({ pet }: ProfilePetProps) => {
+export const ProfilePet = ({
+  pet,
+  healthStatusData: propHealthStatusData,
+}: ProfilePetProps) => {
   const photoUrl = pet.photoUrl || '/default-pet.png';
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
   const { uploadPetPhoto, loading } = usePetStore();
+  const hookHealthStatus = usePetHealthStatus({
+    petId: pet.id,
+  });
+
+  // Usar el prop si está disponible, sino usar el hook
+  const { status, loading: healthLoading } =
+    propHealthStatusData || hookHealthStatus;
 
   const handleEditClick = () => {
     fileInputRef.current?.click();
@@ -55,6 +78,9 @@ export const ProfilePet = ({ pet }: ProfilePetProps) => {
     }
   };
 
+  const openUpload = useGalleryModalStore((s) => s.openUpload);
+  const openView = useGalleryModalStore((s) => s.openView);
+
   return (
     <div className="profile-pet-card">
       <div className="profile-avatar-wrapper">
@@ -62,7 +88,9 @@ export const ProfilePet = ({ pet }: ProfilePetProps) => {
           {pet.photoUrl ? (
             <img src={photoUrl} alt={pet.name} className="pet-profile-photo" />
           ) : (
-            <div className="avatar-initial">{pet.name?.[0].toLocaleUpperCase() ?? '?'}</div>
+            <div className="avatar-initial">
+              {pet.name?.[0].toLocaleUpperCase() ?? '?'}
+            </div>
           )}
         </div>
         <button
@@ -87,6 +115,32 @@ export const ProfilePet = ({ pet }: ProfilePetProps) => {
           aria-label="Seleccionar foto de perfil"
         />
       </div>
+      <div className="profile-pet-card__actions">
+        <Button
+          variant="outline"
+          // className="profile-action-btn profile-action-btn--upload"
+          onClick={() => openUpload(pet.id)}
+        >
+          <Upload size={18} style={{ marginRight: '1rem' }} />
+          <span>Subir imágenes</span>
+        </Button>
+
+        <Button
+          // className="profile-action-btn profile-action-btn--gallery"
+          variant="outline"
+          onClick={async () => {
+            const photos = await getPetPhotos(pet.id);
+            if (!photos || photos.length === 0) {
+              toast.error('No hay fotos en la galería 📁');
+              return;
+            }
+            openView(pet.id, photos);
+          }}
+        >
+          <Images size={18} style={{ marginRight: '1rem' }} />
+          <span>Ver galería</span>
+        </Button>
+      </div>
       <div className="profile-info">
         <h2>{pet.name}</h2>
         <p>
@@ -94,7 +148,7 @@ export const ProfilePet = ({ pet }: ProfilePetProps) => {
         </p>
         <div className="profile-stats">
           <div>
-            <strong>Edad:</strong> <p>{pet.ageYears} años</p>
+            <strong>Edad:</strong> <p>{formatPetAge(pet.ageYears)}</p>
           </div>
           <div>
             <strong>Peso:</strong> <p>{pet.weightKg} kg</p>
@@ -104,7 +158,19 @@ export const ProfilePet = ({ pet }: ProfilePetProps) => {
           </div>
           <div>
             <strong>Estado:</strong>
-            <span className="health-badge">Saludable</span>
+            <span
+              className={`health-badge health-badge--${
+                healthLoading
+                  ? 'loading'
+                  : status === 'Saludable'
+                    ? 'saludable'
+                    : status === 'Atención Requerida'
+                      ? 'atencion-requerida'
+                      : 'revision-necesaria'
+              }`}
+            >
+              {healthLoading ? 'Cargando...' : status}
+            </span>
           </div>
         </div>
       </div>

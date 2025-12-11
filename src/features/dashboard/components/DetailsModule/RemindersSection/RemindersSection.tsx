@@ -1,9 +1,11 @@
 import { useState } from 'react';
+import { Controller } from 'react-hook-form';
 import type { Reminder } from '../../../../../models/reminder.model';
 import { useReminderForm } from '../../../../../hooks/useReminderForm';
 import { useReminderCrud } from '../../../../../hooks/useReminderCrud';
 import { Button } from '../../../../../components/Button/Button';
 import { Loader } from '../../../../../components/Loader/Loader';
+import { Select } from '../../../../../components/Select';
 import {
   FaCalendarAlt,
   FaClock,
@@ -38,6 +40,7 @@ export const RemindersSection: React.FC<RemindersSectionProps> = ({
     reminders,
     loading: crudLoading,
     error: crudError,
+    isCreating,
     createReminder,
     updateReminder,
     deleteReminder,
@@ -55,6 +58,8 @@ export const RemindersSection: React.FC<RemindersSectionProps> = ({
     isValid,
     onSubmit,
     handleCancel,
+    isSubmitting,
+    control,
     // watch,
     // setValue,
   } = useReminderForm({
@@ -272,23 +277,34 @@ export const RemindersSection: React.FC<RemindersSectionProps> = ({
                 {/* Columna Derecha */}
                 <div className="reminders-section__form-column">
                   <div className="reminders-section__field">
-                    <label htmlFor="frequency">Frecuencia</label>
-                    <select
-                      id="frequency"
-                      {...register('frequency')}
-                      className={errors.frequency ? 'input-error' : ''}
-                    >
-                      <option value="once">Una vez</option>
-                      <option value="daily">Diario</option>
-                      <option value="weekly">Semanal</option>
-                      <option value="monthly">Mensual</option>
-                      <option value="yearly">Anual</option>
-                    </select>
-                    {errors.frequency && (
-                      <span className="error-message">
-                        {errors.frequency.message}
-                      </span>
-                    )}
+                    <Controller
+                      name="frequency"
+                      control={control}
+                      render={({ field }) => (
+                        <>
+                          <Select
+                            label="Frecuencia"
+                            value={field.value || null}
+                            onChange={(value) =>
+                              field.onChange(value || 'once')
+                            }
+                            options={[
+                              { value: 'once', label: 'Una vez' },
+                              { value: 'daily', label: 'Diario' },
+                              { value: 'weekly', label: 'Semanal' },
+                              { value: 'monthly', label: 'Mensual' },
+                              { value: 'yearly', label: 'Anual' },
+                            ]}
+                            placeholder="Seleccione frecuencia"
+                          />
+                          {errors.frequency && (
+                            <span className="error-message">
+                              {errors.frequency.message}
+                            </span>
+                          )}
+                        </>
+                      )}
+                    />
                   </div>
 
                   <div className="reminders-section__field">
@@ -335,10 +351,14 @@ export const RemindersSection: React.FC<RemindersSectionProps> = ({
               <div className="reminders-section__form-actions">
                 <Button
                   type="submit"
-                  disabled={loading || !isValid}
+                  disabled={loading || !isValid || isSubmitting || isCreating}
                   variant="primary"
                 >
-                  {editingReminder ? 'Actualizar' : 'Guardar'}
+                  {isSubmitting
+                    ? 'Guardando...'
+                    : editingReminder
+                      ? 'Actualizar'
+                      : 'Guardar'}
                 </Button>
                 <Button
                   type="button"

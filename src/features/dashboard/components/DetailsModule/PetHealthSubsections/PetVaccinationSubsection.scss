@@ -1,200 +1,20 @@
+@use './PetHealthSubsection.scss' as *;
+
+// Estilos específicos de Vacunación
 .vaccination-subsection {
-  &__header {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    // margin-bottom: 1.5rem;
-
-    @media (min-width: 768px) {
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    h3 {
-      margin: 0 0 0.5rem 0;
-      color: #333;
-      font-size: 1.5rem;
-    }
-
-    p {
-      margin: 0;
-      color: #666;
-      font-size: 1.1rem;
-    }
-  }
-
-  &__add-btn {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  &__form-section {
-    margin-top: 2rem;
-    padding-top: 2rem;
-    border-top: 1px solid #eaeaea;
-
-    h4 {
-      margin: 0 0 1.5rem 0;
-      color: #333;
-      font-size: 1.2rem;
-    }
-  }
-
-  &__form {
-    .required {
-      color: #dc3545;
-    }
-  }
-
-  &__form-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-    margin-bottom: 1.5rem;
-
-    @media (max-width: 768px) {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  &__form-column {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-
-  &__field {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-
-    label {
-      font-weight: 600;
-      color: #333;
-      font-size: 0.9rem;
-    }
-
-    input,
-    textarea {
-      width: 100%;
-      padding: 0.75rem;
-      border: 2px solid #ddd;
-      border-radius: 8px;
-      font-size: 1rem;
-      transition: border-color 0.3s;
-      font-family: inherit;
-
-      &:focus {
-        outline: none;
-        border-color: #7b3bff;
-      }
-
-      &.input-error {
-        border-color: #dc3545;
-      }
-    }
-
-    textarea {
-      resize: vertical;
-      min-height: 100px;
-    }
-
-    .error-message {
-      color: #dc3545;
-      font-size: 0.85rem;
-      margin-top: -0.25rem;
-    }
-  }
-
-  .input-with-icon {
-    position: relative;
-
-    .input-icon {
-      position: absolute;
-      left: 0.75rem;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #666;
-      font-size: 1rem;
-    }
-
-    input,
-    textarea {
-      padding-left: 2.5rem;
-    }
-  }
-
-  &__form-actions {
-    display: flex;
-    gap: 1rem;
-    margin-top: 2rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid #eaeaea;
-  }
-
-  .server-error {
-    background: #f8d7da;
-    color: #721c24;
-    padding: 1rem;
-    border-radius: 8px;
-    margin-bottom: 1rem;
-
-    p {
-      margin: 0;
-    }
-  }
-
-  // Historial de Vacunación
-  &__history-header {
-    margin-bottom: 2rem;
-
-    > div:first-child {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      margin-bottom: 0.5rem;
-
-      .history-icon {
-        color: #7b3bff;
-        font-size: 1.5rem;
-      }
-
-      h3 {
-        margin: 0;
-        color: #333;
-        font-size: 1.5rem;
-      }
-    }
-
-    > p {
-      margin: 0;
-      color: #666;
-      font-size: 1.1rem;
-    }
-  }
-
-  &__loading,
-  &__empty {
-    text-align: center;
-    padding: 3rem;
-    color: #666;
-    font-size: 1.2rem;
-  }
-
-  &__vaccines-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-
+  // Estilos específicos de cards de vacunación
   &__vaccine-card {
-    background: #f8f9fa;
-    border: 1px solid #eaeaea;
-    border-radius: 12px;
+    background: var(--color-absolute);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
     padding: 1.5rem;
+    margin-bottom: 1.5rem;
     position: relative;
+    transition: all var(--transition);
+
+    &:hover {
+      box-shadow: var(--shadow-sm);
+    }
 
     .vaccine-card__header {
       display: flex;
@@ -209,13 +29,13 @@
       gap: 0.75rem;
 
       .vaccine-icon {
-        color: #7b3bff;
+        color: var(--color-primary);
         font-size: 1.25rem;
       }
 
       h4 {
         margin: 0;
-        color: #333;
+        color: var(--color-text);
         font-size: 1.1rem;
       }
     }
@@ -230,22 +50,22 @@
       border: none;
       cursor: pointer;
       padding: 0.5rem;
-      border-radius: 6px;
-      color: #666;
-      transition: all 0.3s;
+      border-radius: var(--radius-md);
+      color: var(--color-text-secondary);
+      transition: all var(--transition);
       display: flex;
       align-items: center;
       justify-content: center;
 
       &:hover {
-        background: #f0f0f0;
-        color: #8200db;
+        background: var(--color-bg);
+        color: var(--color-primary);
       }
 
       &--delete {
         &:hover {
-          background: #fee;
-          color: #dc3545;
+          background: var(--color-error-light);
+          color: var(--color-error-text);
         }
       }
     }
@@ -253,15 +73,15 @@
     .vaccine-card__badge {
       display: inline-block;
       padding: 0.25rem 0.75rem;
-      border-radius: 12px;
+      border-radius: var(--radius-sm);
       font-size: 0.75rem;
       font-weight: 600;
       text-transform: uppercase;
       margin-bottom: 1rem;
 
       &--expired {
-        background: #fee;
-        color: #dc3545;
+        background: var(--color-error-light);
+        color: var(--color-error-text);
       }
     }
 
@@ -277,7 +97,7 @@
       align-items: flex-start;
 
       .detail-icon {
-        color: #7b3bff;
+        color: var(--color-primary);
         margin-top: 0.25rem;
         flex-shrink: 0;
       }
@@ -285,14 +105,14 @@
       label {
         display: block;
         font-weight: 600;
-        color: #666;
+        color: var(--color-text-secondary);
         font-size: 0.85rem;
         margin-bottom: 0.25rem;
       }
 
       p {
         margin: 0;
-        color: #333;
+        color: var(--color-text);
         font-size: 1.1rem;
       }
 

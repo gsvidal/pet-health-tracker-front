@@ -56,10 +56,14 @@ apiClient.interceptors.response.use(
           // Limpiar localStorage manualmente
           localStorage.removeItem('auth-storage');
 
-          // Redirigir al home
-          setTimeout(() => {
-            window.location.href = '/';
-          }, 100);
+          // Guardar mensaje en sessionStorage para mostrarlo después de redirigir
+          sessionStorage.setItem(
+            'session-expired-message',
+            'Tu sesión expiró, ingresa de nuevo por favor',
+          );
+
+          // Redirigir al home inmediatamente
+          window.location.href = '/';
         } catch (err) {
           console.error('Error en logout automático:', err);
         } finally {

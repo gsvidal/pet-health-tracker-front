@@ -1,9 +1,14 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { Controller } from 'react-hook-form';
 import type { Pet } from '../../../../models/pet.model';
 import { usePetStore } from '../../../../store/pet.store';
 import { usePetForm } from '../../../../hooks/usePetForm';
 import { Button } from '../../../../components/Button/Button';
+import { Select } from '../../../../components/Select';
 import { FaRegEdit, FaCalendarAlt, FaFileAlt } from 'react-icons/fa';
+import { FileText } from 'lucide-react';
+import { useDocumentModalStore } from '../../../../store/documentModal.store';
+import { formatPetAge } from '../../../../utils/dateUtils';
 import './PetInfoSection.scss';
 
 interface PetInfoSectionProps {
@@ -13,18 +18,34 @@ interface PetInfoSectionProps {
 export default function PetInfoSection({ pet }: PetInfoSectionProps) {
   const [isEditing, setIsEditing] = useState(false);
   const updatePet = usePetStore((s) => s.updatePet);
-  const { loading, error } = usePetStore();
+  const { loading, error, fetchPetDocuments, documents } = usePetStore();
+  const openDocumentUpload = useDocumentModalStore((s) => s.openUpload);
+  const openDocumentView = useDocumentModalStore((s) => s.openView);
 
-  const { register, handleSubmit, errors, isValid, onSubmit, handleCancel } =
-    usePetForm({
-      editingPet: isEditing ? pet : null,
-      onSave: async (data) => {
-        await updatePet(pet.id, data);
-      },
-      onSuccess: () => {
-        setIsEditing(false);
-      },
-    });
+  // Cargar documentos al montar
+  useEffect(() => {
+    fetchPetDocuments(pet.id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pet.id]);
+
+  const {
+    register,
+    handleSubmit,
+    errors,
+    isValid,
+    isDirty,
+    onSubmit,
+    handleCancel,
+    control,
+  } = usePetForm({
+    editingPet: isEditing ? pet : null,
+    onSave: async (data) => {
+      await updatePet(pet.id, data);
+    },
+    onSuccess: () => {
+      setIsEditing(false);
+    },
+  });
 
   const handleEditClick = () => {
     setIsEditing(true);
@@ -44,10 +65,39 @@ export default function PetInfoSection({ pet }: PetInfoSectionProps) {
             <p>Detalles completos de tu mascota</p>
           </div>
           {!isEditing && (
-            <Button variant="primary" onClick={handleEditClick}>
-              <FaRegEdit style={{ marginRight: '4px' }} size={12} />{' '}
-              <span style={{ fontSize: '1.2rem' }}>Editar Información</span>
-            </Button>
+            <div className="pet-info-subsection__header-actions">
+              <Button
+                variant="outline"
+                onClick={() => openDocumentUpload(pet.id)}
+              >
+                <FileText size={18} style={{ marginRight: '0.5rem' }} />
+                <span>Subir documentos</span>
+              </Button>
+              {documents.length > 0 && (
+                <Button
+                  variant="outline"
+                  onClick={async () => {
+                    // Recargar documentos para asegurar que estén actualizados
+                    await fetchPetDocuments(pet.id);
+                    // Usar el estado actualizado del store
+                    const updatedDocuments = usePetStore.getState().documents;
+                    if (updatedDocuments.length > 0) {
+                      openDocumentView(pet.id, updatedDocuments);
+                    } else {
+                      // Si no hay documentos después de recargar, usar los que ya tenemos
+                      openDocumentView(pet.id, documents);
+                    }
+                  }}
+                >
+                  <FileText size={18} style={{ marginRight: '0.5rem' }} />
+                  <span>Ver documentos ({documents.length})</span>
+                </Button>
+              )}
+              <Button variant="primary" onClick={handleEditClick}>
+                <FaRegEdit style={{ marginRight: '4px' }} size={12} />{' '}
+                <span style={{ fontSize: '1.2rem' }}>Editar Información</span>
+              </Button>
+            </div>
           )}
         </div>
 
@@ -149,32 +199,6 @@ export default function PetInfoSection({ pet }: PetInfoSectionProps) {
                       </span>
                     )}
                   </div>
-
-                  <div className="pet-info-subsection__field">
-                    <label htmlFor="ageYears">Edad (años)</label>
-                    <input
-                      id="ageYears"
-                      type="number"
-                      min="0"
-                      placeholder="Ej: 3"
-                      {...register('ageYears', {
-                        validate: (value) => {
-                          if (!value) return true; // Opcional
-                          const num = Number(value);
-                          if (isNaN(num) || num < 0) {
-                            return 'La edad debe ser un número válido';
-                          }
-                          return true;
-                        },
-                      })}
-                      className={errors.ageYears ? 'input-error' : ''}
-                    />
-                    {errors.ageYears && (
-                      <span className="error-message">
-                        {errors.ageYears.message}
-                      </span>
-                    )}
-                  </div>
                 </div>
 
                 {/* Columna Derecha */}
@@ -207,26 +231,35 @@ export default function PetInfoSection({ pet }: PetInfoSectionProps) {
                   </div>
 
                   <div className="pet-info-subsection__field">
-                    <label htmlFor="sex">Sexo</label>
-                    <select
-                      id="sex"
-                      {...register('sex', {
+                    <Controller
+                      name="sex"
+                      control={control}
+                      rules={{
                         maxLength: {
                           value: 20,
                           message: 'El sexo no puede exceder 20 caracteres',
                         },
-                      })}
-                      className={errors.sex ? 'input-error' : ''}
-                    >
-                      <option value="">Seleccione...</option>
-                      <option value="Macho">Macho</option>
-                      <option value="Hembra">Hembra</option>
-                    </select>
-                    {errors.sex && (
-                      <span className="error-message">
-                        {errors.sex.message}
-                      </span>
-                    )}
+                      }}
+                      render={({ field }) => (
+                        <>
+                          <Select
+                            label="Sexo"
+                            value={field.value || null}
+                            onChange={(value) => field.onChange(value || '')}
+                            options={[
+                              { value: 'Macho', label: 'Macho' },
+                              { value: 'Hembra', label: 'Hembra' },
+                            ]}
+                            placeholder="Seleccione..."
+                          />
+                          {errors.sex && (
+                            <span className="error-message">
+                              {errors.sex.message}
+                            </span>
+                          )}
+                        </>
+                      )}
+                    />
                   </div>
 
                   <div className="pet-info-subsection__field">
@@ -272,7 +305,7 @@ export default function PetInfoSection({ pet }: PetInfoSectionProps) {
               <div className="pet-info-subsection__form-actions">
                 <Button
                   type="submit"
-                  disabled={loading || !isValid}
+                  disabled={loading || !isValid || !isDirty}
                   variant="primary"
                 >
                   Actualizar Registro
@@ -309,7 +342,7 @@ export default function PetInfoSection({ pet }: PetInfoSectionProps) {
             </div>
             <div className="info-item">
               <label>Edad</label>
-              <p>{pet.ageYears ? `${pet.ageYears} años` : '—'}</p>
+              <p>{formatPetAge(pet.ageYears)}</p>
             </div>
             <div className="info-item">
               <label>Peso</label>

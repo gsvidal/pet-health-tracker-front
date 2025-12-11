@@ -1,7 +1,7 @@
 import './Button.scss';
 
-type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'danger' ;
-type ButtonSize = 'sm' | 'md' | 'lg';
+type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'danger' | 'ghost';
+type ButtonSize = 'sm' | 'md' | 'lg' | 'icon';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
@@ -15,11 +15,12 @@ export const Button: React.FC<ButtonProps> = ({
   size = 'md',
   fullWidth = false,
   disabled = false,
+  className = '',
   ...props
 }) => {
   return (
     <button
-      className={`btn btn--${variant} btn--${size} ${fullWidth ? 'btn--full' : ''}`}
+      className={`btn btn--${variant} btn--${size} ${fullWidth ? 'btn--full' : ''} ${className}`}
       disabled={disabled}
       {...props}
     >

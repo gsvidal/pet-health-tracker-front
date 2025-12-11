@@ -57,6 +57,12 @@ a {
   max-width: var(--container-lg);
   margin: 0 auto;
   padding: 0 var(--space-md);
+  @media (min-width: 768px) {
+    padding: 0 var(--space-lg);
+  }
+  @media (min-width: 1280px) {
+    padding: 0 var(--space-xl);
+  }
 }
 
 /* ===== UTILITY CLASSES ===== */
@@ -73,16 +79,86 @@ ul {
 }
 
 .pet-section-card {
-  background: white;
+  background: var(--color-absolute);
   margin-top: 20px;
   padding: 30px;
   border-radius: 14px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
-  border: 1px solid #eaeaea;
+  border: 1px solid var(--color-border-opac25);
 }
 
 .flex-center {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+/* ===== GLOBAL INPUT STYLES FOR DATE AND TIME ===== */
+/* Ocultar iconos nativos del navegador y hacer inputs clickeables */
+input[type='date'],
+input[type='time'] {
+  cursor: pointer;
+  position: relative;
+  isolation: isolate; // Crea un nuevo contexto de apilamiento
+
+  // Ocultar el icono nativo del navegador (WebKit/Chrome)
+  // Hacer que cubra todo el input para que sea clickeable en cualquier parte
+  &::-webkit-calendar-picker-indicator {
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    z-index: 1;
+    pointer-events: auto;
+  }
+
+  // Ocultar el icono nativo del navegador (Firefox)
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  // Ocultar el icono nativo del navegador (Edge)
+  &::-ms-clear,
+  &::-ms-reveal {
+    display: none;
+  }
+}
+
+// Asegurar que otros inputs no tengan isolation y no se vean afectados
+input:not([type='date']):not([type='time']),
+select,
+textarea {
+  position: static;
+  isolation: auto;
+}
+
+/* ===== AUTOFILL/AUTOCOMPLETE STYLES ===== */
+/* Sobrescribir colores del autofill del navegador para mantener modo oscuro */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-internal-autofill-selected {
+  // Usar box-shadow para simular el color de fondo (el navegador no aplica !important a box-shadow)
+  -webkit-box-shadow: 0 0 0 1000px var(--color-bg) inset !important;
+  box-shadow: 0 0 0 1000px var(--color-bg) inset !important;
+
+  // Mantener el color del texto
+  -webkit-text-fill-color: var(--color-text) !important;
+  color: var(--color-text) !important;
+
+  // Transición para resetear después del autofill
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+// Para inputs en modo focus con autofill
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px var(--color-absolute) inset !important;
+  box-shadow: 0 0 0 1000px var(--color-absolute) inset !important;
+  -webkit-text-fill-color: var(--color-text) !important;
+  color: var(--color-text) !important;
 }

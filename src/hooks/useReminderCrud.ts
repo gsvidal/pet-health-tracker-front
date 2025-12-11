@@ -1,6 +1,9 @@
 import { useReminderStore } from '../store/reminder.store';
-import type { UpdateReminderRequest, ReminderFormRequest } from '../types/reminder.type';
-import { useEffect } from 'react';
+import type {
+  UpdateReminderRequest,
+  ReminderFormRequest,
+} from '../types/reminder.type';
+import { useEffect, useRef } from 'react';
 
 interface UseReminderCrudProps {
   petId?: string | null;
@@ -18,6 +21,7 @@ export const useReminderCrud = ({
     selectedReminder,
     loading,
     error,
+    isCreating,
     fetchReminders,
     fetchReminderById,
     createReminder,
@@ -28,9 +32,12 @@ export const useReminderCrud = ({
     getReminderById,
   } = useReminderStore();
 
-  // Cargar recordatorios al montar
+  const hasFetchedRef = useRef(false);
+
+  // Cargar recordatorios al montar (solo una vez)
   useEffect(() => {
-    if (autoFetch) {
+    if (autoFetch && !hasFetchedRef.current) {
+      hasFetchedRef.current = true;
       fetchReminders(petId, isActive);
     }
   }, [petId, isActive, autoFetch, fetchReminders]);
@@ -39,7 +46,8 @@ export const useReminderCrud = ({
   const handleCreate = async (data: ReminderFormRequest) => {
     try {
       await createReminder(data);
-      // Refrescar lista después de crear
+      // Refrescar lista después de crear para obtener datos actualizados del servidor
+      // Esto asegura que tenemos la versión más reciente y evita duplicados
       await fetchReminders(petId, isActive);
     } catch (err) {
       // Error ya manejado en el store
@@ -96,6 +104,7 @@ export const useReminderCrud = ({
     selectedReminder,
     loading,
     error,
+    isCreating,
 
     // Acciones CRUD
     fetchReminders,
@@ -112,4 +121,3 @@ export const useReminderCrud = ({
     handleSelectReminder,
   };
 };
-

@@ -92,3 +92,107 @@ export const combineDateAndTimeToISO = (
   // Convertir a ISO string (UTC)
   return localDate.toISOString();
 };
+
+/**
+ * Formatea una fecha a tiempo relativo en español
+ * @param dateString - Fecha en formato ISO string
+ * @returns String formateado (ej: "Hace 5 minutos", "Hace 2 horas", "Hace 3 días")
+ */
+export const formatRelativeTime = (dateString: string): string => {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+
+  if (diffInSeconds < 60) {
+    return 'Hace unos momentos';
+  }
+
+  const diffInMinutes = Math.floor(diffInSeconds / 60);
+  if (diffInMinutes < 60) {
+    return `Hace ${diffInMinutes} ${diffInMinutes === 1 ? 'minuto' : 'minutos'}`;
+  }
+
+  const diffInHours = Math.floor(diffInMinutes / 60);
+  if (diffInHours < 24) {
+    return `Hace ${diffInHours} ${diffInHours === 1 ? 'hora' : 'horas'}`;
+  }
+
+  const diffInDays = Math.floor(diffInHours / 24);
+  if (diffInDays < 30) {
+    return `Hace ${diffInDays} ${diffInDays === 1 ? 'día' : 'días'}`;
+  }
+
+  const diffInMonths = Math.floor(diffInDays / 30);
+  if (diffInMonths < 12) {
+    return `Hace ${diffInMonths} ${diffInMonths === 1 ? 'mes' : 'meses'}`;
+  }
+
+  // Si es muy antiguo, mostrar fecha completa
+  return formatDateTimeLocal(dateString);
+};
+
+/**
+ * Convierte años decimales a años y meses con precisión ±1 mes
+ * Si los meses son muy pocos (< 0.5 meses ≈ 15 días), se redondean a 0
+ * @param ageYears - Edad en años (puede ser decimal)
+ * @returns Objeto con años y meses calculados
+ */
+export const convertAgeYearsToAgeYearsWithMonths = (
+  ageYears: number,
+): { years: number; months: number } => {
+  // Obtener años enteros
+  const years = Math.floor(ageYears);
+
+  // Calcular meses restantes (decimal * 12)
+  const decimalPart = ageYears - years;
+  const monthsDecimal = decimalPart * 12;
+
+  // Redondear meses con precisión ±1 mes
+  // Si los meses están muy cerca de 0 (< 0.5 meses ≈ 15 días), redondear a 0
+  let months = Math.round(monthsDecimal);
+
+  // Si está muy cerca de 0 meses (menos de ~15 días), redondear a 0
+  if (monthsDecimal < 0.5) {
+    months = 0;
+  }
+
+  // Si redondeamos a 12 meses, convertir a 1 año adicional
+  if (months >= 12) {
+    return { years: years + 1, months: 0 };
+  }
+
+  return { years, months };
+};
+
+/**
+ * Formatea la edad de una mascota mostrando años y meses
+ * @param ageYears - Edad en años (puede ser decimal)
+ * @returns String formateado (ej: "1 año y 6 meses", "3 años y 9 meses", "1 año")
+ */
+export const formatPetAge = (ageYears: number | null | undefined): string => {
+  if (!ageYears && ageYears !== 0) {
+    return '—';
+  }
+
+  const { years, months } = convertAgeYearsToAgeYearsWithMonths(ageYears);
+
+  // Si no hay años ni meses
+  if (years === 0 && months === 0) {
+    return '—';
+  }
+
+  // Construir el string
+  const yearsText = years === 0 ? '' : years === 1 ? '1 año' : `${years} años`;
+
+  const monthsText =
+    months === 0 ? '' : months === 1 ? '1 mes' : `${months} meses`;
+
+  // Combinar años y meses
+  if (years > 0 && months > 0) {
+    return `${yearsText} y ${monthsText}`;
+  } else if (years > 0) {
+    return yearsText;
+  } else {
+    return monthsText;
+  }
+};

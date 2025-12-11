@@ -1,9 +1,12 @@
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/auth.store';
 import type { RegisterRequest } from '../types/auth.type';
+import { PUBLIC_ROUTES } from '../config/routes';
 
 export const useRegister = () => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -34,6 +37,10 @@ export const useRegister = () => {
         password: data.password,
       });
       reset();
+      // Redirigir a la página de confirmación
+      navigate(PUBLIC_ROUTES.CHECK_EMAIL_VERIFY, {
+        state: { email: data.email },
+      });
     } catch (err) {
       console.error('Error en registro:', err);
     }

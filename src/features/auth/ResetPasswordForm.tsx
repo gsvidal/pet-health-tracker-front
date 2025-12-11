@@ -27,11 +27,11 @@ const ResetPasswordForm: React.FC<Props> = ({ token }) => {
 
   useEffect(() => {
     if (success) {
-      setTimeout(() => {
+      // setTimeout(() => {
         navigate(PUBLIC_ROUTES.LOGIN);
-      }, 3000);
+      // }, 3000);
     }
-  }, [success, navigate]);
+  }, [success]);
 
   return (
     <div className="reset-container">

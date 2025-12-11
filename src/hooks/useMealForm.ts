@@ -32,6 +32,7 @@ export const useMealForm = ({
     reset,
     watch,
     setValue,
+    control,
   } = useForm<MealFormState>({
     mode: 'onChange',
     defaultValues: {
@@ -107,6 +108,6 @@ export const useMealForm = ({
     handleCancel,
     watch,
     setValue,
+    control,
   };
 };
-

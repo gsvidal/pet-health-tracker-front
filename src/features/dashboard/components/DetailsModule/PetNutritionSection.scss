@@ -12,13 +12,13 @@
 
     h3 {
       margin: 0 0 0.5rem 0;
-      color: #333;
+      color: var(--color-text);
       font-size: 1.5rem;
     }
 
     p {
       margin: 0;
-      color: #666;
+      color: var(--color-text-secondary);
       font-size: 1.1rem;
     }
   }
@@ -32,18 +32,18 @@
   &__form-section {
     margin-top: 2rem;
     padding-top: 2rem;
-    border-top: 1px solid #eaeaea;
+    border-top: 1px solid var(--color-border);
 
     h4 {
       margin: 0 0 1.5rem 0;
-      color: #333;
+      color: var(--color-text);
       font-size: 1.2rem;
     }
   }
 
   &__form {
     .required {
-      color: #dc3545;
+      color: var(--color-error);
     }
   }
 
@@ -71,34 +71,36 @@
 
     label {
       font-weight: 600;
-      color: #333;
+      color: var(--color-text);
       font-size: 0.9rem;
     }
 
     input,
-    textarea,
-    select {
+    textarea {
       width: 100%;
       padding: 0.75rem;
-      border: 2px solid #ddd;
-      border-radius: 8px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
       font-size: 1rem;
-      transition: border-color 0.3s;
+      background: var(--color-bg);
+      color: var(--color-text);
+      transition: all var(--transition);
       font-family: inherit;
+
+      &::placeholder {
+        color: var(--color-text-secondary);
+      }
 
       &:focus {
         outline: none;
-        border-color: #7b3bff;
+        border-color: var(--color-primary);
+        background: var(--color-absolute);
+        box-shadow: 0 0 0 3px var(--color-primary-opac50);
       }
 
       &.input-error {
-        border-color: #dc3545;
+        border-color: var(--color-error);
       }
-    }
-
-    select {
-      cursor: pointer;
-      background-color: white;
     }
 
     textarea {
@@ -107,7 +109,7 @@
     }
 
     .error-message {
-      color: #dc3545;
+      color: var(--color-error);
       font-size: 0.85rem;
       margin-top: -0.25rem;
     }
@@ -121,13 +123,32 @@
       left: 0.75rem;
       top: 50%;
       transform: translateY(-50%);
-      color: #666;
+      color: var(--color-text-secondary);
       font-size: 1rem;
+      z-index: 1;
+      pointer-events: none;
     }
 
     input,
     textarea {
       padding-left: 2.5rem;
+    }
+
+    // Estilos específicos para campos de fecha y hora
+    input[type='date'],
+    input[type='time'] {
+      cursor: pointer;
+
+      // Ocultar el icono nativo del navegador
+      &::-webkit-calendar-picker-indicator {
+        opacity: 0;
+        position: absolute;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+        z-index: 2;
+      }
     }
   }
 
@@ -136,14 +157,14 @@
     gap: 1rem;
     margin-top: 2rem;
     padding-top: 1.5rem;
-    border-top: 1px solid #eaeaea;
+    border-top: 1px solid var(--color-border);
   }
 
   .server-error {
-    background: #f8d7da;
-    color: #721c24;
+    background: var(--color-error-light);
+    color: var(--color-error-text);
     padding: 1rem;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     margin-bottom: 1rem;
 
     p {
@@ -162,20 +183,20 @@
       margin-bottom: 0.5rem;
 
       .history-icon {
-        color: #7b3bff;
+        color: var(--color-primary);
         font-size: 1.5rem;
       }
 
       h3 {
         margin: 0;
-        color: #333;
+        color: var(--color-text);
         font-size: 1.5rem;
       }
     }
 
     > p {
       margin: 0;
-      color: #666;
+      color: var(--color-text-secondary);
       font-size: 1.1rem;
     }
   }
@@ -184,7 +205,7 @@
   &__empty {
     text-align: center;
     padding: 3rem;
-    color: #666;
+    color: var(--color-text-secondary);
     font-size: 1.2rem;
   }
 
@@ -201,20 +222,20 @@
       gap: 1rem;
       margin-bottom: 1rem;
       padding-bottom: 0.75rem;
-      border-bottom: 1px solid #eaeaea;
+      border-bottom: 1px solid var(--color-border);
 
       .day-group__title {
         font-size: 1.2rem;
         font-weight: 600;
-        color: #333;
+        color: var(--color-text);
       }
 
       .day-group__count {
         font-size: 0.9rem;
-        background: #f5f5f5;
+        background: var(--color-bg);
         padding: 0.25rem 0.75rem;
-        border-radius: 12px;
-        color: #666;
+        border-radius: var(--radius-sm);
+        color: var(--color-text-secondary);
       }
     }
 
@@ -226,9 +247,9 @@
   }
 
   &__meal-card {
-    background: #f8f9fa;
-    border: 1px solid #eaeaea;
-    border-radius: 12px;
+    background: var(--color-absolute);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
     padding: 1.5rem;
     position: relative;
 
@@ -245,13 +266,13 @@
       gap: 0.75rem;
 
       .meal-icon {
-        color: #7b3bff;
+        color: var(--color-primary);
         font-size: 1.25rem;
       }
 
       h4 {
         margin: 0;
-        color: #333;
+        color: var(--color-text);
         font-size: 1.1rem;
       }
     }
@@ -266,22 +287,22 @@
       border: none;
       cursor: pointer;
       padding: 0.5rem;
-      border-radius: 6px;
-      color: #666;
-      transition: all 0.3s;
+      border-radius: var(--radius-md);
+      color: var(--color-text-secondary);
+      transition: all var(--transition);
       display: flex;
       align-items: center;
       justify-content: center;
 
       &:hover {
-        background: #f0f0f0;
-        color: #8200db;
+        background: var(--color-bg);
+        color: var(--color-primary);
       }
 
       &--delete {
         &:hover {
-          background: #fee;
-          color: #dc3545;
+          background: var(--color-error-light);
+          color: var(--color-error-text);
         }
       }
     }
@@ -298,7 +319,7 @@
       align-items: flex-start;
 
       .detail-icon {
-        color: #7b3bff;
+        color: var(--color-primary);
         margin-top: 0.25rem;
         flex-shrink: 0;
       }
@@ -306,14 +327,14 @@
       label {
         display: block;
         font-weight: 600;
-        color: #666;
+        color: var(--color-text-secondary);
         font-size: 0.85rem;
         margin-bottom: 0.25rem;
       }
 
       p {
         margin: 0;
-        color: #333;
+        color: var(--color-text);
         font-size: 1.1rem;
       }
 

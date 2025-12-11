@@ -2175,11 +2175,25 @@
         }
       }
     },
+    "/reminders/process-due": {
+      "post": {
+        "tags": ["Recordatorios"],
+        "summary": "Process Due Reminders",
+        "description": "Procesa recordatorios vencidos: crea notificaciones y envía correos.\nEste endpoint debe ser llamado periódicamente (por ejemplo, cada minuto o cada 5 minutos)\npor un sistema de tareas programadas (cron job) o servicio de background tasks.",
+        "operationId": "process_due_reminders_reminders_process_due_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          }
+        }
+      }
+    },
     "/notifications/": {
       "get": {
         "tags": ["Notificaciones"],
         "summary": "Get All Notifications",
-        "description": "Obtiene todas las notificaciones del usuario",
+        "description": "Obtiene todas las notificaciones del usuario.\nLas notificaciones se crean automáticamente cuando se procesan recordatorios vencidos.",
         "operationId": "get_all_notifications_notifications__get",
         "security": [{ "HTTPBearer": [] }],
         "parameters": [
@@ -2231,48 +2245,13 @@
             }
           }
         }
-      },
-      "post": {
-        "tags": ["Notificaciones"],
-        "summary": "Create Notification",
-        "description": "Crea una nueva notificación",
-        "operationId": "create_notification_notifications__post",
-        "security": [{ "HTTPBearer": [] }],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": { "$ref": "#/components/schemas/NotificationCreate" }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NotificationResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
-              }
-            }
-          }
-        }
       }
     },
     "/notifications/{notification_id}": {
       "get": {
         "tags": ["Notificaciones"],
         "summary": "Get Notification By Id",
-        "description": "Obtiene una notificación específica",
+        "description": "Obtiene una notificación específica del usuario.\nLas notificaciones se crean automáticamente cuando se procesan recordatorios vencidos.",
         "operationId": "get_notification_by_id_notifications__notification_id__get",
         "security": [{ "HTTPBearer": [] }],
         "parameters": [
@@ -2304,53 +2283,10 @@
           }
         }
       },
-      "put": {
-        "tags": ["Notificaciones"],
-        "summary": "Update Notification",
-        "description": "Actualiza una notificación existente",
-        "operationId": "update_notification_notifications__notification_id__put",
-        "security": [{ "HTTPBearer": [] }],
-        "parameters": [
-          {
-            "name": "notification_id",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "string", "title": "Notification Id" }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": { "$ref": "#/components/schemas/NotificationUpdate" }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NotificationResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
-              }
-            }
-          }
-        }
-      },
       "delete": {
         "tags": ["Notificaciones"],
         "summary": "Delete Notification",
-        "description": "Elimina una notificación",
+        "description": "Elimina una notificación (solo admin).\nLas notificaciones se crean automáticamente cuando se procesan recordatorios vencidos.",
         "operationId": "delete_notification_notifications__notification_id__delete",
         "security": [{ "HTTPBearer": [] }],
         "parameters": [
@@ -3562,7 +3498,7 @@
       "post": {
         "tags": ["Imágenes"],
         "summary": "Upload Pet Gallery Photo",
-        "description": "Sube una foto a la galería de una mascota\n\n**Restricciones:**\n- Tamaño máximo: 5MB (configurable)\n- Formatos permitidos: jpg, jpeg, png, gif, webp\n- La imagen se optimizará automáticamente\n- **Límite máximo: 5 fotos de galería por mascota**\n- **Límite total: 6 fotos (5 galería + 1 perfil)**\n\n**Ejemplo de uso con curl:**\n```bash\ncurl -X POST \"http://localhost:8000/images/pets/{pet_id}/gallery\"       -H \"Authorization: Bearer YOUR_TOKEN\"       -F \"file=@/path/to/image.jpg\"\n```",
+        "description": "Sube una o múltiples fotos a la galería de una mascota (máximo 5 imágenes)\n\n**Restricciones:**\n- Tamaño máximo por imagen: 5MB (configurable)\n- Formatos permitidos: jpg, jpeg, png, gif, webp\n- Las imágenes se optimizarán automáticamente\n- **Máximo 5 imágenes por petición**\n- **Límite máximo: 5 fotos de galería por mascota**\n- **Límite total: 6 fotos (5 galería + 1 perfil)**\n\n**Ejemplo de uso con curl (una imagen):**\n```bash\ncurl -X POST \"http://localhost:8000/images/pets/{pet_id}/gallery\"       -H \"Authorization: Bearer YOUR_TOKEN\"       -F \"files=@/path/to/image.jpg\"\n```\n\n**Ejemplo de uso con curl (múltiples imágenes, hasta 5):**\n```bash\ncurl -X POST \"http://localhost:8000/images/pets/{pet_id}/gallery\"       -H \"Authorization: Bearer YOUR_TOKEN\"       -F \"files=@/path/to/image1.jpg\"       -F \"files=@/path/to/image2.jpg\"       -F \"files=@/path/to/image3.jpg\"\n```\n\n**Nota:** En el frontend, puedes usar un input file con `multiple`:\n```html\n<input type=\"file\" name=\"files\" multiple accept=\"image/*\" />\n```",
         "operationId": "upload_pet_gallery_photo_images_pets__pet_id__gallery_post",
         "security": [{ "HTTPBearer": [] }],
         "parameters": [
@@ -3588,7 +3524,13 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ImageUploadResponse" }
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ImageUploadResponse"
+                  },
+                  "title": "Response Upload Pet Gallery Photo Images Pets  Pet Id  Gallery Post"
+                }
               }
             }
           },
@@ -3695,6 +3637,296 @@
         ],
         "responses": {
           "204": { "description": "Successful Response" },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/images/pets/{pet_id}/documents": {
+      "post": {
+        "tags": ["Imágenes"],
+        "summary": "Upload Pet Document",
+        "description": "Sube un documento PDF al historial de una mascota\n\n**Restricciones:**\n- Tamaño máximo: 10MB (configurable)\n- Formato permitido: PDF\n- Se almacena en AWS S3\n\n**Categorías disponibles:**\n- `vaccination`: Documentos relacionados con vacunaciones\n- `vet_visit`: Documentos de visitas veterinarias\n- `lab_result`: Resultados de laboratorio\n- `general`: Documentos generales del historial\n\n**Ejemplo de uso con curl:**\n```bash\ncurl -X POST \"http://localhost:8000/images/pets/{pet_id}/documents\"       -H \"Authorization: Bearer YOUR_TOKEN\"       -F \"file=@/path/to/document.pdf\"       -F \"document_category=vaccination\"       -F \"description=Certificado de vacunación\"\n```",
+        "operationId": "upload_pet_document_images_pets__pet_id__documents_post",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "pet_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Pet Id" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_upload_pet_document_images_pets__pet_id__documents_post"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentUploadResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Imágenes"],
+        "summary": "Get Pet Documents",
+        "description": "Lista todos los documentos (PDFs) de una mascota\n\n**Filtros disponibles:**\n- `category`: Filtrar por categoría (vaccination, vet_visit, lab_result, general)\n\nRetorna solo documentos (file_type='document'), no imágenes.",
+        "operationId": "get_pet_documents_images_pets__pet_id__documents_get",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "pet_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Pet Id" }
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "description": "Filtrar por categoría",
+              "title": "Category"
+            },
+            "description": "Filtrar por categoría"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PetPhotoListResponse"
+                  },
+                  "title": "Response Get Pet Documents Images Pets  Pet Id  Documents Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/chat/pets/{pet_id}/ask": {
+      "post": {
+        "tags": ["Chat IA Veterinaria"],
+        "summary": "Consultar veterinario experto con IA",
+        "description": "Realiza consultas a un veterinario experto con IA que mantiene memoria conversacional.\n    \n    **Características:**\n    - 🧠 **Memoria Conversacional**: Recuerda toda la conversación previa\n    - 📚 **RAG Opcional**: Usa documentos PDF de la mascota como contexto adicional\n    - 🩺 **Veterinario Experto**: Especializado en todas las especies domésticas\n    - 💬 **Seguimiento**: Puedes hacer preguntas como \"¿recuerdas lo que mencionaste?\"\n    \n    **Ejemplos de preguntas:**\n    - \"Mi perro tiene fiebre y está decaído, ¿qué puede ser?\"\n    - \"¿Cuándo fue la última vacunación?\" (si hay documentos)\n    - \"¿Recuerdas los síntomas que mencioné? ¿Qué tratamiento recomiendas?\"\n    - \"¿Qué alimentos son tóxicos para gatos?\"\n    - \"Mi ave tiene las plumas erizadas, ¿es grave?\"\n    \n    **Session ID:**\n    - Si no proporcionas `session_id`, se crea automáticamente como `{user_id}_{pet_id}`\n    - Usa el mismo `session_id` para mantener contexto en múltiples preguntas",
+        "operationId": "ask_veterinary_question_chat_pets__pet_id__ask_post",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "pet_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Pet Id" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ChatQuestionRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ChatResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/chat/sessions/{session_id}": {
+      "delete": {
+        "tags": ["Chat IA Veterinaria"],
+        "summary": "Limpiar conversación",
+        "description": "Elimina el historial de una conversación específica.\n    \n    Útil cuando:\n    - Quieres empezar una nueva conversación desde cero\n    - El contexto de la conversación ya no es relevante\n    - Quieres liberar memoria del servidor\n    \n    **Nota:** Esto NO afecta los documentos de la mascota, solo la memoria de la conversación.",
+        "operationId": "clear_conversation_chat_sessions__session_id__delete",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Session Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/chat/sessions/{session_id}/history": {
+      "get": {
+        "tags": ["Chat IA Veterinaria"],
+        "summary": "Obtener historial de conversación",
+        "description": "Obtiene el historial completo de mensajes de una sesión.\n    \n    **Incluye:**\n    - Todos los mensajes del usuario (role: \"user\")\n    - Todas las respuestas del veterinario (role: \"assistant\")\n    - Orden cronológico desde el inicio de la conversación\n    \n    **Útil para:**\n    - Revisar toda la conversación\n    - Exportar el historial\n    - Análisis de la consulta",
+        "operationId": "get_conversation_history_chat_sessions__session_id__history_get",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Session Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConversationHistoryResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/chat/sessions": {
+      "get": {
+        "tags": ["Chat IA Veterinaria"],
+        "summary": "Listar sesiones activas",
+        "description": "Obtiene lista de todas las sesiones de chat activas en el servidor",
+        "operationId": "list_active_sessions_chat_sessions_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      }
+    },
+    "/chat/sessions/{session_id}/stats": {
+      "get": {
+        "tags": ["Chat IA Veterinaria"],
+        "summary": "Estadísticas de sesión",
+        "description": "Obtiene estadísticas de uso de memoria y mensajes de una sesión",
+        "operationId": "get_session_statistics_chat_sessions__session_id__stats_get",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Session Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/chat/test": {
+      "post": {
+        "tags": ["Chat IA Veterinaria"],
+        "summary": "Probar chat sin mascota",
+        "description": "Endpoint de prueba para consultas veterinarias generales sin asociar a una mascota.\n    \n    **Útil para:**\n    - Preguntas generales sobre veterinaria\n    - Probar el sistema de chat\n    - Consultas sin documentos\n    \n    **Nota:** No mantiene memoria conversacional entre llamadas",
+        "operationId": "test_veterinary_chat_chat_test_post",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "question",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Pregunta para el veterinario",
+              "title": "Question"
+            },
+            "description": "Pregunta para el veterinario"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
           "422": {
             "description": "Validation Error",
             "content": {
@@ -3896,12 +4128,34 @@
         "title": "AuditLogWithUser",
         "description": "Schema extendido con información del usuario actor"
       },
-      "Body_upload_pet_gallery_photo_images_pets__pet_id__gallery_post": {
+      "Body_upload_pet_document_images_pets__pet_id__documents_post": {
         "properties": {
-          "file": { "type": "string", "format": "binary", "title": "File" }
+          "file": { "type": "string", "format": "binary", "title": "File" },
+          "document_category": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Document Category",
+            "description": "Categoría: vaccination, vet_visit, lab_result, general"
+          },
+          "description": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Description",
+            "description": "Descripción opcional del documento"
+          }
         },
         "type": "object",
         "required": ["file"],
+        "title": "Body_upload_pet_document_images_pets__pet_id__documents_post"
+      },
+      "Body_upload_pet_gallery_photo_images_pets__pet_id__gallery_post": {
+        "properties": {
+          "files": {
+            "items": { "type": "string", "format": "binary" },
+            "type": "array",
+            "title": "Files"
+          }
+        },
+        "type": "object",
+        "required": ["files"],
         "title": "Body_upload_pet_gallery_photo_images_pets__pet_id__gallery_post"
       },
       "Body_upload_pet_profile_photo_images_pets__pet_id__profile_post": {
@@ -3911,6 +4165,170 @@
         "type": "object",
         "required": ["file"],
         "title": "Body_upload_pet_profile_photo_images_pets__pet_id__profile_post"
+      },
+      "ChatMessage": {
+        "properties": {
+          "role": {
+            "type": "string",
+            "title": "Role",
+            "description": "Rol del mensaje: 'user' (usuario) o 'assistant' (veterinario)"
+          },
+          "content": {
+            "type": "string",
+            "title": "Content",
+            "description": "Contenido del mensaje"
+          }
+        },
+        "type": "object",
+        "required": ["role", "content"],
+        "title": "ChatMessage",
+        "description": "Schema para un mensaje en el historial de conversación",
+        "example": {
+          "content": "¿Cuándo fue la última vacunación?",
+          "role": "user"
+        }
+      },
+      "ChatQuestionRequest": {
+        "properties": {
+          "question": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 1,
+            "title": "Question",
+            "description": "Pregunta sobre la mascota o consulta veterinaria general"
+          },
+          "session_id": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Session Id",
+            "description": "ID de sesión para mantener contexto conversacional (se genera automáticamente si no se proporciona)"
+          }
+        },
+        "type": "object",
+        "required": ["question"],
+        "title": "ChatQuestionRequest",
+        "description": "Schema para hacer una pregunta al veterinario",
+        "example": {
+          "question": "Mi perro se llama Max y tiene 5 años. Últimamente come menos, ¿debería preocuparme?",
+          "session_id": "user123_pet456"
+        }
+      },
+      "ChatResponse": {
+        "properties": {
+          "answer": {
+            "type": "string",
+            "title": "Answer",
+            "description": "Respuesta del veterinario experto"
+          },
+          "source_documents": {
+            "items": { "$ref": "#/components/schemas/SourceDocument" },
+            "type": "array",
+            "title": "Source Documents",
+            "description": "Documentos PDF usados como referencia (si hay documentos disponibles)"
+          },
+          "chat_history": {
+            "items": { "$ref": "#/components/schemas/ChatMessage" },
+            "type": "array",
+            "title": "Chat History",
+            "description": "Historial completo de la conversación (últimas 6 interacciones)"
+          },
+          "has_documents": {
+            "type": "boolean",
+            "title": "Has Documents",
+            "description": "Indica si hay documentos PDF disponibles para esta mascota"
+          },
+          "session_id": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Session Id",
+            "description": "ID de sesión para continuar la conversación"
+          },
+          "memory_info": {
+            "anyOf": [
+              { "additionalProperties": true, "type": "object" },
+              { "type": "null" }
+            ],
+            "title": "Memory Info",
+            "description": "Información sobre el estado de la memoria"
+          },
+          "error": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Error",
+            "description": "Mensaje de error si algo falló (null si todo OK)"
+          }
+        },
+        "type": "object",
+        "required": ["answer", "has_documents"],
+        "title": "ChatResponse",
+        "description": "Schema para la respuesta del veterinario",
+        "example": {
+          "answer": "Basándome en lo que me contaste sobre Max, tu perro de 5 años que come menos últimamente, te recomiendo observar otros síntomas como letargo, vómitos o cambios en el comportamiento. La disminución del apetito puede tener varias causas...",
+          "chat_history": [
+            {
+              "content": "Mi perro se llama Max y tiene 5 años. Últimamente come menos, ¿debería preocuparme?",
+              "role": "user"
+            },
+            {
+              "content": "Basándome en lo que me contaste sobre Max...",
+              "role": "assistant"
+            }
+          ],
+          "has_documents": false,
+          "memory_info": {
+            "current_messages": 2,
+            "interactions_count": 1,
+            "max_interactions": 6,
+            "max_messages": 12
+          },
+          "session_id": "user123_pet456",
+          "source_documents": []
+        }
+      },
+      "ConversationHistoryResponse": {
+        "properties": {
+          "session_id": {
+            "type": "string",
+            "title": "Session Id",
+            "description": "ID de la sesión"
+          },
+          "history": {
+            "items": { "$ref": "#/components/schemas/ChatMessage" },
+            "type": "array",
+            "title": "History",
+            "description": "Lista completa de mensajes en orden cronológico"
+          },
+          "message_count": {
+            "type": "integer",
+            "title": "Message Count",
+            "description": "Número total de mensajes en la conversación",
+            "default": 0
+          },
+          "interactions_count": {
+            "type": "integer",
+            "title": "Interactions Count",
+            "description": "Número de interacciones (pares pregunta-respuesta)",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "required": ["session_id"],
+        "title": "ConversationHistoryResponse",
+        "description": "Schema para el historial de conversación completo",
+        "example": {
+          "history": [
+            { "content": "Mi perro se llama Max", "role": "user" },
+            {
+              "content": "Encantado de conocer a Max. ¿En qué puedo ayudarte con él?",
+              "role": "assistant"
+            },
+            { "content": "¿Cómo se llama mi perro?", "role": "user" },
+            {
+              "content": "Tu perro se llama Max, como me contaste anteriormente.",
+              "role": "assistant"
+            }
+          ],
+          "interactions_count": 2,
+          "message_count": 4,
+          "session_id": "user123_pet456"
+        }
       },
       "DewormingCreate": {
         "properties": {
@@ -4042,6 +4460,59 @@
         },
         "type": "object",
         "title": "DewormingUpdate"
+      },
+      "DocumentUploadResponse": {
+        "properties": {
+          "url": {
+            "type": "string",
+            "title": "Url",
+            "description": "URL pública del documento"
+          },
+          "key": {
+            "type": "string",
+            "title": "Key",
+            "description": "Clave del objeto en S3"
+          },
+          "size": {
+            "type": "integer",
+            "title": "Size",
+            "description": "Tamaño del archivo en bytes"
+          },
+          "bucket": {
+            "type": "string",
+            "title": "Bucket",
+            "description": "Nombre del bucket"
+          },
+          "photo_id": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Photo Id",
+            "description": "ID del registro en pet_photos"
+          },
+          "file_type": {
+            "type": "string",
+            "title": "File Type",
+            "description": "Tipo de archivo",
+            "default": "document"
+          },
+          "document_category": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Document Category",
+            "description": "Categoría del documento"
+          }
+        },
+        "type": "object",
+        "required": ["url", "key", "size", "bucket"],
+        "title": "DocumentUploadResponse",
+        "description": "Schema para respuesta de subida de documento",
+        "example": {
+          "bucket": "pet-healthcare-images",
+          "document_category": "vaccination",
+          "file_type": "document",
+          "key": "pets/uuid/documents/document.pdf",
+          "photo_id": "550e8400-e29b-41d4-a716-446655440000",
+          "size": 245678,
+          "url": "https://pet-healthcare-images.s3.us-east-1.amazonaws.com/pets/uuid/documents/document.pdf"
+        }
       },
       "EmailVerification": {
         "properties": { "token": { "type": "string", "title": "Token" } },
@@ -4196,39 +4667,6 @@
         "type": "object",
         "title": "MealUpdate"
       },
-      "NotificationCreate": {
-        "properties": {
-          "reminder_id": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Reminder Id"
-          },
-          "pet_id": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Pet Id"
-          },
-          "sent_at": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Sent At"
-          },
-          "method": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Method"
-          },
-          "status": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Status"
-          },
-          "provider_response": {
-            "anyOf": [{}, { "type": "null" }],
-            "title": "Provider Response"
-          },
-          "owner_id": { "type": "string", "title": "Owner Id" }
-        },
-        "type": "object",
-        "required": ["sent_at", "owner_id"],
-        "title": "NotificationCreate"
-      },
       "NotificationResponse": {
         "properties": {
           "reminder_id": {
@@ -4272,24 +4710,6 @@
         "type": "object",
         "required": ["sent_at", "id", "owner_id", "created_at", "updated_at"],
         "title": "NotificationResponse"
-      },
-      "NotificationUpdate": {
-        "properties": {
-          "method": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Method"
-          },
-          "status": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Status"
-          },
-          "provider_response": {
-            "anyOf": [{}, { "type": "null" }],
-            "title": "Provider Response"
-          }
-        },
-        "type": "object",
-        "title": "NotificationUpdate"
       },
       "NutritionPlanCreate": {
         "properties": {
@@ -4719,6 +5139,22 @@
             "title": "Is Profile",
             "description": "True si es foto de perfil, False si es de galería",
             "default": false
+          },
+          "file_type": {
+            "type": "string",
+            "title": "File Type",
+            "description": "Tipo de archivo: 'image' o 'document'",
+            "default": "image"
+          },
+          "document_category": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Document Category",
+            "description": "Categoría del documento (solo para documentos)"
+          },
+          "description": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Description",
+            "description": "Descripción del documento (solo para documentos)"
           }
         },
         "type": "object",
@@ -5168,6 +5604,34 @@
         },
         "type": "object",
         "title": "ReminderUpdate"
+      },
+      "SourceDocument": {
+        "properties": {
+          "content": {
+            "type": "string",
+            "title": "Content",
+            "description": "Fragmento relevante del documento"
+          },
+          "source": {
+            "type": "string",
+            "title": "Source",
+            "description": "URL o identificador del documento"
+          },
+          "page": {
+            "type": "integer",
+            "title": "Page",
+            "description": "Número de página en el documento"
+          }
+        },
+        "type": "object",
+        "required": ["content", "source", "page"],
+        "title": "SourceDocument",
+        "description": "Schema para un documento fuente usado en la respuesta",
+        "example": {
+          "content": "Vacunación antirrábica aplicada el 15/03/2024...",
+          "page": 1,
+          "source": "https://s3.amazonaws.com/.../vacunacion_2024.pdf"
+        }
       },
       "TokenRefresh": {
         "properties": {

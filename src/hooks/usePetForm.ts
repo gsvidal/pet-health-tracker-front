@@ -8,7 +8,6 @@ export interface PetFormState {
   species: string;
   breed: string;
   birthDate: string;
-  ageYears: string;
   weightKg: string;
   sex: string;
   photoUrl: string;
@@ -29,10 +28,10 @@ export const usePetForm = ({
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isDirty },
     reset,
     watch,
-    setValue,
+    control,
   } = useForm<PetFormState>({
     mode: 'onChange',
     defaultValues: {
@@ -40,7 +39,6 @@ export const usePetForm = ({
       species: '',
       breed: '',
       birthDate: '',
-      ageYears: '',
       weightKg: '',
       sex: '',
       photoUrl: '',
@@ -51,28 +49,23 @@ export const usePetForm = ({
   // Cargar datos de mascota en modo edición
   useEffect(() => {
     if (editingPet) {
-      setValue('name', editingPet.name || '');
-      setValue('species', editingPet.species || '');
-      setValue('breed', editingPet.breed || '');
-      setValue(
-        'birthDate',
-        editingPet.birthDate ? editingPet.birthDate.split('T')[0] : '',
-      );
-      setValue(
-        'ageYears',
-        editingPet.ageYears ? String(editingPet.ageYears) : '',
-      );
-      setValue(
-        'weightKg',
-        editingPet.weightKg ? String(editingPet.weightKg) : '',
-      );
-      setValue('sex', editingPet.sex || '');
-      setValue('photoUrl', editingPet.photoUrl || '');
-      setValue('notes', editingPet.notes || '');
+      // Usar reset en lugar de setValue para que no marque el formulario como dirty
+      reset({
+        name: editingPet.name || '',
+        species: editingPet.species || '',
+        breed: editingPet.breed || '',
+        birthDate: editingPet.birthDate
+          ? editingPet.birthDate.split('T')[0]
+          : '',
+        weightKg: editingPet.weightKg ? String(editingPet.weightKg) : '',
+        sex: editingPet.sex || '',
+        photoUrl: editingPet.photoUrl || '',
+        notes: editingPet.notes || '',
+      });
     } else {
       reset();
     }
-  }, [editingPet, setValue, reset]);
+  }, [editingPet, reset]);
 
   const onSubmit = async (data: PetFormState) => {
     const formData: PetFormData = {
@@ -80,7 +73,7 @@ export const usePetForm = ({
       species: data.species.trim(),
       breed: data.breed.trim() || null,
       birthDate: data.birthDate.trim() || null,
-      ageYears: data.ageYears.trim() ? Number(data.ageYears) : null,
+      ageYears: null, // El backend calcula la edad automáticamente
       weightKg: data.weightKg.trim() || null,
       sex: data.sex.trim() || null,
       photoUrl: data.photoUrl.trim() || null,
@@ -105,8 +98,10 @@ export const usePetForm = ({
     handleSubmit,
     errors,
     isValid,
+    isDirty,
     onSubmit,
     handleCancel,
     watch,
+    control,
   };
 };

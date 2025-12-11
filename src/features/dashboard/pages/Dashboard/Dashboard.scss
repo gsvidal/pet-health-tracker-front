@@ -13,7 +13,11 @@
 
 // Sección de Mascotas
 .dashboard__pets-section {
-  margin-top: 2rem;
+  margin-top: 5rem;
+}
+
+.dashboard__pets-header {
+  margin-bottom: 1.5rem;
 }
 
 .dashboard__pets-title {
@@ -33,14 +37,15 @@
 .dashboard__pets-empty {
   text-align: center;
   padding: 2rem;
+  margin-top: 5rem;
   color: var(--color-text-secondary, #6b7280);
-  font-size: 1rem;
+  font-size: 1.4rem;
 }
 
 .dashboard__pets-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.5rem;
+  gap: 2.5rem;
 
   @media (min-width: 768px) {
     grid-template-columns: repeat(2, 1fr);
@@ -59,14 +64,14 @@
 
 .dashboard__add-pet-btn {
   width: 100%;
-  max-width: 500px;      // 👈 tamaño grande central
-  font-size: 1.3rem;      // 👈 texto más grande
-  padding: 1rem 2rem;     // 👈 más alto
-  border-radius: 12px;    // 👈 curvas suaves
+  max-width: 500px; // 👈 tamaño grande central
+  font-size: 1.3rem; // 👈 texto más grande
+  padding: 1rem 2rem; // 👈 más alto
+  border-radius: 12px; // 👈 curvas suaves
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;              // 👈 espacio entre icono y texto
+  gap: 10px; // 👈 espacio entre icono y texto
   font-weight: 600;
 }
 
@@ -74,4 +79,3 @@
   width: 24px;
   height: 24px;
 }
-

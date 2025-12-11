@@ -3,7 +3,7 @@ import type {
   ReminderFormRequest,
   ReminderFormState,
 } from '../types/reminder.type';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import type { Reminder } from '../models/reminder.model';
 
 interface UseReminderFormProps {
@@ -23,6 +23,7 @@ export const useReminderForm = ({
   defaultDescription = '',
   suggestedEventTime,
 }: UseReminderFormProps) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const {
     register,
     handleSubmit,
@@ -30,6 +31,7 @@ export const useReminderForm = ({
     reset,
     setValue,
     watch,
+    control,
   } = useForm<ReminderFormState>({
     mode: 'onChange',
     defaultValues: {
@@ -56,7 +58,7 @@ export const useReminderForm = ({
       const day = String(eventDate.getDate()).padStart(2, '0');
       const hours = String(eventDate.getHours()).padStart(2, '0');
       const minutes = String(eventDate.getMinutes()).padStart(2, '0');
-      
+
       setValue('title', editingReminder.title);
       setValue('description', editingReminder.description || '');
       setValue('eventDate', `${year}-${month}-${day}`);
@@ -74,7 +76,7 @@ export const useReminderForm = ({
       const day = String(suggestedDate.getDate()).padStart(2, '0');
       const hours = String(suggestedDate.getHours()).padStart(2, '0');
       const minutes = String(suggestedDate.getMinutes()).padStart(2, '0');
-      
+
       setValue('eventDate', `${year}-${month}-${day}`);
       setValue('eventHour', `${hours}:${minutes}`);
     } else {
@@ -83,32 +85,41 @@ export const useReminderForm = ({
   }, [editingReminder, suggestedEventTime, setValue, reset]);
 
   const onSubmit = async (data: ReminderFormState) => {
-    // Combinar fecha y hora en formato ISO
-    // Crear fecha local y convertir a ISO (UTC)
-    const localDateTime = new Date(`${data.eventDate}T${data.eventHour}:00`);
-    const eventDateTime = localDateTime.toISOString();
+    // Prevenir doble envío
+    if (isSubmitting) {
+      return;
+    }
 
-    const formData: ReminderFormRequest = {
-      title: data.title,
-      description: data.description || null,
-      eventTime: eventDateTime,
-      timezone:
-        data.timezone ||
-        Intl.DateTimeFormat().resolvedOptions().timeZone ||
-        'UTC',
-      frequency: data.frequency,
-      isActive: data.isActive,
-      notifyByEmail: data.notifyByEmail,
-      notifyInApp: data.notifyInApp,
-    };
+    setIsSubmitting(true);
 
     try {
+      // Combinar fecha y hora en formato ISO
+      // Crear fecha local y convertir a ISO (UTC)
+      const localDateTime = new Date(`${data.eventDate}T${data.eventHour}:00`);
+      const eventDateTime = localDateTime.toISOString();
+
+      const formData: ReminderFormRequest = {
+        title: data.title,
+        description: data.description || null,
+        eventTime: eventDateTime,
+        timezone:
+          data.timezone ||
+          Intl.DateTimeFormat().resolvedOptions().timeZone ||
+          'UTC',
+        frequency: data.frequency,
+        isActive: data.isActive,
+        notifyByEmail: data.notifyByEmail,
+        notifyInApp: data.notifyInApp,
+      };
+
       await onSave(formData);
       reset();
       onSuccess?.();
     } catch (err) {
       // Error ya manejado en el store o en el componente
       console.error('Error al guardar recordatorio:', err);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -127,5 +138,7 @@ export const useReminderForm = ({
     handleCancel,
     watch,
     setValue,
+    isSubmitting,
+    control,
   };
 };

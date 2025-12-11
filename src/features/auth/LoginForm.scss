@@ -9,16 +9,17 @@
   height: 100%;
   font-family: var(--font-base);
   color: var(--color-text);
-  background: linear-gradient(180deg, #fff5ff, #f9f1ff);
+  background: var(--color-bg);
 }
 .login-card {
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.08);
+  background: var(--color-absolute);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
   padding: 2.5rem 3rem;
   width: 380px;
   text-align: center;
-  transition: all 0.3s ease;
+  transition: all var(--transition);
+  border: 1px solid var(--color-border-opac25);
 }
 .login-card h2 {
   font-size: 1.6rem;
@@ -48,17 +49,23 @@
 .input-group input {
   width: 100%;
   padding: 1.2rem 0.8rem 1.2rem 2.5rem;
-  border: 1px solid #eee;
-  border-radius: 6px;
-  background-color: #f8f8f8;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg);
+  color: var(--color-text);
   font-size: 1.1rem;
   outline: none;
-  transition: all 0.2s ease;
+  transition: all var(--transition);
+  font-family: inherit;
+
+  &::placeholder {
+    color: var(--color-text-secondary);
+  }
 }
 .input-group input:focus {
-  border-color: #a855f7;
-  background: #fff;
-  box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.15);
+  border-color: var(--color-primary);
+  background: var(--color-absolute);
+  box-shadow: 0 0 0 3px var(--color-primary-opac50);
 }
 .input-icon {
   font-size: 1.2rem;
@@ -115,12 +122,13 @@
   font-size: 1.1rem;
   gap: 0.6rem;
   padding: 0.9rem;
-  border-radius: 6px;
+  border-radius: var(--radius-md);
   font-weight: 500;
-  border: 1px solid #ddd;
-  background: #fff;
+  border: 1px solid var(--color-border);
+  background: var(--color-absolute);
+  color: var(--color-text);
   cursor: pointer;
-  transition: background var(--transition);
+  transition: all var(--transition);
   &:hover {
     color: white;
     background: linear-gradient(

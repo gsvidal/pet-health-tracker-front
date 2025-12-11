@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { Button } from '../../components/Button/Button';
-import { Heart, ArrowLeft } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/auth.store';
 import { PRIVATE_ROUTES, PUBLIC_ROUTES } from '../../config/routes';
+import { ThemeToggle } from '../../components/ThemeToggle/ThemeToggle';
 import './Header.scss';
 import { IoMdReturnLeft } from 'react-icons/io';
+import { NotificationDropdown } from './NotificationDropdown';
 
 export const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -14,6 +16,13 @@ export const Header = () => {
   const { isAuthenticated, logout } = useAuthStore();
 
   const showBackButton = pathname.startsWith('/pets/:id');
+
+  const needToGoBackToDashboard =
+    pathname.includes('/pets') ||
+    pathname.includes('/notifications') ||
+    pathname.includes('/activity-logs') ||
+    pathname.includes('/notifications') ||
+    pathname.includes('/calendar');
 
   return (
     <header className="sticky-header">
@@ -32,14 +41,17 @@ export const Header = () => {
         {/* Logo */}
         <div className="logo" onClick={() => navigate(PUBLIC_ROUTES.HOME)}>
           <div className="logo-icon">
-            <Heart className="h-6 w-6 text-white" fill="white" />
+            <img src="/paw.svg" alt="Pet Health Tracker" />
           </div>
           <span className="logo-text">Pet Health Tracker</span>
 
           {/* Botón Hamburguesa */}
           <button
             className={`menu-toggle ${menuOpen ? 'open' : ''}`}
-            onClick={() => setMenuOpen(!menuOpen)}
+            onClick={(e) => {
+              e.stopPropagation(); // Prevenir que el click se propague al div logo
+              setMenuOpen(!menuOpen);
+            }}
             aria-label="Abrir menú"
           >
             <span></span>
@@ -72,49 +84,48 @@ export const Header = () => {
               Dashboard
             </Link>
           )}
-          <div className="btn-wrapper">
-            {pathname === PRIVATE_ROUTES.DASHBOARD ||
-            (pathname === PUBLIC_ROUTES.HOME && isAuthenticated) ? (
+          <ThemeToggle onToggle={() => setMenuOpen(false)} />
+          {pathname !== PRIVATE_ROUTES.NOTIFICATIONS && (<NotificationDropdown />)}
+          {pathname === PUBLIC_ROUTES.HOME && isAuthenticated ? (
+            <Button
+              size="lg"
+              variant="primary"
+              onClick={() => {
+                setMenuOpen(false);
+                navigate(PUBLIC_ROUTES.HOME);
+                logout();
+              }}
+            >
+              Logout
+            </Button>
+          ) : (
+            pathname === '/' && (
               <Button
                 size="lg"
                 variant="primary"
                 onClick={() => {
                   setMenuOpen(false);
-                  navigate(PUBLIC_ROUTES.HOME);
-                  logout();
+                  navigate(PUBLIC_ROUTES.REGISTER);
                 }}
               >
-                Logout
+                Registrarse
               </Button>
-            ) : (
-              pathname === '/' && (
-                <Button
-                  size="lg"
-                  variant="primary"
-                  onClick={() => {
-                    setMenuOpen(false);
-                    navigate(PUBLIC_ROUTES.REGISTER);
-                  }}
-                >
-                  Registrarse
-                </Button>
-              )
-            )}
-            {/* TODO: agregar volver a pagina pet */}
-            {pathname.includes('/pets/') && (
-              <Button
-                size="lg"
-                variant="outline"
-                onClick={() => {
-                  setMenuOpen(false);
-                  navigate(PRIVATE_ROUTES.DASHBOARD);
-                }}
-              >
-                <IoMdReturnLeft style={{marginRight: '6px'}}/>
-                Volver
-              </Button>
-            )}
-          </div>
+            )
+          )}
+          {/* TODO: agregar volver a pagina pet */}
+          {needToGoBackToDashboard && (
+            <Button
+              size="lg"
+              variant="outline"
+              onClick={() => {
+                setMenuOpen(false);
+                navigate(PRIVATE_ROUTES.DASHBOARD);
+              }}
+            >
+              <IoMdReturnLeft style={{ marginRight: '6px' }} />
+              Volver al Dashboard
+            </Button>
+          )}
         </nav>
       </div>
     </header>
