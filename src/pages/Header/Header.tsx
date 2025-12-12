@@ -85,7 +85,7 @@ export const Header = () => {
             </Link>
           )}
           <ThemeToggle onToggle={() => setMenuOpen(false)} />
-          {pathname !== PRIVATE_ROUTES.NOTIFICATIONS && (<NotificationDropdown />)}
+          {pathname !== PRIVATE_ROUTES.NOTIFICATIONS && isAuthenticated && (<NotificationDropdown />)}
           {pathname === PUBLIC_ROUTES.HOME && isAuthenticated ? (
             <Button
               size="lg"
