@@ -1,11 +1,153 @@
 :root {
-  --main-color: rgb(69, 68, 68);
-  --width-md: 768px;
-  --width-lg: 1024px;
+  /* COLORS */
+  /* ===== Core Palette ===== */
+  --color-primary: #8200db;
+  --color-primary-opac50: #9b3edd65;
+  --color-primary-hover: #610eaf;
+  --color-primary-bg: #ede9fe;
+  --color-primary-bg-hover: #d6cff4;
+  --color-secondary: #be185d;
+  --color-secondary-bg: #fce7f3;
+  --color-secondary-bg2: #f6cde4;
+  --color-secondary-hover: #9d074a;
+  --color-text: #1e1e1e;
+  --color-text-secondary: #6b7280;
+  --color-text-secondary-opac50: #6b728052;
+  --color-bg: #f9fafb;
+  --color-border: #e5e7eb;
+  --color-border-opac25: #cfcfcf3b;
+  --color-absolute: white;
+
+  --color-gradient-start: #ec4899; /* Pink */
+  --color-gradient-start-opac50: #ec489a85;
+  --color-gradient-start-hover: #d41b74;
+  --color-gradient-end: #8b5cf6; /* Purple */
+  --color-gradient-end-hover: #4d08ee; /* Lighter purple */
+  --color-gradient-end-opac50: #8a5cf683;
+
+  /* TYPOGRAPHY */
+  --font-base: 'Inter', system-ui, sans-serif;
+  --font-heading: 'Poppins', sans-serif;
+
+  /* SPACING */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+
+  /* BREAKPOINTS (mobile-first) */
+  //  480px; /* small phones */
+  //  768px; /* tablets */
+  //  1024px; /* laptops */
+  //  1280px; /* large desktops */
+  //  1536px; /* extrua large screens */
+
+  /* CONTAINERS (max-widths) */
+  --container-xs: 540px; /* small mobile layouts */
+  --container-sm: 720px; /* tablets */
+  --container-md: 960px; /* desktops */
+  --container-lg: 1360px; /* large desktops */
+
+  /* RADII + SHADOWS */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 2px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 3px 6px rgba(0, 0, 0, 0.25);
+
+  /* TRANSITIONS */
+  --transition: 0.2s ease-in-out;
+
+  /* ===== Feedback ===== */
+  --color-success: #abffca;
+  --color-success-text: #147638;
+  --color-warning: #fbd74a;
+  --color-warning-text: #866f10;
+  --color-error-light: #ffd4d4;
+  --color-error-hover: #ffb2b2;
+  --color-error: #fb7e7e;
+  --color-error-text: #da0b0b;
+  --color-info: #72a6fb;
+  --color-info-text: #103775;
+  --color-warning-alert: rgb(255, 250, 197);
+  --color-select-active: #8200db;
+
+  /* ===== Pet Section Colors ===== */
+  --pink-bg: #fce7f3;
+  --pink-text: #be185d;
+  --orange-bg: #ffe3c2;
+  --orange-text: #c2410c;
+  --purple-bg: #ede9fe;
+  --purple-text: #5b21b6;
+  --blue-bg: #dbeafe;
+  --blue-text: #1e40af;
+  --yellow-bg: #fef3c7;
+  --yellow-text: #847502;
+  --gray-bg: #f3f4f6;
+  --gray-text: #374151;
+  --green-bg: #d1fae5;
+  --green-text: #065f46;
+  --turquoise-bg: #b7ffff;
+  --turquoise-text: #0e8383;
 }
 
-* {
-  padding: 0px;
-  margin: 0px;
-  box-sizing: border-box;
+[data-theme='dark'] {
+  /* Core Palette - Dark Mode */
+  --color-primary: #a855f7; /* Lighter purple for better contrast */
+  --color-primary-opac50: #a855f750;
+  --color-primary-hover: #9333ea; /* Slightly lighter hover */
+  --color-primary-bg: #3C2A72; /* Dark purple background */
+  --color-primary-bg-hover: #18054f; /* Slightly lighter */
+  --color-secondary: #ec4899; /* Lighter pink for contrast */
+  --color-secondary-bg: #4a1e3a; /* Dark pink background */
+  --color-secondary-bg2: #5a2545; /* Slightly lighter */
+  --color-secondary-hover: #f472b6; /* Lighter hover */
+  --color-text: #f2f2f2; /* Light text */
+  --color-text-secondary: #b1b1b9; /* Lighter gray for secondary text */
+  --color-text-secondary-opac50: #a1a1aa52;
+  --color-bg: #0d0d0d; /* Very dark background */
+  --color-border: #3f3f46; /* Darker border */
+  --color-absolute: #1f1f23; /* Dark card background */
+
+  /* Gradients - Dark Mode */
+  --color-gradient-start: #90436b; /* Lighter pink */
+  --color-gradient-start-opac50: #95215d85;
+  --color-gradient-start-hover: #961e5a; /* Slightly darker */
+  --color-gradient-end: #60219b; /* Lighter purple */
+  --color-gradient-end-opac50: #5c219383;
+  --color-gradient-end-hover: #4a0f82; /* Lighter purple */
+  --color-border-opac25: #e5e7eb3b;
+
+  /* Feedback Colors - Dark Mode */
+  --color-success: #01752c; /* Brighter green */
+  --color-success-text: #86efac; /* Light green text */
+  --color-warning: #fbbf24; /* Brighter yellow */
+  --color-warning-text: #fde047; /* Light yellow text */
+  --color-error-light: #6b0505; /* Brighter red */
+  --color-error-hover: #820101; /* Darker red hover */
+  --color-error: #f87171; /* Lighter red */
+  --color-error-text: #fca5a5; /* Light red text */
+  --color-info: #60a5fa; /* Brighter blue */
+  --color-info-text: #93c5fd; /* Light blue text */
+  --color-warning-alert: #7f5c04; /* Dark amber background */
+  --color-select-active: #ca7cff;
+
+  /* ===== Pet Section Colors - Dark Mode ===== */
+  --pink-bg: #4a1e3a;
+  --pink-text: #f472b6;
+  --orange-bg: #5a2a1a;
+  --orange-text: #fb923c;
+  --purple-bg: #3b1f5a;
+  --purple-text: #a855f7;
+  --blue-bg: #1e3a5f;
+  --blue-text: #60a5fa;
+  --yellow-bg: #5a4a1a;
+  --yellow-text: #fbbf24;
+  --gray-bg: #2a2a2f;
+  --gray-text: #a1a1aa;
+  --green-bg: #1a3a2a;
+  --green-text: #4ade80;
+  --turquoise-bg: #026363;
+  --turquoise-text: #6ce7e7;
 }

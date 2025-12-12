@@ -1,0 +1,375 @@
+.calendar-view {
+  min-height: 100vh;
+  background-color: var(--color-bg);
+
+  &__header {
+    background: var(--color-absolute);
+    border-bottom: 1px solid var(--color-border);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+
+    &-content {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+
+      h1 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--color-text);
+        margin: 0;
+      }
+
+      p {
+        font-size: 0.875rem;
+        color: var(--color-text-secondary);
+        margin: 0.25rem 0 0 0;
+      }
+    }
+  }
+
+  &__back-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    color: var(--color-text-secondary);
+    transition: all var(--transition);
+    border-radius: var(--radius-md);
+
+    &:hover {
+      color: var(--color-text);
+      background-color: var(--color-bg);
+    }
+  }
+
+  // &__main {
+  //   max-width: 1280px;
+  //   margin: 0 auto;
+  //   padding: 1rem 1.5rem;
+  // }
+
+  &__filters {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 4rem 0;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__filter-group {
+    // Estilos movidos al componente Select
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 1rem;
+
+    @media (max-width: 1024px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__calendar-card {
+    background: var(--color-absolute);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+    padding: 1.25rem;
+  }
+
+  &__calendar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+
+    h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--color-text);
+      margin: 0;
+    }
+
+    button {
+      background: none;
+      border: none;
+      padding: 0.5rem;
+      cursor: pointer;
+      color: var(--color-text-secondary);
+      border-radius: var(--radius-md);
+      transition: all var(--transition);
+
+      &:hover {
+        background-color: var(--color-bg);
+        color: var(--color-text);
+      }
+    }
+  }
+
+  &__weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.25rem;
+    margin-bottom: 0.5rem;
+
+    span {
+      text-align: center;
+      font-size: 0.875rem;
+      color: var(--color-text-secondary);
+      padding: 0.5rem 0;
+    }
+  }
+
+  &__days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.25rem;
+  }
+
+  &__day {
+    height: 80px; // Fixed height instead of aspect-ratio
+    padding: 0.25rem; // Reduced padding
+    border-radius: 8px;
+    border: 2px solid transparent;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &:hover {
+      border-color: var(--color-primary-bg);
+      background-color: var(--color-bg);
+    }
+
+    &--selected {
+      border-color: var(--color-primary);
+      background-color: var(--color-primary-bg);
+    }
+
+    &--today {
+      border-color: var(--color-text-secondary);
+      // background-color: var(--color-border);
+    }
+
+    &-number {
+      font-size: 0.75rem;
+      color: var(--color-text);
+      margin-bottom: 0.25rem;
+    }
+
+    &-dots {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.125rem;
+      justify-content: center;
+    }
+
+    &-count {
+      font-size: 0.625rem;
+      color: var(--color-text-secondary);
+    }
+
+    &-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+
+      &--vaccine {
+        background-color: var(--pink-text);
+      }
+
+      &--deworming {
+        background-color: var(--purple-text);
+      }
+
+      &--vet_visit {
+        background-color: var(--orange-text);
+      }
+
+      &--nutrition {
+        background-color: var(--blue-text);
+      }
+    }
+  }
+
+  &__events-panel {
+    background: var(--color-absolute);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+    padding: 1.25rem;
+    position: sticky;
+    top: 6rem;
+    max-height: calc(100vh - 8rem);
+    overflow-y: auto;
+
+    h3 {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--color-text);
+      margin: 0 0 1rem 0;
+      border: none;
+    }
+  }
+
+  &__events-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  &__event-card {
+    padding: 1rem;
+    border-radius: var(--radius-md);
+    border: 1px solid;
+    transition: all var(--transition);
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    &--vaccine {
+      background-color: var(--pink-bg);
+      border-color: var(--pink-text);
+      color: var(--pink-text);
+    }
+
+    &--deworming {
+      background-color: var(--purple-bg);
+      border-color: var(--purple-text);
+      color: var(--purple-text);
+    }
+
+    &--vet_visit {
+      background-color: var(--orange-bg);
+      border-color: var(--orange-text);
+      color: var(--orange-text);
+    }
+
+    &--nutrition {
+      background-color: var(--blue-bg);
+      border-color: var(--blue-text);
+      color: var(--blue-text);
+    }
+
+    &-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    &-title {
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    &-description {
+      font-size: 0.75rem;
+      opacity: 0.8;
+      margin: 0 0 0.5rem 0;
+    }
+
+    &-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      opacity: 0.9;
+    }
+  }
+
+  &__empty-state {
+    text-align: center;
+    padding: 2rem 1rem;
+
+    svg {
+      width: 3rem;
+      height: 3rem;
+      color: var(--color-border);
+      margin: 0 auto 0.75rem;
+    }
+
+    p {
+      font-size: 0.875rem;
+      color: var(--color-text-secondary);
+      margin: 0;
+    }
+  }
+
+  &__legend {
+    background: var(--color-absolute);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+    padding: 1.25rem;
+    margin-top: 1rem;
+
+    h3 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--color-text);
+      margin: 0 0 1rem 0;
+      border: none;
+    }
+
+    &-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+
+      @media (max-width: 768px) {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    &-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      &-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        flex-shrink: 0;
+
+        &--vaccine {
+          background-color: var(--pink-text);
+        }
+
+        &--deworming {
+          background-color: var(--purple-text);
+        }
+
+        &--vet_visit {
+          background-color: var(--orange-text);
+        }
+
+        &--nutrition {
+          background-color: var(--blue-text);
+        }
+      }
+
+      span {
+        font-size: 0.875rem;
+        color: var(--color-text);
+      }
+    }
+  }
+}

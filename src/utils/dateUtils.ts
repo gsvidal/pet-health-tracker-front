@@ -1,0 +1,234 @@
+import i18n from '../i18n/config';
+
+/**
+ * Formatea una fecha ISO string a formato "Mes Año" en español
+ * @param dateString - Fecha en formato ISO string (ej: "2024-01-15T00:00:00.000Z")
+ * @returns String formateado (ej: "Enero 2024")
+ * @deprecated Use formatDateToLocalizedMonthYear instead for i18n support
+ */
+export const formatDateToSpanishMonthYear = (dateString: string): string => {
+  const date = new Date(dateString);
+  const months = [
+    'Enero',
+    'Febrero',
+    'Marzo',
+    'Abril',
+    'Mayo',
+    'Junio',
+    'Julio',
+    'Agosto',
+    'Septiembre',
+    'Octubre',
+    'Noviembre',
+    'Diciembre',
+  ];
+  return `${months[date.getMonth()]} ${date.getFullYear()}`;
+};
+
+/**
+ * Formatea una fecha ISO string a formato "Mes Año" usando i18n
+ * @param dateString - Fecha en formato ISO string (ej: "2024-01-15T00:00:00.000Z")
+ * @returns String formateado según el idioma actual (ej: "Enero 2024" o "January 2024")
+ */
+export const formatDateToLocalizedMonthYear = (dateString: string): string => {
+  const date = new Date(dateString);
+  const monthIndex = date.getMonth();
+  const year = date.getFullYear();
+
+  const monthKeys = [
+    'january',
+    'february',
+    'march',
+    'april',
+    'may',
+    'june',
+    'july',
+    'august',
+    'september',
+    'october',
+    'november',
+    'december',
+  ];
+
+  const monthKey = monthKeys[monthIndex];
+  const month = i18n.t(`calendar.months.${monthKey}`);
+
+  return `${month} ${year}`;
+};
+
+/**
+ * Parsea una fecha ISO string a fecha local sin cambios de timezone
+ * Si la fecha viene como "YYYY-MM-DD" o "YYYY-MM-DDTHH:mm:ssZ",
+ * la parsea correctamente en la zona horaria local
+ * @param dateString - Fecha en formato ISO string o date string
+ * @returns Date object en zona horaria local
+ */
+export const parseDateLocal = (dateString: string): Date => {
+  // Si es solo fecha (YYYY-MM-DD), crear Date en zona local a mediodía
+  if (/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
+    const [year, month, day] = dateString.split('-').map(Number);
+    return new Date(year, month - 1, day, 12, 0, 0); // Mediodía local
+  }
+
+  // Si tiene hora, parsear normalmente
+  const date = new Date(dateString);
+  return date;
+};
+
+/**
+ * Formatea una fecha a string legible según el idioma actual (solo fecha)
+ * Evita cambios de timezone usando parseDateLocal
+ * @param dateString - Fecha en formato ISO string o date string
+ * @returns String formateado según el idioma actual (ej: "15 de enero de 2025" o "January 15, 2025")
+ */
+export const formatDateLocal = (dateString: string): string => {
+  const date = parseDateLocal(dateString);
+  const locale = i18n.language === 'en' ? 'en-US' : 'es-ES';
+  return date.toLocaleDateString(locale, {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+};
+
+/**
+ * Formatea una fecha con hora a string legible según el idioma actual
+ * @param dateString - Fecha en formato ISO string
+ * @returns String formateado según el idioma actual (ej: "15 de enero de 2025, 14:30" o "January 15, 2025, 2:30 PM")
+ */
+export const formatDateTimeLocal = (dateString: string): string => {
+  const date = new Date(dateString);
+  const locale = i18n.language === 'en' ? 'en-US' : 'es-ES';
+  return date.toLocaleDateString(locale, {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+};
+
+/**
+ * Convierte una fecha local (YYYY-MM-DD) y hora (HH:mm) a ISO string
+ * Usa mediodía local para evitar cambios de día por timezone
+ * @param dateString - Fecha en formato YYYY-MM-DD
+ * @param timeString - Hora en formato HH:mm (opcional, default: "12:00")
+ * @returns ISO string en UTC
+ */
+export const combineDateAndTimeToISO = (
+  dateString: string,
+  timeString: string = '12:00',
+): string => {
+  const [year, month, day] = dateString.split('-').map(Number);
+  const [hours, minutes] = timeString.split(':').map(Number);
+
+  // Crear fecha en zona local
+  const localDate = new Date(year, month - 1, day, hours, minutes, 0);
+
+  // Convertir a ISO string (UTC)
+  return localDate.toISOString();
+};
+
+/**
+ * Formatea una fecha a tiempo relativo en español
+ * @param dateString - Fecha en formato ISO string
+ * @returns String formateado (ej: "Hace 5 minutos", "Hace 2 horas", "Hace 3 días")
+ */
+export const formatRelativeTime = (dateString: string): string => {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+
+  if (diffInSeconds < 60) {
+    return 'Hace unos momentos';
+  }
+
+  const diffInMinutes = Math.floor(diffInSeconds / 60);
+  if (diffInMinutes < 60) {
+    return `Hace ${diffInMinutes} ${diffInMinutes === 1 ? 'minuto' : 'minutos'}`;
+  }
+
+  const diffInHours = Math.floor(diffInMinutes / 60);
+  if (diffInHours < 24) {
+    return `Hace ${diffInHours} ${diffInHours === 1 ? 'hora' : 'horas'}`;
+  }
+
+  const diffInDays = Math.floor(diffInHours / 24);
+  if (diffInDays < 30) {
+    return `Hace ${diffInDays} ${diffInDays === 1 ? 'día' : 'días'}`;
+  }
+
+  const diffInMonths = Math.floor(diffInDays / 30);
+  if (diffInMonths < 12) {
+    return `Hace ${diffInMonths} ${diffInMonths === 1 ? 'mes' : 'meses'}`;
+  }
+
+  // Si es muy antiguo, mostrar fecha completa
+  return formatDateTimeLocal(dateString);
+};
+
+/**
+ * Convierte años decimales a años y meses con precisión ±1 mes
+ * Si los meses son muy pocos (< 0.5 meses ≈ 15 días), se redondean a 0
+ * @param ageYears - Edad en años (puede ser decimal)
+ * @returns Objeto con años y meses calculados
+ */
+export const convertAgeYearsToAgeYearsWithMonths = (
+  ageYears: number,
+): { years: number; months: number } => {
+  // Obtener años enteros
+  const years = Math.floor(ageYears);
+
+  // Calcular meses restantes (decimal * 12)
+  const decimalPart = ageYears - years;
+  const monthsDecimal = decimalPart * 12;
+
+  // Redondear meses con precisión ±1 mes
+  // Si los meses están muy cerca de 0 (< 0.5 meses ≈ 15 días), redondear a 0
+  let months = Math.round(monthsDecimal);
+
+  // Si está muy cerca de 0 meses (menos de ~15 días), redondear a 0
+  if (monthsDecimal < 0.5) {
+    months = 0;
+  }
+
+  // Si redondeamos a 12 meses, convertir a 1 año adicional
+  if (months >= 12) {
+    return { years: years + 1, months: 0 };
+  }
+
+  return { years, months };
+};
+
+/**
+ * Formatea la edad de una mascota mostrando años y meses
+ * @param ageYears - Edad en años (puede ser decimal)
+ * @returns String formateado (ej: "1 año y 6 meses", "3 años y 9 meses", "1 año")
+ */
+export const formatPetAge = (ageYears: number | null | undefined): string => {
+  if (!ageYears && ageYears !== 0) {
+    return '—';
+  }
+
+  const { years, months } = convertAgeYearsToAgeYearsWithMonths(ageYears);
+
+  // Si no hay años ni meses
+  if (years === 0 && months === 0) {
+    return '—';
+  }
+
+  // Construir el string
+  const yearsText = years === 0 ? '' : years === 1 ? '1 año' : `${years} años`;
+
+  const monthsText =
+    months === 0 ? '' : months === 1 ? '1 mes' : `${months} meses`;
+
+  // Combinar años y meses
+  if (years > 0 && months > 0) {
+    return `${yearsText} y ${monthsText}`;
+  } else if (years > 0) {
+    return yearsText;
+  } else {
+    return monthsText;
+  }
+};

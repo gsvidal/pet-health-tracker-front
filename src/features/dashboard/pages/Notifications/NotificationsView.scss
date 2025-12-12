@@ -1,0 +1,119 @@
+.notifications-view {
+  padding: 2rem 0;
+  max-width: 800px;
+  margin: 0 auto;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  &__empty {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--color-text-secondary);
+
+    p {
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    &-description {
+      font-size: 0.875rem;
+      color: var(--color-text-secondary);
+      margin-top: 0.5rem;
+    }
+  }
+
+  &__loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem 1rem;
+  }
+
+  &__card {
+    background: var(--color-absolute);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 1.25rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    position: relative;
+    // transition: all var(--transition);
+
+    &:hover {
+      box-shadow: var(--shadow-md);
+      border-color: var(--color-primary);
+    }
+
+    &-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+
+      &--vaccine {
+        background-color: var(--color-primary-bg);
+        color: var(--color-primary);
+      }
+
+      &--food {
+        background-color: var(--color-success);
+        color: var(--color-success-text);
+      }
+
+      &--medicine {
+        background-color: var(--color-info);
+        color: var(--color-info-text);
+      }
+
+      &--vet {
+        background-color: var(--color-error-light);
+        color: var(--color-error-text);
+      }
+    }
+
+    &-content {
+      flex: 1;
+
+      h3 {
+        margin: 0 0 0.25rem 0;
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--color-text);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        border: none;
+      }
+
+      p {
+        margin: 0 0 0.5rem 0;
+        color: var(--color-text-secondary);
+        font-size: 0.875rem;
+        line-height: 1.4;
+      }
+
+      &-footer {
+        display: flex;
+        gap: 0.5rem;
+        font-size: 0.75rem;
+        color: var(--color-text-secondary);
+        font-weight: 500;
+      }
+    }
+  }
+}

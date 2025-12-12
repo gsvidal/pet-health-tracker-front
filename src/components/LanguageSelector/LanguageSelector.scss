@@ -1,0 +1,129 @@
+.language-selector {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  &__button {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: var(--color-primary-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition);
+    color: var(--color-text);
+    font-size: 14px;
+    font-weight: 500;
+
+    &:hover {
+      background: var(--color-primary-bg-hover);
+      border-color: var(--color-primary);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+
+    svg {
+      color: var(--color-text-secondary);
+    }
+  }
+
+  &__current {
+    font-weight: 600;
+    font-size: 12px;
+    color: var(--color-text);
+  }
+
+  &__dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    min-width: 160px;
+    z-index: 1000;
+    overflow: hidden;
+    animation: fadeIn 0.2s ease-out;
+  }
+
+  &__option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px 14px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: all var(--transition);
+    color: var(--color-text);
+    text-align: left;
+    font-size: 14px;
+
+    &:hover {
+      background: var(--color-primary-bg);
+    }
+
+    &.active {
+      background: var(--color-primary-bg);
+      font-weight: 600;
+    }
+  }
+
+  &__flag {
+    font-size: 18px;
+    line-height: 1;
+  }
+
+  &__name {
+    flex: 1;
+  }
+
+  &__check {
+    color: var(--color-primary);
+    font-weight: bold;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Dark mode adjustments
+[data-theme='dark'] {
+  .language-selector {
+    &__button {
+      background: var(--color-primary-bg);
+      border-color: var(--color-border);
+
+      &:hover {
+        background: var(--color-primary-bg-hover);
+      }
+    }
+
+    &__dropdown {
+      background: var(--color-bg);
+      border-color: var(--color-border);
+    }
+
+    &__option {
+      &:hover,
+      &.active {
+        background: var(--color-primary-bg);
+      }
+    }
+  }
+}

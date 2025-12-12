@@ -1,0 +1,60 @@
+.pet-information {
+  width: 95%;
+  max-width: 1100px;
+  margin: 20px auto;
+
+  .tabs {
+    display: flex;
+    border: 1px solid var(--color-border-opac25);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--shadow-md, 0 2px 6px rgba(0, 0, 0, 0.1));
+    background: var(--color-absolute);
+
+    button {
+      flex: 1;
+      padding: 8px 0;
+      background: var(--color-absolute);
+
+      border: none;
+      cursor: pointer;
+      font-weight: 500;
+      color: var(--color-text-secondary);
+      font-size: 1.1rem;
+      margin: 3px;
+
+      #menu-title {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+
+        .icon-tabs {
+          margin-right: 4px;
+        }
+      }
+
+      &.active {
+        background: linear-gradient(
+          90deg,
+          var(--color-gradient-start-opac50),
+          var(--color-gradient-end-opac50)
+        );
+        color: var(--color-text);
+        border-radius: 20px;
+        margin: 3px;
+        #menu-title {
+          color: white;
+        }
+        .icon-tabs {
+          color: white;
+        }
+      }
+    }
+  }
+  .icon {
+    position: relative;
+    top: 2px;
+    left: -4px;
+  }
+}

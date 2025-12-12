@@ -1,0 +1,125 @@
+.register-page {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  min-height: 100vh;
+  transition: all 0.3s ease;
+  margin: 0;
+  padding: 0;
+}
+
+.register-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(
+    135deg,
+    var(--color-gradient-start),
+    var(--color-gradient-end)
+  );
+  color: white;
+  text-align: center;
+  padding: var(--space-xl);
+  padding-top: 8rem;
+  position: relative;
+  overflow: hidden;
+
+  .branding {
+    max-width: 420px;
+    z-index: 2;
+    font-family: var(--font-base);
+  }
+
+  #pet-title {
+    font-family: var(--font-heading);
+    display: flex;
+    color: white;
+    font-size: 2.6rem;
+    margin-bottom: var(--space-sm);
+    font-weight: 700;
+  }
+  .MdPets-icon {
+    color: var(--color-text);
+    margin-right: 0.5rem;
+  }
+  p {
+    color: white;
+    font-size: 1.05rem;
+    line-height: 1.5;
+  }
+}
+
+.register-right {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: space-between;
+
+  background: var(--color-bg);
+  transition: all var(--transition);
+  overflow-y: auto;
+  min-height: 0;
+
+  .register-container {
+    align-items: center; // Evita que se centre verticalmente
+    height: auto; // No usar height: 100%
+    min-height: auto;
+  }
+}
+/* ======== Diseño Responsive ======== */
+@media (max-width: 1023px) {
+  .register-page {
+    position: relative;
+    flex-direction: column;
+  }
+
+  .register-left {
+    padding: var(--space-lg);
+    padding-top: 8rem;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    justify-content: flex-start;
+  }
+
+  .register-right {
+    margin-bottom: 4rem;
+    flex: none;
+    background: transparent;
+    padding: 0;
+    padding-top: 15rem;
+    padding-bottom: 2rem;
+    width: 100%;
+    overflow-y: auto;
+
+    .register-container {
+      background: transparent;
+      padding: var(--space-lg);
+      width: 90%;
+      max-width: 420px;
+      margin: 0 auto;
+      backdrop-filter: blur(6px);
+      align-items: flex-start;
+      height: auto;
+      min-height: auto;
+    }
+  }
+
+  .register-left .branding {
+    margin-bottom: var(--space-lg);
+    align-self: center;
+  }
+
+  #pet-title {
+    justify-content: center;
+    margin-top: 0;
+    font-size: 2.3rem;
+  }
+
+  #pet-subtitle {
+    font-size: 1.1rem;
+  }
+}

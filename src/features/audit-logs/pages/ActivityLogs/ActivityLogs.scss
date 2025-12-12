@@ -1,0 +1,241 @@
+// Los tokens de colores están definidos globalmente en index.scss como "Pet Section Colors"
+
+.container--activity-logs h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  color: var(--color-text);
+}
+
+.activity-logs-controls {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.filter-group,
+.sort-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.filter-label,
+.sort-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}
+
+.filter-icon,
+.sort-icon {
+  font-size: 1.2rem;
+}
+
+.sort-button {
+  padding: 0.75rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+  min-width: 200px;
+
+  &:hover {
+    border-color: var(--color-primary);
+    background: #f9f9f9;
+  }
+
+  &.active {
+    background: var(--color-primary);
+    color: white;
+    border-color: var(--color-primary);
+  }
+}
+
+.activity-logs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.activity-log-card {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background: var(--color-absolute);
+  border: 1px solid var(--color-border-opac25);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    transform: translateY(-1px);
+  }
+}
+
+.activity-log-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  flex-shrink: 0;
+
+  // svg {
+  //   width: 24px;
+  //   height: 24px;
+  // }
+}
+
+// Colores de iconos según el tipo de card
+.activity-log-card--pink .activity-log-icon {
+  background: var(--pink-bg);
+  color: var(--pink-text);
+}
+
+.activity-log-card--orange .activity-log-icon {
+  background: var(--orange-bg);
+  color: var(--orange-text);
+}
+
+.activity-log-card--purple .activity-log-icon {
+  background: var(--purple-bg);
+  color: var(--purple-text);
+}
+
+.activity-log-card--blue .activity-log-icon {
+  background: var(--blue-bg);
+  color: var(--blue-text);
+}
+
+.activity-log-card--yellow .activity-log-icon {
+  background: var(--yellow-bg);
+  color: var(--yellow-text);
+}
+
+.activity-log-card--gray .activity-log-icon {
+  background: var(--gray-bg);
+  color: var(--gray-text);
+}
+
+.activity-log-card--green .activity-log-icon {
+  background: var(--green-bg);
+  color: var(--green-text);
+}
+
+.activity-log-card--turquoise .activity-log-icon {
+  background: var(--turquoise-bg);
+  color: var(--turquoise-text);
+}
+
+.activity-log-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.activity-log-card .activity-log-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--color-text);
+  border: none;
+}
+
+.activity-log-description {
+  font-size: 0.95rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.activity-log-tag {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-top: 0.5rem;
+  width: fit-content;
+
+  &.activity-log-tag--pink {
+    background: var(--pink-bg);
+    color: var(--pink-text);
+  }
+
+  &.activity-log-tag--green {
+    background: var(--green-bg);
+    color: var(--green-text);
+  }
+
+  &.activity-log-tag--orange {
+    background: var(--orange-bg);
+    color: var(--orange-text);
+  }
+
+  &.activity-log-tag--blue {
+    background: var(--blue-bg);
+    color: var(--blue-text);
+  }
+
+  &.activity-log-tag--yellow {
+    background: var(--yellow-bg);
+    color: var(--yellow-text);
+  }
+
+  &.activity-log-tag--purple {
+    background: var(--purple-bg);
+    color: var(--purple-text);
+  }
+
+  &.activity-log-tag--gray {
+    background: var(--gray-bg);
+    color: var(--gray-text);
+  }
+
+  &.activity-log-tag--turquoise {
+    background: var(--turquoise-bg);
+    color: var(--turquoise-text);
+  }
+}
+
+.activity-log-time {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.empty-message {
+  text-align: center;
+  padding: 3rem;
+  color: var(--color-text-secondary);
+  font-size: 1.1rem;
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .activity-logs-controls {
+    flex-direction: column;
+  }
+
+  .activity-log-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .activity-log-time {
+    align-self: flex-end;
+  }
+}

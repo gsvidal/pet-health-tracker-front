@@ -1,11 +1,21 @@
-import { Example } from '../../components/Example/Example';
+import { Footer } from '../Footer/Footer';
+import { Header } from '../Header/Header';
+import { Features } from './Features';
+
+import { Hero } from './Hero';
+// import './Home.scss';
 import './Home.scss';
+import { HomeUs } from './HomeUs';
+
 
 export const Home = () => {
   return (
-    <>
-      <h1 className="home__title">Pet Health Tracker</h1>
-      <Example />
-    </>
+    <div className="home">
+      <Header />
+      <Hero />
+      <Features />
+      <HomeUs />
+      <Footer />
+    </div>
   );
 };

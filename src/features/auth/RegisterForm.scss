@@ -1,0 +1,210 @@
+.register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  font-family: var(--font-base);
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+.register-card {
+  background: var(--color-absolute);
+  border-radius: 12px;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.08);
+  padding: 2.5rem 3rem;
+  width: 380px;
+  text-align: center;
+  transition: all 0.3s ease;
+  border: 1px solid var(--color-border-opac25);
+}
+.register-icon span {
+  display: inline-block;
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(
+    135deg,
+    var(--color-gradient-start),
+    var(--color-gradient-end)
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.heart-icon {
+  color: white;
+  border-radius: 50%;
+  padding: 0.6rem;
+  background: linear-gradient(135deg, #ff55c0, #a855f7);
+}
+.register-card h2 {
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin-bottom: 0.9rem;
+  font-family: var(--font-heading);
+  color: var(--color-text);
+}
+.register-card .subtitle {
+  color: var(--color-text-secondary);
+  font-size: 1.05rem;
+  margin-top: 0.8rem;
+  margin-bottom: 1.8rem;
+}
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+.input-group {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+}
+.input-group input {
+  width: 100%;
+  padding: 1.2rem 0.8rem 1.2rem 2.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-size: 1.1rem;
+  outline: none;
+  transition: all var(--transition);
+  font-family: inherit;
+
+  &::placeholder {
+    color: var(--color-text-secondary);
+  }
+}
+.input-group input:focus {
+  border-color: var(--color-primary);
+  background-color: var(--color-absolute);
+  box-shadow: 0 0 0 3px var(--color-primary-opac50);
+}
+.input-icon {
+  font-size: 1.2rem;
+  position: absolute;
+  top: 50%;
+  left: 9px;
+  transform: translateY(-50%);
+}
+.error {
+  position: absolute;
+  bottom: -31px;
+  left: 2px;
+  color: var(--color-error);
+  font-size: 0.9rem;
+  text-align: left;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+.error.visible {
+  opacity: 1;
+}
+.input-group:not(:has(.error))::after {
+  content: '';
+  display: block;
+  min-height: 0rem;
+}
+.input-group:has(.error) .error {
+  opacity: 1;
+}
+.btn-register {
+  background: linear-gradient(
+    90deg,
+    var(--color-gradient-start),
+    var(--color-gradient-end)
+  );
+  font-family: var(--font-heading);
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 6px;
+  padding: 1rem;
+  margin-top: 0.7rem;
+  cursor: pointer;
+  transition: background var(--transition);
+}
+.btn-register:hover {
+  background: linear-gradient(
+    90deg,
+    var(--color-secondary-hover),
+    var(--color-primary-hover)
+  );
+  opacity: 0.9;
+}
+.login-link {
+  color: var(--color-text-secondary);
+  font-size: 1.05rem;
+  margin-top: 1.3rem;
+  margin-bottom: 0;
+  a {
+    color: #a855f7;
+    font-weight: 500;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+.error.server {
+  margin-top: 0.5rem;
+  color: #e74c3c;
+  font-weight: 500;
+}
+.success {
+  margin-top: 0.5rem;
+  color: #2ecc71;
+  font-weight: 500;
+}
+.register-card.loading {
+  opacity: 0.8;
+  pointer-events: none;
+  transform: scale(0.99);
+  transition: all 0.3s ease;
+}
+.open-login-btn {
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  cursor: pointer;
+  font-weight: 100;
+  padding: 0;
+  font-size: inherit;
+}
+.open-login-btn:hover {
+  color: var(--color-primary-hover);
+  text-decoration: underline;
+}
+.register-card.loading {
+  pointer-events: none;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+.locked-icon {
+  margin-right: 8px;
+  font-size: 1rem;
+  opacity: 0.9;
+}
+.toggle-password {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: var(--color-text-secondary);
+  transition: color 0.2s ease;
+  opacity: 0.6;
+
+  &:hover {
+    opacity: 0.9;
+    color: var(-color-text);
+  }
+}
+.input-group input {
+  padding-right: 2.7rem;
+}
