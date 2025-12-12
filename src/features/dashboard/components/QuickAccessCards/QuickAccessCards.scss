@@ -35,6 +35,7 @@
       justify-content: center;
       flex-shrink: 0;
       box-shadow: var(--shadow-md);
+      color: white;
 
       &--calendar {
         background: linear-gradient(
@@ -42,7 +43,7 @@
           var(--color-gradient-start) 0%,
           var(--color-gradient-end) 100%
         );
-        color: var(--color-absolute);
+        // color: var(--color-absolute);
       }
 
       &--notifications {
@@ -51,7 +52,7 @@
           var(--color-gradient-end) 0%,
           var(--color-gradient-start) 100%
         );
-        color: var(--color-absolute);
+        // color: var(--color-absolute);
       }
     }
 

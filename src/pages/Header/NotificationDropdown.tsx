@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Bell, Syringe, Utensils, Pill, Stethoscope } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useNotificationStore } from '../../store/notification.store';
@@ -13,6 +14,7 @@ const iconMap = {
 };
 
 export const NotificationDropdown = () => {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
@@ -55,7 +57,7 @@ export const NotificationDropdown = () => {
       <button
         className="notification-dropdown__trigger"
         onClick={() => setIsOpen(!isOpen)}
-        aria-label="Notificaciones"
+        aria-label={t('notifications.title')}
       >
         <Bell size={20} />
         {/* {unreadCount > 0 && <span className="notification-dropdown__badge" />} */}
@@ -64,8 +66,8 @@ export const NotificationDropdown = () => {
       {isOpen && (
         <div className="notification-dropdown__menu">
           <div className="notification-dropdown__menu-header">
-            <h3>Notificaciones</h3>
-            {/* <span>{unreadCount} nuevas</span> */}
+            <h3>{t('notifications.title')}</h3>
+            {/* <span>{unreadCount} {t('notifications.new')}</span> */}
           </div>
 
           <div className="notification-dropdown__menu-body">
@@ -100,14 +102,16 @@ export const NotificationDropdown = () => {
               })
             ) : (
               <div className="notification-dropdown__empty">
-                No hay notificaciones
+                {t('notifications.empty')}
               </div>
             )}
           </div>
 
           {recentNotifications.length > 0 && (
             <div className="notification-dropdown__menu-footer">
-              <button onClick={handleViewAll}>Ver todas las notificaciones</button>
+              <button onClick={handleViewAll}>
+                {t('notifications.viewAll')}
+              </button>
             </div>
           )}
         </div>

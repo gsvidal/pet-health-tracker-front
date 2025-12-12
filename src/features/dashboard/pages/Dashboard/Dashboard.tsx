@@ -1,5 +1,6 @@
 import './Dashboard.scss';
 import { useEffect, useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '../../../../store/auth.store';
 import { usePetStore } from '../../../../store/pet.store';
 import { DashboardUserCard } from '../../components/DashboardUserCard/DashboardUserCard';
@@ -26,6 +27,7 @@ interface PetHealthData extends HealthStatusData {
 }
 
 export const Dashboard = () => {
+  const { t } = useTranslation();
   const { user, getUserData } = useAuthStore();
   const { pets, loading, fetchPets, deletePet, getPetHealthStatus } =
     usePetStore();
@@ -74,7 +76,7 @@ export const Dashboard = () => {
             } else {
               // Default to "Revisión Necesaria" if no summary
               healthData[pet.id] = {
-                status: 'Revisión Necesaria',
+                status: 'review_needed',
                 expiredVaccines: 0,
                 expiredDewormings: 0,
                 upcomingVaccines: 0,
@@ -91,7 +93,7 @@ export const Dashboard = () => {
               error,
             );
             healthData[pet.id] = {
-              status: 'Revisión Necesaria',
+              status: 'review_needed',
               expiredVaccines: 0,
               expiredDewormings: 0,
               upcomingVaccines: 0,
@@ -187,25 +189,26 @@ export const Dashboard = () => {
       <ModalText
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
-        title="¿Estás seguro?"
+        title={t('modals.delete.title')}
         content={
           <p>
-            ¿Estas seguro de eliminar esta mascota?{' '}
-            <strong>({petToDelete?.name})</strong>
+            {t('modals.delete.content')} <strong>({petToDelete?.name})</strong>
             <br />
             <br />
           </p>
         }
         variant="confirm"
-        confirmLabel="Confirmar"
-        cancelLabel="Cancelar"
+        confirmLabel={t('modals.delete.confirm')}
+        cancelLabel={t('modals.delete.cancel')}
         onConfirm={confirmDelete}
       />
 
       <section className="section section--dashboard">
         <div className="container container--dashboard">
-          <h1 className="example__title">Dashboard</h1>
-          <p>Bienvenid@ de vuelta, {user?.fullName || user?.username}</p>
+          <h1 className="example__title">{t('dashboard.title')}</h1>
+          <p>
+            {t('dashboard.welcome', { name: user?.fullName || user?.username })}
+          </p>
 
           <DashboardUserCard user={user} />
 
@@ -213,7 +216,9 @@ export const Dashboard = () => {
 
           <div className="dashboard__pets-section">
             <div className="dashboard__pets-header">
-              <h2 className="dashboard__pets-title">Mis Mascotas</h2>
+              <h2 className="dashboard__pets-title">
+                {t('dashboard.pets.title')}
+              </h2>
 
               {/* Filters */}
               {!loading && pets.length > 0 && (
@@ -232,14 +237,14 @@ export const Dashboard = () => {
             </div>
 
             {loading ? (
-              <Loader text="Cargando mascotas..." size="large" />
+              <Loader text={t('dashboard.pets.loading')} size="large" />
             ) : pets.length === 0 ? (
               <p className="dashboard__pets-empty">
-                No tienes mascotas registradas aún.
+                {t('dashboard.pets.emptyYet')}
               </p>
             ) : filteredPets.length === 0 ? (
               <p className="dashboard__pets-empty">
-                No se encontraron mascotas con los filtros seleccionados.
+                {t('dashboard.filters.results', { count: 0 })}
               </p>
             ) : (
               <div className="dashboard__pets-grid">
@@ -261,8 +266,8 @@ export const Dashboard = () => {
             style={{ width: '100%', marginTop: '29px' }}
             onClick={() => setOpenPetForm(true)}
           >
-            <Plus className="h-5 w-5 mr-2" />
-            Agregar Mascota
+            <Plus size={16} style={{ marginRight: '.5rem' }} />
+            {t('dashboard.pets.add')}
           </Button>
           {/* </div> */}
         </div>

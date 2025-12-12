@@ -10,8 +10,10 @@ import { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { Button } from '../../../../components/Button/Button';
 import { Loader } from '../../../../components/Loader/Loader';
+import { useTranslation } from 'react-i18next';
 
 export const GalleryModal = () => {
+  const { t } = useTranslation();
   const { isOpen, close, mode, photos, current, petId } =
     useGalleryModalStore();
   const { openModal } = useModalStore();
@@ -21,6 +23,35 @@ export const GalleryModal = () => {
   const [loading, setLoading] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [imageLoading, setImageLoading] = useState(true);
+
+  // Limpiar archivos y previews cuando:
+  // 1. El modal se cierra
+  // 2. Cambia el petId (cambiar de mascota)
+  // 3. Se abre el modal en modo upload
+  useEffect(() => {
+    if (!isOpen) {
+      // Limpiar cuando se cierra el modal
+      // Revocar todas las URLs de preview para liberar memoria
+      setPreviewUrls((prev) => {
+        prev.forEach((url) => URL.revokeObjectURL(url));
+        return [];
+      });
+      setFiles([]);
+      setIsDragging(false);
+      return;
+    }
+
+    // Limpiar cuando cambia el petId (cambiar de mascota)
+    // o cuando se abre en modo upload (resetear el formulario)
+    if (mode === 'upload') {
+      setPreviewUrls((prev) => {
+        prev.forEach((url) => URL.revokeObjectURL(url));
+        return [];
+      });
+      setFiles([]);
+      setIsDragging(false);
+    }
+  }, [isOpen, petId, mode]);
 
   // Resetear el estado de carga solo cuando se abre el modal o cambia el petId
   useEffect(() => {
@@ -59,14 +90,14 @@ export const GalleryModal = () => {
   const handleUpload = async () => {
     if (!petId) return;
 
-    const toastId = toast.loading('Subiendo imágenes...');
+    const toastId = toast.loading(t('gallery.uploading'));
     if (files.length === 0) {
-      toast.error('Selecciona al menos una imagen');
+      toast.error(t('gallery.selectAtLeastOne'));
       return;
     }
 
     if (files.length > 5) {
-      toast.error('Máximo 5 imágenes por subida');
+      toast.error(t('gallery.maxFiveImages'));
       return;
     }
     try {
@@ -74,12 +105,19 @@ export const GalleryModal = () => {
 
       await uploadPetGalleryPhotos(petId, files);
 
-      toast.success('Imágenes subidas correctamente 🎉', { id: toastId });
+      toast.success(t('gallery.uploadSuccess'), { id: toastId });
+
+      // Limpiar archivos y previews después de subir exitosamente
+      // Revocar todas las URLs de preview para liberar memoria
+      previewUrls.forEach((url) => URL.revokeObjectURL(url));
+      setFiles([]);
+      setPreviewUrls([]);
+      setIsDragging(false);
 
       close();
     } catch (error) {
       console.error(error);
-      toast.error('Error al subir las imágenes ❌', { id: toastId });
+      toast.error(t('gallery.uploadError'), { id: toastId });
     } finally {
       setLoading(false);
     }
@@ -109,27 +147,26 @@ export const GalleryModal = () => {
     const photo = photos[current];
 
     if (!photo?.photo_id) {
-      toast.error('Esta imagen no tiene un ID válido ❌');
+      toast.error(t('gallery.deletePhotoError'));
       return;
     }
 
     openModal({
-      title: 'Eliminar foto',
-      content:
-        '¿Estás seguro de que deseas eliminar esta foto? Esta acción no se puede deshacer.',
+      title: t('gallery.deleteConfirmTitle'),
+      content: t('gallery.deleteConfirmContent'),
       variant: 'confirm',
-      confirmLabel: 'Eliminar',
-      cancelLabel: 'Cancelar',
+      confirmLabel: t('gallery.deleteButton'),
+      cancelLabel: t('common.cancel'),
       onConfirm: async () => {
-        const toastId = toast.loading('Eliminando imagen...');
+        const toastId = toast.loading(t('gallery.deletingImage'));
 
         try {
           await deletePetPhoto(petId, photo.photo_id);
-          toast.success('Imagen eliminada correctamente 🗑️', { id: toastId });
+          toast.success(t('gallery.deletePhotoSuccess'), { id: toastId });
           close();
         } catch (error) {
           console.error(error);
-          toast.error('No se pudo eliminar la imagen ❌', { id: toastId });
+          toast.error(t('gallery.deletePhotoErrorMsg'), { id: toastId });
         }
       },
     });
@@ -145,7 +182,7 @@ export const GalleryModal = () => {
         {/* UPLOAD MODE */}
         {mode === 'upload' && (
           <>
-            <h2 className="gallery-modal-title">Subir imágenes</h2>
+            <h2 className="gallery-modal-title">{t('gallery.uploadTitle')}</h2>
 
             {/* DRAG & DROP AREA */}
             <div
@@ -157,14 +194,15 @@ export const GalleryModal = () => {
               onDragLeave={() => setIsDragging(false)}
               onDrop={handleDrop}
             >
-              <p>Arrastra tus imágenes aquí</p>
-              <span>o haz clic para seleccionarlas</span>
+              <p>{t('gallery.dragDrop')}</p>
+              <span>{t('gallery.dragDropClick')}</span>
 
               <input
                 type="file"
                 accept="image/*"
                 multiple
                 onChange={handleFileSelect}
+                key={`file-input-${petId}-${isOpen}`}
               />
             </div>
 
@@ -177,6 +215,8 @@ export const GalleryModal = () => {
                     <button
                       className="preview-remove"
                       onClick={() => {
+                        // Revocar la URL del objeto antes de eliminarla
+                        URL.revokeObjectURL(previewUrls[index]);
                         const newFiles = files.filter((_, i) => i !== index);
                         const newPreviews = previewUrls.filter(
                           (_, i) => i !== index,
@@ -198,7 +238,7 @@ export const GalleryModal = () => {
               onClick={handleUpload}
               disabled={loading || !files.length}
             >
-              {loading ? 'Subiendo...' : 'Subir'}
+              {loading ? t('gallery.uploadingText') : t('gallery.uploadButton')}
             </Button>
           </>
         )}
@@ -208,14 +248,14 @@ export const GalleryModal = () => {
           <>
             {photos.length === 0 ? (
               <div className="empty-gallery">
-                <p>No hay fotos cargadas 📁</p>
+                <p>{t('gallery.noPhotos')}</p>
               </div>
             ) : (
               <>
                 <div className="gallery-container">
                   {imageLoading && (
                     <div className="gallery-loader">
-                      <Loader size="large" text="Cargando imagen..." />
+                      <Loader size="large" text={t('gallery.loadingImage')} />
                     </div>
                   )}
                   <button className="gallery-arrow left" onClick={goPrev}>
@@ -256,7 +296,7 @@ export const GalleryModal = () => {
 
                 <div className="button-delete-container">
                   <Button variant="danger" onClick={handleDelete}>
-                    Eliminar foto
+                    {t('gallery.deletePhoto')}
                   </Button>
                 </div>
               </>

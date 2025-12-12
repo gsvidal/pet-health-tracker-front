@@ -1,27 +1,76 @@
-import { Calendar, Syringe, UtensilsCrossed, Bell, FileText, Heart, LayoutDashboard, Shield } from "lucide-react";
-import { Card, CardHeader, CardTitle, CardDescription } from "../../components/Card/Card";
-import "./Home.scss";
+import {
+  Calendar,
+  Syringe,
+  UtensilsCrossed,
+  Bell,
+  FileText,
+  Heart,
+  LayoutDashboard,
+  Shield,
+} from 'lucide-react';
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from '../../components/Card/Card';
+import './Home.scss';
 // import "./Features.scss";
-
-const features = [
-  { icon: Heart, title: "Perfiles Completos de Mascotas", description: "Crea y gestiona perfiles con nombre, especie, raza, edad, peso y foto. Edita o elimina información cuando lo necesites." },
-  { icon: Syringe, title: "Registro de Salud Integral", description: "Documenta vacunaciones, desparasitaciones y visitas veterinarias. Adjunta imágenes y documentos médicos." },
-  { icon: UtensilsCrossed, title: "Seguimiento Nutricional", description: "Registra dietas, horarios de comidas y porciones. Configura recordatorios para mantener una alimentación saludable." },
-  { icon: Bell, title: "Recordatorios Automáticos", description: "Alertas por correo y notificaciones in-app para vacunas, medicamentos, citas y horarios de alimentación." },
-  { icon: Calendar, title: "Calendario de Eventos", description: "Visualiza todas las citas, vacunas y eventos próximos en un calendario organizado y fácil de consultar." },
-  { icon: LayoutDashboard, title: "Dashboard Intuitivo", description: "Vista general con resumen del estado de salud, próximas vacunas y alertas activas de todas tus mascotas." },
-  { icon: Shield, title: "Seguridad y Privacidad", description: "Cifrado de contraseñas, validación de datos y protección total de la información de tus mascotas." },
-  { icon: FileText, title: "Historial Médico Completo", description: "Acceso instantáneo al historial médico completo con todos los registros de salud organizados." },
-];
+import { useTranslation } from 'react-i18next';
 
 export function Features() {
+  const { t } = useTranslation();
+
+  const features = [
+    {
+      icon: Heart,
+      title: t('home.features.items.profiles.title'),
+      description: t('home.features.items.profiles.description'),
+    },
+    {
+      icon: Syringe,
+      title: t('home.features.items.health.title'),
+      description: t('home.features.items.health.description'),
+    },
+    {
+      icon: UtensilsCrossed,
+      title: t('home.features.items.nutrition.title'),
+      description: t('home.features.items.nutrition.description'),
+    },
+    {
+      icon: Bell,
+      title: t('home.features.items.reminders.title'),
+      description: t('home.features.items.reminders.description'),
+    },
+    {
+      icon: Calendar,
+      title: t('home.features.items.calendar.title'),
+      description: t('home.features.items.calendar.description'),
+    },
+    {
+      icon: LayoutDashboard,
+      title: t('home.features.items.dashboard.title'),
+      description: t('home.features.items.dashboard.description'),
+    },
+    {
+      icon: Shield,
+      title: t('home.features.items.security.title'),
+      description: t('home.features.items.security.description'),
+    },
+    {
+      icon: FileText,
+      title: t('home.features.items.history.title'),
+      description: t('home.features.items.history.description'),
+    },
+  ];
+
   return (
     <section id="caracteristicas" className="home-features">
       <div className="container">
         <div className="header">
-          <span className="badge">Características Principales</span>
-          <h2>Gestión centralizada de la salud de tus mascotas</h2>
-          <p>Una plataforma mobile-first con interfaz intuitiva para el control de salud de tus mascotas.</p>
+          <span className="badge">{t('home.features.badge')}</span>
+          <h2>{t('home.features.title')}</h2>
+          <p>{t('home.features.subtitle')}</p>
         </div>
 
         <div className="grid">

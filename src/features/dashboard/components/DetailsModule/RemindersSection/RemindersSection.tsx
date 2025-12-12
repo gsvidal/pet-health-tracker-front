@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Controller } from 'react-hook-form';
 import type { Reminder } from '../../../../../models/reminder.model';
 import { useReminderForm } from '../../../../../hooks/useReminderForm';
@@ -6,6 +7,7 @@ import { useReminderCrud } from '../../../../../hooks/useReminderCrud';
 import { Button } from '../../../../../components/Button/Button';
 import { Loader } from '../../../../../components/Loader/Loader';
 import { Select } from '../../../../../components/Select';
+import i18n from '../../../../../i18n/config';
 import {
   FaCalendarAlt,
   FaClock,
@@ -31,6 +33,7 @@ export const RemindersSection: React.FC<RemindersSectionProps> = ({
   defaultDescription = '',
   suggestedEventTime,
 }) => {
+  const { t } = useTranslation();
   const [showForm, setShowForm] = useState(false);
   const [showAllReminders, setShowAllReminders] = useState<boolean>(false);
   const [editingReminder, setEditingReminder] = useState<Reminder | null>(null);
@@ -98,14 +101,14 @@ export const RemindersSection: React.FC<RemindersSectionProps> = ({
 
   const handleDeleteClick = (reminder: Reminder) => {
     openModal({
-      title: `¿Estás seguro que quieres eliminar "${reminder.title}"?`,
-      content: 'Esta acción no se puede deshacer',
+      title: `${t('modals.delete.title')} "${reminder.title}"?`,
+      content: t('modals.delete.content'),
       variant: 'confirm',
       onConfirm: () => {
         deleteReminder(reminder.id);
       },
-      confirmLabel: 'Eliminar',
-      cancelLabel: 'Cancelar',
+      confirmLabel: t('common.delete'),
+      cancelLabel: t('common.cancel'),
     });
   };
 
@@ -121,7 +124,8 @@ export const RemindersSection: React.FC<RemindersSectionProps> = ({
 
   const formatDateTime = (dateTimeString: string): string => {
     const date = new Date(dateTimeString);
-    return date.toLocaleDateString('es-ES', {
+    const locale = i18n.language === 'en' ? 'en-US' : 'es-ES';
+    return date.toLocaleDateString(locale, {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
@@ -131,14 +135,8 @@ export const RemindersSection: React.FC<RemindersSectionProps> = ({
   };
 
   const getFrequencyLabel = (frequency: string): string => {
-    const labels: Record<string, string> = {
-      once: 'Una vez',
-      daily: 'Diario',
-      weekly: 'Semanal',
-      monthly: 'Mensual',
-      yearly: 'Anual',
-    };
-    return labels[frequency] || frequency;
+    const frequencyKey = `reminders.${frequency}`;
+    return t(frequencyKey) || frequency;
   };
 
   // Filtrar recordatorios del pet si petId está definido
@@ -151,8 +149,8 @@ export const RemindersSection: React.FC<RemindersSectionProps> = ({
       <div className="pet-section-card pet-section-card--reminders">
         <div className="reminders-section__header">
           <div>
-            <h3>Recordatorios</h3>
-            <p>Configura recordatorios para eventos médicos</p>
+            <h3>{t('reminders.title')}</h3>
+            <p>{t('reminders.subtitle')}</p>
             {filteredReminders.length > 0 && (
               <Button
                 variant="secondary"
@@ -166,15 +164,16 @@ export const RemindersSection: React.FC<RemindersSectionProps> = ({
                   setShowAllReminders((prevState: boolean) => !prevState)
                 }
               >
-                {showAllReminders ? 'Ocultar' : 'Mostrar'} todos los
-                recordatorios
+                {showAllReminders
+                  ? t('reminders.hideAll')
+                  : t('reminders.showAll')}
               </Button>
             )}
           </div>
           {!showForm && (
             <Button variant="outline" onClick={handleAddClick}>
-              <FaPlus style={{ position: 'relative', left: '-4px' }} /> Nuevo
-              Recordatorio
+              <FaPlus style={{ position: 'relative', left: '-4px' }} />{' '}
+              {t('reminders.add')}
             </Button>
           )}
         </div>
@@ -182,7 +181,9 @@ export const RemindersSection: React.FC<RemindersSectionProps> = ({
         {showForm && (
           <div className="reminders-section__form-section">
             <h4>
-              {editingReminder ? 'Editar Recordatorio' : 'Nuevo Recordatorio'}
+              {editingReminder
+                ? t('reminders.edit')
+                : t('reminders.registerNew')}
             </h4>
             <form
               onSubmit={handleSubmit(onSubmit)}
@@ -193,21 +194,21 @@ export const RemindersSection: React.FC<RemindersSectionProps> = ({
                 <div className="reminders-section__form-column">
                   <div className="reminders-section__field">
                     <label htmlFor="title">
-                      Título <span className="required">*</span>
+                      {t('reminders.name')} <span className="required">*</span>
                     </label>
                     <input
                       id="title"
                       type="text"
-                      placeholder="Ej: Próxima vacuna de Rabia - Max"
+                      placeholder={t('reminders.namePlaceholder')}
                       {...register('title', {
-                        required: 'El título es obligatorio',
+                        required: t('reminders.nameRequired'),
                         minLength: {
                           value: 1,
-                          message: 'El título debe tener al menos 1 carácter',
+                          message: t('reminders.nameMinLength'),
                         },
                         maxLength: {
                           value: 200,
-                          message: 'El título no puede exceder 200 caracteres',
+                          message: t('reminders.nameMaxLength'),
                         },
                       })}
                       className={errors.title ? 'input-error' : ''}
@@ -220,18 +221,21 @@ export const RemindersSection: React.FC<RemindersSectionProps> = ({
                   </div>
 
                   <div className="reminders-section__field">
-                    <label htmlFor="description">Descripción</label>
+                    <label htmlFor="description">
+                      {t('reminders.description')}
+                    </label>
                     <textarea
                       id="description"
                       rows={3}
-                      placeholder="Ej: Recordatorio para aplicar vacuna de Rabia"
+                      placeholder={t('reminders.descriptionPlaceholder')}
                       {...register('description')}
                     />
                   </div>
 
                   <div className="reminders-section__field">
                     <label htmlFor="eventDate">
-                      Fecha <span className="required">*</span>
+                      {t('reminders.eventDate')}{' '}
+                      <span className="required">*</span>
                     </label>
                     <div className="input-with-icon">
                       <FaCalendarAlt className="input-icon" />
@@ -239,7 +243,7 @@ export const RemindersSection: React.FC<RemindersSectionProps> = ({
                         id="eventDate"
                         type="date"
                         {...register('eventDate', {
-                          required: 'La fecha es obligatoria',
+                          required: t('reminders.eventDateRequired'),
                         })}
                         className={errors.eventDate ? 'input-error' : ''}
                       />
@@ -253,7 +257,8 @@ export const RemindersSection: React.FC<RemindersSectionProps> = ({
 
                   <div className="reminders-section__field">
                     <label htmlFor="eventHour">
-                      Hora <span className="required">*</span>
+                      {t('reminders.eventHour')}{' '}
+                      <span className="required">*</span>
                     </label>
                     <div className="input-with-icon">
                       <FaClock className="input-icon" />
@@ -261,7 +266,7 @@ export const RemindersSection: React.FC<RemindersSectionProps> = ({
                         id="eventHour"
                         type="time"
                         {...register('eventHour', {
-                          required: 'La hora es obligatoria',
+                          required: t('reminders.eventHourRequired'),
                         })}
                         className={errors.eventHour ? 'input-error' : ''}
                       />
@@ -283,19 +288,22 @@ export const RemindersSection: React.FC<RemindersSectionProps> = ({
                       render={({ field }) => (
                         <>
                           <Select
-                            label="Frecuencia"
+                            label={t('reminders.frequency')}
                             value={field.value || null}
                             onChange={(value) =>
                               field.onChange(value || 'once')
                             }
                             options={[
-                              { value: 'once', label: 'Una vez' },
-                              { value: 'daily', label: 'Diario' },
-                              { value: 'weekly', label: 'Semanal' },
-                              { value: 'monthly', label: 'Mensual' },
-                              { value: 'yearly', label: 'Anual' },
+                              { value: 'once', label: t('reminders.once') },
+                              { value: 'daily', label: t('reminders.daily') },
+                              { value: 'weekly', label: t('reminders.weekly') },
+                              {
+                                value: 'monthly',
+                                label: t('reminders.monthly'),
+                              },
+                              { value: 'yearly', label: t('reminders.yearly') },
                             ]}
-                            placeholder="Seleccione frecuencia"
+                            placeholder={t('reminders.frequencyPlaceholder')}
                           />
                           {errors.frequency && (
                             <span className="error-message">
@@ -314,7 +322,7 @@ export const RemindersSection: React.FC<RemindersSectionProps> = ({
                         {...register('isActive')}
                         className="checkbox-input"
                       />
-                      <span>Recordatorio activo</span>
+                      <span>{t('reminders.isActive')}</span>
                     </label>
                   </div>
 
@@ -325,7 +333,7 @@ export const RemindersSection: React.FC<RemindersSectionProps> = ({
                         {...register('notifyByEmail')}
                         className="checkbox-input"
                       />
-                      <span>Notificar por email</span>
+                      <span>{t('reminders.notifyByEmail')}</span>
                     </label>
                   </div>
 
@@ -336,7 +344,7 @@ export const RemindersSection: React.FC<RemindersSectionProps> = ({
                         {...register('notifyInApp')}
                         className="checkbox-input"
                       />
-                      <span>Notificar en la app</span>
+                      <span>{t('reminders.notifyInApp')}</span>
                     </label>
                   </div>
                 </div>
@@ -344,7 +352,9 @@ export const RemindersSection: React.FC<RemindersSectionProps> = ({
 
               {crudError && (
                 <div className="server-error">
-                  <p>Error: {crudError}</p>
+                  <p>
+                    {t('common.error')}: {crudError}
+                  </p>
                 </div>
               )}
 
@@ -355,17 +365,17 @@ export const RemindersSection: React.FC<RemindersSectionProps> = ({
                   variant="primary"
                 >
                   {isSubmitting
-                    ? 'Guardando...'
+                    ? t('reminders.saving')
                     : editingReminder
-                      ? 'Actualizar'
-                      : 'Guardar'}
+                      ? t('reminders.update')
+                      : t('reminders.save')}
                 </Button>
                 <Button
                   type="button"
                   onClick={handleCancelForm}
                   variant="outline"
                 >
-                  Cancelar
+                  {t('common.cancel')}
                 </Button>
               </div>
             </form>
@@ -381,11 +391,11 @@ export const RemindersSection: React.FC<RemindersSectionProps> = ({
             )}
 
             {loading && filteredReminders.length === 0 ? (
-              <Loader text="Cargando recordatorios..." />
+              <Loader text={t('reminders.loading')} />
             ) : (
               filteredReminders.length === 0 && (
                 <p className="reminders-section__empty">
-                  No hay recordatorios configurados aún
+                  {t('reminders.empty')}
                 </p>
               )
             )}
@@ -439,14 +449,14 @@ export const RemindersSection: React.FC<RemindersSectionProps> = ({
                     <button
                       className="reminder-card__action-btn"
                       onClick={() => handleEditClick(reminder)}
-                      aria-label="Editar recordatorio"
+                      aria-label={t('common.edit')}
                     >
                       <FaEdit />
                     </button>
                     <button
                       className="reminder-card__action-btn reminder-card__action-btn--delete"
                       onClick={() => handleDeleteClick(reminder)}
-                      aria-label="Eliminar recordatorio"
+                      aria-label={t('common.delete')}
                     >
                       <FaTrash />
                     </button>

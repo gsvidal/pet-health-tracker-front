@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { toast } from 'react-hot-toast';
+import i18n from '../i18n/config';
 import type { Deworming } from '../models/deworming.model';
 import type {
   DewormingFormRequest,
@@ -67,7 +68,7 @@ export const useDewormingStore = create<DewormingState>((set, get) => ({
       error: null,
     }));
 
-    toast.success('Desparasitación registrada correctamente ✔️');
+    toast.success(i18n.t('toasts.deworming.created'));
   },
 
   // READ - By Pet ID
@@ -79,7 +80,7 @@ export const useDewormingStore = create<DewormingState>((set, get) => ({
     );
 
     if (error || !dewormingsResponse) {
-      const message = error || 'Error al obtener las desparasitaciones';
+      const message = error || i18n.t('toasts.deworming.error.fetch');
       toast.error(message);
       set({ loading: false, error: message });
       return;
@@ -103,7 +104,7 @@ export const useDewormingStore = create<DewormingState>((set, get) => ({
     );
 
     if (error || !dewormingResponse) {
-      const message = error || 'Error al obtener la desparasitación';
+      const message = error || i18n.t('toasts.deworming.error.fetch');
       toast.error(message);
       set({ loading: false, error: message });
       return;
@@ -127,7 +128,7 @@ export const useDewormingStore = create<DewormingState>((set, get) => ({
     );
 
     if (error || !response) {
-      const message = error || 'Error al actualizar la desparasitación';
+      const message = error || i18n.t('toasts.deworming.error.update');
       toast.error(message);
       set({ loading: false, error: message });
       throw new Error(message);
@@ -148,7 +149,7 @@ export const useDewormingStore = create<DewormingState>((set, get) => ({
       error: null,
     }));
 
-    toast.success('Desparasitación actualizada correctamente ✔️');
+    toast.success(i18n.t('toasts.deworming.updated'));
   },
 
   // DELETE
@@ -158,7 +159,7 @@ export const useDewormingStore = create<DewormingState>((set, get) => ({
     const { error } = await callApi(() => dewormingService.deleteDeworming(id));
 
     if (error) {
-      const message = error || 'Error al eliminar la desparasitación';
+      const message = error || i18n.t('toasts.deworming.error.delete');
       toast.error(message);
       set({ loading: false, error: message });
       throw new Error(message);
@@ -173,7 +174,7 @@ export const useDewormingStore = create<DewormingState>((set, get) => ({
       error: null,
     }));
 
-    toast.success('Desparasitación eliminada correctamente ✔️');
+    toast.success(i18n.t('toasts.deworming.deleted'));
   },
 
   // Utils

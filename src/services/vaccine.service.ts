@@ -48,7 +48,6 @@ export const createVaccine = async (
   data: VaccineFormRequest,
 ): Promise<VaccinationResponse> => {
   const requestData = adaptVaccineToVaccinationCreateRequest(data, petId);
-  console.log('requestData: ', requestData);
   const response = await apiClient.post<VaccinationResponse>(
     VACCINATIONS_ENDPOINT,
     requestData,

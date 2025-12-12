@@ -1,5 +1,6 @@
 import './PetFormPage.scss';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Heart } from 'lucide-react';
 import { usePetStore } from '../../../../store/pet.store';
 import type {
@@ -21,6 +22,7 @@ const initialFormState: PetFormState = {
 };
 
 export function CreatePetForm() {
+  const { t } = useTranslation();
   const { createPet, loading } = usePetStore();
 
   const [formData, setFormData] = useState<PetFormState>(initialFormState);
@@ -68,27 +70,25 @@ export function CreatePetForm() {
             <Heart fill="white" size={24} />
           </div>
           <div>
-            <h2>Crear Nueva Mascota</h2>
-            <p>
-              Completa la información de tu mascota para comenzar a gestionar su
-              salud
-            </p>
+            <h2>{t('pet.form.title')}</h2>
+            <p>{t('pet.form.subtitle')}</p>
           </div>
         </div>
 
         {/* Información Básica */}
         <div className="section">
-          <h3>Información Básica</h3>
+          <h3>{t('pet.form.basicInfo')}</h3>
 
           {/* Nombre obligatorio */}
           <div className="field">
             <label>
-              Nombre de la Mascota <span className="required">*</span>
+              {t('pet.form.name')}{' '}
+              <span className="required">{t('common.required')}</span>
             </label>
             <input
               type="text"
               name="name"
-              placeholder="Ej: Max, Luna, Rocky..."
+              placeholder={t('pet.form.namePlaceholder')}
               value={formData.name}
               onChange={handleChange}
               required
@@ -99,30 +99,36 @@ export function CreatePetForm() {
             {/* Especie obligatoria */}
             <div className="field">
               <Select
-                label="Especie"
+                label={t('pet.form.species')}
                 value={formData.species || null}
                 onChange={(value) =>
                   setFormData({ ...formData, species: value || '' })
                 }
                 options={[
-                  { value: 'perro', label: 'Perro' },
-                  { value: 'gato', label: 'Gato' },
-                  { value: 'ave', label: 'Ave' },
-                  { value: 'conejo', label: 'Conejo' },
-                  { value: 'hamster', label: 'Hamster' },
-                  { value: 'otro', label: 'Otro' },
+                  { value: 'perro', label: t('pet.form.speciesOptions.perro') },
+                  { value: 'gato', label: t('pet.form.speciesOptions.gato') },
+                  { value: 'ave', label: t('pet.form.speciesOptions.ave') },
+                  {
+                    value: 'conejo',
+                    label: t('pet.form.speciesOptions.conejo'),
+                  },
+                  {
+                    value: 'hamster',
+                    label: t('pet.form.speciesOptions.hamster'),
+                  },
+                  { value: 'otro', label: t('pet.form.speciesOptions.otro') },
                 ]}
-                placeholder="Selecciona una especie"
+                placeholder={t('pet.form.speciesPlaceholder')}
               />
             </div>
 
             {/* Raza */}
             <div className="field">
-              <label>Raza</label>
+              <label>{t('pet.form.breed')}</label>
               <input
                 type="text"
                 name="breed"
-                placeholder="Ej: Golden Retriever, Siamés..."
+                placeholder={t('pet.form.breedPlaceholder')}
                 value={formData.breed}
                 onChange={handleChange}
               />
@@ -131,26 +137,26 @@ export function CreatePetForm() {
 
           <div className="field">
             <Select
-              label="Sexo"
+              label={t('pet.form.sex')}
               value={formData.sex || null}
               onChange={(value) =>
                 setFormData({ ...formData, sex: value || '' })
               }
               options={[
-                { value: 'macho', label: 'Macho' },
-                { value: 'hembra', label: 'Hembra' },
+                { value: 'Macho', label: t('pet.form.sexOptions.macho') },
+                { value: 'Hembra', label: t('pet.form.sexOptions.hembra') },
               ]}
-              placeholder="Selecciona una opción"
+              placeholder={t('pet.form.sexPlaceholder')}
             />
           </div>
         </div>
 
         {/* Detalles Físicos */}
         <div className="section">
-          <h3>Detalles Físicos</h3>
+          <h3>{t('pet.form.physicalDetails')}</h3>
 
           <div className="field">
-            <label>Fecha de Nacimiento</label>
+            <label>{t('pet.form.birthDate')}</label>
             <input
               type="date"
               name="birthDate"
@@ -165,16 +171,16 @@ export function CreatePetForm() {
                 marginTop: '0.25rem',
               }}
             >
-              La edad se calculará automáticamente
+              {t('pet.form.ageAutoCalculated')}
             </small>
           </div>
 
           <div className="field">
-            <label>Peso (kg)</label>
+            <label>{t('pet.form.weight')}</label>
             <input
               type="number"
               name="weightKg"
-              placeholder="Ej: 28.5"
+              placeholder={t('pet.form.weightPlaceholder')}
               value={formData.weightKg}
               onChange={handleChange}
             />
@@ -202,10 +208,10 @@ export function CreatePetForm() {
           </div>
  */}
           <div className="field">
-            <label>Notas</label>
+            <label>{t('pet.form.notes')}</label>
             <textarea
               name="notes"
-              placeholder="Información adicional sobre tu mascota"
+              placeholder={t('pet.form.notesPlaceholder')}
               rows={4}
               value={formData.notes}
               onChange={handleChange}
@@ -217,7 +223,7 @@ export function CreatePetForm() {
         <div className="actions">
           <Button type="submit" disabled={loading}>
             <Heart size={18} fill="white" />
-            {loading ? 'Creando...' : 'Crear Mascota'}
+            {loading ? t('common.loading') : t('pet.form.submit')}
           </Button>
         </div>
       </div>

@@ -1,28 +1,28 @@
+import { useTranslation } from 'react-i18next';
 import { FaEnvelope, FaLock } from 'react-icons/fa';
 import { useRecoverPassword } from '../../hooks/useReqPasswordReset';
 import './RecoverPasswordForm.scss';
 
 export const RecoverPasswordForm = () => {
+  const { t } = useTranslation();
   const { register, handleSubmit, errors, loading, onSubmit } =
     useRecoverPassword();
   return (
     <div className="recover-container">
       <div className={`recover-card ${loading ? 'loading' : ''}`}>
-        <h2>Recuperar contraseña</h2>
-        <p className="subtitle">
-          Ingresa tu correo y te enviaremos un enlace para restablecerla.
-        </p>
+        <h2>{t('auth.recoverPassword.title')}</h2>
+        <p className="subtitle">{t('auth.recoverPassword.subtitle')}</p>
         <form onSubmit={handleSubmit(onSubmit)} className="recover-form">
           <div className="input-group">
             <FaEnvelope className="input-icon" />
             <input
               type="email"
-              placeholder="Correo electrónico"
+              placeholder={t('auth.recoverPassword.emailPlaceholder')}
               {...register('email', {
-                required: 'El correo es obligatorio',
+                required: t('auth.recoverPassword.emailRequired'),
                 pattern: {
                   value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                  message: 'Correo inválido',
+                  message: t('auth.recoverPassword.emailInvalid'),
                 },
               })}
             />
@@ -30,25 +30,19 @@ export const RecoverPasswordForm = () => {
               {errors.email?.message}
             </p>
           </div>
-          {/*serverError && <p className="error server">{serverError}</p>*/}
-          {/*success && (
-            <p className="success-message">
-              ✔ Revisa tu correo: te enviamos un enlace para restablecer tu
-              contraseña.
-            </p>
-          )*/}
           <button type="submit" className="btn-recover" disabled={loading}>
             {loading ? (
               <>
-                <FaLock className="locked-icon" /> Enviando...
+                <FaLock className="locked-icon" />{' '}
+                {t('auth.recoverPassword.sending')}
               </>
             ) : (
-              'Enviar enlace'
+              t('auth.recoverPassword.submit')
             )}
           </button>
         </form>
         <p className="back-login">
-          <a href="/register">Volver a Registro</a>
+          <a href="/register">{t('auth.recoverPassword.backToRegister')}</a>
         </p>
       </div>
     </div>

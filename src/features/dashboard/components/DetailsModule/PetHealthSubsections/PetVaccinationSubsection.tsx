@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { Pet } from '../../../../../models/pet.model';
 import type { Vaccine } from '../../../../../models/vaccine.model';
 import { useVaccineForm } from '../../../../../hooks/useVaccineForm';
@@ -26,6 +27,7 @@ interface PetVaccinationSubsectionProps {
 export const PetVaccinationSubsection: React.FC<
   PetVaccinationSubsectionProps
 > = ({ pet }) => {
+  const { t } = useTranslation();
   const [showForm, setShowForm] = useState(false);
   const [editingVaccine, setEditingVaccine] = useState<Vaccine | null>(null);
   const { openModal } = useModalStore();
@@ -76,14 +78,14 @@ export const PetVaccinationSubsection: React.FC<
 
   const handleDeleteClick = (vaccine: Vaccine) => {
     openModal({
-      title: `¿Estás seguro que quieres eliminar "${vaccine.vaccineName}"?`,
-      content: 'Esta acción no se puede deshacer',
+      title: t('modals.delete.title'),
+      content: t('modals.delete.content'),
       variant: 'confirm',
       onConfirm: () => {
         deleteVaccine(vaccine.id);
       },
-      confirmLabel: 'Eliminar',
-      cancelLabel: 'Cancelar',
+      confirmLabel: t('common.delete'),
+      cancelLabel: t('common.cancel'),
     });
   };
 
@@ -105,9 +107,11 @@ export const PetVaccinationSubsection: React.FC<
       {/* Sección 1: Registro de Vacunación */}
       <div className="vaccination-section-card pet-section-card pet-section-card--vaccination">
         <div className="vaccination-subsection__header">
-         <div className="vaccination-subsection__title">
-            <h3>Registro de Vacunación</h3>
-            <p>Gestiona el historial de vacunas de {pet.name}</p>
+          <div className="vaccination-subsection__title">
+            <h3>{t('health.vaccination.title')}</h3>
+            <p>
+              {t('health.vaccination.manageHistory', { petName: pet.name })}
+            </p>
           </div>
           {!showForm && (
             <Button
@@ -115,7 +119,8 @@ export const PetVaccinationSubsection: React.FC<
               onClick={handleAddClick}
               style={{ fontSize: '1.2rem' }}
             >
-              <FaPlus style={{ marginRight: '4px' }} /> Agregar Vacuna
+              <FaPlus style={{ marginRight: '4px' }} />{' '}
+              {t('health.vaccination.add')}
             </Button>
           )}
         </div>
@@ -123,7 +128,9 @@ export const PetVaccinationSubsection: React.FC<
         {showForm && (
           <div className="vaccination-subsection__form-section">
             <h4>
-              {editingVaccine ? 'Editar Vacuna' : 'Registrar Nueva Vacuna'}
+              {editingVaccine
+                ? t('health.vaccination.edit')
+                : t('health.vaccination.registerNew')}
             </h4>
             <form
               onSubmit={handleSubmit(onSubmit)}
@@ -134,21 +141,22 @@ export const PetVaccinationSubsection: React.FC<
                 <div className="vaccination-subsection__form-column">
                   <div className="vaccination-subsection__field">
                     <label htmlFor="vaccineName">
-                      Nombre de la Vacuna <span className="required">*</span>
+                      {t('health.vaccination.name')}{' '}
+                      <span className="required">*</span>
                     </label>
                     <input
                       id="vaccineName"
                       type="text"
-                      placeholder="Ej: Rabia, Parvovirus, Moquillo..."
+                      placeholder={t('health.vaccination.namePlaceholder')}
                       {...register('vaccineName', {
-                        required: 'El nombre de la vacuna es obligatorio',
+                        required: t('health.vaccination.nameRequired'),
                         minLength: {
                           value: 1,
-                          message: 'El nombre debe tener al menos 1 carácter',
+                          message: t('health.vaccination.nameMinLength'),
                         },
                         maxLength: {
                           value: 200,
-                          message: 'El nombre no puede exceder 200 caracteres',
+                          message: t('health.vaccination.nameMaxLength'),
                         },
                       })}
                       className={errors.vaccineName ? 'input-error' : ''}
@@ -162,7 +170,8 @@ export const PetVaccinationSubsection: React.FC<
 
                   <div className="vaccination-subsection__field">
                     <label htmlFor="dateAdministered">
-                      Fecha de Aplicación <span className="required">*</span>
+                      {t('health.vaccination.dateAdministered')}{' '}
+                      <span className="required">*</span>
                     </label>
                     <div className="input-with-icon">
                       <FaCalendarAlt className="input-icon" />
@@ -170,7 +179,7 @@ export const PetVaccinationSubsection: React.FC<
                         id="dateAdministered"
                         type="date"
                         {...register('dateAdministered', {
-                          required: 'La fecha de aplicación es obligatoria',
+                          required: t('health.vaccination.dateRequired'),
                         })}
                         className={errors.dateAdministered ? 'input-error' : ''}
                       />
@@ -183,7 +192,9 @@ export const PetVaccinationSubsection: React.FC<
                   </div>
 
                   <div className="vaccination-subsection__field">
-                    <label htmlFor="nextDue">Próxima Fecha</label>
+                    <label htmlFor="nextDue">
+                      {t('health.vaccination.nextDue')}
+                    </label>
                     <div className="input-with-icon">
                       <FaCalendarAlt className="input-icon" />
                       <input
@@ -194,7 +205,7 @@ export const PetVaccinationSubsection: React.FC<
                             if (!value) return true; // Opcional
                             const dateAdministered = watch('dateAdministered');
                             if (dateAdministered && value <= dateAdministered) {
-                              return 'La próxima fecha debe ser posterior a la fecha de aplicación';
+                              return t('health.vaccination.nextDueAfter');
                             }
                             return true;
                           },
@@ -210,18 +221,23 @@ export const PetVaccinationSubsection: React.FC<
                   </div>
 
                   <div className="vaccination-subsection__field">
-                    <label htmlFor="veterinarian">Veterinario</label>
+                    <label htmlFor="veterinarian">
+                      {t('health.vaccination.veterinarian')}
+                    </label>
                     <div className="input-with-icon">
                       <FaUserMd className="input-icon" />
                       <input
                         id="veterinarian"
                         type="text"
-                        placeholder="Ej: Dr. Carlos Martínez"
+                        placeholder={t(
+                          'health.vaccination.veterinarianPlaceholder',
+                        )}
                         {...register('veterinarian', {
                           maxLength: {
                             value: 200,
-                            message:
-                              'El veterinario no puede exceder 200 caracteres',
+                            message: t(
+                              'health.vaccination.veterinarianMaxLength',
+                            ),
                           },
                         })}
                         className={errors.veterinarian ? 'input-error' : ''}
@@ -238,16 +254,21 @@ export const PetVaccinationSubsection: React.FC<
                 {/* Columna Derecha */}
                 <div className="vaccination-subsection__form-column">
                   <div className="vaccination-subsection__field">
-                    <label htmlFor="manufacturer">Fabricante</label>
+                    <label htmlFor="manufacturer">
+                      {t('health.vaccination.manufacturer')}
+                    </label>
                     <input
                       id="manufacturer"
                       type="text"
-                      placeholder="Ej: Pfizer, Merial..."
+                      placeholder={t(
+                        'health.vaccination.manufacturerPlaceholder',
+                      )}
                       {...register('manufacturer', {
                         maxLength: {
                           value: 200,
-                          message:
-                            'El fabricante no puede exceder 200 caracteres',
+                          message: t(
+                            'health.vaccination.manufacturerMaxLength',
+                          ),
                         },
                       })}
                       className={errors.manufacturer ? 'input-error' : ''}
@@ -260,16 +281,17 @@ export const PetVaccinationSubsection: React.FC<
                   </div>
 
                   <div className="vaccination-subsection__field">
-                    <label htmlFor="lotNumber">Número de Lote</label>
+                    <label htmlFor="lotNumber">
+                      {t('health.vaccination.lotNumber')}
+                    </label>
                     <input
                       id="lotNumber"
                       type="text"
-                      placeholder="Ej: RAB-2024-1234"
+                      placeholder={t('health.vaccination.lotNumberPlaceholder')}
                       {...register('lotNumber', {
                         maxLength: {
                           value: 100,
-                          message:
-                            'El número de lote no puede exceder 100 caracteres',
+                          message: t('health.vaccination.lotNumberMaxLength'),
                         },
                       })}
                       className={errors.lotNumber ? 'input-error' : ''}
@@ -282,13 +304,15 @@ export const PetVaccinationSubsection: React.FC<
                   </div>
 
                   <div className="vaccination-subsection__field">
-                    <label htmlFor="notes">Notas (opcional)</label>
+                    <label htmlFor="notes">
+                      {t('health.vaccination.notes')}
+                    </label>
                     <div className="input-with-icon">
                       <FaFileAlt className="input-icon" />
                       <textarea
                         id="notes"
                         rows={4}
-                        placeholder="Observaciones adicionales..."
+                        placeholder={t('health.vaccination.notesPlaceholder')}
                         {...register('notes')}
                       />
                     </div>
@@ -298,7 +322,9 @@ export const PetVaccinationSubsection: React.FC<
 
               {crudError && (
                 <div className="server-error">
-                  <p>Error: {crudError}</p>
+                  <p>
+                    {t('common.error')}: {crudError}
+                  </p>
                 </div>
               )}
 
@@ -308,14 +334,14 @@ export const PetVaccinationSubsection: React.FC<
                   disabled={loading || !isValid}
                   variant="primary"
                 >
-                  {editingVaccine ? 'Actualizar Registro' : 'Guardar Registro'}
+                  {editingVaccine ? t('common.update') : t('common.save')}
                 </Button>
                 <Button
                   type="button"
                   onClick={handleCancelForm}
                   variant="outline"
                 >
-                  Cancelar
+                  {t('common.cancel')}
                 </Button>
               </div>
             </form>
@@ -327,8 +353,10 @@ export const PetVaccinationSubsection: React.FC<
       <RemindersSection
         petId={pet.id || null}
         // context="vaccination"
-        defaultTitle={`Próxima vacuna - ${pet.name}`}
-        defaultDescription="Recordatorio para aplicar vacuna"
+        defaultTitle={t('health.vaccination.nextReminder', {
+          petName: pet.name,
+        })}
+        defaultDescription={t('health.vaccination.reminderDescription')}
       />
 
       {/* Sección 3: Historial de Vacunación */}
@@ -336,22 +364,24 @@ export const PetVaccinationSubsection: React.FC<
         <div className="vaccination-subsection__history-header">
           <div>
             <FaSyringe className="history-icon" />
-            <h3>Historial de Vacunación</h3>
+            <h3>{t('health.vaccination.history')}</h3>
           </div>
-          <p>Registro completo de todas las vacunas aplicadas</p>
+          <p>{t('health.vaccination.historyDescription')}</p>
         </div>
 
         {crudError && (
           <div className="server-error">
-            <p>Error: {crudError}</p>
+            <p>
+              {t('common.error')}: {crudError}
+            </p>
           </div>
         )}
 
         {loading && vaccines.length === 0 ? (
-          <Loader text="Cargando vacunas..." />
+          <Loader text={t('common.loading')} />
         ) : vaccines.length === 0 ? (
           <p className="vaccination-subsection__empty">
-            No hay vacunas registradas aún
+            {t('health.vaccination.empty')}
           </p>
         ) : (
           <div className="vaccination-subsection__vaccines-list">
@@ -369,14 +399,14 @@ export const PetVaccinationSubsection: React.FC<
                     <button
                       className="vaccine-card__action-btn"
                       onClick={() => handleEditClick(vaccine)}
-                      aria-label="Editar vacuna"
+                      aria-label={t('common.edit')}
                     >
                       <FaEdit />
                     </button>
                     <button
                       className="vaccine-card__action-btn vaccine-card__action-btn--delete"
                       onClick={() => handleDeleteClick(vaccine)}
-                      aria-label="Eliminar vacuna"
+                      aria-label={t('common.delete')}
                     >
                       <FaTrash />
                     </button>
@@ -385,7 +415,7 @@ export const PetVaccinationSubsection: React.FC<
 
                 {isExpired(vaccine.nextDue) && (
                   <span className="vaccine-card__badge vaccine-card__badge--expired">
-                    Vencida
+                    {t('health.vaccination.expired')}
                   </span>
                 )}
 
@@ -393,7 +423,7 @@ export const PetVaccinationSubsection: React.FC<
                   <div className="vaccine-card__detail-item">
                     <FaCalendarAlt className="detail-icon" />
                     <div>
-                      <label>Fecha de Aplicación</label>
+                      <label>{t('health.vaccination.dateAdministered')}</label>
                       <p>{formatDateLocal(vaccine.dateAdministered)}</p>
                     </div>
                   </div>
@@ -402,7 +432,7 @@ export const PetVaccinationSubsection: React.FC<
                     <div className="vaccine-card__detail-item">
                       <FaCalendarAlt className="detail-icon" />
                       <div>
-                        <label>Próxima Dosis</label>
+                        <label>{t('health.vaccination.nextDose')}</label>
                         <p>{formatDateLocal(vaccine.nextDue)}</p>
                       </div>
                     </div>
@@ -412,7 +442,7 @@ export const PetVaccinationSubsection: React.FC<
                     <div className="vaccine-card__detail-item">
                       <FaUserMd className="detail-icon" />
                       <div>
-                        <label>Veterinario</label>
+                        <label>{t('health.vaccination.veterinarian')}</label>
                         <p>{vaccine.veterinarian}</p>
                       </div>
                     </div>
@@ -420,21 +450,21 @@ export const PetVaccinationSubsection: React.FC<
 
                   {vaccine.manufacturer && (
                     <div className="vaccine-card__detail-item">
-                      <label>Fabricante</label>
+                      <label>{t('health.vaccination.manufacturer')}</label>
                       <p>{vaccine.manufacturer}</p>
                     </div>
                   )}
 
                   {vaccine.lotNumber && (
                     <div className="vaccine-card__detail-item">
-                      <label>Número de Lote</label>
+                      <label>{t('health.vaccination.lotNumber')}</label>
                       <p>{vaccine.lotNumber}</p>
                     </div>
                   )}
 
                   {vaccine.notes && (
                     <div className="vaccine-card__detail-item">
-                      <label>Notas</label>
+                      <label>{t('health.vaccination.notes')}</label>
                       <p>{vaccine.notes}</p>
                     </div>
                   )}

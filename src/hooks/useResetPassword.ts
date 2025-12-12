@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form';
 import { resetPassword } from '../services/auth.service';
 import toast from 'react-hot-toast';
 import { useState } from 'react';
+import i18n from '../i18n/config';
 
 export type ResetPasswordForm = {
   password: string;
@@ -20,7 +21,7 @@ export const useResetPassword = (token: string) => {
   const [success, setSuccess] = useState(false);
   const onSubmit = async (data: ResetPasswordForm) => {
     if (data.password !== data.confirmPassword) {
-      toast.error('Las contraseñas no coinciden');
+      toast.error(i18n.t('toasts.auth.passwordMismatch'));
       return;
     }
     setLoading(true);
@@ -28,11 +29,11 @@ export const useResetPassword = (token: string) => {
     setSuccess(false);
     try {
       await resetPassword({ token, password: data.password });
-      toast.success('Contraseña actualizada con éxito 🎉');
+      toast.success(i18n.t('toasts.auth.passwordReset'));
       reset();
       setSuccess(true);
     } catch {
-      const msg = 'Error al actualizar la contraseña';
+      const msg = i18n.t('toasts.auth.passwordResetError');
       toast.error(msg);
       setServerError(msg);
     } finally {

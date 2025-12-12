@@ -5,11 +5,14 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/auth.store';
 import { PRIVATE_ROUTES, PUBLIC_ROUTES } from '../../config/routes';
 import { ThemeToggle } from '../../components/ThemeToggle/ThemeToggle';
+import { LanguageSelector } from '../../components/LanguageSelector/LanguageSelector';
+import { useTranslation } from 'react-i18next';
 import './Header.scss';
 import { IoMdReturnLeft } from 'react-icons/io';
 import { NotificationDropdown } from './NotificationDropdown';
 
 export const Header = () => {
+  const { t } = useTranslation();
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -43,7 +46,7 @@ export const Header = () => {
           <div className="logo-icon">
             <img src="/paw.svg" alt="Pet Health Tracker" />
           </div>
-          <span className="logo-text">Pet Health Tracker</span>
+          <span className="logo-text">{t('header.logo')}</span>
 
           {/* Botón Hamburguesa */}
           <button
@@ -52,7 +55,7 @@ export const Header = () => {
               e.stopPropagation(); // Prevenir que el click se propague al div logo
               setMenuOpen(!menuOpen);
             }}
-            aria-label="Abrir menú"
+            aria-label={t('header.menu.open')}
           >
             <span></span>
             <span></span>
@@ -65,28 +68,33 @@ export const Header = () => {
           {pathname === '/' && (
             <>
               <a href="#inicio" onClick={() => setMenuOpen(false)}>
-                Inicio
+                {t('header.nav.home')}
               </a>
               <a href="#caracteristicas" onClick={() => setMenuOpen(false)}>
-                Características
+                {t('header.nav.features')}
               </a>
               <a href="#nosotros" onClick={() => setMenuOpen(false)}>
-                Nosotros
+                {t('header.nav.about')}
               </a>
               <a href="#contacto" onClick={() => setMenuOpen(false)}>
-                Contacto
+                {t('header.nav.contact')}
               </a>
             </>
           )}
 
           {pathname === PUBLIC_ROUTES.HOME && isAuthenticated && (
             <Link to={PRIVATE_ROUTES.DASHBOARD} className="link--dashboard">
-              Dashboard
+              {t('header.nav.dashboard')}
             </Link>
           )}
           <ThemeToggle onToggle={() => setMenuOpen(false)} />
-          {pathname !== PRIVATE_ROUTES.NOTIFICATIONS && isAuthenticated && (<NotificationDropdown />)}
-          {pathname === PUBLIC_ROUTES.HOME && isAuthenticated ? (
+          {pathname !== PRIVATE_ROUTES.NOTIFICATIONS && isAuthenticated && (
+            <NotificationDropdown />
+          )}
+          <LanguageSelector onToggle={() => setMenuOpen(false)} />
+          {(pathname === PUBLIC_ROUTES.HOME ||
+            pathname === PRIVATE_ROUTES.DASHBOARD) &&
+          isAuthenticated ? (
             <Button
               size="lg"
               variant="primary"
@@ -96,7 +104,7 @@ export const Header = () => {
                 logout();
               }}
             >
-              Logout
+              {t('header.nav.logout')}
             </Button>
           ) : (
             pathname === '/' && (
@@ -108,14 +116,15 @@ export const Header = () => {
                   navigate(PUBLIC_ROUTES.REGISTER);
                 }}
               >
-                Registrarse
+                {t('header.nav.register')}
               </Button>
             )
           )}
           {/* TODO: agregar volver a pagina pet */}
           {needToGoBackToDashboard && (
             <Button
-              size="lg"
+              size="md"
+              style={{fontSize: '1.25rem'}}
               variant="outline"
               onClick={() => {
                 setMenuOpen(false);
@@ -123,7 +132,7 @@ export const Header = () => {
               }}
             >
               <IoMdReturnLeft style={{ marginRight: '6px' }} />
-              Volver al Dashboard
+              {t('header.nav.backToDashboard')}
             </Button>
           )}
         </nav>

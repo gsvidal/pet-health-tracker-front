@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { toast } from 'react-hot-toast';
+import i18n from '../i18n/config';
 import type { Vaccine } from '../models/vaccine.model';
 import type {
   VaccineFormRequest,
@@ -64,7 +65,7 @@ export const useVaccineStore = create<VaccineState>((set, get) => ({
       error: null,
     }));
 
-    toast.success('Vacuna registrada correctamente ✔️');
+    toast.success(i18n.t('toasts.vaccination.created'));
   },
 
   // READ - By Pet ID
@@ -76,7 +77,7 @@ export const useVaccineStore = create<VaccineState>((set, get) => ({
     );
 
     if (error || !vaccinesResponse) {
-      const message = error || 'Error al obtener las vacunas';
+      const message = error || i18n.t('toasts.vaccination.error.fetch');
       toast.error(message);
       set({ loading: false, error: message });
       return;
@@ -100,7 +101,7 @@ export const useVaccineStore = create<VaccineState>((set, get) => ({
     );
 
     if (error || !vaccineResponse) {
-      const message = error || 'Error al obtener la vacuna';
+      const message = error || i18n.t('toasts.vaccination.error.fetch');
       toast.error(message);
       set({ loading: false, error: message });
       return;
@@ -124,7 +125,7 @@ export const useVaccineStore = create<VaccineState>((set, get) => ({
     );
 
     if (error || !response) {
-      const message = error || 'Error al actualizar la vacuna';
+      const message = error || i18n.t('toasts.vaccination.error.update');
       toast.error(message);
       set({ loading: false, error: message });
       throw new Error(message);
@@ -143,7 +144,7 @@ export const useVaccineStore = create<VaccineState>((set, get) => ({
       error: null,
     }));
 
-    toast.success('Vacuna actualizada correctamente ✔️');
+    toast.success(i18n.t('toasts.vaccination.updated'));
   },
 
   // DELETE
@@ -153,7 +154,7 @@ export const useVaccineStore = create<VaccineState>((set, get) => ({
     const { error } = await callApi(() => vaccineService.deleteVaccine(id));
 
     if (error) {
-      const message = error || 'Error al eliminar la vacuna';
+      const message = error || i18n.t('toasts.vaccination.error.delete');
       toast.error(message);
       set({ loading: false, error: message });
       throw new Error(message);
@@ -168,7 +169,7 @@ export const useVaccineStore = create<VaccineState>((set, get) => ({
       error: null,
     }));
 
-    toast.success('Vacuna eliminada correctamente ✔️');
+    toast.success(i18n.t('toasts.vaccination.deleted'));
   },
 
   // Utils

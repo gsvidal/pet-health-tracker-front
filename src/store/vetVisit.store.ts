@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { toast } from 'react-hot-toast';
+import i18n from '../i18n/config';
 import type { VetVisit } from '../models/vetVisit.model';
 import type {
   VetVisitFormRequest,
@@ -64,7 +65,7 @@ export const useVetVisitStore = create<VetVisitState>((set, get) => ({
       error: null,
     }));
 
-    toast.success('Visita veterinaria registrada correctamente ✔️');
+    toast.success(i18n.t('toasts.vetVisit.created'));
   },
 
   // READ - By Pet ID
@@ -76,7 +77,7 @@ export const useVetVisitStore = create<VetVisitState>((set, get) => ({
     );
 
     if (error || !vetVisitsResponse) {
-      const message = error || 'Error al obtener las visitas veterinarias';
+      const message = error || i18n.t('toasts.vetVisit.error.fetch');
       toast.error(message);
       set({ loading: false, error: message });
       return;
@@ -100,7 +101,7 @@ export const useVetVisitStore = create<VetVisitState>((set, get) => ({
     );
 
     if (error || !vetVisitResponse) {
-      const message = error || 'Error al obtener la visita veterinaria';
+      const message = error || i18n.t('toasts.vetVisit.error.fetch');
       toast.error(message);
       set({ loading: false, error: message });
       return;
@@ -124,7 +125,7 @@ export const useVetVisitStore = create<VetVisitState>((set, get) => ({
     );
 
     if (error || !response) {
-      const message = error || 'Error al actualizar la visita veterinaria';
+      const message = error || i18n.t('toasts.vetVisit.error.update');
       toast.error(message);
       set({ loading: false, error: message });
       throw new Error(message);
@@ -145,7 +146,7 @@ export const useVetVisitStore = create<VetVisitState>((set, get) => ({
       error: null,
     }));
 
-    toast.success('Visita veterinaria actualizada correctamente ✔️');
+    toast.success(i18n.t('toasts.vetVisit.updated'));
   },
 
   // DELETE
@@ -155,7 +156,7 @@ export const useVetVisitStore = create<VetVisitState>((set, get) => ({
     const { error } = await callApi(() => vetVisitService.deleteVetVisit(id));
 
     if (error) {
-      const message = error || 'Error al eliminar la visita veterinaria';
+      const message = error || i18n.t('toasts.vetVisit.error.delete');
       toast.error(message);
       set({ loading: false, error: message });
       throw new Error(message);
@@ -170,7 +171,7 @@ export const useVetVisitStore = create<VetVisitState>((set, get) => ({
       error: null,
     }));
 
-    toast.success('Visita veterinaria eliminada correctamente ✔️');
+    toast.success(i18n.t('toasts.vetVisit.deleted'));
   },
 
   // Utils

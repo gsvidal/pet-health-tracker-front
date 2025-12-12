@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   ChevronLeft,
   ChevronRight,
@@ -16,20 +17,30 @@ import { usePetStore } from '../../../../store/pet.store';
 import { Select } from '../../../../components/Select';
 import './CalendarView.scss';
 
-const DAYS_OF_WEEK = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
-const MONTHS = [
-  'Enero',
-  'Febrero',
-  'Marzo',
-  'Abril',
-  'Mayo',
-  'Junio',
-  'Julio',
-  'Agosto',
-  'Septiembre',
-  'Octubre',
-  'Noviembre',
-  'Diciembre',
+// Estos se traducen dinámicamente usando i18n
+const getDaysOfWeek = (t: (key: string) => string) => [
+  t('calendar.days.sun'),
+  t('calendar.days.mon'),
+  t('calendar.days.tue'),
+  t('calendar.days.wed'),
+  t('calendar.days.thu'),
+  t('calendar.days.fri'),
+  t('calendar.days.sat'),
+];
+
+const getMonths = (t: (key: string) => string) => [
+  t('calendar.months.january'),
+  t('calendar.months.february'),
+  t('calendar.months.march'),
+  t('calendar.months.april'),
+  t('calendar.months.may'),
+  t('calendar.months.june'),
+  t('calendar.months.july'),
+  t('calendar.months.august'),
+  t('calendar.months.september'),
+  t('calendar.months.october'),
+  t('calendar.months.november'),
+  t('calendar.months.december'),
 ];
 
 const eventIcons: Record<EventType, any> = {
@@ -39,16 +50,17 @@ const eventIcons: Record<EventType, any> = {
   nutrition: Utensils,
 };
 
-const eventLabels: Record<EventType, string> = {
-  vaccine: 'Vacunación',
-  deworming: 'Desparasitación',
-  vet_visit: 'Visita Veterinaria',
-  nutrition: 'Nutrición',
-};
-
 export const CalendarView = () => {
+  const { t } = useTranslation();
   const { events, fetchEvents } = useCalendarStore();
   const { pets, fetchPets } = usePetStore();
+
+  const eventLabels: Record<EventType, string> = {
+    vaccine: t('health.vaccination.title'),
+    deworming: t('health.deworming.title'),
+    vet_visit: t('health.visit.title'),
+    nutrition: t('nutrition.title'),
+  };
   const [currentDate, setCurrentDate] = useState(new Date(2025, 11, 1)); // Diciembre 2025
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [filterType, setFilterType] = useState<string>('all');
@@ -132,39 +144,42 @@ export const CalendarView = () => {
   // Usar todas las mascotas del usuario, no solo las que tienen eventos
   const availablePets = pets.map((pet) => pet.name).sort();
 
+  const DAYS_OF_WEEK = getDaysOfWeek(t);
+  const MONTHS = getMonths(t);
+
   return (
     <section className="section section--calendar">
       <div className="container container--calendar">
         <div className="calendar-view">
-          <h1>Calendario de eventos</h1>
+          <h1>{t('calendar.title')}</h1>
           {/* Filtros */}
           <div className="calendar-view__filters">
             <Select
-              label="Filtrar por tipo de evento"
+              label={t('calendar.filterByEvent')}
               value={filterType}
               onChange={(value) => setFilterType(value || 'all')}
               options={[
-                { value: 'all', label: 'Todos los eventos' },
-                { value: 'vaccine', label: 'Vacunaciones' },
-                { value: 'deworming', label: 'Desparasitación' },
-                { value: 'vet_visit', label: 'Visitas Veterinarias' },
-                { value: 'nutrition', label: 'Nutrición' },
+                { value: 'all', label: t('calendar.allEvents') },
+                { value: 'vaccine', label: t('health.vaccination.title') },
+                { value: 'deworming', label: t('health.deworming.title') },
+                { value: 'vet_visit', label: t('health.visit.title') },
+                { value: 'nutrition', label: t('nutrition.title') },
               ]}
-              placeholder="Todos los eventos"
+              placeholder={t('calendar.allEvents')}
             />
 
             <Select
-              label="Filtrar por mascota"
+              label={t('calendar.filterByPet')}
               value={filterPet}
               onChange={(value) => setFilterPet(value || 'all')}
               options={[
-                { value: 'all', label: 'Todas las mascotas' },
+                { value: 'all', label: t('calendar.allPets') },
                 ...availablePets.map((petName) => ({
                   value: petName,
                   label: petName,
                 })),
               ]}
-              placeholder="Todas las mascotas"
+              placeholder={t('calendar.allPets')}
             />
           </div>
 
@@ -248,7 +263,7 @@ export const CalendarView = () => {
                 <CalendarIcon size={20} />
                 {selectedDate
                   ? `${selectedDate.getDate()} de ${MONTHS[selectedDate.getMonth()]}`
-                  : 'Selecciona un día'}
+                  : t('calendar.selectDay')}
               </h3>
 
               {selectedDateEvents.length > 0 ? (
@@ -284,8 +299,8 @@ export const CalendarView = () => {
                   <CalendarIcon />
                   <p>
                     {selectedDate
-                      ? 'No hay eventos programados para este día'
-                      : 'Selecciona un día en el calendario para ver los eventos'}
+                      ? t('calendar.noEvents')
+                      : t('calendar.selectDay')}
                   </p>
                 </div>
               )}
@@ -294,7 +309,7 @@ export const CalendarView = () => {
 
           {/* Leyenda */}
           <div className="calendar-view__legend">
-            <h3>Leyenda de Eventos</h3>
+            <h3>{t('calendar.legend')}</h3>
             <div className="calendar-view__legend-grid">
               {Object.entries(eventLabels).map(([type, label]) => (
                 <div key={type} className="calendar-view__legend-item">

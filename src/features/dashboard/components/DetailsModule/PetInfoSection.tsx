@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Controller } from 'react-hook-form';
 import type { Pet } from '../../../../models/pet.model';
 import { usePetStore } from '../../../../store/pet.store';
@@ -9,6 +10,8 @@ import { FaRegEdit, FaCalendarAlt, FaFileAlt } from 'react-icons/fa';
 import { FileText } from 'lucide-react';
 import { useDocumentModalStore } from '../../../../store/documentModal.store';
 import { formatPetAge } from '../../../../utils/dateUtils';
+import { getSexLabel } from '../../../../utils/sexUtils';
+import { getSpeciesLabel } from '../../../../utils/speciesUtils';
 import './PetInfoSection.scss';
 
 interface PetInfoSectionProps {
@@ -16,6 +19,7 @@ interface PetInfoSectionProps {
 }
 
 export default function PetInfoSection({ pet }: PetInfoSectionProps) {
+  const { t } = useTranslation();
   const [isEditing, setIsEditing] = useState(false);
   const updatePet = usePetStore((s) => s.updatePet);
   const { loading, error, fetchPetDocuments, documents } = usePetStore();
@@ -61,8 +65,8 @@ export default function PetInfoSection({ pet }: PetInfoSectionProps) {
       <div className="pet-section-card pet-section-card--info">
         <div className="pet-info-subsection__header">
           <div className="pet-info-subsection__title">
-            <h3>Información General</h3>
-            <p>Detalles completos de tu mascota</p>
+            <h3>{t('pet.details.info')}</h3>
+            <p>{t('pet.details.infoDescription')}</p>
           </div>
           {!isEditing && (
             <div className="pet-info-subsection__header-actions">
@@ -71,7 +75,7 @@ export default function PetInfoSection({ pet }: PetInfoSectionProps) {
                 onClick={() => openDocumentUpload(pet.id)}
               >
                 <FileText size={18} style={{ marginRight: '0.5rem' }} />
-                <span>Subir documentos</span>
+                <span>{t('pet.details.uploadDocument')}</span>
               </Button>
               {documents.length > 0 && (
                 <Button
@@ -90,12 +94,18 @@ export default function PetInfoSection({ pet }: PetInfoSectionProps) {
                   }}
                 >
                   <FileText size={18} style={{ marginRight: '0.5rem' }} />
-                  <span>Ver documentos ({documents.length})</span>
+                  <span>
+                    {t('pet.details.viewDocuments', {
+                      count: documents.length,
+                    })}
+                  </span>
                 </Button>
               )}
               <Button variant="primary" onClick={handleEditClick}>
                 <FaRegEdit style={{ marginRight: '4px' }} size={12} />{' '}
-                <span style={{ fontSize: '1.2rem' }}>Editar Información</span>
+                <span style={{ fontSize: '1.2rem' }}>
+                  {t('pet.details.edit')} {t('pet.details.info')}
+                </span>
               </Button>
             </div>
           )}
@@ -103,7 +113,9 @@ export default function PetInfoSection({ pet }: PetInfoSectionProps) {
 
         {isEditing && (
           <div className="pet-info-subsection__form-section">
-            <h4>Editar Información de la Mascota</h4>
+            <h4>
+              {t('pet.details.edit')} {t('pet.details.info')}
+            </h4>
             <form
               onSubmit={handleSubmit(onSubmit)}
               className="pet-info-subsection__form"
@@ -112,15 +124,15 @@ export default function PetInfoSection({ pet }: PetInfoSectionProps) {
                 {/* Columna Izquierda */}
                 <div className="pet-info-subsection__form-column">
                   <div className="pet-info-subsection__field">
-                    <label htmlFor="name">Nombre</label>
+                    <label htmlFor="name">{t('pet.form.name')}</label>
                     <input
                       id="name"
                       type="text"
-                      placeholder="Ej: Max, Luna..."
+                      placeholder={t('pet.form.namePlaceholder')}
                       {...register('name', {
                         maxLength: {
                           value: 100,
-                          message: 'El nombre no puede exceder 100 caracteres',
+                          message: t('auth.validation.nameMaxLength'),
                         },
                       })}
                       className={errors.name ? 'input-error' : ''}
@@ -133,15 +145,15 @@ export default function PetInfoSection({ pet }: PetInfoSectionProps) {
                   </div>
 
                   <div className="pet-info-subsection__field">
-                    <label htmlFor="species">Especie</label>
+                    <label htmlFor="species">{t('pet.form.species')}</label>
                     <input
                       id="species"
                       type="text"
-                      placeholder="Ej: Perro, Gato..."
+                      placeholder={t('pet.form.speciesPlaceholder')}
                       {...register('species', {
                         maxLength: {
                           value: 50,
-                          message: 'La especie no puede exceder 50 caracteres',
+                          message: t('auth.validation.speciesMaxLength'),
                         },
                       })}
                       className={errors.species ? 'input-error' : ''}
@@ -154,15 +166,15 @@ export default function PetInfoSection({ pet }: PetInfoSectionProps) {
                   </div>
 
                   <div className="pet-info-subsection__field">
-                    <label htmlFor="breed">Raza</label>
+                    <label htmlFor="breed">{t('pet.form.breed')}</label>
                     <input
                       id="breed"
                       type="text"
-                      placeholder="Ej: Labrador, Persa..."
+                      placeholder={t('pet.form.breedPlaceholder')}
                       {...register('breed', {
                         maxLength: {
                           value: 100,
-                          message: 'La raza no puede exceder 100 caracteres',
+                          message: t('auth.validation.breedMaxLength'),
                         },
                       })}
                       className={errors.breed ? 'input-error' : ''}
@@ -175,7 +187,7 @@ export default function PetInfoSection({ pet }: PetInfoSectionProps) {
                   </div>
 
                   <div className="pet-info-subsection__field">
-                    <label htmlFor="birthDate">Fecha de Nacimiento</label>
+                    <label htmlFor="birthDate">{t('pet.form.birthDate')}</label>
                     <div className="input-with-icon">
                       <FaCalendarAlt className="input-icon" />
                       <input
@@ -185,7 +197,7 @@ export default function PetInfoSection({ pet }: PetInfoSectionProps) {
                           validate: (value) => {
                             if (!value) return true; // Opcional
                             if (isNaN(Date.parse(value))) {
-                              return 'La fecha no es válida';
+                              return t('auth.validation.dateInvalid');
                             }
                             return true;
                           },
@@ -204,19 +216,19 @@ export default function PetInfoSection({ pet }: PetInfoSectionProps) {
                 {/* Columna Derecha */}
                 <div className="pet-info-subsection__form-column">
                   <div className="pet-info-subsection__field">
-                    <label htmlFor="weightKg">Peso (kg)</label>
+                    <label htmlFor="weightKg">{t('pet.form.weight')}</label>
                     <input
                       id="weightKg"
                       type="number"
                       min="0"
                       step="0.01"
-                      placeholder="Ej: 15.5"
+                      placeholder={t('pet.form.weightPlaceholder')}
                       {...register('weightKg', {
                         validate: (value) => {
                           if (!value) return true; // Opcional
                           const num = Number(value);
                           if (isNaN(num) || num < 0 || num > 999.99) {
-                            return 'El peso debe ser un número entre 0 y 999.99';
+                            return t('auth.validation.weightRange');
                           }
                           return true;
                         },
@@ -237,20 +249,26 @@ export default function PetInfoSection({ pet }: PetInfoSectionProps) {
                       rules={{
                         maxLength: {
                           value: 20,
-                          message: 'El sexo no puede exceder 20 caracteres',
+                          message: t('auth.validation.sexMaxLength'),
                         },
                       }}
                       render={({ field }) => (
                         <>
                           <Select
-                            label="Sexo"
+                            label={t('pet.form.sex')}
                             value={field.value || null}
                             onChange={(value) => field.onChange(value || '')}
                             options={[
-                              { value: 'Macho', label: 'Macho' },
-                              { value: 'Hembra', label: 'Hembra' },
+                              {
+                                value: 'Macho',
+                                label: t('pet.form.sexOptions.macho'),
+                              },
+                              {
+                                value: 'Hembra',
+                                label: t('pet.form.sexOptions.hembra'),
+                              },
                             ]}
-                            placeholder="Seleccione..."
+                            placeholder={t('pet.form.selectPlaceholder')}
                           />
                           {errors.sex && (
                             <span className="error-message">
@@ -263,11 +281,11 @@ export default function PetInfoSection({ pet }: PetInfoSectionProps) {
                   </div>
 
                   <div className="pet-info-subsection__field">
-                    <label htmlFor="photoUrl">URL de Foto</label>
+                    <label htmlFor="photoUrl">{t('pet.form.photoUrl')}</label>
                     <input
                       id="photoUrl"
                       type="url"
-                      placeholder="https://ejemplo.com/foto-mascota.jpg"
+                      placeholder={t('pet.form.photoUrlPlaceholder')}
                       {...register('photoUrl')}
                       className={errors.photoUrl ? 'input-error' : ''}
                     />
@@ -277,18 +295,18 @@ export default function PetInfoSection({ pet }: PetInfoSectionProps) {
                       </span>
                     )}
                     <small style={{ color: '#666', fontSize: '0.85rem' }}>
-                      Opcional: Agrega foto de tu mascota
+                      {t('common.optional')}: {t('pet.form.photoUrlHint')}
                     </small>
                   </div>
 
                   <div className="pet-info-subsection__field">
-                    <label htmlFor="notes">Notas</label>
+                    <label htmlFor="notes">{t('pet.form.notes')}</label>
                     <div className="input-with-icon">
                       <FaFileAlt className="input-icon" />
                       <textarea
                         id="notes"
                         rows={4}
-                        placeholder="Observaciones adicionales..."
+                        placeholder={t('pet.form.notesPlaceholder')}
                         {...register('notes')}
                       />
                     </div>
@@ -298,7 +316,9 @@ export default function PetInfoSection({ pet }: PetInfoSectionProps) {
 
               {error && (
                 <div className="server-error">
-                  <p>Error: {error}</p>
+                  <p>
+                    {t('common.error')}: {error}
+                  </p>
                 </div>
               )}
 
@@ -308,14 +328,14 @@ export default function PetInfoSection({ pet }: PetInfoSectionProps) {
                   disabled={loading || !isValid || !isDirty}
                   variant="primary"
                 >
-                  Actualizar Registro
+                  {t('common.save')}
                 </Button>
                 <Button
                   type="button"
                   onClick={handleCancelForm}
                   variant="outline"
                 >
-                  Cancelar
+                  {t('common.cancel')}
                 </Button>
               </div>
             </form>
@@ -325,50 +345,50 @@ export default function PetInfoSection({ pet }: PetInfoSectionProps) {
         {!isEditing && (
           <div className="pet-info-subsection__info-grid">
             <div className="info-item">
-              <label>Nombre</label>
+              <label>{t('pet.form.name')}</label>
               <p>{pet.name}</p>
             </div>
             <div className="info-item">
-              <label>Especie</label>
-              <p>{pet.species}</p>
+              <label>{t('pet.form.species')}</label>
+              <p>{getSpeciesLabel(pet.species) || '—'}</p>
             </div>
             <div className="info-item">
-              <label>Raza</label>
+              <label>{t('pet.form.breed')}</label>
               <p>{pet.breed || '—'}</p>
             </div>
             <div className="info-item">
-              <label>Fecha de Nacimiento</label>
+              <label>{t('pet.form.birthDate')}</label>
               <p>{pet.birthDate ? pet.birthDate.split('T')[0] : '—'}</p>
             </div>
             <div className="info-item">
-              <label>Edad</label>
+              <label>{t('pet.card.age')}</label>
               <p>{formatPetAge(pet.ageYears)}</p>
             </div>
             <div className="info-item">
-              <label>Peso</label>
-              <p>{pet.weightKg ? `${pet.weightKg} kg` : '—'}</p>
+              <label>{t('common.weight')}</label>
+              <p>{pet.weightKg ? `${pet.weightKg} ${t('common.kg')}` : '—'}</p>
             </div>
             <div className="info-item">
-              <label>Sexo</label>
-              <p>{pet.sex || '—'}</p>
+              <label>{t('pet.form.sex')}</label>
+              <p>{getSexLabel(pet.sex) || '—'}</p>
             </div>
             {pet.photoUrl && (
               <div className="info-item">
-                <label>Foto</label>
+                <label>{t('pet.form.photoUrl')}</label>
                 <p>
                   <a
                     href={pet.photoUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    Ver foto
+                    {t('pet.details.viewPhoto')}
                   </a>
                 </p>
               </div>
             )}
             {pet.notes && (
               <div className="info-item info-item--full">
-                <label>Notas</label>
+                <label>{t('pet.form.notes')}</label>
                 <p>{pet.notes}</p>
               </div>
             )}

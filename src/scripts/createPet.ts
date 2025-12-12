@@ -97,7 +97,7 @@ const DEMO_PETS = [
 
 // Fecha base fija para datos determinísticos (ajusta según tu demo day)
 // Todas las fechas se calcularán relativas a esta fecha
-const DEMO_BASE_DATE = '2025-12-12'; // Cambia esta fecha según tu demo day
+const DEMO_BASE_DATE = '2025-12-13'; // Cambia esta fecha según tu demo day
 
 // Distribución de recordatorios en diciembre (máximo 2-3 por día)
 // Llevar control de recordatorios por día

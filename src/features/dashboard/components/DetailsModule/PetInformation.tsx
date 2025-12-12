@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import PetInfoSection from './PetInfoSection';
 import type { Pet } from '../../../../models/pet.model';
+import { useTranslation } from 'react-i18next';
 
 import './PetInformation.scss';
 import { PetNutritionSection } from './PetNutritionsSection';
@@ -13,6 +14,7 @@ interface PetInformationProps {
 }
 
 export const PetInformation = ({ pet }: PetInformationProps) => {
+  const { t } = useTranslation();
   const [tab, setTab] = useState<'info' | 'health' | 'nutrition' | 'visit'>(
     'info',
   );
@@ -23,21 +25,21 @@ export const PetInformation = ({ pet }: PetInformationProps) => {
           className={tab === 'info' ? 'active' : ''}
           onClick={() => setTab('info')}
         >
-          <FaInfoCircle className="icon icon--pet-section" /> Información
+          <FaInfoCircle className="icon icon--pet-section" /> {t('pet.details.sections.info')}
         </button>
         <button
           className={tab === 'health' ? 'active' : ''}
           onClick={() => setTab('health')}
         >
           <FaSyringe className="icon icon--pet-section" />
-          Salud
+          {t('pet.details.sections.health')}
         </button>
         <button
           className={tab === 'nutrition' ? 'active' : ''}
           onClick={() => setTab('nutrition')}
         >
           <PiForkKnifeFill className="icon icon--pet-section" />
-          Nutrición
+          {t('pet.details.sections.nutrition')}
         </button>
       </div>
 

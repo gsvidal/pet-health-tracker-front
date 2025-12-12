@@ -38,7 +38,7 @@ export const usePetHealthStatus = ({
   const [healthStatus, setHealthStatus] = useState<
     HealthStatusData & { loading: boolean; summary: PetHealthSummary | null }
   >({
-    status: 'Saludable',
+    status: 'healthy',
     expiredVaccines: 0,
     expiredDewormings: 0,
     upcomingVaccines: 0,
@@ -62,7 +62,7 @@ export const usePetHealthStatus = ({
       if (!summary) {
         // Si falla, mantener estado de carga o usar valores por defecto
         setHealthStatus({
-          status: 'Revisión Necesaria',
+          status: 'review_needed',
           expiredVaccines: 0,
           expiredDewormings: 0,
           upcomingVaccines: 0,

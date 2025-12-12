@@ -1,5 +1,6 @@
 import './DashboardPetCard.scss';
 import { Syringe, Calendar, Bell, Trash2, BellRing, Info } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import type { Pet } from '../../../../models/pet.model';
 import { Button } from '../../../../components/Button/Button';
 import { useNavigate } from 'react-router-dom';
@@ -9,6 +10,8 @@ import { useState } from 'react';
 import { formatDateLocal, formatPetAge } from '../../../../utils/dateUtils';
 import type { HealthStatusData } from '../../../../utils/healthStatus';
 import type { PetHealthSummary } from '../../../../adapters/pet.adapter';
+import { translateHealthStatus } from '../../../../utils/healthStatusTranslations';
+import { getSpeciesLabel } from '../../../../utils/speciesUtils';
 interface DashboardPetCardProps {
   pet: Pet;
   onViewDetails?: (petId: string) => void;
@@ -24,6 +27,7 @@ export const DashboardPetCard = ({
   onDelete,
   healthStatusData: propHealthStatusData,
 }: DashboardPetCardProps) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const hookHealthStatus = usePetHealthStatus({
     petId: pet.id,
@@ -35,12 +39,13 @@ export const DashboardPetCard = ({
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const [isHealthStatusModalOpen, setIsHealthStatusModalOpen] = useState(false);
 
-  const isUnhealthy = !loading && status !== 'Saludable';
+  const translatedStatus = translateHealthStatus(status);
+  const isUnhealthy = !loading && status !== 'healthy';
   const statusClass = loading
     ? 'loading'
-    : status === 'Saludable'
+    : status === 'healthy'
       ? 'saludable'
-      : status === 'Atención Requerida'
+      : status === 'attention_required'
         ? 'atencion-requerida'
         : 'revision-necesaria';
 
@@ -49,34 +54,22 @@ export const DashboardPetCard = ({
       <ModalText
         isOpen={isInfoModalOpen}
         onClose={() => setIsInfoModalOpen(false)}
-        title="¿Qué son las Alertas Activas?"
+        title={t('pet.healthStatus.alerts.title')}
         content={
           <div>
-            <p>
-              Las <strong>Alertas Activas</strong> son el número total de
-              vacunaciones y desparasitaciones que requieren atención:
-            </p>
+            <p
+              dangerouslySetInnerHTML={{
+                __html: t('pet.healthStatus.alerts.description'),
+              }}
+            />
             <ul style={{ marginTop: '1rem', paddingLeft: '1.5rem' }}>
-              <li>
-                <strong>Vacunaciones vencidas:</strong> Vacunas cuya fecha de
-                próxima dosis ya pasó
-              </li>
-              <li>
-                <strong>Desparasitaciones vencidas:</strong> Desparasitaciones
-                que requieren renovación (más de 90 días desde la última)
-              </li>
-              <li>
-                <strong>Vacunaciones próximas:</strong> Vacunas que vencen en
-                los próximos 30 días
-              </li>
-              <li>
-                <strong>Desparasitaciones próximas:</strong> Desparasitaciones
-                que requieren atención pronto (60-90 días desde la última)
-              </li>
+              <li>{t('pet.healthStatus.alerts.expiredVaccines')}</li>
+              <li>{t('pet.healthStatus.alerts.expiredDewormings')}</li>
+              <li>{t('pet.healthStatus.alerts.upcomingVaccines')}</li>
+              <li>{t('pet.healthStatus.alerts.upcomingDewormings')}</li>
             </ul>
             <p style={{ marginTop: '1rem' }}>
-              Este contador te ayuda a identificar rápidamente cuántas acciones
-              necesitas tomar para mantener a tu mascota saludable.
+              {t('pet.healthStatus.alerts.help')}
             </p>
           </div>
         }
@@ -85,7 +78,7 @@ export const DashboardPetCard = ({
       <ModalText
         isOpen={isHealthStatusModalOpen}
         onClose={() => setIsHealthStatusModalOpen(false)}
-        title="Estados de Salud"
+        title={t('pet.healthStatus.info.title')}
         content={
           <div>
             <div style={{ marginBottom: '1.5rem' }}>
@@ -97,15 +90,15 @@ export const DashboardPetCard = ({
                   marginBottom: '0.5rem',
                 }}
               >
-                🟢 Saludable
+                {t('pet.healthStatus.info.healthy.title')}
               </h3>
               <p style={{ marginLeft: '1.5rem', marginBottom: '0.5rem' }}>
-                Tu mascota está al día con sus cuidados:
+                {t('pet.healthStatus.info.healthy.description')}
               </p>
               <ul style={{ marginLeft: '2rem', paddingLeft: '0.5rem' }}>
-                <li>Vacunaciones y desparasitaciones al día</li>
-                <li>Sin vacunas vencidas ni próximas a vencer (30 días)</li>
-                <li>Última visita veterinaria hace menos de 6 meses</li>
+                <li>{t('pet.healthStatus.info.healthy.criteria1')}</li>
+                <li>{t('pet.healthStatus.info.healthy.criteria2')}</li>
+                <li>{t('pet.healthStatus.info.healthy.criteria3')}</li>
               </ul>
             </div>
 
@@ -118,17 +111,21 @@ export const DashboardPetCard = ({
                   marginBottom: '0.5rem',
                 }}
               >
-                🔴 Atención Requerida
+                {t('pet.healthStatus.info.attentionRequired.title')}
               </h3>
               <p style={{ marginLeft: '1.5rem', marginBottom: '0.5rem' }}>
-                Tu mascota necesita atención inmediata:
+                {t('pet.healthStatus.info.attentionRequired.description')}
               </p>
               <ul style={{ marginLeft: '2rem', paddingLeft: '0.5rem' }}>
-                <li>Vacunaciones o desparasitaciones vencidas</li>
                 <li>
-                  Vacunaciones o desparasitaciones próximas a vencer (30 días)
+                  {t('pet.healthStatus.info.attentionRequired.criteria1')}
                 </li>
-                <li>Sin visita veterinaria en más de 6 meses</li>
+                <li>
+                  {t('pet.healthStatus.info.attentionRequired.criteria2')}
+                </li>
+                <li>
+                  {t('pet.healthStatus.info.attentionRequired.criteria3')}
+                </li>
               </ul>
             </div>
 
@@ -141,17 +138,14 @@ export const DashboardPetCard = ({
                   marginBottom: '0.5rem',
                 }}
               >
-                🟡 Revisión Necesaria
+                {t('pet.healthStatus.info.reviewNeeded.title')}
               </h3>
               <p style={{ marginLeft: '1.5rem', marginBottom: '0.5rem' }}>
-                Tu mascota necesita una revisión:
+                {t('pet.healthStatus.info.reviewNeeded.description')}
               </p>
               <ul style={{ marginLeft: '2rem', paddingLeft: '0.5rem' }}>
-                <li>
-                  Sin registros de salud (sin vacunaciones, desparasitaciones ni
-                  visitas)
-                </li>
-                <li>Sin visita veterinaria en más de 1 año</li>
+                <li>{t('pet.healthStatus.info.reviewNeeded.criteria1')}</li>
+                <li>{t('pet.healthStatus.info.reviewNeeded.criteria2')}</li>
               </ul>
             </div>
           </div>
@@ -163,7 +157,7 @@ export const DashboardPetCard = ({
           <div className="dashboard-pet-card__title-section">
             <h3 className="dashboard-pet-card__name">{pet.name}</h3>
             <p className="dashboard-pet-card__species">
-              {pet.species} {pet.breed && `• ${pet.breed}`}
+              {getSpeciesLabel(pet.species)} {pet.breed && `• ${pet.breed}`}
             </p>
           </div>
           {isUnhealthy && (
@@ -184,15 +178,21 @@ export const DashboardPetCard = ({
 
         <div className="dashboard-pet-card__info">
           <div className="dashboard-pet-card__info-item">
-            <span className="dashboard-pet-card__label">Edad</span>
+            <span className="dashboard-pet-card__label">
+              {t('pet.card.age')}
+            </span>
             <span className="dashboard-pet-card__value">
               {formatPetAge(pet.ageYears)}
             </span>
           </div>
           <div className="dashboard-pet-card__info-item">
-            <span className="dashboard-pet-card__label">Peso</span>
+            <span className="dashboard-pet-card__label">
+              {t('common.weight')}
+            </span>
             <span className="dashboard-pet-card__value">
-              {pet.weightKg ? `${pet.weightKg} kg` : 'N/A'}
+              {pet.weightKg
+                ? `${pet.weightKg} ${t('common.kg')}`
+                : t('common.noData')}
             </span>
           </div>
         </div>
@@ -200,12 +200,12 @@ export const DashboardPetCard = ({
         <div className="dashboard-pet-card__health">
           <div className="dashboard-pet-card__health-header">
             <span className="dashboard-pet-card__health-label">
-              Estado de Salud
+              {t('pet.card.healthStatus')}
             </span>
             <button
               className="dashboard-pet-card__info-icon"
               onClick={() => setIsHealthStatusModalOpen(true)}
-              aria-label="Información sobre estados de salud"
+              aria-label={t('pet.healthStatus.info.title')}
             >
               <Info size={14} />
             </button>
@@ -213,7 +213,7 @@ export const DashboardPetCard = ({
           <span
             className={`dashboard-pet-card__health-badge dashboard-pet-card__health-badge--${statusClass}`}
           >
-            {loading ? 'Cargando...' : status}
+            {loading ? t('common.loading') : translatedStatus}
           </span>
         </div>
 
@@ -222,12 +222,12 @@ export const DashboardPetCard = ({
             <Bell size={16} />
             <div className="dashboard-pet-card__summary-label-wrapper">
               <span className="dashboard-pet-card__summary-label">
-                Alertas Activas
+                {t('pet.card.activeAlerts')}
               </span>
               <button
                 className="dashboard-pet-card__info-icon"
                 onClick={() => setIsInfoModalOpen(true)}
-                aria-label="Información sobre alertas activas"
+                aria-label={t('pet.healthStatus.alerts.title')}
               >
                 <Info size={14} />
               </button>
@@ -243,7 +243,7 @@ export const DashboardPetCard = ({
             <Syringe size={16} />
             <div className="dashboard-pet-card__event-content">
               <span className="dashboard-pet-card__event-label">
-                Próxima Vacuna
+                {t('pet.card.nextVaccine')}
               </span>
               <span className="dashboard-pet-card__event-value">
                 {loading
@@ -258,7 +258,7 @@ export const DashboardPetCard = ({
             <Calendar size={16} />
             <div className="dashboard-pet-card__event-content">
               <span className="dashboard-pet-card__event-label">
-                Última Visita
+                {t('pet.card.lastVisit')}
               </span>
               <span className="dashboard-pet-card__event-value">
                 {loading
@@ -283,7 +283,7 @@ export const DashboardPetCard = ({
             })
           }
         >
-          Ver Detalles
+          {t('pet.card.viewDetails')}
         </Button>
       </div>
     </>
