@@ -111,6 +111,13 @@
       "instruction": "Ve a tu correo y dale click al enlace para continuar con el reseteo de contraseña",
       "backToLogin": "Volver al inicio de sesión"
     },
+    "registerSuccess": {
+      "title": "Revisa tu correo",
+      "message": "Hemos enviado un enlace de verificación a {{email}}",
+      "messageGeneric": "Hemos enviado un enlace de verificación a tu correo electrónico",
+      "instruction": "Ve a tu correo y dale click al enlace para verificar tu cuenta y completar el registro",
+      "backToLogin": "Volver al inicio de sesión"
+    },
     "verifyEmail": {
       "invalidToken": "Token inválido",
       "invalidTokenMessage": "El enlace de verificación no es válido o ha expirado.",

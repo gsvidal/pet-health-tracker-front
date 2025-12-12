@@ -1,9 +1,11 @@
 import { useLocation, Link } from 'react-router-dom';
 import { FaEnvelope, FaArrowLeft } from 'react-icons/fa';
+import { useTranslation } from 'react-i18next';
 import { PUBLIC_ROUTES } from '../../../../config/routes';
 import './RegisterSuccessPage.scss';
 
 export const RegisterSuccessPage = () => {
+  const { t } = useTranslation();
   const location = useLocation();
   const email = location.state?.email as string | undefined;
 
@@ -13,29 +15,24 @@ export const RegisterSuccessPage = () => {
         <div className="register-success-icon">
           <FaEnvelope size={48} />
         </div>
-        <h2>Revisa tu correo</h2>
+        <h2>{t('auth.registerSuccess.title')}</h2>
         <p className="register-success-message">
           {email ? (
-            <>
-              Hemos enviado un enlace de verificación a{' '}
-              <strong>{email}</strong>
-            </>
+            <>{t('auth.registerSuccess.message', { email: email })}</>
           ) : (
-            'Hemos enviado un enlace de verificación a tu correo electrónico'
+            t('auth.registerSuccess.messageGeneric')
           )}
         </p>
         <p className="register-success-instruction">
-          Ve a tu correo y dale click al enlace para verificar tu cuenta y
-          completar el registro
+          {t('auth.registerSuccess.instruction')}
         </p>
         <div className="register-success-actions">
           <Link to={PUBLIC_ROUTES.LOGIN} className="register-success-link">
             <FaArrowLeft style={{ marginRight: '8px' }} />
-            Volver al inicio de sesión
+            {t('auth.registerSuccess.backToLogin')}
           </Link>
         </div>
       </div>
     </div>
   );
 };
-

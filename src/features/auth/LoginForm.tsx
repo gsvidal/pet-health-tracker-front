@@ -1,4 +1,4 @@
-import { FaEnvelope, FaLock, FaGoogle, FaEye } from 'react-icons/fa';
+import { FaEnvelope, FaLock, FaEye } from 'react-icons/fa';
 import { GrFormViewHide } from 'react-icons/gr';
 import { useTranslation } from 'react-i18next';
 import { useLogin } from '../../hooks/useLogin';
@@ -94,16 +94,16 @@ export const LoginForm = () => {
           </button>
 
           {/* Divider */}
-          <div className="separator">{t('common.orContinueWith')}</div>
+          {/* <div className="separator">{t('common.orContinueWith')}</div> */}
 
           {/* Login con Google */}
-          <button
+          {/* <button
             type="button"
             className="btn-google"
             onClick={() => alert('Google Login próximamente')}
           >
             <FaGoogle /> {t('common.signInWithGoogle')}
-          </button>
+          </button> */}
 
           {/* Link para registrarse */}
           <p className="register-link">

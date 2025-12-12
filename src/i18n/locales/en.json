@@ -111,6 +111,13 @@
       "instruction": "Go to your email and click the link to continue with the password reset",
       "backToLogin": "Back to Sign In"
     },
+    "registerSuccess": {
+      "title": "Check your email",
+      "message": "We have sent a verification link to {{email}}",
+      "messageGeneric": "We have sent a verification link to your email address",
+      "instruction": "Go to your email and click the link to verify your account and complete registration",
+      "backToLogin": "Back to Sign In"
+    },
     "verifyEmail": {
       "invalidToken": "Invalid Token",
       "invalidTokenMessage": "The verification link is not valid or has expired.",
