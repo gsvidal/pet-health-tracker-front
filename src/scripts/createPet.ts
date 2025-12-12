@@ -426,10 +426,10 @@ async function createHealthRecords(
     await new Promise((resolve) => setTimeout(resolve, 300));
 
     // DESPARASITACIONES
-    // Bella (iguana) no tiene registros para estado "Revisión Necesaria"
-    if (petName === 'Bella' && petSpecies === 'iguana') {
+    // Mariana (iguana) no tiene registros para estado "Revisión Necesaria"
+    if (petName === 'Mariana' && petSpecies === 'iguana') {
       log.info(
-        '  ℹ No se crean desparasitaciones para Bella (Revisión Necesaria)',
+        '  ℹ No se crean desparasitaciones para Mariana (Revisión Necesaria)',
       );
     } else {
       log.step('Creando desparasitaciones...');
@@ -459,10 +459,10 @@ async function createHealthRecords(
     await new Promise((resolve) => setTimeout(resolve, 300));
 
     // VISITAS VETERINARIAS
-    // Bella (iguana) no tiene visitas recientes para estado "Revisión Necesaria"
-    if (petName === 'Bella' && petSpecies === 'iguana') {
+    // Mariana (iguana) no tiene visitas recientes para estado "Revisión Necesaria"
+    if (petName === 'Mariana' && petSpecies === 'iguana') {
       log.info(
-        '  ℹ No se crean visitas veterinarias para Bella (Revisión Necesaria)',
+        '  ℹ No se crean visitas veterinarias para Mariana (Revisión Necesaria)',
       );
     } else {
       log.step('Creando visitas veterinarias...');
@@ -559,10 +559,10 @@ async function createHealthRecords(
     await new Promise((resolve) => setTimeout(resolve, 300));
 
     // RECORDATORIOS
-    // Bella (iguana) no tiene recordatorios porque no tiene registros de salud
-    if (petName === 'Bella' && petSpecies === 'iguana') {
+    // Mariana (iguana) no tiene recordatorios porque no tiene registros de salud
+    if (petName === 'Mariana' && petSpecies === 'iguana') {
       log.info(
-        '  ℹ No se crean recordatorios para Bella (Revisión Necesaria)',
+        '  ℹ No se crean recordatorios para Mariana (Revisión Necesaria)',
       );
     } else {
       log.step('Creando recordatorios...');
@@ -606,6 +606,7 @@ async function createHealthRecords(
 
 // Función principal
 async function main() {
+  const startTime = Date.now(); // Capturar tiempo de inicio
   log.title('🐾 Crear Nueva Mascota - Demo Day');
 
   // Obtener configuración desde .env
@@ -665,9 +666,9 @@ async function main() {
       results.push({ ...petData, id: petId });
 
       // Crear registros de salud para esta mascota
-      // Alternar entre saludable y atención requerida, pero los últimos 2 siempre saludables
-      const totalPets = DEMO_PETS.length;
-      const isHealthy = i % 2 === 0 || i >= totalPets - 2; // Alterna, pero últimos 2 siempre saludables
+      // Distribución: 2 saludables, 2 atención requerida, 1 revisión necesaria (Mariana)
+      // Mariana (iguana) siempre será "Revisión Necesaria" (sin registros)
+      const isHealthy = i % 2 === 0 && petData.name !== 'Mariana'; // Alterna, excepto Mariana
       await createHealthRecords(
         apiUrl,
         token,
@@ -701,6 +702,11 @@ async function main() {
       `\n⚠️  Se crearon ${results.length} de ${DEMO_PETS.length} mascotas`,
     );
   }
+
+  // Calcular y mostrar tiempo total
+  const endTime = Date.now();
+  const totalSeconds = ((endTime - startTime) / 1000).toFixed(2);
+  log.title(`⏱️  Tiempo total del proceso: ${totalSeconds} segundos`);
 
   process.exit(0);
 }
