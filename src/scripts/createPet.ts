@@ -97,7 +97,54 @@ const DEMO_PETS = [
 
 // Fecha base fija para datos determinísticos (ajusta según tu demo day)
 // Todas las fechas se calcularán relativas a esta fecha
-const DEMO_BASE_DATE = '2025-12-12'; // Cambia esta fecha según tu demo day
+const DEMO_BASE_DATE = '2025-12-13'; // Cambia esta fecha según tu demo day
+
+// Distribución de recordatorios en diciembre (máximo 2-3 por día)
+// Llevar control de recordatorios por día
+const reminderDistribution: Record<string, number> = {};
+
+// Función para obtener la próxima fecha disponible en diciembre para recordatorios
+function getNextReminderDateInDecember(
+  baseDate: string,
+  reminderIndex: number,
+): string {
+  const base = new Date(baseDate);
+  const year = base.getFullYear();
+  const month = 11; // Diciembre (0-indexed)
+
+  // Empezar desde el día 12 (día de la demo)
+  let day = 12;
+
+  // Distribuir recordatorios: cada 2-3 recordatorios, avanzar un día
+  // Esto asegura máximo 2-3 recordatorios por día
+  const dayOffset = Math.floor(reminderIndex / 2.5); // ~2.5 recordatorios por día
+  day = 12 + dayOffset;
+
+  // Asegurar que no exceda el 31 de diciembre
+  if (day > 31) {
+    day = 31;
+  }
+
+  const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+
+  // Llevar control de cuántos recordatorios hay en este día
+  if (!reminderDistribution[dateStr]) {
+    reminderDistribution[dateStr] = 0;
+  }
+  reminderDistribution[dateStr]++;
+
+  // Si ya hay 3 recordatorios en este día, avanzar al siguiente
+  if (reminderDistribution[dateStr] > 3) {
+    day++;
+    if (day > 31) day = 31;
+    const newDateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    reminderDistribution[newDateStr] =
+      (reminderDistribution[newDateStr] || 0) + 1;
+    return newDateStr;
+  }
+
+  return dateStr;
+}
 
 // Función para hacer login
 async function login(
@@ -367,6 +414,7 @@ async function createHealthRecords(
   petName: string,
   petSpecies: string,
   isHealthy: boolean, // true = saludable, false = atención requerida
+  reminderIndexRef: { current: number }, // Referencia al contador global de recordatorios
 ): Promise<void> {
   log.title(`📋 Creando registros para ${petName}...`);
 
@@ -566,34 +614,55 @@ async function createHealthRecords(
       );
     } else {
       log.step('Creando recordatorios...');
+
+      // Obtener fechas distribuidas en diciembre
+      const vaccineReminderDate = getNextReminderDateInDecember(
+        today,
+        reminderIndexRef.current++,
+      );
+      const dewormingReminderDate = getNextReminderDateInDecember(
+        today,
+        reminderIndexRef.current++,
+      );
+
       await createReminder(apiUrl, token, {
         title: `Vacunación anual - ${petName}`,
         description: `Recordatorio para vacunación anual de ${petName}`,
-        eventTime: toISOString(oneMonthFromNow, '10:00'),
+        eventTime: toISOString(vaccineReminderDate, '10:00'),
         petId,
         frequency: 'once',
       });
-      log.success('  ✓ Recordatorio de vacunación creado');
+      log.success(
+        `  ✓ Recordatorio de vacunación creado (${vaccineReminderDate})`,
+      );
 
       await createReminder(apiUrl, token, {
         title: `Desparasitación - ${petName}`,
         description: `Recordatorio para desparasitación de ${petName}`,
-        eventTime: toISOString(oneMonthFromNow, '14:00'),
+        eventTime: toISOString(dewormingReminderDate, '14:00'),
         petId,
         frequency: 'once',
       });
-      log.success('  ✓ Recordatorio de desparasitación creado');
+      log.success(
+        `  ✓ Recordatorio de desparasitación creado (${dewormingReminderDate})`,
+      );
 
       if (!isHealthy) {
         // Recordatorio urgente para mascota con atención requerida
+        const followUpReminderDate = getNextReminderDateInDecember(
+          today,
+          reminderIndexRef.current++,
+        );
         await createReminder(apiUrl, token, {
           title: `⚠️ Seguimiento veterinario - ${petName}`,
           description: `Seguimiento médico requerido para ${petName}`,
-          eventTime: toISOString(today, '09:00'),
+          eventTime: toISOString(followUpReminderDate, '09:00'),
           petId,
           frequency: 'once',
         });
-        log.success('  ✓ Recordatorio de seguimiento creado');
+        log.success(
+          `  ✓ Recordatorio de seguimiento creado (${followUpReminderDate})`,
+        );
       }
     }
 
@@ -645,6 +714,9 @@ async function main() {
   // Crear todas las mascotas de demo automáticamente
   log.title(`🚀 Creando ${DEMO_PETS.length} Mascotas de Demo...`);
 
+  // Contador global para distribuir recordatorios en diciembre
+  let globalReminderIndex = 0;
+
   const results = [];
   for (let i = 0; i < DEMO_PETS.length; i++) {
     const petData = DEMO_PETS[i];
@@ -669,6 +741,7 @@ async function main() {
       // Distribución: 2 saludables, 2 atención requerida, 1 revisión necesaria (Mariana)
       // Mariana (iguana) siempre será "Revisión Necesaria" (sin registros)
       const isHealthy = i % 2 === 0 && petData.name !== 'Mariana'; // Alterna, excepto Mariana
+      const reminderIndexRef = { current: globalReminderIndex };
       await createHealthRecords(
         apiUrl,
         token,
@@ -676,7 +749,10 @@ async function main() {
         petData.name,
         petData.species,
         isHealthy,
+        reminderIndexRef,
       );
+      // Actualizar el contador global después de crear los recordatorios
+      globalReminderIndex = reminderIndexRef.current;
 
       // Pausa entre mascotas para evitar rate limiting
       if (i < DEMO_PETS.length - 1) {

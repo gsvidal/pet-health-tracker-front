@@ -1,9 +1,12 @@
 import './PetFilters.scss';
 import { Filter, X, Check } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useState, useRef, useEffect, useMemo } from 'react';
 import type { Pet } from '../../../../models/pet.model';
 import type { HealthStatus } from '../../../../utils/healthStatus';
 import { Button } from '../../../../components/Button/Button';
+import { translateHealthStatus } from '../../../../utils/healthStatusTranslations';
+import { getSpeciesLabel } from '../../../../utils/speciesUtils';
 
 interface PetFiltersProps {
   pets: Pet[];
@@ -28,6 +31,7 @@ export const PetFilters = ({
   onAlertsChange,
   onClearFilters,
 }: PetFiltersProps) => {
+  const { t } = useTranslation();
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const speciesRef = useRef<HTMLDivElement>(null);
   const healthRef = useRef<HTMLDivElement>(null);
@@ -39,19 +43,28 @@ export const PetFilters = ({
     return Array.from(speciesSet).sort();
   }, [pets]);
 
-  // Health status options
+  // Health status options (usando códigos internos)
   const healthStatusOptions: { value: HealthStatus | null; label: string }[] = [
-    { value: null, label: 'Todos' },
-    { value: 'Saludable', label: 'Saludable' },
-    { value: 'Atención Requerida', label: 'Atención Requerida' },
-    { value: 'Revisión Necesaria', label: 'Revisión Necesaria' },
+    { value: null, label: t('common.all') },
+    {
+      value: 'healthy',
+      label: translateHealthStatus('healthy'),
+    },
+    {
+      value: 'attention_required',
+      label: translateHealthStatus('attention_required'),
+    },
+    {
+      value: 'review_needed',
+      label: translateHealthStatus('review_needed'),
+    },
   ];
 
   // Alerts options
   const alertsOptions = [
-    { value: null, label: 'Todas' },
-    { value: 'with-alerts', label: 'Con Alertas' },
-    { value: 'no-alerts', label: 'Sin Alertas' },
+    { value: null, label: t('dashboard.filters.allAlerts') },
+    { value: 'with-alerts', label: t('dashboard.filters.withAlerts') },
+    { value: 'no-alerts', label: t('dashboard.filters.withoutAlerts') },
   ];
 
   // Close dropdown when clicking outside
@@ -83,14 +96,16 @@ export const PetFilters = ({
     <div className="pet-filters">
       <div className="pet-filters__header">
         <Filter size={20} className="pet-filters__icon" />
-        <h3 className="pet-filters__title">Filtros</h3>
+        <h3 className="pet-filters__title">{t('dashboard.filters.title')}</h3>
       </div>
 
       <div className="pet-filters__content">
         <div className="pet-filters__dropdowns">
           {/* Especie Dropdown */}
           <div className="pet-filters__dropdown-wrapper" ref={speciesRef}>
-            <label className="pet-filters__label">Especie</label>
+            <label className="pet-filters__label">
+              {t('dashboard.filters.species')}
+            </label>
             <div className="pet-filters__dropdown">
               <button
                 className="pet-filters__dropdown-button"
@@ -101,7 +116,11 @@ export const PetFilters = ({
                   );
                 }}
               >
-                <span>{selectedSpecies || 'Todas'}</span>
+                <span>
+                  {selectedSpecies
+                    ? getSpeciesLabel(selectedSpecies)
+                    : t('dashboard.filters.allSpecies')}
+                </span>
                 <span className="pet-filters__dropdown-arrow">▼</span>
               </button>
               {openDropdown === 'species' && (
@@ -118,7 +137,7 @@ export const PetFilters = ({
                       setOpenDropdown(null);
                     }}
                   >
-                    Todas
+                    {t('dashboard.filters.allSpecies')}
                     {!selectedSpecies && <Check size={16} />}
                   </button>
                   {availableSpecies.map((species) => (
@@ -135,7 +154,7 @@ export const PetFilters = ({
                         setOpenDropdown(null);
                       }}
                     >
-                      {species}
+                      {getSpeciesLabel(species)}
                       {selectedSpecies === species && <Check size={16} />}
                     </button>
                   ))}
@@ -146,7 +165,9 @@ export const PetFilters = ({
 
           {/* Estado de Salud Dropdown */}
           <div className="pet-filters__dropdown-wrapper" ref={healthRef}>
-            <label className="pet-filters__label">Estado de Salud</label>
+            <label className="pet-filters__label">
+              {t('dashboard.filters.healthStatus')}
+            </label>
             <div className="pet-filters__dropdown">
               <button
                 className="pet-filters__dropdown-button"
@@ -158,7 +179,7 @@ export const PetFilters = ({
                 <span>
                   {healthStatusOptions.find(
                     (opt) => opt.value === selectedHealthStatus,
-                  )?.label || 'Todos'}
+                  )?.label || t('dashboard.filters.allStatus')}
                 </span>
                 <span className="pet-filters__dropdown-arrow">▼</span>
               </button>
@@ -191,7 +212,9 @@ export const PetFilters = ({
 
           {/* Alertas Dropdown */}
           <div className="pet-filters__dropdown-wrapper" ref={alertsRef}>
-            <label className="pet-filters__label">Alertas</label>
+            <label className="pet-filters__label">
+              {t('dashboard.filters.alerts')}
+            </label>
             <div className="pet-filters__dropdown">
               <button
                 className="pet-filters__dropdown-button"
@@ -202,7 +225,7 @@ export const PetFilters = ({
               >
                 <span>
                   {alertsOptions.find((opt) => opt.value === selectedAlerts)
-                    ?.label || 'Todas'}
+                    ?.label || t('dashboard.filters.allAlerts')}
                 </span>
                 <span className="pet-filters__dropdown-arrow">▼</span>
               </button>
@@ -235,14 +258,16 @@ export const PetFilters = ({
         {/* Clear Filters Button */}
         <Button onClick={onClearFilters} size="sm" variant="outline">
           <X size={16} style={{ marginRight: '4px' }} />
-          Limpiar Filtros
+          {t('dashboard.filters.clear')}
         </Button>
       </div>
 
       {/* Results Count */}
       <div className="pet-filters__results">
         <span>
-          Mostrando {filteredCount} mascota{filteredCount !== 1 ? 's' : ''}
+          {filteredCount === 1
+            ? t('dashboard.pets.showing', { count: filteredCount })
+            : t('dashboard.pets.showingPlural', { count: filteredCount })}
         </span>
       </div>
     </div>

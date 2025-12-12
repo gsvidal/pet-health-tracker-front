@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { toast } from 'react-hot-toast';
+import i18n from '../i18n/config';
 import type { Reminder } from '../models/reminder.model';
 import type {
   ReminderFormRequest,
@@ -82,7 +83,7 @@ export const useReminderStore = create<ReminderState>((set, get) => ({
           'Recordatorio duplicado detectado, no se agregará al estado',
         );
         set({ loading: false, error: null, isCreating: false });
-        toast.success('Recordatorio creado correctamente ✔️');
+        toast.success(i18n.t('toasts.reminder.created'));
         return;
       }
 
@@ -94,7 +95,7 @@ export const useReminderStore = create<ReminderState>((set, get) => ({
         isCreating: false,
       }));
 
-      toast.success('Recordatorio creado correctamente ✔️');
+      toast.success(i18n.t('toasts.reminder.created'));
     } catch (err) {
       set({ loading: false, isCreating: false });
       throw err;
@@ -110,7 +111,7 @@ export const useReminderStore = create<ReminderState>((set, get) => ({
     );
 
     if (error || !remindersResponse) {
-      const message = error || 'Error al obtener los recordatorios';
+      const message = error || i18n.t('toasts.reminder.error.fetch');
       toast.error(message);
       set({ loading: false, error: message });
       return;
@@ -134,7 +135,7 @@ export const useReminderStore = create<ReminderState>((set, get) => ({
     );
 
     if (error || !reminderResponse) {
-      const message = error || 'Error al obtener el recordatorio';
+      const message = error || i18n.t('toasts.reminder.error.fetch');
       toast.error(message);
       set({ loading: false, error: message });
       return;
@@ -158,7 +159,7 @@ export const useReminderStore = create<ReminderState>((set, get) => ({
     );
 
     if (error || !response) {
-      const message = error || 'Error al actualizar el recordatorio';
+      const message = error || i18n.t('toasts.reminder.error.update');
       toast.error(message);
       set({ loading: false, error: message });
       throw new Error(message);
@@ -179,7 +180,7 @@ export const useReminderStore = create<ReminderState>((set, get) => ({
       error: null,
     }));
 
-    toast.success('Recordatorio actualizado correctamente ✔️');
+    toast.success(i18n.t('toasts.reminder.updated'));
   },
 
   // DELETE
@@ -189,7 +190,7 @@ export const useReminderStore = create<ReminderState>((set, get) => ({
     const { error } = await callApi(() => reminderService.deleteReminder(id));
 
     if (error) {
-      const message = error || 'Error al eliminar el recordatorio';
+      const message = error || i18n.t('toasts.reminder.error.delete');
       toast.error(message);
       set({ loading: false, error: message });
       throw new Error(message);
@@ -204,7 +205,7 @@ export const useReminderStore = create<ReminderState>((set, get) => ({
       error: null,
     }));
 
-    toast.success('Recordatorio eliminado correctamente ✔️');
+    toast.success(i18n.t('toasts.reminder.deleted'));
   },
 
   // Utils

@@ -1,9 +1,11 @@
+import { useTranslation } from 'react-i18next';
 import { useLocation, Link } from 'react-router-dom';
 import { FaEnvelope, FaArrowLeft } from 'react-icons/fa';
 import { PUBLIC_ROUTES } from '../../../../config/routes';
 import './CheckEmailPage.scss';
 
 export const CheckEmailPage = () => {
+  const { t } = useTranslation();
   const location = useLocation();
   const email = location.state?.email as string | undefined;
 
@@ -13,25 +15,19 @@ export const CheckEmailPage = () => {
         <div className="check-email-icon">
           <FaEnvelope size={48} />
         </div>
-        <h2>Revisa tu correo</h2>
+        <h2>{t('auth.checkEmail.title')}</h2>
         <p className="check-email-message">
-          {email ? (
-            <>
-              Hemos enviado un enlace de recuperación a{' '}
-              <strong>{email}</strong>
-            </>
-          ) : (
-            'Hemos enviado un enlace de recuperación a tu correo electrónico'
-          )}
+          {email
+            ? t('auth.checkEmail.message', { email })
+            : t('auth.checkEmail.messageGeneric')}
         </p>
         <p className="check-email-instruction">
-          Ve a tu correo y dale click al enlace para continuar con el reseteo de
-          contraseña
+          {t('auth.checkEmail.instruction')}
         </p>
         <div className="check-email-actions">
           <Link to={PUBLIC_ROUTES.LOGIN} className="check-email-link">
             <FaArrowLeft style={{ marginRight: '8px' }} />
-            Volver al inicio de sesión
+            {t('auth.checkEmail.backToLogin')}
           </Link>
         </div>
       </div>

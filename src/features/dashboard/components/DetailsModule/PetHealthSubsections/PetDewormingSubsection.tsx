@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { Pet } from '../../../../../models/pet.model';
 import type { Deworming } from '../../../../../models/deworming.model';
 import { useDewormingForm } from '../../../../../hooks/useDewormingForm';
@@ -26,6 +27,7 @@ interface PetDewormingSubsectionProps {
 export const PetDewormingSubsection: React.FC<PetDewormingSubsectionProps> = ({
   pet,
 }) => {
+  const { t } = useTranslation();
   const [showForm, setShowForm] = useState(false);
   const [editingDeworming, setEditingDeworming] = useState<Deworming | null>(
     null,
@@ -77,16 +79,16 @@ export const PetDewormingSubsection: React.FC<PetDewormingSubsectionProps> = ({
   };
 
   const handleDeleteClick = (deworming: Deworming) => {
-    const medicationName = deworming.medication || 'esta desparasitación';
+    const medicationName = deworming.medication || t('common.thisItem');
     openModal({
-      title: `¿Estás seguro que quieres eliminar "${medicationName}"?`,
-      content: 'Esta acción no se puede deshacer',
+      title: `${t('modals.delete.title')} "${medicationName}"?`,
+      content: t('modals.delete.content'),
       variant: 'confirm',
       onConfirm: () => {
         deleteDeworming(deworming.id);
       },
-      confirmLabel: 'Eliminar',
-      cancelLabel: 'Cancelar',
+      confirmLabel: t('common.delete'),
+      cancelLabel: t('common.cancel'),
     });
   };
 
@@ -109,8 +111,8 @@ export const PetDewormingSubsection: React.FC<PetDewormingSubsectionProps> = ({
       <div className="pet-section-card pet-section-card--deworming">
         <div className="deworming-subsection__header">
           <div>
-            <h3>Registro de Desparasitación</h3>
-            <p>Gestiona el historial de desparasitaciones de {pet.name}</p>
+            <h3>{t('health.deworming.title')}</h3>
+            <p>{t('health.deworming.manageHistory', { petName: pet.name })}</p>
           </div>
           {!showForm && (
             <Button
@@ -118,8 +120,8 @@ export const PetDewormingSubsection: React.FC<PetDewormingSubsectionProps> = ({
               onClick={handleAddClick}
               style={{ fontSize: '1.2rem' }}
             >
-              <FaPlus style={{ position: 'relative', left: '-4px' }} /> Agregar
-              Desparasitación
+              <FaPlus style={{ position: 'relative', left: '-4px' }} />{' '}
+              {t('health.deworming.add')}
             </Button>
           )}
         </div>
@@ -128,8 +130,8 @@ export const PetDewormingSubsection: React.FC<PetDewormingSubsectionProps> = ({
           <div className="deworming-subsection__form-section">
             <h4>
               {editingDeworming
-                ? 'Editar Desparasitación'
-                : 'Registrar Nueva Desparasitación'}
+                ? t('health.deworming.edit')
+                : t('health.deworming.registerNew')}
             </h4>
             <form
               onSubmit={handleSubmit(onSubmit)}
@@ -139,16 +141,17 @@ export const PetDewormingSubsection: React.FC<PetDewormingSubsectionProps> = ({
                 {/* Columna Izquierda */}
                 <div className="deworming-subsection__form-column">
                   <div className="deworming-subsection__field">
-                    <label htmlFor="medication">Nombre del Producto</label>
+                    <label htmlFor="medication">
+                      {t('health.deworming.medication')}
+                    </label>
                     <input
                       id="medication"
                       type="text"
-                      placeholder="Ej: Drontal Plus, Bravecto..."
+                      placeholder={t('health.deworming.medicationPlaceholder')}
                       {...register('medication', {
                         maxLength: {
                           value: 200,
-                          message:
-                            'El nombre del producto no puede exceder 200 caracteres',
+                          message: t('health.deworming.medicationMaxLength'),
                         },
                       })}
                       className={errors.medication ? 'input-error' : ''}
@@ -162,7 +165,8 @@ export const PetDewormingSubsection: React.FC<PetDewormingSubsectionProps> = ({
 
                   <div className="deworming-subsection__field">
                     <label htmlFor="dateAdministered">
-                      Fecha de Aplicación <span className="required">*</span>
+                      {t('health.deworming.dateAdministered')}{' '}
+                      <span className="required">*</span>
                     </label>
                     <div className="input-with-icon">
                       <FaCalendarAlt className="input-icon" />
@@ -170,7 +174,7 @@ export const PetDewormingSubsection: React.FC<PetDewormingSubsectionProps> = ({
                         id="dateAdministered"
                         type="date"
                         {...register('dateAdministered', {
-                          required: 'La fecha de aplicación es obligatoria',
+                          required: t('health.deworming.dateRequired'),
                         })}
                         className={errors.dateAdministered ? 'input-error' : ''}
                       />
@@ -183,7 +187,9 @@ export const PetDewormingSubsection: React.FC<PetDewormingSubsectionProps> = ({
                   </div>
 
                   <div className="deworming-subsection__field">
-                    <label htmlFor="nextDue">Próxima Fecha</label>
+                    <label htmlFor="nextDue">
+                      {t('health.deworming.nextDue')}
+                    </label>
                     <div className="input-with-icon">
                       <FaCalendarAlt className="input-icon" />
                       <input
@@ -196,7 +202,7 @@ export const PetDewormingSubsection: React.FC<PetDewormingSubsectionProps> = ({
                               dateAdministeredValue &&
                               value <= dateAdministeredValue
                             ) {
-                              return 'La próxima fecha debe ser posterior a la fecha de aplicación';
+                              return t('health.deworming.nextDueAfter');
                             }
                             return true;
                           },
@@ -215,18 +221,23 @@ export const PetDewormingSubsection: React.FC<PetDewormingSubsectionProps> = ({
                 {/* Columna Derecha */}
                 <div className="deworming-subsection__form-column">
                   <div className="deworming-subsection__field">
-                    <label htmlFor="veterinarian">Veterinario</label>
+                    <label htmlFor="veterinarian">
+                      {t('health.deworming.veterinarian')}
+                    </label>
                     <div className="input-with-icon">
                       <FaUserMd className="input-icon" />
                       <input
                         id="veterinarian"
                         type="text"
-                        placeholder="Ej: Dr. Carlos Martínez"
+                        placeholder={t(
+                          'health.deworming.veterinarianPlaceholder',
+                        )}
                         {...register('veterinarian', {
                           maxLength: {
                             value: 200,
-                            message:
-                              'El veterinario no puede exceder 200 caracteres',
+                            message: t(
+                              'health.deworming.veterinarianMaxLength',
+                            ),
                           },
                         })}
                         className={errors.veterinarian ? 'input-error' : ''}
@@ -240,13 +251,13 @@ export const PetDewormingSubsection: React.FC<PetDewormingSubsectionProps> = ({
                   </div>
 
                   <div className="deworming-subsection__field">
-                    <label htmlFor="notes">Notas (opcional)</label>
+                    <label htmlFor="notes">{t('health.deworming.notes')}</label>
                     <div className="input-with-icon">
                       <FaFileAlt className="input-icon" />
                       <textarea
                         id="notes"
                         rows={4}
-                        placeholder="Observaciones adicionales..."
+                        placeholder={t('health.deworming.notesPlaceholder')}
                         {...register('notes')}
                       />
                     </div>
@@ -256,7 +267,9 @@ export const PetDewormingSubsection: React.FC<PetDewormingSubsectionProps> = ({
 
               {crudError && (
                 <div className="server-error">
-                  <p>Error: {crudError}</p>
+                  <p>
+                    {t('common.error')}: {crudError}
+                  </p>
                 </div>
               )}
 
@@ -266,16 +279,14 @@ export const PetDewormingSubsection: React.FC<PetDewormingSubsectionProps> = ({
                   disabled={loading || !isValid}
                   variant="primary"
                 >
-                  {editingDeworming
-                    ? 'Actualizar Registro'
-                    : 'Guardar Registro'}
+                  {editingDeworming ? t('common.update') : t('common.save')}
                 </Button>
                 <Button
                   type="button"
                   onClick={handleCancelForm}
                   variant="outline"
                 >
-                  Cancelar
+                  {t('common.cancel')}
                 </Button>
               </div>
             </form>
@@ -287,8 +298,10 @@ export const PetDewormingSubsection: React.FC<PetDewormingSubsectionProps> = ({
       <RemindersSection
         petId={pet.id || null}
         // context="deworming"
-        defaultTitle={`Próxima desparasitación - ${pet.name}`}
-        defaultDescription="Recordatorio para aplicar desparasitación"
+        defaultTitle={t('health.deworming.nextReminder', {
+          petName: pet.name,
+        })}
+        defaultDescription={t('health.deworming.reminderDescription')}
       />
 
       {/* Sección 3: Historial de Desparasitación */}
@@ -296,9 +309,9 @@ export const PetDewormingSubsection: React.FC<PetDewormingSubsectionProps> = ({
         <div className="deworming-subsection__history-header">
           <div>
             <FaBug className="history-icon" />
-            <h3>Historial de Desparasitación</h3>
+            <h3>{t('health.deworming.history')}</h3>
           </div>
-          <p>Registro completo de todas las desparasitaciones</p>
+          <p>{t('health.deworming.historyDescription')}</p>
         </div>
 
         {crudError && (
@@ -308,10 +321,10 @@ export const PetDewormingSubsection: React.FC<PetDewormingSubsectionProps> = ({
         )}
 
         {loading && dewormings.length === 0 ? (
-          <Loader text="Cargando desparasitaciones..." />
+          <Loader text={t('health.deworming.loading')} />
         ) : dewormings.length === 0 ? (
           <p className="deworming-subsection__empty">
-            No hay desparasitaciones registradas aún
+            {t('health.deworming.empty')}
           </p>
         ) : (
           <div className="deworming-subsection__dewormings-list">
@@ -323,20 +336,22 @@ export const PetDewormingSubsection: React.FC<PetDewormingSubsectionProps> = ({
                 <div className="deworming-card__header">
                   <div className="deworming-card__title">
                     <FaBug className="deworming-icon" />
-                    <h4>{deworming.medication || 'Sin nombre'}</h4>
+                    <h4>
+                      {deworming.medication || t('health.deworming.noName')}
+                    </h4>
                   </div>
                   <div className="deworming-card__actions">
                     <button
                       className="deworming-card__action-btn"
                       onClick={() => handleEditClick(deworming)}
-                      aria-label="Editar desparasitación"
+                      aria-label={t('common.edit')}
                     >
                       <FaEdit />
                     </button>
                     <button
                       className="deworming-card__action-btn deworming-card__action-btn--delete"
                       onClick={() => handleDeleteClick(deworming)}
-                      aria-label="Eliminar desparasitación"
+                      aria-label={t('common.delete')}
                     >
                       <FaTrash />
                     </button>
@@ -345,7 +360,7 @@ export const PetDewormingSubsection: React.FC<PetDewormingSubsectionProps> = ({
 
                 {isExpired(deworming.nextDue) && (
                   <span className="deworming-card__badge deworming-card__badge--expired">
-                    Vencida
+                    {t('health.deworming.expired')}
                   </span>
                 )}
 
@@ -353,7 +368,7 @@ export const PetDewormingSubsection: React.FC<PetDewormingSubsectionProps> = ({
                   <div className="deworming-card__detail-item">
                     <FaCalendarAlt className="detail-icon" />
                     <div>
-                      <label>Fecha de Aplicación</label>
+                      <label>{t('health.deworming.dateAdministered')}</label>
                       <p>{formatDateLocal(deworming.dateAdministered)}</p>
                     </div>
                   </div>
@@ -362,7 +377,7 @@ export const PetDewormingSubsection: React.FC<PetDewormingSubsectionProps> = ({
                     <div className="deworming-card__detail-item">
                       <FaCalendarAlt className="detail-icon" />
                       <div>
-                        <label>Próxima Aplicación</label>
+                        <label>{t('health.deworming.nextDose')}</label>
                         <p>{formatDateLocal(deworming.nextDue)}</p>
                       </div>
                     </div>
@@ -372,7 +387,7 @@ export const PetDewormingSubsection: React.FC<PetDewormingSubsectionProps> = ({
                     <div className="deworming-card__detail-item">
                       <FaUserMd className="detail-icon" />
                       <div>
-                        <label>Veterinario</label>
+                        <label>{t('health.deworming.veterinarian')}</label>
                         <p>{deworming.veterinarian}</p>
                       </div>
                     </div>
@@ -380,7 +395,7 @@ export const PetDewormingSubsection: React.FC<PetDewormingSubsectionProps> = ({
 
                   {deworming.notes && (
                     <div className="deworming-card__detail-item">
-                      <label>Notas</label>
+                      <label>{t('health.deworming.notes')}</label>
                       <p>{deworming.notes}</p>
                     </div>
                   )}

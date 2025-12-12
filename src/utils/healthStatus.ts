@@ -4,10 +4,8 @@ import type { VetVisit } from '../models/vetVisit.model';
 import { parseDateLocal } from './dateUtils';
 import type { PetHealthSummary } from '../adapters/pet.adapter';
 
-export type HealthStatus =
-  | 'Saludable'
-  | 'Atención Requerida'
-  | 'Revisión Necesaria';
+// Códigos internos en inglés (no cambian con el idioma)
+export type HealthStatus = 'healthy' | 'attention_required' | 'review_needed';
 
 export interface HealthStatusData {
   status: HealthStatus;
@@ -46,19 +44,19 @@ function calculateStatusFromData(
   hasAnyRecords: boolean,
 ): HealthStatus {
   if (expiredVaccines > 0 || expiredDewormings > 0) {
-    return 'Atención Requerida';
+    return 'attention_required';
   } else if (
     upcomingVaccines > 0 ||
     upcomingDewormings > 0 ||
     (lastVetVisitDays !== null && lastVetVisitDays > 180)
   ) {
-    return 'Atención Requerida';
+    return 'attention_required';
   } else if (!hasAnyRecords) {
-    return 'Revisión Necesaria';
+    return 'review_needed';
   } else if (lastVetVisitDays !== null && lastVetVisitDays > 365) {
-    return 'Revisión Necesaria';
+    return 'review_needed';
   } else {
-    return 'Saludable';
+    return 'healthy';
   }
 }
 

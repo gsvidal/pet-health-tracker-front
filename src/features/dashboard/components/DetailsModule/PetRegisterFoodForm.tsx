@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Controller } from 'react-hook-form';
 import type { Pet } from '../../../../models/pet.model';
 import { useMealForm } from '../../../../hooks/useMealForm';
@@ -21,6 +22,7 @@ export const PetRegisterFoodForm: React.FC<PetRegisterFoodFormProps> = ({
   onClose,
   onFoodAdded,
 }) => {
+  const { t } = useTranslation();
   const {
     register,
     handleSubmit,
@@ -55,7 +57,7 @@ export const PetRegisterFoodForm: React.FC<PetRegisterFoodFormProps> = ({
         <div className="nutrition-subsection__form-column">
           <div className="nutrition-subsection__field">
             <label htmlFor="date">
-              Fecha <span className="required">*</span>
+              {t('nutrition.date')} <span className="required">*</span>
             </label>
             <div className="input-with-icon">
               <FaCalendarAlt className="input-icon" />
@@ -63,7 +65,7 @@ export const PetRegisterFoodForm: React.FC<PetRegisterFoodFormProps> = ({
                 id="date"
                 type="date"
                 {...register('date', {
-                  required: 'La fecha es obligatoria',
+                  required: t('nutrition.dateRequired'),
                 })}
                 className={errors.date ? 'input-error' : ''}
               />
@@ -75,7 +77,7 @@ export const PetRegisterFoodForm: React.FC<PetRegisterFoodFormProps> = ({
 
           <div className="nutrition-subsection__field">
             <label htmlFor="time">
-              Hora <span className="required">*</span>
+              {t('nutrition.time')} <span className="required">*</span>
             </label>
             <div className="input-with-icon">
               <FaClock className="input-icon" />
@@ -83,7 +85,7 @@ export const PetRegisterFoodForm: React.FC<PetRegisterFoodFormProps> = ({
                 id="time"
                 type="time"
                 {...register('time', {
-                  required: 'La hora es obligatoria',
+                  required: t('nutrition.timeRequired'),
                 })}
                 className={errors.time ? 'input-error' : ''}
               />
@@ -97,20 +99,28 @@ export const PetRegisterFoodForm: React.FC<PetRegisterFoodFormProps> = ({
             <Controller
               name="type"
               control={control}
-              render={({ field }) => (
-                <Select
-                  label="Tipo de Comida"
-                  value={field.value || null}
-                  onChange={(value) => field.onChange(value || '')}
-                  options={[
-                    { value: 'Desayuno', label: 'Desayuno' },
-                    { value: 'Almuerzo', label: 'Almuerzo' },
-                    { value: 'Cena', label: 'Cena' },
-                    { value: 'Snack', label: 'Snack' },
-                  ]}
-                  placeholder="Selecciona el tipo de comida"
-                />
-              )}
+              render={({ field }) => {
+                // Opciones con valores del backend (español) pero labels traducidos
+                const mealTypeOptions = [
+                  { value: 'Desayuno', label: t('nutrition.breakfast') },
+                  { value: 'Almuerzo', label: t('nutrition.lunch') },
+                  { value: 'Cena', label: t('nutrition.dinner') },
+                  { value: 'Snack', label: t('nutrition.snack') },
+                ];
+
+                return (
+                  <Select
+                    label={t('nutrition.type')}
+                    value={field.value || null}
+                    onChange={(value) => {
+                      // El valor se guarda tal cual (en español para el backend)
+                      field.onChange(value || '');
+                    }}
+                    options={mealTypeOptions}
+                    placeholder={t('nutrition.typePlaceholder')}
+                  />
+                );
+              }}
             />
           </div>
         </div>
@@ -118,17 +128,17 @@ export const PetRegisterFoodForm: React.FC<PetRegisterFoodFormProps> = ({
         {/* Columna Derecha */}
         <div className="nutrition-subsection__form-column">
           <div className="nutrition-subsection__field">
-            <label htmlFor="food">Alimento</label>
+            <label htmlFor="food">{t('nutrition.food')}</label>
             <div className="input-with-icon">
               <FaUtensils className="input-icon" />
               <input
                 id="food"
                 type="text"
-                placeholder="Ej: Croquetas Premium, Pavo, Carne..."
+                placeholder={t('nutrition.foodPlaceholder')}
                 {...register('food', {
                   maxLength: {
                     value: 200,
-                    message: 'El alimento no puede exceder 200 caracteres',
+                    message: t('nutrition.foodMaxLength'),
                   },
                 })}
                 className={errors.food ? 'input-error' : ''}
@@ -140,15 +150,15 @@ export const PetRegisterFoodForm: React.FC<PetRegisterFoodFormProps> = ({
           </div>
 
           <div className="nutrition-subsection__field">
-            <label htmlFor="quantity">Cantidad</label>
+            <label htmlFor="quantity">{t('nutrition.quantity')}</label>
             <input
               id="quantity"
               type="text"
-              placeholder="Ej: 200g, 1 taza..."
+              placeholder={t('nutrition.quantityPlaceholder')}
               {...register('quantity', {
                 maxLength: {
                   value: 100,
-                  message: 'La cantidad no puede exceder 100 caracteres',
+                  message: t('nutrition.quantityMaxLength'),
                 },
               })}
               className={errors.quantity ? 'input-error' : ''}
@@ -159,13 +169,13 @@ export const PetRegisterFoodForm: React.FC<PetRegisterFoodFormProps> = ({
           </div>
 
           <div className="nutrition-subsection__field">
-            <label htmlFor="notes">Notas (opcional)</label>
+            <label htmlFor="notes">{t('nutrition.notes')}</label>
             <div className="input-with-icon">
               <FaFileAlt className="input-icon" />
               <textarea
                 id="notes"
                 rows={4}
-                placeholder="Observaciones sobre esta comida..."
+                placeholder={t('nutrition.notesPlaceholder')}
                 {...register('notes')}
               />
             </div>
@@ -175,10 +185,10 @@ export const PetRegisterFoodForm: React.FC<PetRegisterFoodFormProps> = ({
 
       <div className="nutrition-subsection__form-actions">
         <Button type="submit" disabled={!isValid} variant="primary">
-          {editingMeal ? 'Actualizar Registro' : 'Guardar Registro'}
+          {editingMeal ? t('common.update') : t('common.save')}
         </Button>
         <Button type="button" onClick={handleCancelForm} variant="outline">
-          Cancelar
+          {t('common.cancel')}
         </Button>
       </div>
     </form>

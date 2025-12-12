@@ -1,6 +1,6 @@
 import { FaEnvelope, FaLock, FaHeart, FaEye } from 'react-icons/fa';
 import { GrFormViewHide } from 'react-icons/gr';
-
+import { useTranslation } from 'react-i18next';
 import { useRegister } from '../../hooks/useRegister';
 import { useState } from 'react';
 import { Modal } from '../../components/Modal/Modal';
@@ -8,6 +8,7 @@ import { LoginForm } from './LoginForm';
 import './RegisterForm.scss';
 
 export const Register = () => {
+  const { t } = useTranslation();
   const {
     register,
     handleSubmit,
@@ -38,22 +39,20 @@ export const Register = () => {
             </span>
           </div>
 
-          <h2>Crear Cuenta</h2>
-          <p className="subtitle">
-            Comienza a gestionar la salud de tus mascotas
-          </p>
+          <h2>{t('auth.register.title')}</h2>
+          <p className="subtitle">{t('auth.register.subtitle')}</p>
 
           <form onSubmit={handleSubmit(onSubmit)} className="register-form">
             <div className="input-group">
               <FaEnvelope className="input-icon" />
               <input
                 type="email"
-                placeholder="tu@email.com"
+                placeholder={t('auth.register.emailPlaceholder')}
                 {...register('email', {
-                  required: 'El correo es obligatorio',
+                  required: t('auth.validation.emailRequired'),
                   pattern: {
                     value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                    message: 'Correo inválido',
+                    message: t('auth.validation.emailInvalid'),
                   },
                 })}
               />
@@ -67,12 +66,12 @@ export const Register = () => {
 
               <input
                 type={showPassword ? 'text' : 'password'}
-                placeholder="Contraseña"
+                placeholder={t('auth.register.password')}
                 {...register('password', {
-                  required: 'La contraseña es obligatoria',
+                  required: t('auth.validation.passwordRequired'),
                   pattern: {
                     value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/,
-                    message: 'Mínimo 8 caracteres, 1 mayúscula y 1 número',
+                    message: t('auth.validation.passwordPattern'),
                   },
                 })}
               />
@@ -93,12 +92,12 @@ export const Register = () => {
 
               <input
                 type={showConfirmPassword ? 'text' : 'password'}
-                placeholder="Confirmar contraseña"
+                placeholder={t('auth.register.confirmPassword')}
                 {...register('confirmPassword', {
-                  required: 'Debe confirmar la contraseña',
+                  required: t('auth.validation.confirmPasswordRequired'),
                   validate: (value) =>
                     value === watch('password') ||
-                    'Las contraseñas no coinciden',
+                    t('auth.validation.passwordMismatch'),
                 })}
               />
               <span
@@ -115,26 +114,28 @@ export const Register = () => {
 
             {serverError && <p className="error server">{serverError}</p>}
             {localError && <p className="error server">{localError}</p>}
-            {success && <p className="success">✅ Registro exitoso</p>}
+            {success && (
+              <p className="success">{t('common.successfulRegistration')}</p>
+            )}
 
             <button type="submit" className="btn-register" disabled={loading}>
               {loading ? (
                 <>
-                  <FaLock className="locked-icon" /> Registrando...
+                  <FaLock className="locked-icon" /> {t('common.registering')}
                 </>
               ) : (
-                'Registrarse'
+                t('auth.register.submit')
               )}
             </button>
 
             <p className="login-link">
-              ¿Ya tienes cuenta?{' '}
+              {t('auth.register.hasAccount')}{' '}
               <button
                 type="button"
                 className="open-login-btn"
                 onClick={() => setOpenLogin(true)}
               >
-                Iniciar sesión
+                {t('auth.register.login')}
               </button>
             </p>
           </form>

@@ -1,9 +1,11 @@
 import { Calendar, Bell } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { PRIVATE_ROUTES } from '../../../../config/routes';
 import './QuickAccessCards.scss';
 
 export const QuickAccessCards = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   return (
@@ -16,8 +18,8 @@ export const QuickAccessCards = () => {
           <Calendar size={24} />
         </div>
         <div className="quick-access__card-content">
-          <h3>Calendario de Eventos</h3>
-          <p>Ver eventos de salud y nutrición próximos</p>
+          <h3>{t('dashboard.quickAccess.calendar.title')}</h3>
+          <p>{t('dashboard.quickAccess.calendar.description')}</p>
         </div>
       </div>
 
@@ -29,8 +31,8 @@ export const QuickAccessCards = () => {
           <Bell size={24} />
         </div>
         <div className="quick-access__card-content">
-          <h3>Centro de Notificaciones</h3>
-          <p>Gestiona todas tus notificaciones</p>
+          <h3>{t('dashboard.quickAccess.notifications.title')}</h3>
+          <p>{t('dashboard.quickAccess.notifications.description')}</p>
         </div>
       </div>
     </div>

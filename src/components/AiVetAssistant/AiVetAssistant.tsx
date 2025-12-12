@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { MessageCircle, X, Send, Loader2 } from 'lucide-react';
 import {
   askVeterinaryQuestion,
@@ -13,6 +14,7 @@ import toast from 'react-hot-toast';
 import './AiVetAssistant.scss';
 
 export const AiVetAssistant = () => {
+  const { t } = useTranslation();
   const location = useLocation();
   const { user, isAuthenticated } = useAuthStore();
   const { pets, documents, fetchPetDocuments } = usePetStore();
@@ -98,7 +100,7 @@ export const AiVetAssistant = () => {
       );
 
       if (response.error) {
-        toast.error(response.error || 'Error al obtener respuesta');
+        toast.error(response.error || t('chatbot.errorResponse'));
         setMessages((prev) => prev.slice(0, -1)); // Remover el mensaje del usuario si hay error
         return;
       }
@@ -117,7 +119,7 @@ export const AiVetAssistant = () => {
       setMessages((prev) => [...prev, assistantMessage]);
     } catch (error) {
       console.error('Error al enviar mensaje:', error);
-      toast.error('Error al enviar mensaje. Por favor intenta de nuevo.');
+      toast.error(t('chatbot.error'));
       setMessages((prev) => prev.slice(0, -1)); // Remover el mensaje del usuario si hay error
     } finally {
       setIsLoading(false);
@@ -147,11 +149,13 @@ export const AiVetAssistant = () => {
       <button
         className="ai-vet-assistant__toggle"
         onClick={() => setIsOpen(!isOpen)}
-        aria-label="Abrir chat con veterinario"
+        aria-label={t('chatbot.openChat')}
       >
         {isOpen ? <X size={24} /> : <MessageCircle size={24} />}
         {!isOpen && (
-          <span className="ai-vet-assistant__toggle-text">Habla conmigo</span>
+          <span className="ai-vet-assistant__toggle-text">
+            {t('chatbot.toggle')}
+          </span>
         )}
       </button>
 
@@ -160,16 +164,18 @@ export const AiVetAssistant = () => {
         <div className="ai-vet-assistant__chat-box">
           <div className="ai-vet-assistant__header">
             <div className="ai-vet-assistant__header-info">
-              <h3>Veterinario IA</h3>
+              <h3>{t('chatbot.title')}</h3>
               {currentPet && (
                 <p className="ai-vet-assistant__pet-name">
-                  Consultando sobre: {currentPet.name}
+                  {t('chatbot.consultingAbout', { petName: currentPet.name })}
                   {documents.length > 0 && (
                     <span className="ai-vet-assistant__documents-badge">
                       {' '}
-                      • {documents.length} documento
-                      {documents.length > 1 ? 's' : ''} disponible
-                      {documents.length > 1 ? 's' : ''}
+                      •{' '}
+                      {t('chatbot.hasDocuments', {
+                        count: documents.length,
+                        petName: currentPet.name,
+                      })}
                     </span>
                   )}
                 </p>
@@ -178,7 +184,7 @@ export const AiVetAssistant = () => {
             <button
               className="ai-vet-assistant__close"
               onClick={() => setIsOpen(false)}
-              aria-label="Cerrar chat"
+              aria-label={t('chatbot.closeChat')}
             >
               <X size={17} />
             </button>
@@ -193,41 +199,28 @@ export const AiVetAssistant = () => {
                 />
                 {currentPet ? (
                   <>
-                    <p>¡Hola! Soy tu asistente veterinario con IA.</p>
                     <p>
-                      Puedes preguntarme sobre la salud de{' '}
-                      <strong>{currentPet.name}</strong>
-                      {currentPet.species && (
-                        <>, tu {currentPet.species.toLowerCase()}</>
-                      )}
-                      {currentPet.ageYears !== null &&
-                        currentPet.ageYears !== undefined && (
-                          <> de {formatPetAge(currentPet.ageYears)}</>
-                        )}
-                      .
+                      {t('chatbot.welcomeWithPet', {
+                        petName: currentPet.name,
+                        species: currentPet.species?.toLowerCase() || '',
+                        age: formatPetAge(currentPet.ageYears),
+                      })}
                     </p>
                     {documents.length > 0 ? (
                       <p className="ai-vet-assistant__documents-info">
-                        📄 Tengo acceso a {documents.length} documento
-                        {documents.length > 1 ? 's' : ''} de {currentPet.name}{' '}
-                        para darte respuestas más precisas.
+                        {t('chatbot.hasDocuments', {
+                          count: documents.length,
+                          petName: currentPet.name,
+                        })}
                       </p>
                     ) : (
                       <p className="ai-vet-assistant__documents-info">
-                        💡 Puedo ayudarte con información general sobre{' '}
-                        {currentPet.name}. Si subes documentos PDF
-                        (vacunaciones, visitas veterinarias, etc.), podré darte
-                        respuestas más precisas.
+                        {t('chatbot.noDocuments', { petName: currentPet.name })}
                       </p>
                     )}
-                    <p className="ai-vet-assistant__examples">
-                      Ejemplos: "¿Cuándo fue la última vacunación de{' '}
-                      {currentPet.name}?", "{currentPet.name} tiene fiebre, ¿qué
-                      hago?", "¿Qué cuidados necesita {currentPet.name}?"
-                    </p>
                   </>
                 ) : (
-                  <p>Cargando información de la mascota...</p>
+                  <p>{t('common.loading')}</p>
                 )}
               </div>
             ) : (
@@ -263,9 +256,7 @@ export const AiVetAssistant = () => {
               type="text"
               className="ai-vet-assistant__input"
               placeholder={
-                currentPet
-                  ? `Pregunta sobre ${currentPet.name}...`
-                  : 'Escribe tu pregunta...'
+                currentPet ? t('chatbot.placeholder') : t('chatbot.placeholder')
               }
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
@@ -276,7 +267,7 @@ export const AiVetAssistant = () => {
               className="ai-vet-assistant__send"
               onClick={handleSendMessage}
               disabled={!inputValue.trim() || isLoading || !petId}
-              aria-label="Enviar mensaje"
+              aria-label={t('chatbot.send')}
             >
               {isLoading ? (
                 <Loader2 size={18} className="ai-vet-assistant__send-loader" />
@@ -292,7 +283,7 @@ export const AiVetAssistant = () => {
               onClick={handleClearChat}
               type="button"
             >
-              Limpiar conversación
+              {t('chatbot.clearChat')}
             </button>
           )}
         </div>

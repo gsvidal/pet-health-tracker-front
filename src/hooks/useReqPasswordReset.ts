@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 import { requestPasswordReset } from '../services/auth.service';
 import type { AxiosError } from 'axios';
 import { PUBLIC_ROUTES } from '../config/routes';
+import i18n from '../i18n/config';
 
 type RecoverPasswordForm = {
   email: string;
@@ -25,9 +26,8 @@ export const useRecoverPassword = () => {
     setServerError('');
     setSuccess(false);
     try {
-      const response = await requestPasswordReset(data.email);
-      console.log('📩 Respuesta del backend:', response);
-      toast.success('¡Revisa tu correo, enviamos un link!');
+      await requestPasswordReset(data.email);
+      toast.success(i18n.t('toasts.auth.passwordResetRequested'));
       setSuccess(true);
       reset();
       // Redirigir a la página de confirmación
@@ -39,7 +39,7 @@ export const useRecoverPassword = () => {
       const msg =
         error.response?.data?.detail ||
         error.response?.data?.message ||
-        'Error al procesar la solicitud';
+        i18n.t('toasts.auth.passwordResetRequestError');
       console.error('❌ Error en recuperación:', err);
       setServerError(msg);
       toast.error(msg);

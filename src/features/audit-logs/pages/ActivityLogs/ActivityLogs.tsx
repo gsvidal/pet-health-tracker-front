@@ -1,13 +1,11 @@
 import { useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuditLogs } from '../../../../hooks/useAuditLogs';
 import type {
   AuditLogObjectType,
   SortOrder,
 } from '../../../../types/auditLog.type';
-import {
-  OBJECT_TYPES,
-  OBJECT_TYPE_LABELS,
-} from '../../../../types/auditLog.type';
+import { OBJECT_TYPES } from '../../../../types/auditLog.type';
 import { formatRelativeTime } from '../../../../utils/dateUtils';
 import './ActivityLogs.scss';
 import { Loader } from '../../../../components/Loader/Loader';
@@ -25,6 +23,7 @@ import { Button } from '../../../../components/Button/Button';
 import { Select } from '../../../../components/Select';
 
 export const ActivityLogs = () => {
+  const { t } = useTranslation();
   const { auditLogs, allAuditLogs, loading, applyFilters, getSortedLogs } =
     useAuditLogs();
   const [selectedFilter, setSelectedFilter] = useState<
@@ -111,78 +110,61 @@ export const ActivityLogs = () => {
     }
   };
 
-  // Traducir acción a español
+  // Traducir acción usando i18n
   const translateAction = (action: string) => {
-    const actionMap: Record<string, string> = {
-      USER_LOGIN: 'Inicio de sesión',
-      USER_LOGOUT: 'Cierre de sesión',
-      USER_REGISTERED: 'Registro de usuario',
-      USER_UPDATED: 'Usuario actualizado',
-      EMAIL_VERIFIED: 'Email verificado',
-      PASSWORD_RESET: 'Contraseña reseteada',
-      PET_CREATED: 'Mascota creada',
-      PET_UPDATED: 'Información de la mascota actualizada',
-      PET_DELETED: 'Mascota eliminada',
-      PET_PHOTO_UPLOADED: 'Foto de mascota subida',
-      VACCINATION_CREATED: 'Vacunación creada',
-      VACCINATION_UPDATED: 'Vacunación actualizada',
-      VACCINATION_DELETED: 'Vacunación eliminada',
-      DEWORMING_CREATED: 'Desparasitación creada',
-      DEWORMING_UPDATED: 'Desparasitación actualizada',
-      DEWORMING_DELETED: 'Desparasitación eliminada',
-      VET_VISIT_CREATED: 'Visita creada',
-      VET_VISIT_UPDATED: 'Visita actualizada',
-      VET_VISIT_DELETED: 'Visita eliminada',
-      MEAL_CREATED: 'Registro nutricional creado',
-      MEAL_UPDATED: 'Registro nutricional actualizado',
-      MEAL_DELETED: 'Registro nutricional eliminado',
-      REMINDER_CREATED: 'Recordatorio creado',
-      REMINDER_UPDATED: 'Recordatorio actualizado',
-      REMINDER_DELETED: 'Recordatorio eliminado',
-      REMINDER_PROCESSED: 'Recordatorio procesado',
-    };
-    return actionMap[action] || action;
+    const translationKey = `activity.actions.${action}`;
+    const translated = t(translationKey);
+    // Si la traducción es igual a la clave, significa que no existe, retornar la acción original
+    return translated !== translationKey ? translated : action;
   };
 
   // Obtener descripción del log
   const getDescription = (log: any) => {
     if (log.meta?.pet_name) {
-      return `Para ${log.meta.pet_name}`;
+      return t('activity.forPet', { petName: log.meta.pet_name });
     }
     if (log.meta?.email) {
-      return `Email: ${log.meta.email}`;
+      return t('activity.email', { email: log.meta.email });
     }
     if (log.objectType) {
-      return `Acción sobre ${OBJECT_TYPE_LABELS[log.objectType as AuditLogObjectType] || log.objectType}`;
+      const objectTypeLabel =
+        t(`activity.objectTypes.${log.objectType}`) || log.objectType;
+      return t('activity.actionOn', { objectType: objectTypeLabel });
     }
-    return 'Actividad del sistema';
+    return t('activity.systemActivity');
   };
 
   return (
     <section className="section section--activity-logs">
       <div className="container container--activity-logs">
-        <h1>Historial de Actividades</h1>
+        <h1>{t('activity.title')}</h1>
 
         <div className="activity-logs-controls">
           {/* Filtro por tipo */}
           <Select
-            label="Filtrar por tipo de evento"
+            label={t('activity.filterByTypeLabel')}
             value={selectedFilter === 'all' ? null : selectedFilter}
             onChange={(value) =>
               handleFilterChange((value || 'all') as AuditLogObjectType | 'all')
             }
-            options={OBJECT_TYPES.map((type) => ({
-              value: type,
-              label: `${OBJECT_TYPE_LABELS[type]} (${getEventCountByType(type)})`,
-            }))}
-            placeholder={`Todos los eventos (${getEventCountByType('all')})`}
+            options={[
+              {
+                value: 'all',
+                label: `${t('activity.allTypes')} (${getEventCountByType('all')})`,
+              },
+              ...OBJECT_TYPES.map((type) => ({
+                value: type,
+                label: `${t(`activity.objectTypes.${type}`)} (${getEventCountByType(type)})`,
+              })),
+            ]}
+            placeholder={`${t('activity.allTypes')} (${getEventCountByType('all')})`}
           />
 
           {/* Ordenar por fecha */}
           <div className="sort-group">
             <div className="sort-label">
               <LuArrowUpDown className="sort-icon" />
-              <span>Ordenar por fecha</span>
+              <span>{t('activity.sortByDate')}</span>
             </div>
             <Button
               onClick={handleSortToggle}
@@ -190,8 +172,8 @@ export const ActivityLogs = () => {
               style={{ height: '100%' }}
             >
               {sortOrder === 'desc'
-                ? '✓ Más reciente primero'
-                : '✓ Más antiguo primero'}
+                ? `✓ ${t('activity.mostRecentFirst')}`
+                : `✓ ${t('activity.oldestFirst')}`}
             </Button>
           </div>
         </div>
@@ -199,9 +181,9 @@ export const ActivityLogs = () => {
         {/* Lista de logs */}
         <div className="activity-logs-list">
           {loading ? (
-            <Loader text="Cargando..." size="large" />
+            <Loader text={t('common.loading')} size="large" />
           ) : sortedLogs.length === 0 ? (
-            <p className="empty-message">No hay actividades registradas</p>
+            <p className="empty-message">{t('activity.empty')}</p>
           ) : (
             sortedLogs.map((log) => {
               const color = getColor(log.objectType);
@@ -223,10 +205,9 @@ export const ActivityLogs = () => {
                       className={`activity-log-tag activity-log-tag--${color}`}
                     >
                       {log.objectType
-                        ? OBJECT_TYPE_LABELS[
-                            log.objectType as AuditLogObjectType
-                          ] || log.objectType
-                        : 'General'}
+                        ? t(`activity.objectTypes.${log.objectType}`) ||
+                          log.objectType
+                        : t('common.all')}
                     </span>
                   </div>
                   <div className="activity-log-time">

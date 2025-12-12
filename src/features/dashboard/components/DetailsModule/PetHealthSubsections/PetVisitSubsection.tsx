@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { Pet } from '../../../../../models/pet.model';
 import type { VetVisit } from '../../../../../models/vetVisit.model';
 import { useVetVisitForm } from '../../../../../hooks/useVetVisitForm';
@@ -27,6 +28,7 @@ interface PetVisitSubsectionProps {
 export const PetVisitSubsection: React.FC<PetVisitSubsectionProps> = ({
   pet,
 }) => {
+  const { t } = useTranslation();
   const [showForm, setShowForm] = useState(false);
   const [editingVetVisit, setEditingVetVisit] = useState<VetVisit | null>(null);
   const { openModal } = useModalStore();
@@ -76,16 +78,16 @@ export const PetVisitSubsection: React.FC<PetVisitSubsectionProps> = ({
   };
 
   const handleDeleteClick = (vetVisit: VetVisit) => {
-    const reasonText = vetVisit.reason || 'esta visita';
+    const reasonText = vetVisit.reason || t('common.thisItem');
     openModal({
-      title: `¿Estás seguro que quieres eliminar "${reasonText}"?`,
-      content: 'Esta acción no se puede deshacer',
+      title: `${t('modals.delete.title')} "${reasonText}"?`,
+      content: t('modals.delete.content'),
       variant: 'confirm',
       onConfirm: () => {
         deleteVetVisit(vetVisit.id);
       },
-      confirmLabel: 'Eliminar',
-      cancelLabel: 'Cancelar',
+      confirmLabel: t('common.delete'),
+      cancelLabel: t('common.cancel'),
     });
   };
 
@@ -103,8 +105,8 @@ export const PetVisitSubsection: React.FC<PetVisitSubsectionProps> = ({
       <div className="pet-section-card pet-section-card--visit">
         <div className="visit-subsection__header">
           <div>
-            <h3>Registro de Visita Veterinaria</h3>
-            <p>Gestiona el historial de visitas veterinarias de {pet.name}</p>
+            <h3>{t('health.visit.title')}</h3>
+            <p>{t('health.visit.manageHistory', { petName: pet.name })}</p>
           </div>
           {!showForm && (
             <Button
@@ -112,8 +114,8 @@ export const PetVisitSubsection: React.FC<PetVisitSubsectionProps> = ({
               onClick={handleAddClick}
               style={{ fontSize: '1.2rem' }}
             >
-              <FaPlus style={{ position: 'relative', left: '-4px' }} /> Agregar
-              Visita
+              <FaPlus style={{ position: 'relative', left: '-4px' }} />{' '}
+              {t('health.visit.add')}
             </Button>
           )}
         </div>
@@ -122,8 +124,8 @@ export const PetVisitSubsection: React.FC<PetVisitSubsectionProps> = ({
           <div className="visit-subsection__form-section">
             <h4>
               {editingVetVisit
-                ? 'Editar Visita Veterinaria'
-                : 'Registrar Nueva Visita Veterinaria'}
+                ? t('health.visit.edit')
+                : t('health.visit.registerNew')}
             </h4>
             <form
               onSubmit={handleSubmit(onSubmit)}
@@ -134,7 +136,8 @@ export const PetVisitSubsection: React.FC<PetVisitSubsectionProps> = ({
                 <div className="visit-subsection__form-column">
                   <div className="visit-subsection__field">
                     <label htmlFor="visitDate">
-                      Fecha de Visita <span className="required">*</span>
+                      {t('health.visit.visitDate')}{' '}
+                      <span className="required">*</span>
                     </label>
                     <div className="input-with-icon">
                       <FaCalendarAlt className="input-icon" />
@@ -142,7 +145,7 @@ export const PetVisitSubsection: React.FC<PetVisitSubsectionProps> = ({
                         id="visitDate"
                         type="date"
                         {...register('visitDate', {
-                          required: 'La fecha de visita es obligatoria',
+                          required: t('health.visit.visitDateRequired'),
                         })}
                         className={errors.visitDate ? 'input-error' : ''}
                       />
@@ -156,7 +159,8 @@ export const PetVisitSubsection: React.FC<PetVisitSubsectionProps> = ({
 
                   <div className="visit-subsection__field">
                     <label htmlFor="visitHour">
-                      Hora de Visita <span className="required">*</span>
+                      {t('health.visit.visitHour')}{' '}
+                      <span className="required">*</span>
                     </label>
                     <div className="input-with-icon">
                       <FaClock className="input-icon" />
@@ -164,7 +168,7 @@ export const PetVisitSubsection: React.FC<PetVisitSubsectionProps> = ({
                         id="visitHour"
                         type="time"
                         {...register('visitHour', {
-                          required: 'La hora de visita es obligatoria',
+                          required: t('health.visit.visitHourRequired'),
                         })}
                         className={errors.visitHour ? 'input-error' : ''}
                       />
@@ -177,11 +181,11 @@ export const PetVisitSubsection: React.FC<PetVisitSubsectionProps> = ({
                   </div>
 
                   <div className="visit-subsection__field">
-                    <label htmlFor="reason">Motivo de la Visita</label>
+                    <label htmlFor="reason">{t('health.visit.reason')}</label>
                     <input
                       id="reason"
                       type="text"
-                      placeholder="Ej: Consulta general, Revisión anual..."
+                      placeholder={t('health.visit.reasonPlaceholder')}
                       {...register('reason')}
                       className={errors.reason ? 'input-error' : ''}
                     />
@@ -193,13 +197,15 @@ export const PetVisitSubsection: React.FC<PetVisitSubsectionProps> = ({
                   </div>
 
                   <div className="visit-subsection__field">
-                    <label htmlFor="diagnosis">Diagnóstico</label>
+                    <label htmlFor="diagnosis">
+                      {t('health.visit.diagnosis')}
+                    </label>
                     <div className="input-with-icon">
                       <FaFileAlt className="input-icon" />
                       <textarea
                         id="diagnosis"
                         rows={4}
-                        placeholder="Diagnóstico realizado por el veterinario..."
+                        placeholder={t('health.visit.diagnosisPlaceholder')}
                         {...register('diagnosis')}
                       />
                     </div>
@@ -209,20 +215,24 @@ export const PetVisitSubsection: React.FC<PetVisitSubsectionProps> = ({
                 {/* Columna Derecha */}
                 <div className="visit-subsection__form-column">
                   <div className="visit-subsection__field">
-                    <label htmlFor="treatment">Tratamiento</label>
+                    <label htmlFor="treatment">
+                      {t('health.visit.treatment')}
+                    </label>
                     <div className="input-with-icon">
                       <FaFileAlt className="input-icon" />
                       <textarea
                         id="treatment"
                         rows={4}
-                        placeholder="Tratamiento prescrito..."
+                        placeholder={t('health.visit.treatmentPlaceholder')}
                         {...register('treatment')}
                       />
                     </div>
                   </div>
 
                   <div className="visit-subsection__field">
-                    <label htmlFor="followUpDate">Fecha de Seguimiento</label>
+                    <label htmlFor="followUpDate">
+                      {t('health.visit.followUpDate')}
+                    </label>
                     <div className="input-with-icon">
                       <FaCalendarAlt className="input-icon" />
                       <input
@@ -232,7 +242,7 @@ export const PetVisitSubsection: React.FC<PetVisitSubsectionProps> = ({
                           validate: (value) => {
                             if (!value) return true; // Opcional
                             if (visitDateValue && value <= visitDateValue) {
-                              return 'La fecha de seguimiento debe ser posterior a la fecha de visita';
+                              return t('health.visit.followUpAfter');
                             }
                             return true;
                           },
@@ -248,7 +258,9 @@ export const PetVisitSubsection: React.FC<PetVisitSubsectionProps> = ({
                   </div>
 
                   <div className="visit-subsection__field">
-                    <label htmlFor="followUpHour">Hora de Seguimiento</label>
+                    <label htmlFor="followUpHour">
+                      {t('health.visit.followUpHour')}
+                    </label>
                     <div className="input-with-icon">
                       <FaClock className="input-icon" />
                       <input
@@ -261,18 +273,19 @@ export const PetVisitSubsection: React.FC<PetVisitSubsectionProps> = ({
                   </div>
 
                   <div className="visit-subsection__field">
-                    <label htmlFor="veterinarian">Veterinario</label>
+                    <label htmlFor="veterinarian">
+                      {t('health.visit.veterinarian')}
+                    </label>
                     <div className="input-with-icon">
                       <FaUserMd className="input-icon" />
                       <input
                         id="veterinarian"
                         type="text"
-                        placeholder="Ej: Dr. Carlos Martínez"
+                        placeholder={t('health.visit.veterinarianPlaceholder')}
                         {...register('veterinarian', {
                           maxLength: {
                             value: 200,
-                            message:
-                              'El veterinario no puede exceder 200 caracteres',
+                            message: t('health.visit.veterinarianMaxLength'),
                           },
                         })}
                         className={errors.veterinarian ? 'input-error' : ''}
@@ -289,7 +302,9 @@ export const PetVisitSubsection: React.FC<PetVisitSubsectionProps> = ({
 
               {crudError && (
                 <div className="server-error">
-                  <p>Error: {crudError}</p>
+                  <p>
+                    {t('common.error')}: {crudError}
+                  </p>
                 </div>
               )}
 
@@ -299,14 +314,14 @@ export const PetVisitSubsection: React.FC<PetVisitSubsectionProps> = ({
                   disabled={loading || !isValid}
                   variant="primary"
                 >
-                  {editingVetVisit ? 'Actualizar Registro' : 'Guardar Registro'}
+                  {editingVetVisit ? t('common.update') : t('common.save')}
                 </Button>
                 <Button
                   type="button"
                   onClick={handleCancelForm}
                   variant="outline"
                 >
-                  Cancelar
+                  {t('common.cancel')}
                 </Button>
               </div>
             </form>
@@ -318,8 +333,8 @@ export const PetVisitSubsection: React.FC<PetVisitSubsectionProps> = ({
       <RemindersSection
         petId={pet.id || null}
         // context="visit"
-        defaultTitle={`Próxima visita veterinaria - ${pet.name}`}
-        defaultDescription="Recordatorio para visita veterinaria"
+        defaultTitle={t('health.visit.nextReminder', { petName: pet.name })}
+        defaultDescription={t('health.visit.reminderDescription')}
       />
 
       {/* Sección 3: Historial de Visitas Veterinarias */}
@@ -327,22 +342,24 @@ export const PetVisitSubsection: React.FC<PetVisitSubsectionProps> = ({
         <div className="visit-subsection__history-header">
           <div>
             <FaStethoscope className="history-icon" />
-            <h3>Historial de Visitas Veterinarias</h3>
+            <h3>{t('health.visit.history')}</h3>
           </div>
-          <p>Registro completo de todas las visitas veterinarias</p>
+          <p>{t('health.visit.historyDescription')}</p>
         </div>
 
         {crudError && (
           <div className="server-error">
-            <p>Error: {crudError}</p>
+            <p>
+              {t('common.error')}: {crudError}
+            </p>
           </div>
         )}
 
         {loading && vetVisits.length === 0 ? (
-          <Loader text="Cargando visitas veterinarias..." />
+          <Loader text={t('health.visit.loading')} />
         ) : vetVisits.length === 0 ? (
           <p className="visit-subsection__empty">
-            No hay visitas veterinarias registradas aún
+            {t('health.visit.empty')}
           </p>
         ) : (
           <div className="visit-subsection__visits-list">
@@ -351,20 +368,22 @@ export const PetVisitSubsection: React.FC<PetVisitSubsectionProps> = ({
                 <div className="visit-card__header">
                   <div className="visit-card__title">
                     <FaStethoscope className="visit-icon" />
-                    <h4>{vetVisit.reason || 'Visita veterinaria'}</h4>
+                    <h4>
+                      {vetVisit.reason || t('health.visit.defaultReason')}
+                    </h4>
                   </div>
                   <div className="visit-card__actions">
                     <button
                       className="visit-card__action-btn"
                       onClick={() => handleEditClick(vetVisit)}
-                      aria-label="Editar visita"
+                      aria-label={t('common.edit')}
                     >
                       <FaEdit />
                     </button>
                     <button
                       className="visit-card__action-btn visit-card__action-btn--delete"
                       onClick={() => handleDeleteClick(vetVisit)}
-                      aria-label="Eliminar visita"
+                      aria-label={t('common.delete')}
                     >
                       <FaTrash />
                     </button>
@@ -375,7 +394,7 @@ export const PetVisitSubsection: React.FC<PetVisitSubsectionProps> = ({
                   <div className="visit-card__detail-item">
                     <FaCalendarAlt className="detail-icon" />
                     <div>
-                      <label>Fecha de Visita</label>
+                      <label>{t('health.visit.visitDate')}</label>
                       <p>{formatDateTimeLocal(vetVisit.visitDate)}</p>
                     </div>
                   </div>
@@ -384,7 +403,7 @@ export const PetVisitSubsection: React.FC<PetVisitSubsectionProps> = ({
                     <div className="visit-card__detail-item">
                       <FaCalendarAlt className="detail-icon" />
                       <div>
-                        <label>Fecha de Seguimiento</label>
+                        <label>{t('health.visit.followUpDate')}</label>
                         <p>{formatDateTimeLocal(vetVisit.followUpDate)}</p>
                       </div>
                     </div>
@@ -394,7 +413,7 @@ export const PetVisitSubsection: React.FC<PetVisitSubsectionProps> = ({
                     <div className="visit-card__detail-item">
                       <FaUserMd className="detail-icon" />
                       <div>
-                        <label>Veterinario</label>
+                        <label>{t('health.visit.veterinarian')}</label>
                         <p>{vetVisit.veterinarian}</p>
                       </div>
                     </div>
@@ -402,14 +421,14 @@ export const PetVisitSubsection: React.FC<PetVisitSubsectionProps> = ({
 
                   {vetVisit.diagnosis && (
                     <div className="visit-card__detail-item">
-                      <label>Diagnóstico</label>
+                      <label>{t('health.visit.diagnosis')}</label>
                       <p>{vetVisit.diagnosis}</p>
                     </div>
                   )}
 
                   {vetVisit.treatment && (
                     <div className="visit-card__detail-item">
-                      <label>Tratamiento</label>
+                      <label>{t('health.visit.treatment')}</label>
                       <p>{vetVisit.treatment}</p>
                     </div>
                   )}

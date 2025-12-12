@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { Pet } from '../../../../models/pet.model';
 import './PetHealthSection.scss';
 import { PetVaccinationSubsection } from './PetHealthSubsections/PetVaccinationSubsection';
@@ -10,6 +11,7 @@ interface PetHealthSectionProps {
 }
 
 export const PetHealthSection: React.FC<PetHealthSectionProps> = ({ pet }) => {
+  const { t } = useTranslation();
   const [subsection, setSubsection] = useState<
     'vaccination' | 'deworming' | 'visit'
   >('vaccination');
@@ -21,19 +23,19 @@ export const PetHealthSection: React.FC<PetHealthSectionProps> = ({ pet }) => {
           className={subsection === 'vaccination' ? 'active' : ''}
           onClick={() => setSubsection('vaccination')}
         >
-          Vacunación
+          {t('pet.details.subsections.vaccination')}
         </button>
         <button
           className={subsection === 'deworming' ? 'active' : ''}
           onClick={() => setSubsection('deworming')}
         >
-          Desparasitación
+          {t('pet.details.subsections.deworming')}
         </button>
         <button
           className={subsection === 'visit' ? 'active' : ''}
           onClick={() => setSubsection('visit')}
         >
-          Visitas
+          {t('pet.details.subsections.visit')}
         </button>
       </div>
 

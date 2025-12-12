@@ -1,0 +1,854 @@
+{
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "close": "Close",
+    "confirm": "Confirm",
+    "back": "Back",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "required": "*",
+    "optional": "(Optional)",
+    "yes": "Yes",
+    "no": "No",
+    "search": "Search",
+    "filter": "Filter",
+    "clear": "Clear",
+    "all": "All",
+    "allFeminine": "All",
+    "viewDetails": "View Details",
+    "submitting": "Submitting...",
+    "creating": "Creating...",
+    "registering": "Registering...",
+    "signingIn": "Signing in...",
+    "orContinueWith": "or continue with",
+    "signInWithGoogle": "Sign in with Google",
+    "successfulLogin": "Successful login",
+    "successfulRegistration": "✅ Registration successful",
+    "noData": "N/A",
+    "age": "Age",
+    "weight": "Weight",
+    "kg": "kg",
+    "update": "Update Record",
+    "thisItem": "this item",
+    "description": "Description"
+  },
+  "header": {
+    "logo": "Pet Health Tracker",
+    "menu": {
+      "open": "Open menu",
+      "close": "Close menu"
+    },
+    "nav": {
+      "home": "Home",
+      "features": "Features",
+      "about": "About",
+      "contact": "Contact",
+      "dashboard": "Dashboard",
+      "logout": "Logout",
+      "register": "Sign Up",
+      "backToDashboard": "Back to Dashboard"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Sign In",
+      "subtitle": "Access your panel and manage everything easily",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Sign In",
+      "forgotPassword": "Forgot your password?",
+      "noAccount": "Don't have an account?",
+      "register": "Sign up here"
+    },
+    "register": {
+      "title": "Create Account",
+      "subtitle": "Start managing your pets' health",
+      "email": "Email",
+      "emailPlaceholder": "your@email.com",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "submit": "Sign Up",
+      "hasAccount": "Already have an account?",
+      "login": "Sign in",
+      "successMessage": "Registration successful. Check your email to verify your email 📩"
+    },
+    "recoverPassword": {
+      "title": "Recover Password",
+      "subtitle": "Enter your email and we'll send you a link to reset it.",
+      "email": "Email",
+      "emailPlaceholder": "Email address",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Invalid email",
+      "submit": "Send Link",
+      "sending": "Sending...",
+      "backToRegister": "Back to Register"
+    },
+    "resetPassword": {
+      "title": "Reset Password",
+      "subtitle": "Enter your new password to reset your account.",
+      "newPassword": "New Password",
+      "newPasswordPlaceholder": "New password",
+      "confirmPassword": "Confirm Password",
+      "confirmPasswordPlaceholder": "Confirm password",
+      "passwordRequired": "Password is required",
+      "passwordPattern": "Minimum 8 characters, 1 uppercase and 1 number",
+      "confirmPasswordRequired": "You must confirm the password",
+      "passwordsMismatch": "Passwords do not match",
+      "submit": "Update Password",
+      "processing": "Processing...",
+      "success": "Password updated successfully! 🎉 Redirecting...",
+      "backToLogin": "Back to Sign In"
+    },
+    "checkEmail": {
+      "title": "Check your email",
+      "message": "We have sent a recovery link to {{email}}",
+      "messageGeneric": "We have sent a recovery link to your email address",
+      "instruction": "Go to your email and click the link to continue with the password reset",
+      "backToLogin": "Back to Sign In"
+    },
+    "verifyEmail": {
+      "invalidToken": "Invalid Token",
+      "invalidTokenMessage": "The verification link is not valid or has expired.",
+      "verifying": "Verifying email...",
+      "verifyingMessage": "Please wait while we verify your account",
+      "success": "Email verified!",
+      "redirecting": "Redirecting to sign in...",
+      "error": "Verification Error"
+    },
+    "validation": {
+      "emailRequired": "Email is required",
+      "emailInvalid": "Invalid email",
+      "passwordRequired": "Password is required",
+      "passwordMinLength": "Must be at least 6 characters",
+      "passwordPattern": "Minimum 8 characters, 1 uppercase and 1 number",
+      "confirmPasswordRequired": "Must confirm password",
+      "passwordMismatch": "Passwords do not match",
+      "nameRequired": "Name is required",
+      "nameMaxLength": "Name cannot exceed 100 characters",
+      "speciesMaxLength": "Species cannot exceed 50 characters",
+      "breedMaxLength": "Breed cannot exceed 100 characters",
+      "sexMaxLength": "Sex cannot exceed 20 characters",
+      "dateInvalid": "Date is not valid",
+      "weightRange": "Weight must be a number between 0 and 999.99"
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Welcome back, {{name}}",
+    "pets": {
+      "title": "My Pets",
+      "add": "Add Pet",
+      "empty": "You don't have any registered pets",
+      "emptyYet": "You don't have any registered pets yet.",
+      "createFirst": "Create your first pet",
+      "showing": "Showing {{count}} pet",
+      "showingPlural": "Showing {{count}} pets",
+      "loading": "Loading pets..."
+    },
+    "userCard": {
+      "title": "User Information",
+      "subtitle": "Your account details",
+      "viewActivity": "View activity",
+      "name": "Name",
+      "email": "Email",
+      "memberSince": "Member since"
+    },
+    "filters": {
+      "title": "Filters",
+      "species": "Species",
+      "healthStatus": "Health Status",
+      "alerts": "Alerts",
+      "clear": "Clear Filters",
+      "results": "{{count}} result(s) found",
+      "allSpecies": "All",
+      "allStatus": "All",
+      "allAlerts": "All",
+      "withAlerts": "With Alerts",
+      "withoutAlerts": "Without Alerts"
+    },
+    "quickAccess": {
+      "calendar": {
+        "title": "Event Calendar",
+        "description": "View upcoming health and nutrition events"
+      },
+      "notifications": {
+        "title": "Notification Center",
+        "description": "Manage all your notifications"
+      }
+    }
+  },
+  "pet": {
+    "form": {
+      "title": "Create New Pet",
+      "subtitle": "Complete your pet's information to start managing their health",
+      "basicInfo": "Basic Information",
+      "physicalDetails": "Physical Details",
+      "weightLabel": "Weight (kg)",
+      "sexLabel": "Sex",
+      "photoUrlLabel": "Photo URL",
+      "selectPlaceholder": "Select...",
+      "speciesOptions": {
+        "perro": "Dog",
+        "gato": "Cat",
+        "ave": "Bird",
+        "conejo": "Rabbit",
+        "hamster": "Hamster",
+        "otro": "Other"
+      },
+      "sexOptions": {
+        "macho": "Male",
+        "hembra": "Female",
+        "other": "Other"
+      },
+      "name": "Pet Name",
+      "namePlaceholder": "E.g: Max, Luna, Rocky...",
+      "species": "Species",
+      "speciesPlaceholder": "Select a species",
+      "breed": "Breed",
+      "breedPlaceholder": "E.g: Golden Retriever, Persian...",
+      "sex": "Sex",
+      "sexPlaceholder": "Select sex",
+      "birthDate": "Birth Date",
+      "ageAutoCalculated": "Age will be calculated automatically",
+      "weight": "Weight (kg)",
+      "weightPlaceholder": "E.g: 25.5",
+      "notes": "Notes",
+      "notesPlaceholder": "Additional information about your pet...",
+      "submit": "Create Pet",
+      "cancel": "Cancel",
+      "photoUrl": "Photo URL",
+      "photoUrlPlaceholder": "https://example.com/pet-photo.jpg",
+      "photoUrlHint": "Add your pet's photo"
+    },
+    "card": {
+      "age": "Age",
+      "healthStatus": "Health Status",
+      "activeAlerts": "Active Alerts",
+      "nextVaccine": "Next Vaccine",
+      "lastVisit": "Last Visit",
+      "noData": "—",
+      "viewDetails": "View Details"
+    },
+    "details": {
+      "info": "General Information",
+      "infoDescription": "Complete details of your pet",
+      "health": "Health",
+      "nutrition": "Nutrition",
+      "edit": "Edit",
+      "save": "Save",
+      "cancel": "Cancel",
+      "uploadPhoto": "Upload Profile Photo",
+      "uploadGallery": "Upload Images",
+      "viewGallery": "View Gallery",
+      "uploadDocument": "Upload Documents",
+      "viewDocuments": "View Documents ({{count}})",
+      "viewPhoto": "View photo",
+      "sections": {
+        "info": "Information",
+        "health": "Health",
+        "nutrition": "Nutrition"
+      },
+      "subsections": {
+        "vaccination": "Vaccination",
+        "deworming": "Deworming",
+        "visit": "Visits"
+      }
+    },
+    "healthStatus": {
+      "healthy": "Healthy",
+      "attentionRequired": "Attention Required",
+      "reviewNeeded": "Review Needed",
+      "loading": "Loading...",
+      "info": {
+        "title": "Health Statuses",
+        "healthy": {
+          "title": "🟢 Healthy",
+          "description": "Your pet is up to date with their care:",
+          "criteria1": "Vaccinations and deworming up to date",
+          "criteria2": "No expired or upcoming vaccines (30 days)",
+          "criteria3": "Last veterinary visit less than 6 months ago"
+        },
+        "attentionRequired": {
+          "title": "🔴 Attention Required",
+          "description": "Your pet needs immediate attention:",
+          "criteria1": "Expired vaccinations or deworming",
+          "criteria2": "Vaccinations or deworming expiring soon (30 days)",
+          "criteria3": "No veterinary visit in more than 6 months"
+        },
+        "reviewNeeded": {
+          "title": "🟡 Review Needed",
+          "description": "Your pet needs a review:",
+          "criteria1": "No health records (no vaccinations, deworming, or visits)",
+          "criteria2": "No veterinary visit in more than 1 year"
+        }
+      },
+      "alerts": {
+        "title": "What are Active Alerts?",
+        "description": "<strong>Active Alerts</strong> are the total number of vaccinations and deworming that require attention:",
+        "expiredVaccines": "Expired vaccinations: Vaccines whose next dose date has passed",
+        "expiredDewormings": "Expired deworming: Deworming that requires renewal (more than 90 days since last)",
+        "upcomingVaccines": "Upcoming vaccinations: Vaccines expiring in the next 30 days",
+        "upcomingDewormings": "Upcoming deworming: Deworming that requires attention soon (60-90 days since last)",
+        "help": "This counter helps you quickly identify how many actions you need to take to keep your pet healthy."
+      }
+    }
+  },
+  "health": {
+    "vaccination": {
+      "title": "Vaccinations",
+      "add": "Add Vaccine",
+      "edit": "Edit Vaccine",
+      "registerNew": "Register New Vaccine",
+      "manageHistory": "Manage vaccination history for {{petName}}",
+      "name": "Vaccine Name",
+      "namePlaceholder": "E.g: Rabies, Parvovirus, Distemper...",
+      "nameRequired": "Vaccine name is required",
+      "nameMinLength": "Name must be at least 1 character",
+      "nameMaxLength": "Name cannot exceed 200 characters",
+      "dateAdministered": "Date Administered",
+      "dateRequired": "Administration date is required",
+      "nextDue": "Next Due Date",
+      "nextDueAfter": "Next date must be after administration date",
+      "veterinarian": "Veterinarian",
+      "veterinarianPlaceholder": "E.g: Dr. Carlos Martínez",
+      "veterinarianMaxLength": "Veterinarian cannot exceed 200 characters",
+      "manufacturer": "Manufacturer",
+      "manufacturerPlaceholder": "E.g: Pfizer, Merial...",
+      "manufacturerMaxLength": "Manufacturer cannot exceed 200 characters",
+      "lotNumber": "Lot Number",
+      "lotNumberPlaceholder": "E.g: RAB-2024-1234",
+      "lotNumberMaxLength": "Lot number cannot exceed 100 characters",
+      "notes": "Notes (optional)",
+      "notesPlaceholder": "Additional observations...",
+      "history": "Vaccination History",
+      "historyDescription": "Complete record of all administered vaccines",
+      "empty": "No vaccines registered yet",
+      "expired": "Expired",
+      "nextDose": "Next Dose",
+      "nextReminder": "Next vaccine - {{petName}}",
+      "reminderDescription": "Reminder to apply vaccine"
+    },
+    "deworming": {
+      "title": "Deworming",
+      "add": "Add Deworming",
+      "edit": "Edit Deworming",
+      "registerNew": "Register New Deworming",
+      "manageHistory": "Manage deworming history for {{petName}}",
+      "medication": "Product Name",
+      "medicationPlaceholder": "E.g: Drontal Plus, Bravecto...",
+      "medicationRequired": "Medication is required",
+      "medicationMaxLength": "Product name cannot exceed 200 characters",
+      "dateAdministered": "Date Administered",
+      "dateRequired": "Administration date is required",
+      "nextDue": "Next Due Date",
+      "nextDueAfter": "Next date must be after administration date",
+      "veterinarian": "Veterinarian",
+      "veterinarianPlaceholder": "E.g: Dr. Carlos Martínez",
+      "veterinarianMaxLength": "Veterinarian cannot exceed 200 characters",
+      "notes": "Notes (optional)",
+      "notesPlaceholder": "Additional observations...",
+      "history": "Deworming History",
+      "historyDescription": "Complete record of all deworming records",
+      "empty": "No deworming registered yet",
+      "loading": "Loading deworming records...",
+      "expired": "Expired",
+      "nextDose": "Next Application",
+      "nextReminder": "Next deworming - {{petName}}",
+      "reminderDescription": "Reminder to apply deworming",
+      "noName": "No name"
+    },
+    "visit": {
+      "title": "Veterinary Visits",
+      "add": "Add Visit",
+      "edit": "Edit Visit",
+      "registerNew": "Register New Veterinary Visit",
+      "manageHistory": "Manage veterinary visit history for {{petName}}",
+      "visitDate": "Visit Date",
+      "visitDateRequired": "Visit date is required",
+      "visitHour": "Visit Time",
+      "visitHourRequired": "Visit time is required",
+      "reason": "Reason for Visit",
+      "reasonPlaceholder": "E.g: Routine check-up, annual review...",
+      "reasonMaxLength": "Reason cannot exceed 500 characters",
+      "diagnosis": "Diagnosis",
+      "diagnosisPlaceholder": "Diagnosis made by the veterinarian...",
+      "diagnosisMaxLength": "Diagnosis cannot exceed 1000 characters",
+      "treatment": "Treatment",
+      "treatmentPlaceholder": "Prescribed treatment...",
+      "treatmentMaxLength": "Treatment cannot exceed 1000 characters",
+      "followUpDate": "Follow-up Date",
+      "followUpHour": "Follow-up Time",
+      "followUpAfter": "Follow-up date must be after visit date",
+      "veterinarian": "Veterinarian",
+      "veterinarianPlaceholder": "E.g: Dr. Carlos Martínez",
+      "veterinarianMaxLength": "Veterinarian cannot exceed 200 characters",
+      "history": "Veterinary Visit History",
+      "historyDescription": "Complete record of all veterinary visits",
+      "empty": "No veterinary visits registered yet",
+      "loading": "Loading veterinary visits...",
+      "defaultReason": "Veterinary visit",
+      "nextReminder": "Next veterinary visit - {{petName}}",
+      "reminderDescription": "Reminder for veterinary visit"
+    }
+  },
+  "nutrition": {
+    "title": "Nutrition",
+    "add": "Add Food",
+    "edit": "Edit Meal",
+    "registerNew": "Register New Meal",
+    "manageHistory": "Manage nutrition history for {{petName}}",
+    "addFood": "Add Food",
+    "date": "Date",
+    "dateRequired": "Date is required",
+    "time": "Time",
+    "timeRequired": "Time is required",
+    "type": "Food Type",
+    "typePlaceholder": "Select food type",
+    "breakfast": "Breakfast",
+    "lunch": "Lunch",
+    "dinner": "Dinner",
+    "snack": "Snack",
+    "food": "Food",
+    "foodPlaceholder": "E.g: Premium kibble, Turkey, Meat...",
+    "foodMaxLength": "Food cannot exceed 200 characters",
+    "quantity": "Quantity",
+    "quantityPlaceholder": "E.g: 200g, 1 cup...",
+    "quantityMaxLength": "Quantity cannot exceed 100 characters",
+    "notes": "Notes (optional)",
+    "notesPlaceholder": "Observations about this meal...",
+    "history": "Meal History",
+    "historyDescription": "Complete record of all registered meals",
+    "empty": "No meals registered yet",
+    "loading": "Loading meals...",
+    "defaultMeal": "Meal",
+    "dateTime": "Date and Time",
+    "calories": "Calories",
+    "mealsCount": "{{count}} meal(s)",
+    "nextReminder": "Feeding reminder - {{petName}}",
+    "reminderDescription": "Reminder to feed"
+  },
+  "reminders": {
+    "title": "Reminders",
+    "subtitle": "Configure reminders for medical events",
+    "add": "New Reminder",
+    "edit": "Edit Reminder",
+    "registerNew": "New Reminder",
+    "name": "Title",
+    "namePlaceholder": "E.g: Next Rabies vaccine - Max",
+    "nameRequired": "Title is required",
+    "nameMinLength": "Title must be at least 1 character",
+    "nameMaxLength": "Title cannot exceed 200 characters",
+    "description": "Description",
+    "descriptionPlaceholder": "E.g: Reminder to apply Rabies vaccine",
+    "eventDate": "Date",
+    "eventDateRequired": "Date is required",
+    "eventHour": "Time",
+    "eventHourRequired": "Time is required",
+    "eventTime": "Event Date and Time",
+    "frequency": "Frequency",
+    "frequencyPlaceholder": "Select frequency",
+    "once": "Once",
+    "daily": "Daily",
+    "weekly": "Weekly",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "isActive": "Active reminder",
+    "notifyByEmail": "Notify by email",
+    "notifyInApp": "Notify in the app",
+    "process": "Process Reminders",
+    "empty": "No reminders configured yet",
+    "loading": "Loading reminders...",
+    "active": "Active",
+    "inactive": "Inactive",
+    "showAll": "Show all reminders",
+    "hideAll": "Hide all reminders",
+    "saving": "Saving...",
+    "update": "Update",
+    "save": "Save"
+  },
+  "calendar": {
+    "title": "Calendar",
+    "events": "Events",
+    "allEvents": "All events",
+    "allPets": "All pets",
+    "filterByEvent": "Filter by event type",
+    "filterByPet": "Filter by pet",
+    "selectDay": "Select a day",
+    "noEvents": "No events scheduled for this day",
+    "legend": "Event Legend",
+    "days": {
+      "sun": "Sun",
+      "mon": "Mon",
+      "tue": "Tue",
+      "wed": "Wed",
+      "thu": "Thu",
+      "fri": "Fri",
+      "sat": "Sat"
+    },
+    "months": {
+      "january": "January",
+      "february": "February",
+      "march": "March",
+      "april": "April",
+      "may": "May",
+      "june": "June",
+      "july": "July",
+      "august": "August",
+      "september": "September",
+      "october": "October",
+      "november": "November",
+      "december": "December"
+    }
+  },
+  "notifications": {
+    "title": "Notifications",
+    "empty": "No notifications",
+    "markAsRead": "Mark as read",
+    "new": "New",
+    "viewAll": "View all notifications",
+    "process": "Process Reminders"
+  },
+  "activity": {
+    "title": "Activity History",
+    "empty": "No activity recorded",
+    "filterByAction": "Filter by action",
+    "filterByType": "Filter by event type",
+    "filterByTypeLabel": "Filter by event type",
+    "allActions": "All actions",
+    "allTypes": "All events",
+    "sortByDate": "Sort by date",
+    "mostRecentFirst": "Most recent first",
+    "oldestFirst": "Oldest first",
+    "actions": {
+      "USER_LOGIN": "Sign in",
+      "USER_LOGOUT": "Sign out",
+      "USER_REGISTERED": "User registration",
+      "USER_UPDATED": "User updated",
+      "EMAIL_VERIFIED": "Email verified",
+      "PASSWORD_RESET": "Password reset",
+      "PET_CREATED": "Pet created",
+      "PET_UPDATED": "Pet information updated",
+      "PET_DELETED": "Pet deleted",
+      "PET_PHOTO_UPLOADED": "Pet photo uploaded",
+      "VACCINATION_CREATED": "Vaccination created",
+      "VACCINATION_UPDATED": "Vaccination updated",
+      "VACCINATION_DELETED": "Vaccination deleted",
+      "DEWORMING_CREATED": "Deworming created",
+      "DEWORMING_UPDATED": "Deworming updated",
+      "DEWORMING_DELETED": "Deworming deleted",
+      "VET_VISIT_CREATED": "Visit created",
+      "VET_VISIT_UPDATED": "Visit updated",
+      "VET_VISIT_DELETED": "Visit deleted",
+      "MEAL_CREATED": "Nutrition record created",
+      "MEAL_UPDATED": "Nutrition record updated",
+      "MEAL_DELETED": "Nutrition record deleted",
+      "REMINDER_CREATED": "Reminder created",
+      "REMINDER_UPDATED": "Reminder updated",
+      "REMINDER_DELETED": "Reminder deleted",
+      "REMINDER_PROCESSED": "Reminder processed"
+    },
+    "objectTypes": {
+      "User": "User",
+      "Reminder": "Reminder",
+      "Pet": "Pet",
+      "Meal": "Nutrition Record",
+      "VetVisit": "Veterinary Visit",
+      "Deworming": "Deworming",
+      "Vaccination": "Vaccination"
+    },
+    "forPet": "For {{petName}}",
+    "email": "Email: {{email}}",
+    "actionOn": "Action on {{objectType}}",
+    "systemActivity": "System activity"
+  },
+  "chatbot": {
+    "title": "AI Veterinary Assistant",
+    "toggle": "Talk to me",
+    "openChat": "Open chat with veterinarian",
+    "closeChat": "Close chat",
+    "placeholder": "Type your question...",
+    "send": "Send",
+    "clearChat": "Clear conversation",
+    "welcome": "Hello, I'm your veterinary assistant. How can I help you?",
+    "welcomeWithPet": "Hello! I'm your veterinary assistant. I'm here to help you with {{petName}}, your {{species}} of {{age}}.",
+    "hasDocuments": "📄 I have access to {{count}} document(s) from {{petName}} to give you more accurate answers.",
+    "noDocuments": "💡 I can help you with general information about {{petName}}. If you upload PDF documents (vaccinations, veterinary visits, etc.), I'll be able to give you more accurate answers.",
+    "consultingAbout": "Consulting about: {{petName}}",
+    "error": "Error sending message. Please try again.",
+    "errorResponse": "Error getting response"
+  },
+  "modals": {
+    "delete": {
+      "title": "Are you sure?",
+      "content": "Are you sure you want to delete this pet?",
+      "confirm": "Confirm",
+      "cancel": "Cancel"
+    },
+    "close": "Close modal"
+  },
+  "errors": {
+    "generic": "An error occurred",
+    "network": "Connection error",
+    "unauthorized": "Unauthorized"
+  },
+  "gallery": {
+    "title": "Photo Gallery",
+    "upload": "Upload Images",
+    "uploadTitle": "Upload images",
+    "empty": "No photos in gallery",
+    "deleteConfirm": "Are you sure you want to delete this photo?",
+    "deleteConfirmTitle": "Delete photo",
+    "deleteConfirmContent": "Are you sure you want to delete this photo? This action cannot be undone.",
+    "deleteButton": "Delete",
+    "loading": "Loading photos...",
+    "uploading": "Uploading images...",
+    "uploadingText": "Uploading...",
+    "uploadButton": "Upload",
+    "selectAtLeastOne": "Select at least one image",
+    "maxFiveImages": "Maximum 5 images per upload",
+    "uploadSuccess": "Images uploaded successfully 🎉",
+    "uploadError": "Error uploading images ❌",
+    "fileTooLarge": "File is too large. Maximum size is 5MB.",
+    "invalidFormat": "Invalid format. Only JPG, PNG, GIF, WEBP are allowed",
+    "dragDrop": "Drag your images here",
+    "dragDropClick": "or click to select them",
+    "noPhotos": "No photos loaded 📁",
+    "loadingImage": "Loading image...",
+    "deletePhoto": "Delete photo",
+    "deletePhotoError": "This image does not have a valid ID ❌",
+    "deletePhotoSuccess": "Image deleted successfully 🗑️",
+    "deletePhotoErrorMsg": "Could not delete the image ❌",
+    "deletingImage": "Deleting image..."
+  },
+  "documents": {
+    "title": "Documents",
+    "upload": "Upload PDF Document",
+    "uploadTitle": "Upload PDF document",
+    "empty": "No documents",
+    "view": "View Document",
+    "category": "Category",
+    "categories": {
+      "vaccination": "Vaccination",
+      "vet_visit": "Veterinary Visit",
+      "lab_result": "Lab Result",
+      "general": "General"
+    },
+    "maxSize": "Max size: 10MB",
+    "format": "Format: PDF",
+    "mustContainText": "PDF must contain text",
+    "selectCategory": "Select a category",
+    "categoryLabel": "Document category",
+    "fileTooLarge": "File is too large. Maximum size is 10MB.",
+    "invalidFormat": "Invalid format. Only PDF files are allowed.",
+    "emptyFile": "The PDF file is empty.",
+    "onlyPdf": "Only PDF files are allowed",
+    "oneAtATime": "You can only upload one PDF at a time",
+    "selectFile": "Please select a PDF file",
+    "selectCategoryError": "Please select a category",
+    "uploading": "Uploading document...",
+    "uploadingText": "Uploading...",
+    "uploadButton": "Upload document",
+    "uploadSuccess": "Document uploaded successfully 📄",
+    "uploadError": "Error uploading document ❌",
+    "dragDrop": "Drag your PDF here",
+    "dragDropClick": "or click to select it",
+    "noDocuments": "No documents uploaded 📁",
+    "openInNewTab": "Open in new tab",
+    "noCategory": "No category"
+  },
+  "toasts": {
+    "pet": {
+      "created": "Pet created successfully ✔️",
+      "updated": "Pet updated successfully ✔️",
+      "deleted": "Pet deleted successfully 🗑️",
+      "photoUpdated": "Profile photo updated successfully 📸",
+      "documentUploaded": "Document uploaded successfully 📄",
+      "error": {
+        "create": "Error creating pet",
+        "update": "Error updating pet",
+        "delete": "Error deleting pet",
+        "fetch": "Error fetching pets",
+        "photo": "Error uploading photo"
+      }
+    },
+    "vaccination": {
+      "created": "Vaccination registered successfully ✔️",
+      "updated": "Vaccination updated successfully ✔️",
+      "deleted": "Vaccination deleted successfully ✔️",
+      "error": {
+        "create": "Error creating vaccination",
+        "update": "Error updating vaccination",
+        "delete": "Error deleting vaccination",
+        "fetch": "Error fetching vaccinations"
+      }
+    },
+    "deworming": {
+      "created": "Deworming registered successfully ✔️",
+      "updated": "Deworming updated successfully ✔️",
+      "deleted": "Deworming deleted successfully ✔️",
+      "error": {
+        "create": "Error creating deworming",
+        "update": "Error updating deworming",
+        "delete": "Error deleting deworming",
+        "fetch": "Error fetching dewormings"
+      }
+    },
+    "vetVisit": {
+      "created": "Veterinary visit registered successfully ✔️",
+      "updated": "Veterinary visit updated successfully ✔️",
+      "deleted": "Veterinary visit deleted successfully ✔️",
+      "error": {
+        "create": "Error creating veterinary visit",
+        "update": "Error updating veterinary visit",
+        "delete": "Error deleting veterinary visit",
+        "fetch": "Error fetching veterinary visits"
+      }
+    },
+    "reminder": {
+      "created": "Reminder created successfully ✔️",
+      "updated": "Reminder updated successfully ✔️",
+      "deleted": "Reminder deleted successfully ✔️",
+      "error": {
+        "create": "Error creating reminder",
+        "update": "Error updating reminder",
+        "delete": "Error deleting reminder",
+        "fetch": "Error fetching reminders"
+      }
+    },
+    "meal": {
+      "created": "Nutrition record created successfully ✔️",
+      "updated": "Nutrition record updated successfully ✔️",
+      "deleted": "Nutrition record deleted successfully ✔️",
+      "error": {
+        "create": "Error creating nutrition record",
+        "update": "Error updating nutrition record",
+        "delete": "Error deleting nutrition record",
+        "fetch": "Error fetching nutrition records"
+      }
+    },
+    "auth": {
+      "loginSuccess": "Session started successfully ✔️",
+      "logoutSuccess": "Session closed successfully 👋",
+      "emailVerified": "Email verified successfully ✔️",
+      "passwordReset": "Password updated successfully 🎉",
+      "passwordMismatch": "Passwords do not match",
+      "passwordResetRequested": "Check your email, we sent a link!",
+      "passwordResetError": "Error updating password",
+      "passwordResetRequestError": "Error processing request",
+      "error": {
+        "login": "Error signing in",
+        "register": "Error registering",
+        "logout": "Error signing out"
+      }
+    }
+  },
+  "home": {
+    "hero": {
+      "title": "Stay on Top of Your Pets’ Well-Being",
+      "subtitle": "The All-In-One Platform for Your Pets’ Health and Care",
+      "description": "Complete profiles, record vaccinations and veterinary visits, control their nutrition and receive automatic reminders to never forget an important medical or nutritional event.",
+      "cta": "Start Free",
+      "learnMore": "Learn More",
+      "stats": {
+        "pets": "Registered pets",
+        "users": "Active users",
+        "reminders": "Reminders sent"
+      }
+    },
+    "features": {
+      "badge": "Main Features",
+      "title": "Centralized management of your pets' health",
+      "subtitle": "A mobile-first platform with an intuitive interface for your pets' health control.",
+      "items": {
+        "profiles": {
+          "title": "Complete Pet Profiles",
+          "description": "Create and manage profiles with name, species, breed, age, weight and photo. Edit or delete information when needed."
+        },
+        "health": {
+          "title": "Comprehensive Health Records",
+          "description": "Document vaccinations, deworming and veterinary visits. Attach images and medical documents."
+        },
+        "nutrition": {
+          "title": "Nutrition Tracking",
+          "description": "Record diets, meal times and portions. Set reminders to maintain healthy nutrition."
+        },
+        "reminders": {
+          "title": "Automatic Reminders",
+          "description": "Email alerts and in-app notifications for vaccines, medications, appointments and meal times."
+        },
+        "calendar": {
+          "title": "Event Calendar",
+          "description": "View all appointments, vaccines and upcoming events in an organized and easy-to-consult calendar."
+        },
+        "dashboard": {
+          "title": "Intuitive Dashboard",
+          "description": "Overview with health status summary, upcoming vaccines and active alerts for all your pets."
+        },
+        "security": {
+          "title": "Security and Privacy",
+          "description": "Password encryption, data validation and complete protection of your pets' information."
+        },
+        "history": {
+          "title": "Complete Medical History",
+          "description": "Instant access to complete medical history with all health records organized."
+        }
+      }
+    },
+    "about": {
+      "badge": "About Us",
+      "title": "Manage your pets' health and wellness from one place",
+      "description1": "Pet Health Tracker was born to solve pet owners' need for centralized control over their companions' health and wellness. We developed a complete digital solution that simplifies vaccination, nutrition, veterinary appointments and reminder records.",
+      "description2": "Our platform is built with robust security standards, scalable architecture and a mobile-first user experience that prioritizes simplicity and efficiency in every interaction.",
+      "features": {
+        "devices": {
+          "title": "We're on all your devices",
+          "description": "Intuitive design for your smartphone, tablet, laptop or desktop computer"
+        },
+        "performance": {
+          "title": "Superior Performance",
+          "description": "Agile response even with multiple records and pet profiles"
+        },
+        "scalability": {
+          "title": "Guaranteed Scalability",
+          "description": "Ready to integrate wearables and physical activity tracking"
+        }
+      },
+      "cta": {
+        "title": "Start managing your pets' health today",
+        "description": "Sign up for free and create complete profiles for your pets. Start recording vaccines, controlling their nutrition and receiving automatic reminders. Join thousands of owners who already trust Pet Health Tracker.",
+        "button": "Create Free Account",
+        "users": "More than 8,500 active users trust us"
+      }
+    },
+    "footer": {
+      "description": "The leading platform in pet health management. We care for what you love most.",
+      "product": {
+        "title": "Product",
+        "features": "Features",
+        "pricing": "Pricing",
+        "demo": "Demo",
+        "updates": "Updates"
+      },
+      "company": {
+        "title": "Company",
+        "about": "About Us",
+        "blog": "Blog",
+        "careers": "Careers",
+        "contact": "Contact"
+      },
+      "legal": {
+        "title": "Legal",
+        "privacy": "Privacy",
+        "terms": "Terms of Use",
+        "cookies": "Cookies",
+        "licenses": "Licenses"
+      },
+      "copyright": "© 2025 Pet Health Tracker. All rights reserved."
+    }
+  }
+}

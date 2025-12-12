@@ -1,4 +1,5 @@
 import './ProfilePet.scss';
+import { useTranslation } from 'react-i18next';
 import type { Pet } from '../../../../models/pet.model';
 import { useRef, useState } from 'react';
 import { FaEdit, FaSpinner } from 'react-icons/fa';
@@ -11,6 +12,9 @@ import { Button } from '../../../../components/Button/Button';
 import { useGalleryModalStore } from '../../../../store/gallery.store';
 import { getPetPhotos } from '../../../../services/pet.service';
 import { formatPetAge } from '../../../../utils/dateUtils';
+import { translateHealthStatus } from '../../../../utils/healthStatusTranslations';
+import { getSexLabel } from '../../../../utils/sexUtils';
+import { getSpeciesLabel } from '../../../../utils/speciesUtils';
 import toast from 'react-hot-toast';
 
 interface ProfilePetProps {
@@ -25,6 +29,7 @@ export const ProfilePet = ({
   pet,
   healthStatusData: propHealthStatusData,
 }: ProfilePetProps) => {
+  const { t } = useTranslation();
   const photoUrl = pet.photoUrl || '/default-pet.png';
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
@@ -37,6 +42,8 @@ export const ProfilePet = ({
   const { status, loading: healthLoading } =
     propHealthStatusData || hookHealthStatus;
 
+  const translatedStatus = translateHealthStatus(status);
+
   const handleEditClick = () => {
     fileInputRef.current?.click();
   };
@@ -48,7 +55,7 @@ export const ProfilePet = ({
     // Validar tamaño (5MB = 5 * 1024 * 1024 bytes)
     const maxSize = 5 * 1024 * 1024;
     if (file.size > maxSize) {
-      alert('El archivo es demasiado grande. El tamaño máximo es 5MB.');
+      toast.error(t('gallery.fileTooLarge'));
       e.target.value = ''; // Limpiar el input
       return;
     }
@@ -62,7 +69,7 @@ export const ProfilePet = ({
       'image/webp',
     ];
     if (!allowedTypes.includes(file.type)) {
-      alert('Formato no válido. Solo se permiten: JPG, PNG, GIF, WEBP');
+      toast.error(t('gallery.invalidFormat'));
       e.target.value = '';
       return;
     }
@@ -98,7 +105,7 @@ export const ProfilePet = ({
           className="profile-avatar__edit-btn"
           onClick={handleEditClick}
           disabled={uploading || loading}
-          aria-label="Editar foto de perfil"
+          aria-label={t('pet.details.uploadPhoto')}
         >
           {uploading || loading ? (
             <FaSpinner className="spinner" />
@@ -112,7 +119,7 @@ export const ProfilePet = ({
           accept="image/jpeg,image/jpg,image/png,image/gif,image/webp"
           onChange={handleFileChange}
           style={{ display: 'none' }}
-          aria-label="Seleccionar foto de perfil"
+          aria-label={t('pet.details.uploadPhoto')}
         />
       </div>
       <div className="profile-pet-card__actions">
@@ -122,7 +129,7 @@ export const ProfilePet = ({
           onClick={() => openUpload(pet.id)}
         >
           <Upload size={18} style={{ marginRight: '1rem' }} />
-          <span>Subir imágenes</span>
+          <span>{t('pet.details.uploadGallery')}</span>
         </Button>
 
         <Button
@@ -131,45 +138,50 @@ export const ProfilePet = ({
           onClick={async () => {
             const photos = await getPetPhotos(pet.id);
             if (!photos || photos.length === 0) {
-              toast.error('No hay fotos en la galería 📁');
+              toast.error(t('gallery.empty'));
               return;
             }
             openView(pet.id, photos);
           }}
         >
           <Images size={18} style={{ marginRight: '1rem' }} />
-          <span>Ver galería</span>
+          <span>{t('pet.details.viewGallery')}</span>
         </Button>
       </div>
       <div className="profile-info">
         <h2>{pet.name}</h2>
         <p>
-          {pet.species} • {pet.breed}
+          {getSpeciesLabel(pet.species)} • {pet.breed}
         </p>
         <div className="profile-stats">
           <div>
-            <strong>Edad:</strong> <p>{formatPetAge(pet.ageYears)}</p>
+            <strong>{t('pet.card.age')}:</strong>{' '}
+            <p>{formatPetAge(pet.ageYears)}</p>
           </div>
           <div>
-            <strong>Peso:</strong> <p>{pet.weightKg} kg</p>
+            <strong>{t('common.weight')}:</strong>{' '}
+            <p>
+              {pet.weightKg} {t('common.kg')}
+            </p>
           </div>
           <div>
-            <strong>Sexo:</strong> <p>{pet.sex}</p>
+            <strong>{t('pet.form.sex')}:</strong>{' '}
+            <p>{getSexLabel(pet.sex) || '—'}</p>
           </div>
           <div>
-            <strong>Estado:</strong>
+            <strong>{t('pet.card.healthStatus')}:</strong>
             <span
               className={`health-badge health-badge--${
                 healthLoading
                   ? 'loading'
-                  : status === 'Saludable'
+                  : status === 'healthy'
                     ? 'saludable'
-                    : status === 'Atención Requerida'
+                    : status === 'attention_required'
                       ? 'atencion-requerida'
                       : 'revision-necesaria'
               }`}
             >
-              {healthLoading ? 'Cargando...' : status}
+              {healthLoading ? t('common.loading') : translatedStatus}
             </span>
           </div>
         </div>

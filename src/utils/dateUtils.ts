@@ -1,7 +1,10 @@
+import i18n from '../i18n/config';
+
 /**
  * Formatea una fecha ISO string a formato "Mes Año" en español
  * @param dateString - Fecha en formato ISO string (ej: "2024-01-15T00:00:00.000Z")
  * @returns String formateado (ej: "Enero 2024")
+ * @deprecated Use formatDateToLocalizedMonthYear instead for i18n support
  */
 export const formatDateToSpanishMonthYear = (dateString: string): string => {
   const date = new Date(dateString);
@@ -20,6 +23,37 @@ export const formatDateToSpanishMonthYear = (dateString: string): string => {
     'Diciembre',
   ];
   return `${months[date.getMonth()]} ${date.getFullYear()}`;
+};
+
+/**
+ * Formatea una fecha ISO string a formato "Mes Año" usando i18n
+ * @param dateString - Fecha en formato ISO string (ej: "2024-01-15T00:00:00.000Z")
+ * @returns String formateado según el idioma actual (ej: "Enero 2024" o "January 2024")
+ */
+export const formatDateToLocalizedMonthYear = (dateString: string): string => {
+  const date = new Date(dateString);
+  const monthIndex = date.getMonth();
+  const year = date.getFullYear();
+
+  const monthKeys = [
+    'january',
+    'february',
+    'march',
+    'april',
+    'may',
+    'june',
+    'july',
+    'august',
+    'september',
+    'october',
+    'november',
+    'december',
+  ];
+
+  const monthKey = monthKeys[monthIndex];
+  const month = i18n.t(`calendar.months.${monthKey}`);
+
+  return `${month} ${year}`;
 };
 
 /**
@@ -42,14 +76,15 @@ export const parseDateLocal = (dateString: string): Date => {
 };
 
 /**
- * Formatea una fecha a string legible en español (solo fecha)
+ * Formatea una fecha a string legible según el idioma actual (solo fecha)
  * Evita cambios de timezone usando parseDateLocal
  * @param dateString - Fecha en formato ISO string o date string
- * @returns String formateado (ej: "15 de enero de 2025")
+ * @returns String formateado según el idioma actual (ej: "15 de enero de 2025" o "January 15, 2025")
  */
 export const formatDateLocal = (dateString: string): string => {
   const date = parseDateLocal(dateString);
-  return date.toLocaleDateString('es-ES', {
+  const locale = i18n.language === 'en' ? 'en-US' : 'es-ES';
+  return date.toLocaleDateString(locale, {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
@@ -57,13 +92,14 @@ export const formatDateLocal = (dateString: string): string => {
 };
 
 /**
- * Formatea una fecha con hora a string legible en español
+ * Formatea una fecha con hora a string legible según el idioma actual
  * @param dateString - Fecha en formato ISO string
- * @returns String formateado (ej: "15 de enero de 2025, 14:30")
+ * @returns String formateado según el idioma actual (ej: "15 de enero de 2025, 14:30" o "January 15, 2025, 2:30 PM")
  */
 export const formatDateTimeLocal = (dateString: string): string => {
   const date = new Date(dateString);
-  return date.toLocaleDateString('es-ES', {
+  const locale = i18n.language === 'en' ? 'en-US' : 'es-ES';
+  return date.toLocaleDateString(locale, {
     year: 'numeric',
     month: 'long',
     day: 'numeric',

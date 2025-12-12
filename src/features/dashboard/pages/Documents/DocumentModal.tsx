@@ -9,8 +9,10 @@ import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { Button } from '../../../../components/Button/Button';
 import { Select, type SelectOption } from '../../../../components/Select';
+import { useTranslation } from 'react-i18next';
 
 export const DocumentModal = () => {
+  const { t } = useTranslation();
   const { isOpen, close, petId, mode, documents, current } =
     useDocumentModalStore();
 
@@ -20,10 +22,10 @@ export const DocumentModal = () => {
   const [isDragging, setIsDragging] = useState(false);
 
   const documentCategoryOptions: SelectOption[] = [
-    { value: 'vaccination', label: 'Vacunación' },
-    { value: 'vet_visit', label: 'Visita Veterinaria' },
-    { value: 'lab_result', label: 'Resultado de Laboratorio' },
-    { value: 'general', label: 'General' },
+    { value: 'vaccination', label: t('documents.categories.vaccination') },
+    { value: 'vet_visit', label: t('documents.categories.vet_visit') },
+    { value: 'lab_result', label: t('documents.categories.lab_result') },
+    { value: 'general', label: t('documents.categories.general') },
   ];
 
   if (!isOpen) return null;
@@ -35,21 +37,21 @@ export const DocumentModal = () => {
     // Validar tamaño (10MB = 10 * 1024 * 1024 bytes)
     const maxSize = 10 * 1024 * 1024;
     if (selectedFile.size > maxSize) {
-      toast.error('El archivo es demasiado grande. El tamaño máximo es 10MB.');
+      toast.error(t('documents.fileTooLarge'));
       event.target.value = '';
       return;
     }
 
     // Validar formato PDF
     if (selectedFile.type !== 'application/pdf') {
-      toast.error('Formato no válido. Solo se permiten archivos PDF.');
+      toast.error(t('documents.invalidFormat'));
       event.target.value = '';
       return;
     }
 
     // Validar que el PDF tenga contenido (básico: que no esté vacío)
     if (selectedFile.size === 0) {
-      toast.error('El archivo PDF está vacío.');
+      toast.error(t('documents.emptyFile'));
       event.target.value = '';
       return;
     }
@@ -65,12 +67,12 @@ export const DocumentModal = () => {
     const pdfs = dropped.filter((f) => f.type === 'application/pdf');
 
     if (pdfs.length === 0) {
-      toast.error('Solo se permiten archivos PDF');
+      toast.error(t('documents.onlyPdf'));
       return;
     }
 
     if (pdfs.length > 1) {
-      toast.error('Solo puedes subir un PDF a la vez');
+      toast.error(t('documents.oneAtATime'));
       return;
     }
 
@@ -79,7 +81,7 @@ export const DocumentModal = () => {
     // Validar tamaño
     const maxSize = 10 * 1024 * 1024;
     if (selectedFile.size > maxSize) {
-      toast.error('El archivo es demasiado grande. El tamaño máximo es 10MB.');
+      toast.error(t('documents.fileTooLarge'));
       return;
     }
 
@@ -90,16 +92,16 @@ export const DocumentModal = () => {
     if (!petId) return;
 
     if (!file) {
-      toast.error('Por favor selecciona un archivo PDF');
+      toast.error(t('documents.selectFile'));
       return;
     }
 
     if (!documentCategory) {
-      toast.error('Por favor selecciona una categoría');
+      toast.error(t('documents.selectCategoryError'));
       return;
     }
 
-    const toastId = toast.loading('Subiendo documento...');
+    const toastId = toast.loading(t('documents.uploading'));
 
     try {
       setLoading(true);
@@ -107,7 +109,7 @@ export const DocumentModal = () => {
       await uploadPetDocumentService(petId, file, documentCategory);
       const updatedDocuments = await getPetDocuments(petId);
 
-      toast.success('Documento subido correctamente 📄', { id: toastId });
+      toast.success(t('documents.uploadSuccess'), { id: toastId });
 
       // Resetear estado
       setFile(null);
@@ -125,7 +127,7 @@ export const DocumentModal = () => {
       }
     } catch (error) {
       console.error(error);
-      toast.error('Error al subir el documento ❌', { id: toastId });
+      toast.error(t('documents.uploadError'), { id: toastId });
     } finally {
       setLoading(false);
     }
@@ -145,7 +147,7 @@ export const DocumentModal = () => {
     const option = documentCategoryOptions.find(
       (opt) => opt.value === category,
     );
-    return option?.label || category || 'Sin categoría';
+    return option?.label || category || t('documents.noCategory');
   };
 
   const goPrev = () => {
@@ -180,11 +182,13 @@ export const DocumentModal = () => {
         {/* UPLOAD MODE */}
         {mode === 'upload' && (
           <>
-            <h2 className="document-modal-title">Subir documento PDF</h2>
+            <h2 className="document-modal-title">
+              {t('documents.uploadTitle')}
+            </h2>
 
             <p className="document-modal-info">
-              Tamaño máximo: 10MB • Formato: PDF • El documento debe contener
-              texto
+              {t('documents.maxSize')} • {t('documents.format')} •{' '}
+              {t('documents.mustContainText')}
             </p>
 
             {/* SELECT DE CATEGORÍA */}
@@ -193,8 +197,8 @@ export const DocumentModal = () => {
                 value={documentCategory}
                 onChange={setDocumentCategory}
                 options={documentCategoryOptions}
-                placeholder="Selecciona categoría"
-                label="Categoría del documento"
+                placeholder={t('documents.selectCategory')}
+                label={t('documents.categoryLabel')}
               />
             </div>
 
@@ -230,8 +234,8 @@ export const DocumentModal = () => {
               ) : (
                 <>
                   <FileText size={48} className="document-dropzone-icon" />
-                  <p>Arrastra tu PDF aquí</p>
-                  <span>o haz clic para seleccionarlo</span>
+                  <p>{t('documents.dragDrop')}</p>
+                  <span>{t('documents.dragDropClick')}</span>
 
                   <input
                     type="file"
@@ -249,7 +253,9 @@ export const DocumentModal = () => {
               disabled={loading || !file || !documentCategory}
               className="document-modal-submit"
             >
-              {loading ? 'Subiendo...' : 'Subir documento'}
+              {loading
+                ? t('documents.uploadingText')
+                : t('documents.uploadButton')}
             </Button>
           </>
         )}
@@ -260,7 +266,7 @@ export const DocumentModal = () => {
             {documents.length === 0 ? (
               <div className="document-modal-empty">
                 <FileText size={64} className="document-modal-empty-icon" />
-                <p>No hay documentos subidos 📁</p>
+                <p>{t('documents.noDocuments')}</p>
               </div>
             ) : (
               <>
@@ -326,7 +332,7 @@ export const DocumentModal = () => {
                       className="document-viewer-download"
                     >
                       <FileText size={16} />
-                      Abrir en nueva pestaña
+                      {t('documents.openInNewTab')}
                     </a>
                   </div>
                 </div>

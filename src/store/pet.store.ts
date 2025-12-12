@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { toast } from 'react-hot-toast';
+import i18n from '../i18n/config';
 import type { Pet } from '../models/pet.model';
 import type { PetFormData } from '../adapters/pet.adapter';
 import {
@@ -136,7 +137,7 @@ export const usePetStore = create<PetState>((set, get) => ({
       error: null,
     }));
 
-    toast.success('Mascota creada correctamente ✔️');
+    toast.success(i18n.t('toasts.pet.created'));
     return true;
   },
 
@@ -198,7 +199,7 @@ export const usePetStore = create<PetState>((set, get) => ({
     const { error } = await callApi(() => deletePetService(id));
 
     if (error) {
-      const message = error || 'Error al eliminar la mascota';
+      const message = error || i18n.t('toasts.pet.error.delete');
       toast.error(message);
       set({
         error: message,
@@ -213,7 +214,7 @@ export const usePetStore = create<PetState>((set, get) => ({
       error: null,
     }));
 
-    toast.success('Mascota eliminada correctamente 🗑️');
+    toast.success(i18n.t('toasts.pet.deleted'));
   },
 
   uploadPetPhoto: async (petId: string, file: File) => {
@@ -224,7 +225,7 @@ export const usePetStore = create<PetState>((set, get) => ({
     );
 
     if (error || !uploadResponse) {
-      const message = error || 'Error al subir la foto';
+      const message = error || i18n.t('toasts.pet.error.photo');
       toast.error(message);
       set({
         error: message,
@@ -252,7 +253,7 @@ export const usePetStore = create<PetState>((set, get) => ({
       };
     });
 
-    toast.success('Foto de perfil actualizada correctamente 📸');
+    toast.success(i18n.t('toasts.pet.photoUpdated'));
   },
 
   updatePet: async (id, petData) => {
@@ -277,7 +278,7 @@ export const usePetStore = create<PetState>((set, get) => ({
       updatePetService(id, petData),
     );
     if (error || !petResponse) {
-      const message = error || 'Error al actualizar la mascota';
+      const message = error || i18n.t('toasts.pet.error.update');
       toast.error(message);
       set({ error: message, loading: false });
       return;
@@ -289,7 +290,7 @@ export const usePetStore = create<PetState>((set, get) => ({
       loading: false,
       error: null,
     }));
-    toast.success('Mascota actualizada correctamente ✔️');
+    toast.success(i18n.t('toasts.pet.updated'));
   },
 
   getPetHealthStatus: async (petId: string) => {
@@ -318,7 +319,7 @@ export const usePetStore = create<PetState>((set, get) => ({
     );
 
     if (error || !uploadResponse) {
-      const message = error || 'Error al subir el documento';
+      const message = error || i18n.t('documents.uploadError');
       toast.error(message);
       set({
         error: message,
@@ -348,7 +349,7 @@ export const usePetStore = create<PetState>((set, get) => ({
       error: null,
     }));
 
-    toast.success('Documento subido correctamente 📄');
+    toast.success(i18n.t('toasts.pet.documentUploaded'));
   },
 
   fetchPetDocuments: async (petId: string, category?: string | null) => {

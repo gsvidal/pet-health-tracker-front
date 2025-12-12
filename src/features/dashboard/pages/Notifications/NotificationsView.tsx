@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { RefreshCw } from 'lucide-react';
 import {
   Syringe,
@@ -20,6 +21,7 @@ const iconMap = {
 };
 
 export const NotificationsView = () => {
+  const { t } = useTranslation();
   const { notifications, fetchNotifications, processDueReminders, loading } =
     useNotificationStore();
   const [isProcessing, setIsProcessing] = useState(false);
@@ -61,7 +63,7 @@ export const NotificationsView = () => {
     <section className="section section--notifications">
       <div className="container container--notifications">
         <div className="notifications-view__header">
-          <h1>Notificaciones</h1>
+          <h1>{t('notifications.title')}</h1>
           <Button
             variant="outline"
             size="sm"
@@ -76,29 +78,18 @@ export const NotificationsView = () => {
                 animation: isProcessing ? 'spin 1s linear infinite' : 'none',
               }}
             />
-            {isProcessing ? 'Procesando...' : 'Procesar Recordatorios'}
+            {isProcessing ? t('common.loading') : t('reminders.process')}
           </Button>
         </div>
 
         <div className="notifications-view__list">
           {loading || isProcessing ? (
             <div className="notifications-view__loader">
-              <Loader
-                text={
-                  isProcessing
-                    ? 'Procesando recordatorios...'
-                    : 'Cargando notificaciones...'
-                }
-                size="large"
-              />
+              <Loader text={t('common.loading')} size="large" />
             </div>
           ) : notifications.length === 0 ? (
             <div className="notifications-view__empty">
-              <p>No hay notificaciones</p>
-              <p className="notifications-view__empty-description">
-                Las notificaciones se generan cuando los recordatorios vencen y
-                se procesan.
-              </p>
+              <p>{t('notifications.empty')}</p>
             </div>
           ) : (
             notifications.map((notification) => {

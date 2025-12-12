@@ -1,4 +1,5 @@
 import type { Pet } from '../models/pet.model';
+import { normalizeSexValue } from '../utils/sexUtils';
 
 /**
  * Schema del backend (snake_case)
@@ -137,7 +138,11 @@ export function adaptPetToPetRequest(pet: PetFormData): PetRequest {
   }
 
   if (pet.sex !== undefined) {
-    request.sex = pet.sex && pet.sex.trim() !== '' ? pet.sex : null;
+    // Normalizar el valor de sex al formato que espera el backend (Macho, Hembra, Otro)
+    const normalizedSex = pet.sex && pet.sex.trim() !== '' 
+      ? normalizeSexValue(pet.sex) 
+      : null;
+    request.sex = normalizedSex;
   }
 
   if (pet.photoUrl !== undefined) {

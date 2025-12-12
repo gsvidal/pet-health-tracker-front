@@ -1,10 +1,12 @@
 import { FaEnvelope, FaLock, FaGoogle, FaEye } from 'react-icons/fa';
 import { GrFormViewHide } from 'react-icons/gr';
+import { useTranslation } from 'react-i18next';
 import { useLogin } from '../../hooks/useLogin';
 import './LoginForm.scss';
 import { useState } from 'react';
 
 export const LoginForm = () => {
+  const { t } = useTranslation();
   const {
     register,
     handleSubmit,
@@ -19,8 +21,8 @@ export const LoginForm = () => {
   return (
     <div className="login-container">
       <div className={`login-card ${loading ? 'loading' : ''}`}>
-        <h2>Iniciar Sesión</h2>
-        <p className="subtitle">Accedé al panel y gestiona todo fácilmente</p>
+        <h2>{t('auth.login.title')}</h2>
+        <p className="subtitle">{t('auth.login.subtitle')}</p>
 
         <form onSubmit={handleSubmit(onSubmit)} className="login-form">
           {/* Email */}
@@ -28,13 +30,13 @@ export const LoginForm = () => {
             <FaEnvelope className="input-icon" />
             <input
               type="email"
-              placeholder="Correo electrónico"
-              aria-label="Correo electrónico"
+              placeholder={t('auth.login.email')}
+              aria-label={t('auth.login.email')}
               {...register('email', {
-                required: 'El correo es obligatorio',
+                required: t('auth.validation.emailRequired'),
                 pattern: {
                   value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                  message: 'Correo inválido',
+                  message: t('auth.validation.emailInvalid'),
                 },
               })}
             />
@@ -48,13 +50,13 @@ export const LoginForm = () => {
             <FaLock className="input-icon" />
             <input
               type={showPassword ? 'text' : 'password'}
-              placeholder="Contraseña"
-              aria-label="Contraseña"
+              placeholder={t('auth.login.password')}
+              aria-label={t('auth.login.password')}
               {...register('password', {
-                required: 'La contraseña es obligatoria',
+                required: t('auth.validation.passwordRequired'),
                 minLength: {
                   value: 6,
-                  message: 'Debe tener al menos 6 caracteres',
+                  message: t('auth.validation.passwordMinLength'),
                 },
               })}
             />
@@ -71,26 +73,28 @@ export const LoginForm = () => {
 
           {/* Enlace Recover Password */}
           <p className="forgot-password">
-            <a href="/request-password-reset">¿Olvidaste la contraseña?</a>
+            <a href="/request-password-reset">
+              {t('auth.login.forgotPassword')}
+            </a>
           </p>
 
           {/* Errores y éxito */}
           {serverError && <p className="error server">{serverError}</p>}
-          {success && <p className="success">Ingreso exitoso</p>}
+          {success && <p className="success">{t('common.successfulLogin')}</p>}
 
           {/* Botón Login */}
           <button type="submit" className="btn-login" disabled={loading}>
             {loading ? (
               <>
-                <FaLock className="locked-icon" /> Ingresando...
+                <FaLock className="locked-icon" /> {t('common.signingIn')}
               </>
             ) : (
-              'Ingresar'
+              t('auth.login.submit')
             )}
           </button>
 
           {/* Divider */}
-          <div className="separator">o continúa con</div>
+          <div className="separator">{t('common.orContinueWith')}</div>
 
           {/* Login con Google */}
           <button
@@ -98,12 +102,13 @@ export const LoginForm = () => {
             className="btn-google"
             onClick={() => alert('Google Login próximamente')}
           >
-            <FaGoogle /> Ingresar con Google
+            <FaGoogle /> {t('common.signInWithGoogle')}
           </button>
 
           {/* Link para registrarse */}
           <p className="register-link">
-            ¿No tienes cuenta? <a href="/register">Regístrate</a>
+            {t('auth.login.noAccount')}{' '}
+            <a href="/register">{t('auth.login.register')}</a>
           </p>
         </form>
       </div>

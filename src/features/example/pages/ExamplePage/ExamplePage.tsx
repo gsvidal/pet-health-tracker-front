@@ -53,7 +53,7 @@ export const ExamplePage = () => {
       content: 'Esta acción no se puede deshacer',
       variant: 'confirm',
       onConfirm: () => {
-        console.log('Confirmado');
+        // console.log('Confirmado');
       },
       confirmLabel: 'Confirmar',
       cancelLabel: 'Cancelar',

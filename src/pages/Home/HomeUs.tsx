@@ -4,8 +4,10 @@ import './Home.scss';
 import { Button } from '../../components/Button/Button';
 import { useNavigate } from 'react-router-dom';
 import { PUBLIC_ROUTES } from '../../config/routes';
+import { useTranslation } from 'react-i18next';
 
 export const HomeUs = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   return (
     <>
@@ -19,53 +21,31 @@ export const HomeUs = () => {
             />
           </div>
           <div className="content">
-            <div className="badge">Sobre Nosotros</div>
-            <h2 className="content-title">
-              Gestiona la salud y bienestar de tus mascotas desde un solo lugar
-            </h2>
-            <p>
-              Pet Health Tracker nació para resolver la necesidad de los dueños
-              de mascotas de tener un control centralizado sobre la salud y
-              bienestar de sus compañeros. Desarrollamos una solución digital
-              completa que simplifica el registro de vacunación, alimentación,
-              citas veterinarias y recordatorios.
-            </p>
-            <p>
-              Nuestra plataforma está construida con estándares de seguridad
-              robustos, arquitectura escalable y una experiencia de usuario
-              mobile-first que prioriza la simplicidad y la eficiencia en cada
-              interacción.
-            </p>
+            <div className="badge">{t('home.about.badge')}</div>
+            <h2 className="content-title">{t('home.about.title')}</h2>
+            <p>{t('home.about.description1')}</p>
+            <p>{t('home.about.description2')}</p>
             <ul className="home__us-feats">
               <li className="home__us-feat">
                 <span className="home__us-icon">
                   <CircleCheck color="#be185d" />
                 </span>
-                <strong>Estamos en todos tus dispositivos</strong>
-                <p>
-                  Diseño intuito para tu smartphone, tablet, laptop o
-                  computadora de escritorio
-                </p>
+                <strong>{t('home.about.features.devices.title')}</strong>
+                <p>{t('home.about.features.devices.description')}</p>
               </li>
               <li className="home__us-feat">
                 <span className="home__us-icon">
                   <CircleCheck color="#be185d" />
                 </span>
-                <strong>Performance Superior</strong>
-                <p>
-                  Respuesta ágil incluso con múltiples registros y perfiles de
-                  mascotas
-                </p>
+                <strong>{t('home.about.features.performance.title')}</strong>
+                <p>{t('home.about.features.performance.description')}</p>
               </li>
               <li className="home__us-feat">
                 <span className="home__us-icon">
                   <CircleCheck color="#be185d" />
                 </span>
-                <strong>Escalabilidad Garantizada</strong>
-                <p>
-                  Preparado para integrar wearables y seguimiento de actividad
-                  física
-                </p>
+                <strong>{t('home.about.features.scalability.title')}</strong>
+                <p>{t('home.about.features.scalability.description')}</p>
               </li>
             </ul>
           </div>
@@ -74,21 +54,14 @@ export const HomeUs = () => {
       <section className="section-2">
         <div className="section-container container">
           <div className="content-2">
-            <h2 className="content-title-2">
-              Comienza a gestionar la salud de tus mascotas hoy
-            </h2>
-            <p>
-              Regístrate gratis y crea perfiles completos para tus mascotas.
-              Empieza a registrar vacunas, controlar su alimentación y recibir
-              recordatorios automáticos. Únete a miles de dueños que ya confían
-              en Pet Health Tracker.
-            </p>
+            <h2 className="content-title-2">{t('home.about.cta.title')}</h2>
+            <p>{t('home.about.cta.description')}</p>
             <div className="buttons-container">
               <Button
                 variant="secondary"
                 onClick={() => navigate(PUBLIC_ROUTES.REGISTER)}
               >
-                Crear Cuenta Gratuita
+                {t('home.about.cta.button')}
                 <ArrowRight style={{ marginLeft: 8, width: 20, height: 20 }} />
               </Button>
               {/* <Button>Explorar Demo</Button> */}
@@ -98,9 +71,7 @@ export const HomeUs = () => {
               <span className="avatar avatar--2"></span>
               <span className="avatar avatar--3"></span>
               <span className="avatar avatar--4"></span>
-              <span className="avatars-text">
-                Más de 8,500 usuarios activos confían en nosotros
-              </span>
+              <span className="avatars-text">{t('home.about.cta.users')}</span>
             </div>
           </div>
           <div className="image-container-2">

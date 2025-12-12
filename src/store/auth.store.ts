@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { toast } from 'react-hot-toast';
+import i18n from '../i18n/config';
 import type { User } from '../models/user.model';
 
 import type { RegisterRequest, LoginRequest } from '../types/auth.type';
@@ -46,19 +47,14 @@ export const useAuthStore = create<AuthState>()(
           authService.register(data),
         );
 
-        // TEMPORAL: Ver qué envía el backend
-        // console.log('Respuesta del backend:', response);
-
         if (error || !response) {
-          const message = error || 'Error al registrar usuario';
+          const message = error || i18n.t('toasts.auth.error.register');
           toast.error(message);
           set({ loading: false, error: message });
           throw new Error(message);
         }
 
-        toast.success(
-          'Registro exitoso. Revisa tu correo para verificar tu email 📩',
-        );
+        toast.success(i18n.t('auth.register.successMessage'));
 
         set({ loading: false, error: null });
       },
@@ -69,11 +65,9 @@ export const useAuthStore = create<AuthState>()(
         const { data: response, error } = await callApi(() =>
           authService.login(data),
         );
-        // console.log('response: ', response);
-        // console.log('error: ', error);
 
         if (error || !response) {
-          const message = error || 'Credenciales incorrectas';
+          const message = error || i18n.t('toasts.auth.error.login');
           toast.error(message);
           set({
             error: message,
@@ -91,7 +85,7 @@ export const useAuthStore = create<AuthState>()(
           error: null,
         });
 
-        toast.success('Sesión iniciada correctamente ✔️');
+        toast.success(i18n.t('toasts.auth.loginSuccess'));
       },
 
       refreshTokens: async () => {
@@ -150,17 +144,33 @@ export const useAuthStore = create<AuthState>()(
       verifyEmail: async (token: string) => {
         set({ loading: true, error: null });
 
-        const { error } = await callApi(() => authService.verifyEmail(token));
+        try {
+          const { error } = await callApi(() => authService.verifyEmail(token));
 
-        // Solo verificar error, no data (porque el backend retorna null en éxito)
-        if (error) {
-          const message = error || 'Error al verificar email';
-          set({ loading: false, error: message });
-          throw new Error(message);
+          // Si hay error, lanzarlo
+          if (error) {
+            const message = error || i18n.t('toasts.auth.error.register');
+            toast.error(message);
+            set({ loading: false, error: message });
+            throw new Error(message);
+          }
+
+          // Si no hay error, fue exitoso
+          toast.success(i18n.t('toasts.auth.emailVerified'));
+          set({ loading: false, error: null });
+        } catch (err) {
+          // Capturar cualquier error inesperado
+          // Solo establecer error si no se estableció arriba
+          if (!get().error) {
+            const message =
+              err instanceof Error
+                ? err.message
+                : i18n.t('toasts.auth.error.register');
+            toast.error(message);
+            set({ loading: false, error: message });
+          }
+          throw err;
         }
-
-        toast.success('Email verificado correctamente ✔️');
-        set({ loading: false, error: null });
       },
 
       logout: async () => {
@@ -205,7 +215,7 @@ export const useAuthStore = create<AuthState>()(
 
         // Solo mostrar toast de éxito si el logout fue exitoso
         if (logoutSuccess) {
-          toast.success('Sesión cerrada correctamente 👋');
+          toast.success(i18n.t('toasts.auth.logoutSuccess'));
         }
       },
 

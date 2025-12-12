@@ -5,6 +5,7 @@ import './Home.scss';
 //import "./Hero.scss";
 import { ArrowRight } from 'lucide-react';
 import { PUBLIC_ROUTES } from '../../config/routes';
+import { useTranslation } from 'react-i18next';
 
 // Importar imágenes locales como fallback
 import pexelsImg1 from '../../assets/pexels-arthousestudio.jpg';
@@ -14,6 +15,7 @@ import pexelsImg4 from '../../assets/pexels-sam-lion.jpg';
 import pexelsImg5 from '../../assets/pexels-maksgelatin.jpg';
 
 export function Hero() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [failedImages, setFailedImages] = useState<Set<number>>(new Set());
@@ -85,20 +87,11 @@ export function Hero() {
       <div className="container grid">
         {/* Texto */}
         <div className="content">
-          <div className="badge">
-            Plataforma digital de gestión de salud para mascotas
-          </div>
+          <div className="badge">{t('home.hero.subtitle')}</div>
 
-          <h1>
-            Gestiona la salud y bienestar de tus mascotas desde un solo lugar
-          </h1>
+          <h1>{t('home.hero.title')}</h1>
 
-          <p>
-            Crea perfiles completos, registra vacunaciones y visitas
-            veterinarias, controla su alimentación y recibe recordatorios
-            automáticos para nunca olvidar un evento médico o nutricional
-            importante.
-          </p>
+          <p>{t('home.hero.description')}</p>
 
           <div className="actions">
             <Button
@@ -106,7 +99,7 @@ export function Hero() {
               variant="primary"
               onClick={() => navigate(PUBLIC_ROUTES.REGISTER)}
             >
-              Registrarse Gratis
+              {t('home.hero.cta')}
               <ArrowRight style={{ marginLeft: 8, width: 20, height: 20 }} />
             </Button>
             {/* <Button size="lg" variant="outline">Ver Prototipo Demo</Button> */}
@@ -115,15 +108,15 @@ export function Hero() {
           <div className="stats">
             <div className="stat">
               <div>15,000+</div>
-              <div>Mascotas registradas</div>
+              <div>{t('home.hero.stats.pets')}</div>
             </div>
             <div className="stat">
               <div>8,500+</div>
-              <div>Usuarios activos</div>
+              <div>{t('home.hero.stats.users')}</div>
             </div>
             <div className="stat">
               <div>25,000+</div>
-              <div>Recordatorios enviados</div>
+              <div>{t('home.hero.stats.reminders')}</div>
             </div>
           </div>
         </div>

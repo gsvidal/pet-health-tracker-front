@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useResetPassword } from '../../hooks/useResetPassword';
 import './ResetPasswordForm.scss';
 import { FaLock, FaEye } from 'react-icons/fa';
@@ -10,6 +11,7 @@ interface Props {
   token: string;
 }
 const ResetPasswordForm: React.FC<Props> = ({ token }) => {
+  const { t } = useTranslation();
   const {
     register,
     handleSubmit,
@@ -28,7 +30,7 @@ const ResetPasswordForm: React.FC<Props> = ({ token }) => {
   useEffect(() => {
     if (success) {
       // setTimeout(() => {
-        navigate(PUBLIC_ROUTES.LOGIN);
+      navigate(PUBLIC_ROUTES.LOGIN);
       // }, 3000);
     }
   }, [success]);
@@ -36,21 +38,19 @@ const ResetPasswordForm: React.FC<Props> = ({ token }) => {
   return (
     <div className="reset-container">
       <div className={`reset-card ${loading ? 'loading' : ''}`}>
-        <h2>Restablecer contraseña</h2>
-        <p className="subtitle">
-          Ingresa tu nueva contraseña para restablecer tu cuenta.
-        </p>
+        <h2>{t('auth.resetPassword.title')}</h2>
+        <p className="subtitle">{t('auth.resetPassword.subtitle')}</p>
         <form onSubmit={handleSubmit(onSubmit)} className="reset-form">
           <div className="input-group">
             <FaLock className="input-icon" />
             <input
               type={showPassword ? 'text' : 'password'}
-              placeholder="Nueva contraseña"
+              placeholder={t('auth.resetPassword.newPasswordPlaceholder')}
               {...register('password', {
-                required: 'La contraseña es obligatoria',
+                required: t('auth.resetPassword.passwordRequired'),
                 pattern: {
                   value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/,
-                  message: 'Mínimo 8 caracteres, 1 mayúscula y 1 número',
+                  message: t('auth.resetPassword.passwordPattern'),
                 },
               })}
             />
@@ -69,11 +69,12 @@ const ResetPasswordForm: React.FC<Props> = ({ token }) => {
             <FaLock className="input-icon" />
             <input
               type={showConfirmPassword ? 'text' : 'password'}
-              placeholder="Confirmar contraseña"
+              placeholder={t('auth.resetPassword.confirmPasswordPlaceholder')}
               {...register('confirmPassword', {
-                required: 'Debes confirmar la contraseña',
+                required: t('auth.resetPassword.confirmPasswordRequired'),
                 validate: (value) =>
-                  value === watch('password') || 'Las contraseñas no coinciden',
+                  value === watch('password') ||
+                  t('auth.resetPassword.passwordsMismatch'),
               })}
             />
             <span
@@ -89,9 +90,7 @@ const ResetPasswordForm: React.FC<Props> = ({ token }) => {
 
           {serverError && <p className="error server">{serverError}</p>}
           {success && (
-            <p className="success">
-              ¡Contraseña actualizada con éxito! 🎉 Redirigiendo...
-            </p>
+            <p className="success">{t('auth.resetPassword.success')}</p>
           )}
 
           <button
@@ -101,15 +100,18 @@ const ResetPasswordForm: React.FC<Props> = ({ token }) => {
           >
             {loading ? (
               <>
-                <FaLock className="locked-icon" /> Procesando...
+                <FaLock className="locked-icon" />{' '}
+                {t('auth.resetPassword.processing')}
               </>
             ) : (
-              'Actualizar contraseña'
+              t('auth.resetPassword.submit')
             )}
           </button>
         </form>
         <p className="back-login">
-          <a href={PUBLIC_ROUTES.LOGIN}>Volver a Iniciar sesión</a>
+          <a href={PUBLIC_ROUTES.LOGIN}>
+            {t('auth.resetPassword.backToLogin')}
+          </a>
         </p>
       </div>
     </div>
